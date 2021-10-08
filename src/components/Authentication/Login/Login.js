@@ -9,6 +9,7 @@
 // /* eslint-disable react/self-closing-comp */
 // /* eslint-disable prettier/prettier */
 import React from 'react';
+import {MAIN_COLOR} from '../../../globals/constant';
 import {Text, View, Alert, StyleSheet, TouchableOpacity} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import Input from '../../../components/_common/Input/Input';
@@ -34,7 +35,7 @@ const Login = () => {
         control={control}
         rules={{
           required: true,
-        //   message: 'please type gmail',
+          //   message: 'please type gmail',
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
@@ -49,12 +50,14 @@ const Login = () => {
         )}
         name="email"
       />
-      {errors.password && <Text style={styles.error}>{'please type password'}</Text>}
+      {errors.password && (
+        <Text style={styles.error}>{'please type password'}</Text>
+      )}
       <Controller
         control={control}
         rules={{
           required: true,
-          message: 'please type password'
+          message: 'please type password',
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
@@ -116,9 +119,7 @@ const Login = () => {
           </View>
           <View>
             <TouchableOpacity onPress={() => alert('signup')}>
-              <Text style={{color: 'rgb(0, 113, 240)', fontSize: 18}}>
-                Sign up
-              </Text>
+              <Text style={{color: MAIN_COLOR, fontSize: 18}}>Sign up</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -134,7 +135,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   text: {
-    color: 'rgb(0, 113, 240)',
+    color: MAIN_COLOR,
     fontWeight: 'bold',
     fontSize: 25,
   },
@@ -144,14 +145,14 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   forgotpwText: {
-    color: 'rgb(0, 113, 240)',
+    color: MAIN_COLOR,
     fontSize: 15,
     textAlign: 'right',
   },
   error: {
-      textAlign: 'center',
-      color: 'red',
-  }
+    textAlign: 'center',
+    color: 'red',
+  },
 
   // sectionContainer: {
   //   marginTop: 32,

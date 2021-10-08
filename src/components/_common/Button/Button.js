@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {MAIN_COLOR} from '../../../globals/constant';
 
 export default function Input(props) {
   const {title, handleSubmit, onSubmit} = props;
@@ -16,7 +17,7 @@ export default function Input(props) {
 const styles = StyleSheet.create({
   button: {
     borderRadius: 15,
-    backgroundColor: 'rgb(0, 113, 240)',
+    backgroundColor: MAIN_COLOR,
     paddingVertical: 10,
   },
   container: {
