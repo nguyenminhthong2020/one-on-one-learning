@@ -20,10 +20,12 @@ import {
 } from 'react-native';
 import Login from './src/components/Authentication/Login/Login';
 import Register from './src/components/Authentication/Register/Register';
+import ForgetPassword from './src/components/Authentication/ForgetPassword/ForgetPassword';
+import NotifyForgetPassword from './src/components/Authentication/ForgetPassword/NotifyForgetPassword';
 
 const App = () => {
    return (
-      <Register></Register>
+      <NotifyForgetPassword></NotifyForgetPassword>
    );
 }
 const styles = StyleSheet.create({
