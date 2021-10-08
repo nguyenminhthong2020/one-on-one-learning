@@ -7,7 +7,7 @@ import {View, Text, StyleSheet, TextInput} from 'react-native';
 import {MailOutlined} from '@ant-design/icons';
 
 export default function Input(props) {
-  const {label, icon, secureTextEntry, placeholder, value, onBlur, onChange} =
+  const {label, secureTextEntry, placeholder, value, onBlur, onChange} =
     props;
   return (
     <View style={styles.container}>
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   container: {
-    marginBottom: 25,
+    marginTop: 20,
     width: '80%',
     left: '10%',
   },

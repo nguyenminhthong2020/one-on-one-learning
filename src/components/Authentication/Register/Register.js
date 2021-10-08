@@ -16,7 +16,7 @@ import Input from '../../../components/_common/Input/Input';
 import Button from '../../../components/_common/Button/Button';
 import {SocialIcon} from 'react-native-elements';
 
-const Login = () => {
+const Register = () => {
   const {
     control,
     handleSubmit,
@@ -27,14 +27,32 @@ const Login = () => {
 
   return (
     <View style={styles.container}>
-      <View style={{alignItems: 'center'}}>
+      {/* <View style={{alignItems: 'center'}}>
         <Text style={styles.text}>LOGIN</Text>
-      </View>
+      </View> */}
       <Controller
         control={control}
         rules={{
           required: true,
           //   message: 'please type gmail',
+        }}
+        render={({field: {onChange, onBlur, value}}) => (
+          <Input
+            label={'Full name*'}
+            secureTextEntry={false}
+            placeholder={'Name'}
+            value={value}
+            onBlur={onBlur}
+            onChange={onChange}
+          />
+        )}
+        name="name"
+      />
+      {errors.name && <Text style={styles.error}>{'please type full name'}</Text>}
+      <Controller
+        control={control}
+        rules={{
+          required: true,
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
@@ -53,7 +71,6 @@ const Login = () => {
         control={control}
         rules={{
           required: true,
-          message: 'please type password',
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
@@ -70,12 +87,30 @@ const Login = () => {
       {errors.password && (
         <Text style={styles.error}>{'please type password'}</Text>
       )}
-      <View style={styles.forgotpw}>
-        <TouchableOpacity onPress={() => alert('forgotpassword')}>
-          <Text style={styles.forgotpwText}>Forgot Password ?</Text>
-        </TouchableOpacity>
+      <Controller
+        control={control}
+        rules={{
+          required: true
+        }}
+        render={({field: {onChange, onBlur, value}}) => (
+          <Input
+            label={'Confirm password*'}
+            secureTextEntry={true}
+            placeholder={'********'}
+            value={value}
+            onBlur={onBlur}
+            onChange={onChange}
+          />
+        )}
+        name="password"
+      />
+      {errors.password && (
+        <Text style={styles.error}>{'please confirm password'}</Text>
+      )}
+      <View style={{marginTop: 20}}>
+      <Button title="Register" handleSubmit={handleSubmit} onSubmit={onSubmit} 
+      />
       </View>
-      <Button title="Log In" handleSubmit={handleSubmit} onSubmit={onSubmit} />
       {/* <TouchableOpacity title="Submit" onPress={handleSubmit(onSubmit)} /> */}
       <View style={{marginTop: 20, marginBottom: 20}}>
         <Text style={{textAlign: 'center', marginBottom: 5}}>
@@ -113,11 +148,11 @@ const Login = () => {
             justifyContent: 'center',
           }}>
           <View>
-            <Text style={{fontSize: 18}}>Don't have account? </Text>
+            <Text style={{fontSize: 18}}>Already have an account? </Text>
           </View>
           <View>
-            <TouchableOpacity onPress={() => alert('signup')}>
-              <Text style={{color: MAIN_COLOR, fontSize: 18}}>Sign up</Text>
+            <TouchableOpacity onPress={() => alert('login')}>
+              <Text style={{color: MAIN_COLOR, fontSize: 18}}>Log in</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -151,85 +186,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'red',
   },
-
-  // sectionContainer: {
-  //   marginTop: 32,
-  //   paddingHorizontal: 24,
-  // },
 });
 
-export default Login;
-
-// import React from 'react'
-// import { Alert, KeyboardAvoidingView, Text, TextInput, TouchableOpacity, View } from 'react-native'
-// import { theme } from '../../../globals/theme'
-// import {styles} from './styles'
-// import {Controller, useForm} from 'react-hook-form'
-
-// export default Login = () => {
-
-//   const {handleSubmit, control,
-//     formState: {errors, isValid},
-//   } = useForm({mode: 'onBlur'})
-
-//   const onSubmit = (data) => {
-//     Alert(data);
-//   }
-
-//   return (
-//     <KeyboardAvoidingView style={styles.container}>
-//       <Text style={styles.title}>Login</Text>
-//       <Controller
-//         control={control}
-//         name="email"
-//         render={({field: {onChange, value, onBlur}}) => (
-//           <TextInput
-//             style={styles.input}
-//             placeholder="Email"
-//             placeholderTextColor={theme.colors.primary}
-//             value={value}
-//             onBlur={onBlur}
-//             onChangeText={value => onChange(value)}
-//           />
-//         )}
-//         rules={{
-//           required: {
-//             value: true,
-//             message: 'Please write Email'
-//           },
-//         }}
-//       />
-//       <Text style={styles.error}>{errors.email?.message}</Text>
-//       <Controller
-//         control={control}
-//         name="password"
-//         render={({field: {onChange, value, onBlur}}) => (
-//           <TextInput
-//             secureTextEntry
-//             style={styles.input}
-//             placeholder="Password"
-//             placeholderTextColor={theme.colors.primary}
-//             value={value}
-//             onBlur={onBlur}
-//             onChangeText={value => onChange(value)}
-//           />
-//         )}
-//         rules={{
-//           required: {
-//             value: true,
-//             message: 'Please write Password'
-//           }
-//         }}
-//       />
-//       <Text style={styles.error}>{errors.password?.message}</Text>
-//       <TouchableOpacity
-//         disabled={!isValid}
-//         activeOpacity={0.7}
-//         style={styles.button}
-//         onPress={handleSubmit(onSubmit)}
-//       >
-//         <Text style={styles.buttonText}>Login</Text>
-//       </TouchableOpacity>
-//     </KeyboardAvoidingView>
-//   )
-// }
+export default Register;

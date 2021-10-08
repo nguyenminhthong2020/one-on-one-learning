@@ -19,10 +19,11 @@ import {
   View,
 } from 'react-native';
 import Login from './src/components/Authentication/Login/Login';
+import Register from './src/components/Authentication/Register/Register';
 
 const App = () => {
    return (
-      <Login></Login>
+      <Register></Register>
    );
 }
 const styles = StyleSheet.create({
