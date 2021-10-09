@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable no-undef */
 /* eslint-disable prettier/prettier */
@@ -24,6 +25,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import DatePicker from 'react-native-datepicker';
+import CountryPicker from 'react-native-country-picker-modal';
+import {yellow100} from 'react-native-paper/lib/typescript/styles/colors';
 
 const Profile = () => {
   const {
@@ -33,8 +36,12 @@ const Profile = () => {
   } = useForm({mode: 'onBlur'});
 
   const [date, setDate] = useState({date: '1998-01-01'});
+  const [country, setCountry] = useState({name: 'Vietnam', cca2: 'VN'});
 
-  const onSubmit = data => alert(JSON.stringify({...data, birthday: date.date}));
+  const onSubmit = data =>
+    alert(
+      JSON.stringify({...data, birthday: date.date, country: country.name}),
+    );
 
   return (
     <View style={styles.container}>
@@ -58,7 +65,7 @@ const Profile = () => {
           <TextInput
             value={'thong123@gmail.com'}
             editable={false}
-            style={{fontSize: 15}}
+            style={{fontSize: 16}}
           />
         </View>
       </View>
@@ -133,13 +140,22 @@ const Profile = () => {
               />
             </View>
             <View style={{marginLeft: 35}}>
-              <TextInput
-                style={{borderWidth: 1, width: 220, height: 40, fontSize: 15}}
-                value={value}
-                placeholder={'Location'}
-                onBlur={onBlur}
-                onChangeText={value => onChange(value)}
-              />
+              {/* <CountryPicker translation="eng" withFlag={true} countryCode={true} onSelect={(country) => setCountry(country)}/>
+              <CountryPicker
+                withCallingCode
+                withModal={true}
+                withFlagButton={true}
+                withFilter={true}
+              /> */}
+                <CountryPicker
+                  withFlag
+                  withFilter
+                  countryCode={country.cca2}
+                  onSelect={country =>
+                    //console.log("\nĐây nữa nè: " + JSON.stringify(country))
+                    setCountry({cca2: country.cca2, name: country.name})
+                  }
+                />
             </View>
           </View>
         )}
@@ -150,7 +166,7 @@ const Profile = () => {
         //rules={{required: true}}
         name="birthday"
         render={({field: {onChange, onBlur, value}}) => (
-          <View style={[styles.container1, {marginBottom: 30}]}>
+          <View style={[styles.container1, {marginBottom: 35}]}>
             <View>
               <FontAwesome
                 name={'birthday-cake'}
@@ -202,7 +218,7 @@ const styles = StyleSheet.create({
     left: '5%',
     width: '80%',
     flexDirection: 'row',
-    marginTop: 15,
+    marginTop: 18,
   },
   text: {
     color: MAIN_COLOR,
@@ -212,6 +228,14 @@ const styles = StyleSheet.create({
   error: {
     textAlign: 'center',
     color: 'red',
+  },
+  countryPicker: {
+    backgroundColor: '#1abc9c',
+    fontWeight: 'bold',
+    paddingVertical: 3,
+    paddingHorizontal: 3,
+    // width: 50,
+    borderWidth: 2,
   },
 });
 

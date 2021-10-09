@@ -31,8 +31,8 @@ const App = () => {
    return (
       // <Menu></Menu>
       // <Home></Home>
-      //<Profile></Profile>
-      <Setting></Setting>
+      <Profile></Profile>
+      //<Setting></Setting>
    );
 }
 const styles = StyleSheet.create({
