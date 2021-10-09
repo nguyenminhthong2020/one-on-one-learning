@@ -24,13 +24,15 @@ import ForgetPassword from './src/components/Authentication/ForgetPassword/Forge
 import NotifyForgetPassword from './src/components/Authentication/ForgetPassword/NotifyForgetPassword';
 import Home from './src/components/Main/Home/Home';
 import Menu from './src/components/Main/Menu/Menu';
-import Profile from './src/components/Main/Profile/Profile';
+import Profile from './src/components/AccountManagement/Profile/Profile';
+import Setting from './src/components/AccountManagement/Setting/Setting';
 
 const App = () => {
    return (
-      //<Menu></Menu>
+      // <Menu></Menu>
       // <Home></Home>
-      <Profile></Profile>
+      //<Profile></Profile>
+      <Setting></Setting>
    );
 }
 const styles = StyleSheet.create({

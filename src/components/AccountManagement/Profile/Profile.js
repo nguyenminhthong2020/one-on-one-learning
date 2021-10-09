@@ -18,7 +18,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
-//import Input from '../../_common/Input/Input';
 import Button from '../../_common/Button/Button';
 import {Avatar, Accessory} from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -26,7 +25,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import DatePicker from 'react-native-datepicker';
 
-const Login = () => {
+const Profile = () => {
   const {
     control,
     handleSubmit,
@@ -52,12 +51,12 @@ const Login = () => {
           size={100}
           rounded
           activeOpacity={0.7}
-          onPress={() => console.log('changeAvatar!')}>
+          onPress={() => console.log('Change user avatar!')}>
           <Accessory />
         </Avatar>
         <View>
           <TextInput
-            value={'thong@gmail.com'}
+            value={'thong123@gmail.com'}
             editable={false}
             style={{fontSize: 15}}
           />
@@ -182,7 +181,6 @@ const Login = () => {
                   // ... You can check the source to find the other keys.
                 }}
                 onDateChange={date => setDate({date: date})}
-                // selected={value}
               />
             </View>
           </View>
@@ -217,4 +215,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default Profile;

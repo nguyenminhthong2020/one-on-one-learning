@@ -17,23 +17,28 @@ import {Text, View, Alert, StyleSheet, TouchableOpacity} from 'react-native';
 // import {SocialIcon} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import Header from '../../_common/Header/Header';
-import ButtonIcon from '../../_common/Button/ButtonIcon';
 
-const Menu = () => {
+import ButtonIcon from '../../_common/Button/ButtonIcon';
+import ChangeSetting from '../../_common/ChangeSetting/ChangeSetting';
+
+const Setting = () => {
 
   return (
     <View style={styles.container}>
-       <Header></Header>
+       {/* <Header></Header> */}
        <View style={styles.content}>
-           <ButtonIcon type={'FontAwesome5'} name={'home'} title={'Home'} handleOnPress={() => alert('home')}/>
-           <ButtonIcon type={'AntDesign'} name={'user'} title={'Profile'} handleOnPress={() => alert('profile')}/>
-           <ButtonIcon type={'FontAwesome5'} name={'chalkboard-teacher'} title={'Tutor'} handleOnPress={() => alert('tutor')}/>
-           <ButtonIcon type={'FontAwesome5'} name={'calendar-check'} title={'Schedule'} handleOnPress={() => alert('schedule')}/>
+           <ButtonIcon type={'AntDesign'} name={'user'} title={'View Feedbacks'} handleOnPress={() => alert('feedbacks')}/>
+           <ButtonIcon type={'FontAwesome5'} name={'list'} title={'Booking History'} handleOnPress={() => alert('booking history')}/>
+           <ButtonIcon type={'FontAwesome5'} name={'history'} title={'Session History'} handleOnPress={() => alert('session history')}/>          
+           {/* <ButtonIcon type={'FontAwesome5'} name={'calendar-check'} title={'Schedule'} handleOnPress={() => alert('schedule')}/>
            <ButtonIcon type={'FontAwesome5'} name={'history'} title={'History'} handleOnPress={() => alert('histori')}/>
            <ButtonIcon type={'FontAwesome5'} name={'graduation-cap'} title={'Courses'} handleOnPress={() => alert('courses')}/>
-           <ButtonIcon type={'FontAwesome5'} name={'user-graduate'} title={'Became a tutor'} handleOnPress={() => alert('become tutor')}/>
-           <ButtonIcon type={'AntDesign'} name={'logout'} title={'Logout'} handleOnPress={() => alert('logout')}/>
+           <ButtonIcon type={'FontAwesome5'} name={'user-graduate'} title={'Became a tutor'} handleOnPress={() => alert('become tutor')}/> */}
+           <ChangeSetting type={'FontAwesome5'} name={'exchange-alt'} title={'Theme'}/>
+           <ChangeSetting type={'FontAwesome5'} name={'language'} title={'Language'}/>
+           <View style={{marginTop: 25}}>
+             <ButtonIcon type={'FontAwesome5'} name={'sign-out-alt'} title={'Log out'} handleOnPress={() => alert('log out')}/>
+           </View>
        </View>
     </View>
   );
@@ -46,9 +51,9 @@ const styles = StyleSheet.create({
   },
   content: {
       // backgroundColor: SECOND_COLOR,
-      marginTop: 20,
+      marginTop: 40,
       height: '100%',
   },
 });
 
-export default Menu;
+export default Setting;
