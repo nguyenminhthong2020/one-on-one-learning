@@ -30,8 +30,8 @@ import Setting from './src/components/AccountManagement/Setting/Setting';
 const App = () => {
    return (
       // <Menu></Menu>
-      // <Home></Home>
-      <Profile></Profile>
+      <Home></Home>
+      //<Profile></Profile>
       //<Setting></Setting>
    );
 }

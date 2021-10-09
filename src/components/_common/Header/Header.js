@@ -33,7 +33,7 @@ const Header = () => {
 const styles = StyleSheet.create({
   container: {
     overflow: 'hidden',
-    paddingBottom: 5,
+    //paddingBottom: 5,
   },
   shadow: {
     paddingHorizontal: '3%',
