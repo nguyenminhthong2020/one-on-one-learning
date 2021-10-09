@@ -3,7 +3,7 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {MAIN_COLOR} from '../../../globals/constant';
 
-export default function Input(props) {
+export default function Button(props) {
   const {title, handleSubmit, onSubmit} = props;
   return (
     <View style={styles.container}>

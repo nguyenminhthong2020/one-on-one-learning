@@ -22,10 +22,13 @@ import Login from './src/components/Authentication/Login/Login';
 import Register from './src/components/Authentication/Register/Register';
 import ForgetPassword from './src/components/Authentication/ForgetPassword/ForgetPassword';
 import NotifyForgetPassword from './src/components/Authentication/ForgetPassword/NotifyForgetPassword';
+import Home from './src/components/Main/Home/Home';
+import Menu from './src/components/Main/Menu/Menu';
 
 const App = () => {
    return (
-      <NotifyForgetPassword></NotifyForgetPassword>
+      <Menu></Menu>
+      // <Home></Home>
    );
 }
 const styles = StyleSheet.create({
