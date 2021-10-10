@@ -11,7 +11,6 @@ import {
 //import {TextInput as SpecialTextInput} from 'react-native-paper';
 import {useForm, Controller, set} from 'react-hook-form';
 import Button from '../../_common/Button/Button';
-import {Avatar, Accessory} from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -21,6 +20,7 @@ import {Picker} from '@react-native-picker/picker';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import CountryPicker from 'react-native-country-picker-modal';
 import moment from 'moment';
+import AvatarAccessory from '../../_common/AvatarAccessory/AvatarAccessory';
 //import {yellow100} from 'react-native-paper/lib/typescript/styles/colors';
 
 const Profile = () => {
@@ -43,8 +43,15 @@ const Profile = () => {
   };
 
   const onSubmit = data =>
-    alert(JSON.stringify({...data, birthday: birthday, country: country.name, language: pickerValue}));
-
+    alert(
+      JSON.stringify({
+        ...data,
+        birthday: birthday,
+        country: country.name,
+        language: pickerValue,
+      }),
+    );
+  
   return (
     <View style={styles.container}>
       <View
@@ -53,16 +60,12 @@ const Profile = () => {
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-        <Avatar
-          source={{
-            uri: 'https://image.freepik.com/free-vector/cute-orange-robot-cat-avatar_79416-86.jpg',
-          }}
-          size={100}
-          rounded
-          activeOpacity={0.7}
-          onPress={() => console.log('Change user avatar!')}>
-          <Accessory />
-        </Avatar>
+        <TouchableOpacity onPress={() => alert("change avatar")}>
+         <AvatarAccessory 
+           nsize={10}
+           uri="https://image.freepik.com/free-vector/cute-orange-robot-cat-avatar_79416-86.jpg"
+         />
+         </TouchableOpacity>
         <View>
           <TextInput
             value={'thong123@gmail.com'}
@@ -134,7 +137,7 @@ const Profile = () => {
             </View>
           </View>
         )}
-      />  
+      />
 
       <Controller
         control={control}
