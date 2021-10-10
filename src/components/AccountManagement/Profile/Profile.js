@@ -1,15 +1,5 @@
-/* eslint-disable no-alert */
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable no-undef */
-/* eslint-disable prettier/prettier */
-// /* eslint-disable no-trailing-spaces */
-// /* eslint-disable quotes */
-// /* eslint-disable prettier/prettier */
-// /* eslint-disable semi */
-// /* eslint-disable prettier/prettier */
-// /* eslint-disable react/self-closing-comp */
-// /* eslint-disable prettier/prettier */
-import React, {useState} from 'react';
+/* eslint-disable */
+import React, {useState, useEffect} from 'react';
 import {MAIN_COLOR} from '../../../globals/constant';
 import {
   Text,
@@ -18,15 +8,20 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import {useForm, Controller} from 'react-hook-form';
+//import {TextInput as SpecialTextInput} from 'react-native-paper';
+import {useForm, Controller, set} from 'react-hook-form';
 import Button from '../../_common/Button/Button';
 import {Avatar, Accessory} from 'react-native-elements';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import DatePicker from 'react-native-datepicker';
+//import DatePicker from 'react-native-datepicker';
+// thay vì dùng DateTimePicker, có thể dùng RNDatetimePicker
+import {Picker} from '@react-native-picker/picker';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
 import CountryPicker from 'react-native-country-picker-modal';
-import {yellow100} from 'react-native-paper/lib/typescript/styles/colors';
+import moment from 'moment';
+//import {yellow100} from 'react-native-paper/lib/typescript/styles/colors';
 
 const Profile = () => {
   const {
@@ -35,13 +30,20 @@ const Profile = () => {
     formState: {errors},
   } = useForm({mode: 'onBlur'});
 
-  const [date, setDate] = useState({date: '1998-01-01'});
+  const [pickerValue, setPickerValue] = useState('English');
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [birthday, setBirthday] = useState('1998-10-27');
   const [country, setCountry] = useState({name: 'Vietnam', cca2: 'VN'});
 
+  const onChangeBirthday = e => {
+    setShowDatePicker(false);
+    const str = JSON.stringify(e.nativeEvent.timestamp);
+    _birthday = str.slice(1, 11);
+    setBirthday(_birthday);
+  };
+
   const onSubmit = data =>
-    alert(
-      JSON.stringify({...data, birthday: date.date, country: country.name}),
-    );
+    alert(JSON.stringify({...data, birthday: birthday, country: country.name, language: pickerValue}));
 
   return (
     <View style={styles.container}>
@@ -112,7 +114,7 @@ const Profile = () => {
                 style={{paddingLeft: 12}}
               />
             </View>
-            <View style={{marginLeft: 35}}>
+            {/* <View style={{marginLeft: 35}}>
               <TextInput
                 style={{borderWidth: 1, width: 220, height: 40, fontSize: 15}}
                 value={value}
@@ -120,10 +122,19 @@ const Profile = () => {
                 onBlur={onBlur}
                 onChangeText={value => onChange(value)}
               />
+            </View> */}
+            <View style={[styles.containerPicker, {marginLeft: 35}]}>
+              <Picker
+                style={styles.picker}
+                selectedValue={pickerValue}
+                onValueChange={itemValue => setPickerValue(itemValue)}>
+                <Picker.Item label="English" value="English" />
+                <Picker.Item label="Vietnamese" value="Vietnamese" />
+              </Picker>
             </View>
           </View>
         )}
-      />
+      />  
 
       <Controller
         control={control}
@@ -147,36 +158,74 @@ const Profile = () => {
                 withFlagButton={true}
                 withFilter={true}
               /> */}
-                <CountryPicker
-                  withFlag
-                  withFilter
-                  countryCode={country.cca2}
-                  onSelect={country =>
-                    //console.log("\nĐây nữa nè: " + JSON.stringify(country))
-                    setCountry({cca2: country.cca2, name: country.name})
-                  }
-                />
+              <CountryPicker
+                withFlag
+                withFilter
+                countryCode={country.cca2}
+                onSelect={country =>
+                  //console.log("\nĐây nữa nè: " + JSON.stringify(country))
+                  setCountry({cca2: country.cca2, name: country.name})
+                }
+              />
             </View>
           </View>
         )}
       />
 
-      <Controller
-        control={control}
-        //rules={{required: true}}
-        name="birthday"
-        render={({field: {onChange, onBlur, value}}) => (
-          <View style={[styles.container1, {marginBottom: 35}]}>
-            <View>
-              <FontAwesome
-                name={'birthday-cake'}
-                size={25}
-                color={MAIN_COLOR}
-                style={{paddingLeft: 12}}
-              />
-            </View>
-            <View>
-              <DatePicker
+      <View style={[styles.container1, {marginBottom: 35}]}>
+        <View>
+          <FontAwesome
+            name={'birthday-cake'}
+            size={25}
+            color={MAIN_COLOR}
+            style={{paddingLeft: 12}}
+          />
+        </View>
+        <View style={{marginLeft: 35}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              borderWidth: 1,
+              alignItems: 'center',
+            }}>
+            <TextInput
+              style={{
+                width: 105,
+                height: 40,
+                fontSize: 16,
+                borderRightWidth: 1,
+                marginRight: 5,
+                textAlign: 'center',
+              }}
+              value={birthday}
+              onChangeText={str => setBirthday(str)}
+            />
+            <TouchableOpacity
+              style={{marginRight: 5}}
+              onPress={() => setShowDatePicker(true)}>
+              <FontAwesome name="calendar" color="black" size={20} />
+            </TouchableOpacity>
+          </View>
+          {showDatePicker && (
+            <RNDateTimePicker
+              mode="date" // có thể dùng mode="time"
+              value={new Date(birthday)}
+              minimumDate={new Date(1920, 1, 1)}
+              maximumDate={new Date()}
+              onChange={e => onChangeBirthday(e)}
+              is24Hour={true}
+            />
+          )}
+          {/* <DateTimePicker
+                styles={{width: '37%', backgroundColor: "white", color:'#009387'}}
+                testID="dateTimePicker"
+                value={date.date}
+                mode="date"
+                is24Hour={true}
+                display="default"
+                onChange={date => setDate({date: date})}
+              /> */}
+          {/* <DatePicker
                 style={{width: 160}}
                 date={date.date}
                 mode="date"
@@ -197,11 +246,9 @@ const Profile = () => {
                   // ... You can check the source to find the other keys.
                 }}
                 onDateChange={date => setDate({date: date})}
-              />
-            </View>
-          </View>
-        )}
-      />
+              /> */}
+        </View>
+      </View>
       {/* {errors.email && <Text style={styles.error}>{'please type gmail'}</Text>} */}
       <Button title="Save" handleSubmit={handleSubmit} onSubmit={onSubmit} />
     </View>
@@ -236,6 +283,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 3,
     // width: 50,
     borderWidth: 2,
+  },
+  containerPicker: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    borderWidth: 1,
+  },
+  picker: {
+    width: 170,
+    height: 40,
+    borderColor: '#ddd',
+    borderWidth: 1,
+    color: 'black',
   },
 });
 

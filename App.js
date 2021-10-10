@@ -1,5 +1,4 @@
-/* eslint-disable react/self-closing-comp */
-/* eslint-disable prettier/prettier */
+/* eslint-disable */
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -30,8 +29,8 @@ import Setting from './src/components/AccountManagement/Setting/Setting';
 const App = () => {
    return (
       // <Menu></Menu>
-      <Home></Home>
-      //<Profile></Profile>
+      // <Home></Home>
+      <Profile></Profile>
       //<Setting></Setting>
    );
 }

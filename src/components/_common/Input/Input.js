@@ -1,6 +1,4 @@
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable quotes */
-/* eslint-disable prettier/prettier */
+/* eslint-disable */
 import React from 'react';
 import {View, Text, StyleSheet, TextInput} from 'react-native';
 //import {TextInput} from 'react-native-paper';

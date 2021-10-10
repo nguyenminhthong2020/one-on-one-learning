@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+/* eslint-disable */
 import {StyleSheet} from 'react-native';
 import {theme} from '../../../globals/theme';
 

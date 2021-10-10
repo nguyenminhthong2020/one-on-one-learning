@@ -1,11 +1,9 @@
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable prettier/prettier */
+/* eslint-disable */
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, Switch} from 'react-native';
 import {MAIN_COLOR} from '../../../globals/constant';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import Setting from '../../AccountManagement/Setting/Setting';
 import { moderateScale } from 'react-native-size-matters';
 
 export default function ChangeSetting(props) {

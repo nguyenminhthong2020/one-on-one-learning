@@ -1,13 +1,4 @@
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable no-undef */
-/* eslint-disable prettier/prettier */
-// /* eslint-disable no-trailing-spaces */
-// /* eslint-disable quotes */
-// /* eslint-disable prettier/prettier */
-// /* eslint-disable semi */
-// /* eslint-disable prettier/prettier */
-// /* eslint-disable react/self-closing-comp */
-// /* eslint-disable prettier/prettier */
+/* eslint-disable */
 import React from 'react';
 import {MAIN_COLOR, SECOND_COLOR} from '../../../globals/constant';
 import {Text, View, Alert, StyleSheet, TouchableOpacity} from 'react-native';
