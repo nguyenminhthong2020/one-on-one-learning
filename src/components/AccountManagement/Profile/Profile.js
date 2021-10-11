@@ -7,6 +7,7 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 //import {TextInput as SpecialTextInput} from 'react-native-paper';
 import {useForm, Controller, set} from 'react-hook-form';
@@ -16,6 +17,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 //import DatePicker from 'react-native-datepicker';
 // thay vì dùng DateTimePicker, có thể dùng RNDatetimePicker
+import SelectBox from 'react-native-multi-selectbox';
+import {xorBy} from 'lodash';
 import {Picker} from '@react-native-picker/picker';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import CountryPicker from 'react-native-country-picker-modal';
@@ -30,7 +33,23 @@ const Profile = () => {
     formState: {errors},
   } = useForm({mode: 'onBlur'});
 
+  const arrWhatToLearn = [
+    {item: 'EnglishforKids', id: 0},
+    {item: 'BusinessEnglish', id: 1},
+    {item: 'ConversationalEnglish', id: 2},
+    {item: 'STARTERS', id: 3},
+    {item: 'MOVERS', id: 4},
+    {item: 'FLYERS', id: 5},
+    {item: 'KET', id: 5},
+    {item: 'PET', id: 6},
+    {item: 'IELTS', id: 7},
+    {item: 'TOEFL', id: 8},
+    {item: 'TOEIC', id: 9},
+  ];
+
   const [pickerValue, setPickerValue] = useState('English');
+  const [whatToLearn, setWhatToLearn] = useState([]);
+  const [levelValue, setLevelValue] = useState('Beginner');
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [birthday, setBirthday] = useState('1998-10-27');
   const [country, setCountry] = useState({name: 'Vietnam', cca2: 'VN'});
@@ -49,75 +68,78 @@ const Profile = () => {
         birthday: birthday,
         country: country.name,
         language: pickerValue,
+        whatToLearn: whatToLearn,
       }),
     );
-  
+
+  function onMultiChange() {
+    return item => setWhatToLearn(xorBy(whatToLearn, [item], 'id'));
+  }
+
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <TouchableOpacity onPress={() => alert("change avatar")}>
-         <AvatarAccessory 
-           nsize={10}
-           uri="https://image.freepik.com/free-vector/cute-orange-robot-cat-avatar_79416-86.jpg"
-         />
-         </TouchableOpacity>
-        <View>
-          <TextInput
-            value={'thong123@gmail.com'}
-            editable={false}
-            style={{fontSize: 16}}
-          />
+        <View
+          style={{
+            flexDirection: 'row',
+            //alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <TouchableOpacity onPress={() => alert('change avatar')}>
+            <AvatarAccessory
+              nsize={9}
+              uri="https://image.freepik.com/free-vector/cute-orange-robot-cat-avatar_79416-86.jpg"
+            />
+          </TouchableOpacity>
+            <TextInput
+              value={'thong123@gmail.com'}
+              editable={false}
+              style={{fontSize: 16, color: 'orange'}}
+            />
         </View>
-      </View>
 
-      <Controller
-        control={control}
-        // rules={{required: true}}
-        name="phone"
-        render={({field: {onChange, onBlur, value}}) => (
-          <View style={styles.container1}>
-            <View>
-              <FontAwesome
-                name={'phone'}
-                size={25}
-                color={MAIN_COLOR}
-                style={{paddingLeft: 12}}
-              />
+        <Controller
+          control={control}
+          // rules={{required: true}}
+          name="phone"
+          render={({field: {onChange, onBlur, value}}) => (
+            <View style={styles.container1}>
+              <View>
+                <FontAwesome
+                  name={'phone'}
+                  size={25}
+                  color={MAIN_COLOR}
+                  style={{paddingLeft: 12}}
+                />
+              </View>
+              <View style={{marginLeft: 40}}>
+                <TextInput
+                  style={{borderWidth: 1, width: 170, height: 40, fontSize: 15}}
+                  value={value}
+                  keyboardType={'numeric'}
+                  placeholder={'Phone number'}
+                  onBlur={onBlur}
+                  onChangeText={value => onChange(value)}
+                />
+              </View>
             </View>
-            <View style={{marginLeft: 40}}>
-              <TextInput
-                style={{borderWidth: 1, width: 220, height: 40, fontSize: 15}}
-                value={value}
-                keyboardType={'numeric'}
-                placeholder={'Phone number'}
-                onBlur={onBlur}
-                onChangeText={value => onChange(value)}
-              />
-            </View>
-          </View>
-        )}
-      />
+          )}
+        />
 
-      <Controller
-        control={control}
-        //rules={{required: true}}
-        name="language"
-        render={({field: {onChange, onBlur, value}}) => (
-          <View style={styles.container1}>
-            <View>
-              <MaterialIcons
-                name={'language'}
-                size={25}
-                color={MAIN_COLOR}
-                style={{paddingLeft: 12}}
-              />
-            </View>
-            {/* <View style={{marginLeft: 35}}>
+        <Controller
+          control={control}
+          //rules={{required: true}}
+          name="language"
+          render={({field: {onChange, onBlur, value}}) => (
+            <View style={styles.container1}>
+              <View>
+                <MaterialIcons
+                  name={'language'}
+                  size={25}
+                  color={MAIN_COLOR}
+                  style={{paddingLeft: 12}}
+                />
+              </View>
+              {/* <View style={{marginLeft: 35}}>
               <TextInput
                 style={{borderWidth: 1, width: 220, height: 40, fontSize: 15}}
                 value={value}
@@ -126,100 +148,123 @@ const Profile = () => {
                 onChangeText={value => onChange(value)}
               />
             </View> */}
-            <View style={[styles.containerPicker, {marginLeft: 35}]}>
-              <Picker
-                style={styles.picker}
-                selectedValue={pickerValue}
-                onValueChange={itemValue => setPickerValue(itemValue)}>
-                <Picker.Item label="English" value="English" />
-                <Picker.Item label="Vietnamese" value="Vietnamese" />
-              </Picker>
+              <View style={[styles.containerPicker, {marginLeft: 35}]}>
+                <Picker
+                  style={styles.picker}
+                  selectedValue={pickerValue}
+                  onValueChange={itemValue => setPickerValue(itemValue)}>
+                  <Picker.Item label="English" value="English" />
+                  <Picker.Item label="Vietnamese" value="Vietnamese" />
+                </Picker>
+              </View>
             </View>
-          </View>
-        )}
-      />
+          )}
+        />
 
-      <Controller
-        control={control}
-        //rules={{required: true}}
-        name="location"
-        render={({field: {onChange, onBlur, value}}) => (
-          <View style={styles.container1}>
-            <View>
-              <Ionicons
-                name={'location'}
-                size={25}
-                color={MAIN_COLOR}
-                style={{paddingLeft: 12}}
-              />
+        <Controller
+          control={control}
+          //rules={{required: true}}
+          name="level"
+          render={({field: {onChange, onBlur, value}}) => (
+            <View style={styles.container1}>
+              <View style={{paddingLeft: 12, justifyContent: 'center'}}>
+                <Text style={{fontSize: 17}}>Level:</Text>
+              </View>
+              <View style={[styles.containerPicker, {marginLeft: 18}]}>
+                <Picker
+                  style={styles.picker}
+                  selectedValue={levelValue}
+                  onValueChange={levelValue => setLevelValue(levelValue)}>
+                  <Picker.Item label="Beginner" value="Beginner" />
+                  <Picker.Item label="Intermediate" value="Intermediate" />
+                  <Picker.Item label="Advanced" value="Advanced" />
+                </Picker>
+              </View>
             </View>
-            <View style={{marginLeft: 35}}>
-              {/* <CountryPicker translation="eng" withFlag={true} countryCode={true} onSelect={(country) => setCountry(country)}/>
+          )}
+        />
+
+        <Controller
+          control={control}
+          //rules={{required: true}}
+          name="location"
+          render={({field: {onChange, onBlur, value}}) => (
+            <View style={styles.container1}>
+              <View>
+                <Ionicons
+                  name={'location'}
+                  size={25}
+                  color={MAIN_COLOR}
+                  style={{paddingLeft: 12}}
+                />
+              </View>
+              <View style={{marginLeft: 35}}>
+                {/* <CountryPicker translation="eng" withFlag={true} countryCode={true} onSelect={(country) => setCountry(country)}/>
               <CountryPicker
                 withCallingCode
                 withModal={true}
                 withFlagButton={true}
                 withFilter={true}
               /> */}
-              <CountryPicker
-                withFlag
-                withFilter
-                countryCode={country.cca2}
-                onSelect={country =>
-                  //console.log("\nĐây nữa nè: " + JSON.stringify(country))
-                  setCountry({cca2: country.cca2, name: country.name})
-                }
-              />
+                <CountryPicker
+                  withFlag
+                  withFilter
+                  countryCode={country.cca2}
+                  onSelect={country =>
+                    //console.log("\nĐây nữa nè: " + JSON.stringify(country))
+                    setCountry({cca2: country.cca2, name: country.name})
+                  }
+                />
+              </View>
             </View>
-          </View>
-        )}
-      />
-
-      <View style={[styles.container1, {marginBottom: 35}]}>
-        <View>
-          <FontAwesome
-            name={'birthday-cake'}
-            size={25}
-            color={MAIN_COLOR}
-            style={{paddingLeft: 12}}
-          />
-        </View>
-        <View style={{marginLeft: 35}}>
-          <View
-            style={{
-              flexDirection: 'row',
-              borderWidth: 1,
-              alignItems: 'center',
-            }}>
-            <TextInput
-              style={{
-                width: 105,
-                height: 40,
-                fontSize: 16,
-                borderRightWidth: 1,
-                marginRight: 5,
-                textAlign: 'center',
-              }}
-              value={birthday}
-              onChangeText={str => setBirthday(str)}
-            />
-            <TouchableOpacity
-              style={{marginRight: 5}}
-              onPress={() => setShowDatePicker(true)}>
-              <FontAwesome name="calendar" color="black" size={20} />
-            </TouchableOpacity>
-          </View>
-          {showDatePicker && (
-            <RNDateTimePicker
-              mode="date" // có thể dùng mode="time"
-              value={new Date(birthday)}
-              minimumDate={new Date(1920, 1, 1)}
-              maximumDate={new Date()}
-              onChange={e => onChangeBirthday(e)}
-              is24Hour={true}
-            />
           )}
-          {/* <DateTimePicker
+        />
+
+        <View style={[styles.container1, {marginBottom: 25}]}>
+          <View>
+            <FontAwesome
+              name={'birthday-cake'}
+              size={25}
+              color={MAIN_COLOR}
+              style={{paddingLeft: 12}}
+            />
+          </View>
+          <View style={{marginLeft: 35}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                borderWidth: 1,
+                alignItems: 'center',
+              }}>
+              <TextInput
+                style={{
+                  width: 105,
+                  height: 40,
+                  fontSize: 16,
+                  borderRightWidth: 1,
+                  marginRight: 5,
+                  textAlign: 'center',
+                }}
+                value={birthday}
+                onChangeText={str => setBirthday(str)}
+              />
+              <TouchableOpacity
+                style={{marginRight: 5}}
+                onPress={() => setShowDatePicker(true)}>
+                <FontAwesome name="calendar" color="black" size={20} />
+              </TouchableOpacity>
+            </View>
+            {showDatePicker && (
+              <RNDateTimePicker
+                mode="date" // có thể dùng mode="time"
+                value={new Date(birthday)}
+                minimumDate={new Date(1920, 1, 1)}
+                maximumDate={new Date()}
+                onChange={e => onChangeBirthday(e)}
+                is24Hour={true}
+              />
+            )}
+            {/* <DateTimePicker
                 styles={{width: '37%', backgroundColor: "white", color:'#009387'}}
                 testID="dateTimePicker"
                 value={date.date}
@@ -228,47 +273,39 @@ const Profile = () => {
                 display="default"
                 onChange={date => setDate({date: date})}
               /> */}
-          {/* <DatePicker
-                style={{width: 160}}
-                date={date.date}
-                mode="date"
-                placeholder="select date"
-                format="YYYY-MM-DD"
-                minDate="1920-01-01"
-                maxDate="2021-01-01"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                customStyles={{
-                  dateIcon: {
-                    width: 0,
-                    height: 0,
-                  },
-                  dateInput: {
-                    marginLeft: 35,
-                  },
-                  // ... You can check the source to find the other keys.
-                }}
-                onDateChange={date => setDate({date: date})}
-              /> */}
+          </View>
         </View>
-      </View>
-      {/* {errors.email && <Text style={styles.error}>{'please type gmail'}</Text>} */}
-      <Button title="Save" handleSubmit={handleSubmit} onSubmit={onSubmit} />
+        <View style={{paddingLeft: '20%'}}>
+          <Text style={{fontSize: 17}}>What to learn:</Text>
+        </View>
+        <View style={{paddingLeft: '10%', marginBottom: 35}}>
+          <SelectBox
+            label={false}
+            options={arrWhatToLearn}
+            selectedValues={whatToLearn}
+            onMultiSelect={onMultiChange()}
+            onTapClose={onMultiChange()}
+            isMulti
+            width={"90%"}
+          />
+        </View>
+        {/* {errors.email && <Text style={styles.error}>{'please type gmail'}</Text>} */}
+        <Button title="Save" handleSubmit={handleSubmit} onSubmit={onSubmit} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 25,
+    marginTop: 20,
     flex: 1,
     flexDirection: 'column',
   },
   container1: {
-    left: '5%',
+    left: '10%',
     width: '80%',
     flexDirection: 'row',
-    marginTop: 18,
+    marginTop: 20,
   },
   text: {
     color: MAIN_COLOR,
@@ -295,7 +332,7 @@ const styles = StyleSheet.create({
   },
   picker: {
     width: 170,
-    height: 40,
+    height: 35,
     borderColor: '#ddd',
     borderWidth: 1,
     color: 'black',

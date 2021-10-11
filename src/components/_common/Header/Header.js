@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 
     backgroundColor: '#fff',
     // width: 300,
-    height: 50,
+    height: 51,
     shadowColor: '#000',
     shadowOffset: {width: 1, height: 1},
     shadowOpacity: 0.4,
@@ -43,11 +43,11 @@ const styles = StyleSheet.create({
   },
   leftHeader: {
     color: MAIN_COLOR,
-    fontSize: 25,
+    fontSize: 27,
     fontWeight: 'bold',
   },
   rightHeader: {
-     fontSize: 20,
+     fontSize: 22,
   },
 });
 

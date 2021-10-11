@@ -25,13 +25,16 @@ import Home from './src/components/Main/Home/Home';
 import Menu from './src/components/Main/Menu/Menu';
 import Profile from './src/components/AccountManagement/Profile/Profile';
 import Setting from './src/components/AccountManagement/Setting/Setting';
+import Search from './src/components/Main/Tutor/Search/Search';
 
 const App = () => {
    return (
-      // <Menu></Menu>
-      // <Home></Home>
-      <Profile></Profile>
+       //<Menu></Menu>
+      //<Home></Home>
+       <Profile></Profile>
       //<Setting></Setting>
+      //<Search></Search>
+      //<Multicheck></Multicheck>
    );
 }
 const styles = StyleSheet.create({
