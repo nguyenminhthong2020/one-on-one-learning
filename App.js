@@ -31,7 +31,7 @@ const App = () => {
    return (
        //<Menu></Menu>
       //<Home></Home>
-       <Profile></Profile>
+      <Profile></Profile>
       //<Setting></Setting>
       //<Search></Search>
       //<Multicheck></Multicheck>
