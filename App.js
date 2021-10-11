@@ -26,12 +26,13 @@ import Menu from './src/components/Main/Menu/Menu';
 import Profile from './src/components/AccountManagement/Profile/Profile';
 import Setting from './src/components/AccountManagement/Setting/Setting';
 import Search from './src/components/Main/Tutor/Search/Search';
+//import {Tag, TagActive, WelcomeButton} from './src/components/_common/FlexibleButton/FlexibleButton';
 
 const App = () => {
    return (
        //<Menu></Menu>
       //<Home></Home>
-      <Profile></Profile>
+      //<Profile></Profile>
       //<Setting></Setting>
       //<Search></Search>
       //<Multicheck></Multicheck>
