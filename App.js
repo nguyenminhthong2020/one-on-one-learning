@@ -27,11 +27,13 @@ import Profile from './src/components/AccountManagement/Profile/Profile';
 import Setting from './src/components/AccountManagement/Setting/Setting';
 import Search from './src/components/Main/Tutor/Search/Search';
 //import {Tag, TagActive, WelcomeButton} from './src/components/_common/FlexibleButton/FlexibleButton';
+import ListMessage from './src/components/Main/Message/ListMessage';
 
 const App = () => {
    return (
        //<Menu></Menu>
-      //<Home></Home>
+      // <Home></Home>
+      <ListMessage/>
       //<Profile></Profile>
       //<Setting></Setting>
       //<Search></Search>

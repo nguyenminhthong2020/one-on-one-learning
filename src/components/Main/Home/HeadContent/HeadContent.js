@@ -8,7 +8,7 @@ import {Text, View, Alert, StyleSheet, TouchableOpacity} from 'react-native';
 // import {SocialIcon} from 'react-native-elements';
 
   const HeadContent = (props) => {
-    return props.state ? (
+    return props.state === true ? (
       <View style={styles.headContent}>
         <View style={{marginBottom: 10, marginTop: 10,}}>
           <Text style={{fontSize: 20, color: 'white'}}>
@@ -31,15 +31,15 @@ import {Text, View, Alert, StyleSheet, TouchableOpacity} from 'react-native';
       </View>
     ) : (
       <View style={styles.headContent}>
-        <View style={{marginBottom: 10, marginTop: 10,}}>
+        <View style={{marginBottom: 10, marginTop: 30,}}>
           <Text style={{fontSize: 20, color: 'white'}}>Welcome to LetTutor</Text>
         </View>
-        <View style={{marginBottom: 10}}>
+        {/* <View style={{marginBottom: 10}}>
           <Text style={{fontSize: 18, color: 'white'}}>
             {`You have no upcoming lesson,\n  please click below to book`}
           </Text>
-        </View>
-        <View style={{paddingHorizontal:10, paddingVertical:8, borderColor: 'white', marginBottom: 25, borderRadius: 20, borderWidth: 1, backgroundColor: 'white'}}>
+        </View> */}
+        <View style={{paddingHorizontal:10, paddingVertical:8, borderColor: 'white', marginBottom: 45, borderRadius: 20, borderWidth: 1, backgroundColor: 'white'}}>
           <TouchableOpacity>
             <Text style={{fontSize: 18, color: MAIN_COLOR,}}>
               Book a lesson
