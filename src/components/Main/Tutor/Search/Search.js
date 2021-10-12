@@ -17,7 +17,6 @@ import CountryPicker from 'react-native-country-picker-modal';
 import TutorItem from '../../common/TutorItem/TutorItem';
 //const TutorItem = React.lazy(()=>{'../../common/TutorItem/TutorItem'});
 
-
 const Search = () => {
   const array = [
     {
@@ -159,69 +158,69 @@ const Search = () => {
       like: false,
       description: `Hi, I am teacher Nhi. I have been teaching English for 2 years. I used to study abroad in Sydney for 7 years. During my time as an overseas student, I had spoken with many people from diverse cultural backgrounds; therefore, I have strong listening and speaking skills. I love teaching English and I will devote to helping you improve your English skills if you book my class. I am also patient and understanding because I know for many people, English is a tough language to master. In my class, I will help you correct your pronunciation and deliver the lessons in a way that is easy for you to understand. If you book my class, you will have many chances to practice your speaking skills and also improve your pronunciation and grammatical knowledge. Besides that, if you need me to, I will share my personal tips to study English more effectively with you and show you the importance of having fun and practice while learning English. As an English teacher, I constantly update my English knowledge to better serve my career and students.`,
     },
-    // {
-    //   id: 9,
-    //   name: 'April Corpuz',
-    //   uri: 'https://api.app.lettutor.com/avatar/86248137-6f7d-4cf5-ad2e-34da42722b28avatar1628058042246.jpg',
-    //   startingValue: 4.7,
-    //   arrTitle: [
-    //     'English',
-    //     'Vietnamese',
-    //     'Korean',
-    //     'French',
-    //     'Spanish',
-    //     'Mandarin',
-    //   ],
-    //   like: false,
-    //   description: `Hi, I am teacher Nhi. I have been teaching English for 2 years. I used to study abroad in Sydney for 7 years. During my time as an overseas student, I had spoken with many people from diverse cultural backgrounds; therefore, I have strong listening and speaking skills. I love teaching English and I will devote to helping you improve your English skills if you book my class. I am also patient and understanding because I know for many people, English is a tough language to master. In my class, I will help you correct your pronunciation and deliver the lessons in a way that is easy for you to understand. If you book my class, you will have many chances to practice your speaking skills and also improve your pronunciation and grammatical knowledge. Besides that, if you need me to, I will share my personal tips to study English more effectively with you and show you the importance of having fun and practice while learning English. As an English teacher, I constantly update my English knowledge to better serve my career and students.`,
-    // },
-    // {
-    //   id: 10,
-    //   name: 'April Corpuz',
-    //   uri: 'https://api.app.lettutor.com/avatar/86248137-6f7d-4cf5-ad2e-34da42722b28avatar1628058042246.jpg',
-    //   startingValue: 4.7,
-    //   arrTitle: [
-    //     'English',
-    //     'Vietnamese',
-    //     'Korean',
-    //     'French',
-    //     'Spanish',
-    //     'Mandarin',
-    //   ],
-    //   like: false,
-    //   description: `Hi, I am teacher Nhi. I have been teaching English for 2 years. I used to study abroad in Sydney for 7 years. During my time as an overseas student, I had spoken with many people from diverse cultural backgrounds; therefore, I have strong listening and speaking skills. I love teaching English and I will devote to helping you improve your English skills if you book my class. I am also patient and understanding because I know for many people, English is a tough language to master. In my class, I will help you correct your pronunciation and deliver the lessons in a way that is easy for you to understand. If you book my class, you will have many chances to practice your speaking skills and also improve your pronunciation and grammatical knowledge. Besides that, if you need me to, I will share my personal tips to study English more effectively with you and show you the importance of having fun and practice while learning English. As an English teacher, I constantly update my English knowledge to better serve my career and students.`,
-    // },
-    // {
-    //   id: 11,
-    //   name: 'Ralf Bippert',
-    //   uri: 'https://api.app.lettutor.com/avatar/49f9eafe-fe94-4eb4-83f9-bbe4ee5f6e24avatar1630907827384.jpg',
-    //   startingValue: 4,
-    //   arrTitle: ['EnglishforKids', 'ConversationalEnglish'],
-    //   like: false,
-    //   description: `Hello there, My name is Ralf I am a well-rounded teacher good at teaching communication classes as well as teaching younger kids. If you are a beginner or intermediate student I am here to help you learn. Hope to see you soon.`,
-    // },
+    {
+      id: 9,
+      name: 'April Corpuz',
+      uri: 'https://api.app.lettutor.com/avatar/86248137-6f7d-4cf5-ad2e-34da42722b28avatar1628058042246.jpg',
+      startingValue: 4.7,
+      arrTitle: [
+        'English',
+        'Vietnamese',
+        'Korean',
+        'French',
+        'Spanish',
+        'Mandarin',
+      ],
+      like: false,
+      description: `Hi, I am teacher Nhi. I have been teaching English for 2 years. I used to study abroad in Sydney for 7 years. During my time as an overseas student, I had spoken with many people from diverse cultural backgrounds; therefore, I have strong listening and speaking skills. I love teaching English and I will devote to helping you improve your English skills if you book my class. I am also patient and understanding because I know for many people, English is a tough language to master. In my class, I will help you correct your pronunciation and deliver the lessons in a way that is easy for you to understand. If you book my class, you will have many chances to practice your speaking skills and also improve your pronunciation and grammatical knowledge. Besides that, if you need me to, I will share my personal tips to study English more effectively with you and show you the importance of having fun and practice while learning English. As an English teacher, I constantly update my English knowledge to better serve my career and students.`,
+    },
+    {
+      id: 10,
+      name: 'April Corpuz',
+      uri: 'https://api.app.lettutor.com/avatar/86248137-6f7d-4cf5-ad2e-34da42722b28avatar1628058042246.jpg',
+      startingValue: 4.7,
+      arrTitle: [
+        'English',
+        'Vietnamese',
+        'Korean',
+        'French',
+        'Spanish',
+        'Mandarin',
+      ],
+      like: false,
+      description: `Hi, I am teacher Nhi. I have been teaching English for 2 years. I used to study abroad in Sydney for 7 years. During my time as an overseas student, I had spoken with many people from diverse cultural backgrounds; therefore, I have strong listening and speaking skills. I love teaching English and I will devote to helping you improve your English skills if you book my class. I am also patient and understanding because I know for many people, English is a tough language to master. In my class, I will help you correct your pronunciation and deliver the lessons in a way that is easy for you to understand. If you book my class, you will have many chances to practice your speaking skills and also improve your pronunciation and grammatical knowledge. Besides that, if you need me to, I will share my personal tips to study English more effectively with you and show you the importance of having fun and practice while learning English. As an English teacher, I constantly update my English knowledge to better serve my career and students.`,
+    },
+    {
+      id: 11,
+      name: 'Ralf Bippert',
+      uri: 'https://api.app.lettutor.com/avatar/49f9eafe-fe94-4eb4-83f9-bbe4ee5f6e24avatar1630907827384.jpg',
+      startingValue: 4,
+      arrTitle: ['EnglishforKids', 'ConversationalEnglish'],
+      like: false,
+      description: `Hello there, My name is Ralf I am a well-rounded teacher good at teaching communication classes as well as teaching younger kids. If you are a beginner or intermediate student I am here to help you learn. Hope to see you soon.`,
+    },
   ];
 
   const [country, setCountry] = useState({name: 'Vietnam', cca2: 'VN'});
 
   const onPressTutor = index => alert('link to tutor detail index ' + index);
 
-  const renderTest = (array) => {
+  const renderTest = array => {
     return (
       <View>
         <FlatList
-        style={{marginBottom: 150, marginTop: 10}}
-        //ListHeaderComponentStyle={{marginBottom: -20}}
-        showsVerticalScrollIndicator={true}
-        initialNumToRender={3}
-        data={array}
-        renderItem={i => (
-          // <Suspense fallback={<View></View>} key={i.index}>
-          //   <TutorItem onPress={() => onPressTutor(i.index)} tutor={i.item} />
-          // </Suspense>
-          <TutorItem onPress={() => onPressTutor(i.index)} tutor={i.item} />
-        )}
-      />
+          style={{marginBottom: 150, marginTop: 10}}
+          //ListHeaderComponentStyle={{marginBottom: -20}}
+          showsVerticalScrollIndicator={true}
+          initialNumToRender={3}
+          data={array}
+          renderItem={i => (
+            // <Suspense fallback={<View></View>} key={i.index}>
+            //   <TutorItem onPress={() => onPressTutor(i.index)} tutor={i.item} />
+            // </Suspense>
+            <TutorItem onPress={() => onPressTutor(i.index)} tutor={i.item} />
+          )}
+        />
       </View>
     );
   };
@@ -245,7 +244,9 @@ const Search = () => {
           marginRight: 0,
           marginTop: 10,
         }}>
-        <Text style={{fontSize: 17, color: MAIN_COLOR, fontWeight: 'bold'}}>*Tutor' name:  </Text>
+        <Text style={{fontSize: 17, color: MAIN_COLOR, fontWeight: 'bold'}}>
+          *Name:{'   '}
+        </Text>
         <TextInput
           style={{
             borderWidth: 1,
@@ -266,11 +267,12 @@ const Search = () => {
           marginBottom: 15,
         }}>
         <Text style={{fontSize: 17, color: MAIN_COLOR, fontWeight: 'bold'}}>
-          *Click to select country: {' '}
+          *Select country:{'  '}
         </Text>
         <CountryPicker
           withFlag
           withFilter
+          withCountryNameButton
           countryCode={country.cca2}
           onSelect={country =>
             //console.log("\nĐây nữa nè: " + JSON.stringify(country))

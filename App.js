@@ -14,7 +14,7 @@ import {
   // StatusBar,
   StyleSheet,
   ActivityIndicator,
-  // Text,
+  Text,
   // useColorScheme,
   View,
 } from 'react-native';
@@ -22,22 +22,41 @@ import {
 // import Register from './src/components/Authentication/Register/Register';
 // import ForgetPassword from './src/components/Authentication/ForgetPassword/ForgetPassword';
 // import NotifyForgetPassword from './src/components/Authentication/ForgetPassword/NotifyForgetPassword';
-// import Home from './src/components/Main/Home/Home';
+//import Home from './src/components/Main/Home/Home';
+const Home = React.lazy(() => import('./src/components/Main/Home/Home'));
+import {MAIN_COLOR} from './src/globals/constant';
 // import Menu from './src/components/Main/Menu/Menu';
-// import Profile from './src/components/AccountManagement/Profile/Profile';
+//import Profile from './src/components/AccountManagement/Profile/Profile';
 // import Setting from './src/components/AccountManagement/Setting/Setting';
-import Search from './src/components/Main/Tutor/Search/Search';
+//import Search from './src/components/Main/Tutor/Search/Search';
+const Search = React.lazy(() =>
+  import('./src/components/Main/Tutor/Search/Search'),
+);
 ////import {Tag, TagActive, WelcomeButton} from './src/components/_common/FlexibleButton/FlexibleButton';
 //import ListMessage from './src/components/Main/Message/ListMessage';
 
 const App = () => {
   return (
     //<Menu></Menu>
-    //<Home></Home>
+    // <Suspense
+    //   fallback={
+    //     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    //       <Text style={{fontSize: 45, color: MAIN_COLOR}}>LetTutor</Text>
+    //     </View>
+    //   }>
+    //   <Home></Home>
+    // </Suspense>
     // <ListMessage/>
     //<Profile></Profile>
     //<Setting></Setting>
-    <Search></Search>
+    <Suspense
+      fallback={
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <ActivityIndicator size="large" color="#00ff00" />
+        </View>
+      }>
+      <Search />
+    </Suspense>
     //<Multicheck></Multicheck>
   );
 };

@@ -8,20 +8,21 @@ import {
 import {
   Text,
   View,
-  Alert,
+  Image,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
+  //ScrollView,
 } from 'react-native';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {TagActiveList} from '../../../_common/FlexibleButtonList/FlexibleButtonList';
+//import {TagActiveList} from '../../../_common/FlexibleButtonList/FlexibleButtonList';
+import ListTags from '../../../_common/ListTags/ListTags';
 
-import {Rating} from 'react-native-ratings';
+//import {Rating} from 'react-native-ratings';
 import FastImage from 'react-native-fast-image';
 
-const TutorItem = (props) => {
-    /*
+const TutorItem = props => {
+  /*
   const tutor = {
       id: 0,
       name: 'April Corpuz',
@@ -42,41 +43,54 @@ const TutorItem = (props) => {
   //const [score, setScore] = useState(5);
   const [like, setLike] = useState(false);
 
-    return (
+  return (
     <TouchableOpacity onPress={props.onPress} style={{marginBottom: 10}}>
       <View style={styles.shadowProp}>
         <View>
-        {
-               like === false ? (<AntDesign
-                  name={'heart'}
-                  size={22}
-                  color={'gray'}
-                  style={{textAlign: 'right', marginBottom: -15, marginRight: 10}}
-                  onPress={() => {setLike(!like)}}
-                />)
-                : (<AntDesign
-                  name={'heart'}
-                  size={22}
-                  color={'rgb(240, 72, 72)'}
-                  style={{textAlign: 'right', marginBottom: -15, marginRight: 10}}
-                  onPress={() => {setLike(!like)}}
-                />)
-             }
+          {like === false ? (
+            <AntDesign
+              name={'heart'}
+              size={22}
+              color={'gray'}
+              style={{textAlign: 'right', marginBottom: -15, marginRight: 10}}
+              onPress={() => {
+                setLike(!like);
+              }}
+            />
+          ) : (
+            <AntDesign
+              name={'heart'}
+              size={22}
+              color={'rgb(240, 72, 72)'}
+              style={{textAlign: 'right', marginBottom: -15, marginRight: 10}}
+              onPress={() => {
+                setLike(!like);
+              }}
+            />
+          )}
         </View>
         <View style={{flexDirection: 'row', marginBottom: 5, marginTop: 8}}>
           <View>
-          <FastImage
-            style={{width: 60, height: 60, borderRadius: 30}}
-            resizeMode={FastImage.resizeMode.cover} 
-            source={{
-              uri: props.tutor.uri,
-              priority: FastImage.priority.normal,
-            }}
-          />
+            <FastImage
+              style={{width: 60, height: 60, borderRadius: 30}}
+              resizeMode={FastImage.resizeMode.cover}
+              source={{
+                uri: props.tutor.uri,
+                priority: FastImage.priority.normal,
+              }}
+            />
           </View>
           <View style={{justifyContent: 'center'}}>
-            <Text style={{fontSize: 18, color: 'black', marginLeft: 6, fontWeight:'bold'}}>{props.tutor.name}</Text>
-            <Rating 
+            <Text
+              style={{
+                fontSize: 18,
+                color: 'black',
+                marginLeft: 6,
+                fontWeight: 'bold',
+              }}>
+              {props.tutor.name}
+            </Text>
+            {/* <Rating 
                 style={{marginLeft: 6}}
                 ratingCount={5}
                 imageSize={15}
@@ -86,7 +100,15 @@ const TutorItem = (props) => {
                 fractions={10}
                 startingValue={props.tutor.startingValue}
                 isDisabled={true}
-              />
+              /> */}
+            <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 1, marginLeft: 20}}>
+            <Text style={{color: 'orange'}}>{props.tutor.startingValue}/5 </Text>
+            <Image 
+              //style={{marginLeft: 30}}
+              //resizeMode={FastImage.resizeMode.cover}
+              source={require('../../../../../assets/rating.png')}
+            />
+            </View>
           </View>
           {/* <View style={{justifyContent: 'flex-start', marginLeft: 30, marginTop: -13}}>
              {
@@ -109,16 +131,17 @@ const TutorItem = (props) => {
              }
           </View> */}
         </View>
-        <TagActiveList arrTitle={props.tutor.arrTitle} />
-        <Text numberOfLines={NUM_OF_LINES} style={{fontSize: 15, color: 'black', marginTop: 5}}>
+        {/* <TagActiveList arrTitle={props.tutor.arrTitle} /> */}
+         <ListTags arr={props.tutor.arrTitle}/>
+        <Text
+          numberOfLines={NUM_OF_LINES}
+          style={{fontSize: 15, color: 'black', marginTop: 5}}>
           {props.tutor.description}
         </Text>
       </View>
-      </TouchableOpacity>
-    );
-  };
-
-
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -127,15 +150,16 @@ const styles = StyleSheet.create({
   },
   shadowProp: {
     //borderWidth: 1,
+    
     backgroundColor: 'white',
-    marginHorizontal: 10, 
-    marginVertical:4, 
-    padding: 14, 
+    marginHorizontal: 10,
+    marginVertical: 4,
+    padding: 14,
     borderRadius: 8,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.25,
-    shadowRadius:  3.84,
+    shadowRadius: 3.84,
     elevation: 5, // 5: càng lớn càng nhạt
   },
 });

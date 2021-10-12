@@ -240,6 +240,7 @@ const Profile = () => {
               <CountryPicker
                 withFlag
                 withFilter
+                withCountryNameButton
                 countryCode={country.cca2}
                 onSelect={country =>
                   //console.log("\nĐây nữa nè: " + JSON.stringify(country))
