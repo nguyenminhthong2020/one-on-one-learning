@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'rgb(100, 100, 100)',
-    fontSize: 15,
+    fontSize: 14,
   },
 });
 

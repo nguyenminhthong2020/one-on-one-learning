@@ -32,8 +32,8 @@ import ListMessage from './src/components/Main/Message/ListMessage';
 const App = () => {
    return (
        //<Menu></Menu>
-      // <Home></Home>
-      <ListMessage/>
+       <Home></Home>
+      // <ListMessage/>
       //<Profile></Profile>
       //<Setting></Setting>
       //<Search></Search>

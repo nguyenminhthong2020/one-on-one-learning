@@ -11,9 +11,9 @@ const Header = () => {
         <View>
           <Text style={styles.leftHeader}>LetTutor</Text>
         </View>
-        <View>
+        <View style={{borderWidth: 1.5, borderRadius: 5, width: 35, height: 35, backgroundColor: 'red', borderColor: 'red'}}>
           <TouchableOpacity>
-            <Icon name="menu" size={30} color="black" />
+            <Icon name="menu" size={30} color='white' />
           </TouchableOpacity>
         </View>
       </View>
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
   leftHeader: {
     color: MAIN_COLOR,
-    fontSize: 27,
+    fontSize: 28,
     fontWeight: 'bold',
   },
   rightHeader: {
