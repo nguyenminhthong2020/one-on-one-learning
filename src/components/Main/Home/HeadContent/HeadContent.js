@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React, {useState} from 'react';
-import {MAIN_COLOR, SECOND_COLOR} from '../../../../globals/constant';
-import {Text, View, Alert, StyleSheet, TouchableOpacity} from 'react-native';
+import {MAIN_COLOR} from '../../../../globals/constant';
+import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 // import {useForm, Controller} from 'react-hook-form';
 // import Input from '../../../components/_common/Input/Input';
 // import Button from '../../../components/_common/Button/Button';

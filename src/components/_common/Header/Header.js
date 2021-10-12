@@ -1,8 +1,15 @@
 /* eslint-disable */
-import React from 'react';
+import React, {Suspense} from 'react';
 import {MAIN_COLOR} from '../../../globals/constant';
-import {Text, View, Alert, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+//const Icon = React.lazy(() => import('react-native-vector-icons/Ionicons'));
 
 const Header = () => {
   return (
@@ -11,9 +18,20 @@ const Header = () => {
         <View>
           <Text style={styles.leftHeader}>LetTutor</Text>
         </View>
-        <View style={{borderWidth: 1.5, borderRadius: 5, width: 35, height: 35, backgroundColor: 'red', borderColor: 'red'}}>
+        <View
+          style={{
+            borderWidth: 1.5,
+            borderRadius: 5,
+            width: 35,
+            height: 35,
+            backgroundColor: 'red',
+            borderColor: 'red',
+          }}>
           <TouchableOpacity>
-            <Icon name="menu" size={30} color='white' />
+            {/* <Suspense
+              fallback={<ActivityIndicator size="small" color="#0000ff" />}> */}
+              <Icon name="menu" size={30} color="white" />
+            {/* </Suspense> */}
           </TouchableOpacity>
         </View>
       </View>
@@ -47,7 +65,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   rightHeader: {
-     fontSize: 22,
+    fontSize: 22,
   },
 });
 

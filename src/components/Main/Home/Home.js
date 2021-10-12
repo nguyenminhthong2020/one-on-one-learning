@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, {useState} from 'react';
+import React, {Suspense, useState} from 'react';
 import {
   MAIN_COLOR,
   SECOND_COLOR,
@@ -8,7 +8,8 @@ import {
 import {
   Text,
   View,
-  Alert,
+  //Alert,
+  ActivityIndicator,
   StyleSheet,
   TouchableOpacity,
   FlatList,
@@ -20,11 +21,16 @@ import {
 // import {SocialIcon} from 'react-native-elements';
 
 //import AntDesign from 'react-native-vector-icons/AntDesign';
-import Header from '../../_common/Header/Header';
-import HeadContent from './HeadContent/HeadContent';
+//import Header from '../../_common/Header/Header';
+const Header = React.lazy(() => import('../../_common/Header/Header'));
+//import HeadContent from './HeadContent/HeadContent';
+const HeadContent = React.lazy(() => import('./HeadContent/HeadContent'));
 //import {TagActiveList} from '../../_common/FlexibleButtonList/FlexibleButtonList';
-import {Tag, TagActive} from '../../_common/FlexibleButton/FlexibleButton';
-import TutorItem from '../common/TutorItem/TutorItem';
+//import {Tag, TagActive} from '../../_common/FlexibleButton/FlexibleButton';
+import MyTag from '../../_common/FlexibleButton/TagFlexibleButton';
+//import TutorItem from '../common/TutorItem/TutorItem';
+
+const TutorItem = React.lazy(() => import('../common/TutorItem/TutorItem'));
 
 //import {Rating} from 'react-native-ratings';
 //import { Rating } from 'react-native-elements';  // = cái ở dưới
@@ -46,7 +52,6 @@ const Home = () => {
     'TOEFL',
     'TOEIC',
   ];
-
   const array = [
     {
       id: 0,
@@ -187,65 +192,62 @@ const Home = () => {
       like: false,
       description: `Hi, I am teacher Nhi. I have been teaching English for 2 years. I used to study abroad in Sydney for 7 years. During my time as an overseas student, I had spoken with many people from diverse cultural backgrounds; therefore, I have strong listening and speaking skills. I love teaching English and I will devote to helping you improve your English skills if you book my class. I am also patient and understanding because I know for many people, English is a tough language to master. In my class, I will help you correct your pronunciation and deliver the lessons in a way that is easy for you to understand. If you book my class, you will have many chances to practice your speaking skills and also improve your pronunciation and grammatical knowledge. Besides that, if you need me to, I will share my personal tips to study English more effectively with you and show you the importance of having fun and practice while learning English. As an English teacher, I constantly update my English knowledge to better serve my career and students.`,
     },
-    {
-      id: 9,
-      name: 'April Corpuz',
-      uri: 'https://api.app.lettutor.com/avatar/86248137-6f7d-4cf5-ad2e-34da42722b28avatar1628058042246.jpg',
-      startingValue: 4.7,
-      arrTitle: [
-        'English',
-        'Vietnamese',
-        'Korean',
-        'French',
-        'Spanish',
-        'Mandarin',
-      ],
-      like: false,
-      description: `Hi, I am teacher Nhi. I have been teaching English for 2 years. I used to study abroad in Sydney for 7 years. During my time as an overseas student, I had spoken with many people from diverse cultural backgrounds; therefore, I have strong listening and speaking skills. I love teaching English and I will devote to helping you improve your English skills if you book my class. I am also patient and understanding because I know for many people, English is a tough language to master. In my class, I will help you correct your pronunciation and deliver the lessons in a way that is easy for you to understand. If you book my class, you will have many chances to practice your speaking skills and also improve your pronunciation and grammatical knowledge. Besides that, if you need me to, I will share my personal tips to study English more effectively with you and show you the importance of having fun and practice while learning English. As an English teacher, I constantly update my English knowledge to better serve my career and students.`,
-    },
-    {
-      id: 10,
-      name: 'April Corpuz',
-      uri: 'https://api.app.lettutor.com/avatar/86248137-6f7d-4cf5-ad2e-34da42722b28avatar1628058042246.jpg',
-      startingValue: 4.7,
-      arrTitle: [
-        'English',
-        'Vietnamese',
-        'Korean',
-        'French',
-        'Spanish',
-        'Mandarin',
-      ],
-      like: false,
-      description: `Hi, I am teacher Nhi. I have been teaching English for 2 years. I used to study abroad in Sydney for 7 years. During my time as an overseas student, I had spoken with many people from diverse cultural backgrounds; therefore, I have strong listening and speaking skills. I love teaching English and I will devote to helping you improve your English skills if you book my class. I am also patient and understanding because I know for many people, English is a tough language to master. In my class, I will help you correct your pronunciation and deliver the lessons in a way that is easy for you to understand. If you book my class, you will have many chances to practice your speaking skills and also improve your pronunciation and grammatical knowledge. Besides that, if you need me to, I will share my personal tips to study English more effectively with you and show you the importance of having fun and practice while learning English. As an English teacher, I constantly update my English knowledge to better serve my career and students.`,
-    },
-    {
-      id: 11,
-      name: 'April Corpuz',
-      uri: 'https://api.app.lettutor.com/avatar/86248137-6f7d-4cf5-ad2e-34da42722b28avatar1628058042246.jpg',
-      startingValue: 4.7,
-      arrTitle: [
-        'English',
-        'Vietnamese',
-        'Korean',
-        'French',
-        'Spanish',
-        'Mandarin',
-      ],
-      like: false,
-      description: `Hi, I am teacher Nhi. I have been teaching English for 2 years. I used to study abroad in Sydney for 7 years. During my time as an overseas student, I had spoken with many people from diverse cultural backgrounds; therefore, I have strong listening and speaking skills. I love teaching English and I will devote to helping you improve your English skills if you book my class. I am also patient and understanding because I know for many people, English is a tough language to master. In my class, I will help you correct your pronunciation and deliver the lessons in a way that is easy for you to understand. If you book my class, you will have many chances to practice your speaking skills and also improve your pronunciation and grammatical knowledge. Besides that, if you need me to, I will share my personal tips to study English more effectively with you and show you the importance of having fun and practice while learning English. As an English teacher, I constantly update my English knowledge to better serve my career and students.`,
-    },
+    // {
+    //   id: 9,
+    //   name: 'April Corpuz',
+    //   uri: 'https://api.app.lettutor.com/avatar/86248137-6f7d-4cf5-ad2e-34da42722b28avatar1628058042246.jpg',
+    //   startingValue: 4.7,
+    //   arrTitle: [
+    //     'English',
+    //     'Vietnamese',
+    //     'Korean',
+    //     'French',
+    //     'Spanish',
+    //     'Mandarin',
+    //   ],
+    //   like: false,
+    //   description: `Hi, I am teacher Nhi. I have been teaching English for 2 years. I used to study abroad in Sydney for 7 years. During my time as an overseas student, I had spoken with many people from diverse cultural backgrounds; therefore, I have strong listening and speaking skills. I love teaching English and I will devote to helping you improve your English skills if you book my class. I am also patient and understanding because I know for many people, English is a tough language to master. In my class, I will help you correct your pronunciation and deliver the lessons in a way that is easy for you to understand. If you book my class, you will have many chances to practice your speaking skills and also improve your pronunciation and grammatical knowledge. Besides that, if you need me to, I will share my personal tips to study English more effectively with you and show you the importance of having fun and practice while learning English. As an English teacher, I constantly update my English knowledge to better serve my career and students.`,
+    // },
+    // {
+    //   id: 10,
+    //   name: 'April Corpuz',
+    //   uri: 'https://api.app.lettutor.com/avatar/86248137-6f7d-4cf5-ad2e-34da42722b28avatar1628058042246.jpg',
+    //   startingValue: 4.7,
+    //   arrTitle: [
+    //     'English',
+    //     'Vietnamese',
+    //     'Korean',
+    //     'French',
+    //     'Spanish',
+    //     'Mandarin',
+    //   ],
+    //   like: false,
+    //   description: `Hi, I am teacher Nhi. I have been teaching English for 2 years. I used to study abroad in Sydney for 7 years. During my time as an overseas student, I had spoken with many people from diverse cultural backgrounds; therefore, I have strong listening and speaking skills. I love teaching English and I will devote to helping you improve your English skills if you book my class. I am also patient and understanding because I know for many people, English is a tough language to master. In my class, I will help you correct your pronunciation and deliver the lessons in a way that is easy for you to understand. If you book my class, you will have many chances to practice your speaking skills and also improve your pronunciation and grammatical knowledge. Besides that, if you need me to, I will share my personal tips to study English more effectively with you and show you the importance of having fun and practice while learning English. As an English teacher, I constantly update my English knowledge to better serve my career and students.`,
+    // },
+    // {
+    //   id: 11,
+    //   name: 'Ralf Bippert',
+    //   uri: 'https://api.app.lettutor.com/avatar/49f9eafe-fe94-4eb4-83f9-bbe4ee5f6e24avatar1630907827384.jpg',
+    //   startingValue: 4,
+    //   arrTitle: ['EnglishforKids', 'ConversationalEnglish'],
+    //   like: false,
+    //   description: `Hello there, My name is Ralf I am a well-rounded teacher good at teaching communication classes as well as teaching younger kids. If you are a beginner or intermediate student I am here to help you learn. Hope to see you soon.`,
+    // },
   ];
 
   const onPressTutor = index => alert('link to tutor detail index ' + index);
 
   const renderTestScrollView = () => {
     return array.map((tutor, index) => (
-      <TutorItem
-        onPress={() => onPressTutor(index)}
-        key={index}
-        tutor={tutor}
-      />
+      <Suspense
+        fallback={
+          <View style={{alignItems: 'center'}}>
+            <ActivityIndicator size="large" color="#00ff00" />
+          </View>
+        }
+        key={index}>
+        <TutorItem onPress={() => onPressTutor(index)} tutor={tutor} />
+      </Suspense>
     ));
   };
 
@@ -256,25 +258,25 @@ const Home = () => {
           Filter Tutors:{' '}
         </Text>
         <View style={{flexDirection: 'row', marginTop: 5}}>
-          <Tag title={'All'} onPress={() => alert('all')} />
-          <Tag
+          <MyTag title={'All'} onPress={() => alert('all')} />
+          <MyTag
             title={'ConversationalEnglish'}
             onPress={() => alert('filter')}
           />
-          <Tag title={'BusinessEnglish'} onPress={() => alert('filter')} />
+          <MyTag title={'BusinessEnglish'} onPress={() => alert('filter')} />
         </View>
         <View style={{flexDirection: 'row', marginTop: 2}}>
-          <Tag title={'EnglishforKids'} onPress={() => alert('filter')} />
-          <Tag title={'STARTERS'} onPress={() => alert('filter')} />
-          <Tag title={'FLYERS'} onPress={() => alert('filter')} />
-          <Tag title={'KET'} onPress={() => alert('filter')} />
+          <MyTag title={'EnglishforKids'} onPress={() => alert('filter')} />
+          <MyTag title={'STARTERS'} onPress={() => alert('filter')} />
+          <MyTag title={'FLYERS'} onPress={() => alert('filter')} />
+          <MyTag title={'KET'} onPress={() => alert('filter')} />
         </View>
         <View style={{flexDirection: 'row', marginTop: 2}}>
-          <Tag title={'MOVERS'} onPress={() => alert('filter')} />
-          <Tag title={'PET'} onPress={() => alert('filter')} />
-          <Tag title={'IELTS'} onPress={() => alert('filter')} />
-          <Tag title={'TOEFL'} onPress={() => alert('filter')} />
-          <Tag title={'TOEIC'} onPress={() => alert('filter')} />
+          <MyTag title={'MOVERS'} onPress={() => alert('filter')} />
+          <MyTag title={'PET'} onPress={() => alert('filter')} />
+          <MyTag title={'IELTS'} onPress={() => alert('filter')} />
+          <MyTag title={'TOEFL'} onPress={() => alert('filter')} />
+          <MyTag title={'TOEIC'} onPress={() => alert('filter')} />
         </View>
         {/* <View style={{flexDirection: 'row'}}>
            </View> */}
@@ -284,11 +286,53 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      <Header></Header>
+      <Suspense fallback={<View></View>}>
+        <Header></Header>
+      </Suspense>
+      {/* <Suspense fallback={<View></View>}><HeadContent state={state} setstate={setstate}></HeadContent></Suspense> */}
+
+      {/* <View style={{marginHorizontal: 18, marginTop: 20, marginBottom: 3}}>
+          {renderFilterTag()}
+      </View> */}
+      {/* <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginHorizontal: 18,
+          marginTop: 30,
+          marginBottom: 3,
+        }}>
+        <Text style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
+          Recommend Tutors
+        </Text>
+        <TouchableOpacity onPress={() => alert('Search Tutor')}>
+          <Text style={{color: MAIN_COLOR, fontSize: 15}}>{`See All >`}</Text>
+        </TouchableOpacity>
+      </View> */}
+      {/* <FlatList
+        showsVerticalScrollIndicator={false}
+        initialNumToRender={3}
+        data={array}
+        renderItem={i => (
+          <Suspense
+            fallback={
+              <View></View>
+              // <View style={{alignItems: 'center'}}>
+              //   <ActivityIndicator size="large" color="#00ff00" />
+              // </View>
+            }
+            key={i.index}>
+            <TutorItem onPress={() => onPressTutor(i.index)} tutor={i.item} />
+          </Suspense>
+        )}
+      /> */}
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{marginBottom: 25}}>
-        <HeadContent state={state} setstate={setstate}></HeadContent>
+        <Suspense fallback={<View></View>}>
+          <HeadContent state={state} setstate={setstate}></HeadContent>
+        </Suspense>
 
         <View style={{marginHorizontal: 18, marginTop: 20, marginBottom: 3}}>
           {renderFilterTag()}
