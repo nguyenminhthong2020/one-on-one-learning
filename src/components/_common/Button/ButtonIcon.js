@@ -8,8 +8,8 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 export default function ButtonIcon(props) {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={props.handleOnPress}>
-        <View style={styles.rowbtn}>
+      <View style={styles.rowbtn}>
+        <TouchableOpacity style={styles.button} onPress={props.handleOnPress}>
           {props.type === 'AntDesign' ? (
             <AntDesign
               name={props.name}
@@ -26,30 +26,38 @@ export default function ButtonIcon(props) {
             />
           )}
           <Text style={styles.text}>{props.title}</Text>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   button: {
+    // borderRadius: 10,
+    // borderWidth: 2,
+    // paddingVertical: 5,
+    width: '100%',
+    justifyContent: 'center'
+  },
+  rowbtn: {
+    flexDirection: 'row',
     borderRadius: 10,
     borderWidth: 2,
     paddingVertical: 5,
-  },
-  rowbtn: {
-     flexDirection: 'row',
+    backgroundColor: 'white'
   },
   container: {
     left: '10%',
     width: '80%',
-    margin: 10,
+    margin: 4,
   },
   text: {
     fontSize: 20,
     // paddingLeft: 15,
     position: 'absolute',
     left: '20%',
+    color: MAIN_COLOR,
+    fontWeight: 'bold'
   },
 });

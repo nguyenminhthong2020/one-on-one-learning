@@ -6,7 +6,7 @@ import {Text, View, Alert, StyleSheet, TouchableOpacity} from 'react-native';
 // import Input from '../../../components/_common/Input/Input';
 // import Button from '../../../components/_common/Button/Button';
 // import {SocialIcon} from 'react-native-elements';
-import Icon from 'react-native-vector-icons/Ionicons';
+//import Icon from 'react-native-vector-icons/Ionicons';
 
 import Header from '../../_common/Header/Header';
 import ButtonIcon from '../../_common/Button/ButtonIcon';
@@ -37,8 +37,9 @@ const styles = StyleSheet.create({
   },
   content: {
       // backgroundColor: SECOND_COLOR,
-      marginTop: 20,
+      marginTop: 0,
       height: '100%',
+      backgroundColor: SECOND_COLOR,
   },
 });
 
