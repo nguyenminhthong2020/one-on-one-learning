@@ -41,7 +41,6 @@ const BecomeTutor = () => {
     formState: {errors},
   } = useForm({mode: 'onBlur'});
 
-
   const [pickerValue, setPickerValue] = useState('English');
   const [whatToLearn, setWhatToLearn] = useState([]);
   const [levelValue, setLevelValue] = useState('Beginner');
@@ -59,7 +58,8 @@ const BecomeTutor = () => {
   // skills (modal)
   const [modalVisible1, setModalVisible1] = useState(false);
   const [arrSkill, setArrSkill] = useState([]);
-  const arrWhatToLearn = [    // skills
+  const arrWhatToLearn = [
+    // skills
     {item: 'EnglishforKids', id: 0},
     {item: 'BusinessEnglish', id: 1},
     {item: 'ConversationalEnglish', id: 2},
@@ -73,7 +73,6 @@ const BecomeTutor = () => {
     {item: 'TOEIC', id: 9},
   ];
   let arrWhatToLearn1 = arrWhatToLearn.map(i => i.item);
-
 
   const onImageLibraryPress = useCallback(() => {
     const options = {
@@ -116,8 +115,6 @@ const BecomeTutor = () => {
     return item => setWhatToLearn(xorBy(whatToLearn, [item], 'id'));
   }
 
-  /*let ArrLanguageChoose = [];*/
-
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -128,17 +125,31 @@ const BecomeTutor = () => {
           }}>
           <ImagePickerAvatar uri={uri} onPress={() => setVisible(true)} />
         </View>
-        <Text style={{fontWeight: 'bold'}}>Basic Info</Text>
-        <Text>Tutoring Name</Text>
+        <Text
+          style={{
+            fontWeight: 'bold',
+            fontSize: 20,
+            margin: 10,
+            color: MAIN_COLOR,
+            marginTop: 35,
+          }}>
+          Basic Info
+        </Text>
+        <Text style={{marginLeft: 25}}>Tutoring Name</Text>
         <Controller
           control={control}
           // rules={{required: true}}
           name="name"
           render={({field: {onChange, onBlur, value}}) => (
-            <View style={styles.container1}>
-              <View style={{marginLeft: 40}}>
+            <View style={[styles.container1, {width: '80%'}]}>
+              <View style={{marginLeft: 0}}>
                 <TextInput
-                  style={{borderWidth: 1, width: 170, height: 40, fontSize: 15}}
+                  style={{
+                    borderWidth: 1,
+                    width: '150%',
+                    height: 40,
+                    fontSize: 15,
+                  }}
                   value={'Nguyễn Minh Thông'}
                   //keyboardType={'numeric'}
                   //placeholder={'Phone number'}
@@ -149,14 +160,14 @@ const BecomeTutor = () => {
             </View>
           )}
         />
-        <Text>I'm from</Text>
+        <Text style={{marginLeft: 25, marginTop: 35}}>I'm from</Text>
         <Controller
           control={control}
           //rules={{required: true}}
           name="location"
           render={({field: {onChange, onBlur, value}}) => (
             <View style={styles.container1}>
-              <View style={{marginLeft: 35}}>
+              <View style={{marginLeft: 0}}>
                 <CountryPicker
                   withFlag
                   withFilter
@@ -170,9 +181,9 @@ const BecomeTutor = () => {
             </View>
           )}
         />
-        <Text>Date of Birth</Text>
+        <Text style={{marginLeft: 25, marginTop: 35}}>Date of Birth</Text>
         <View style={[styles.container1, {marginBottom: 25}]}>
-          <View style={{marginLeft: 35}}>
+          <View style={{marginLeft: 0}}>
             <View
               style={{
                 flexDirection: 'row',
@@ -209,27 +220,41 @@ const BecomeTutor = () => {
             )}
           </View>
         </View>
-
-        <Text style={{fontWeight: 'bold'}}>CV</Text>
-        <Text>Interests</Text>
+        <View
+          style={{
+            borderBottomColor: 'black',
+            borderBottomWidth: 1,
+          }}
+        />
+        <Text
+          style={{
+            fontWeight: 'bold',
+            fontSize: 20,
+            margin: 10,
+            color: MAIN_COLOR,
+            marginTop: 25,
+          }}>
+          CV
+        </Text>
+        <Text style={{marginLeft: 25}}>Interests</Text>
         <Controller
           control={control}
           // rules={{required: true}}
           name="name"
           render={({field: {onChange, onBlur, value}}) => (
-            <View style={styles.container1}>
-              <View style={{marginLeft: 40}}>
+            <View style={[styles.container1, {width: '80%'}]}>
+              <View style={{marginLeft: 0}}>
                 <TextInput
                   style={{
                     borderWidth: 1,
-                    width: 170,
+                    width: '150%',
                     fontSize: 15,
                     backgroundColor: 'white',
                   }}
                   //value={'Nguyễn Minh Thông'}
                   //keyboardType={'numeric'}
                   placeholder={'Interests, hobbies,...'}
-                  numberOfLines={2}
+                  numberOfLines={3}
                   multiline
                   onBlur={onBlur}
                   onChangeText={value => onChange(value)}
@@ -238,18 +263,18 @@ const BecomeTutor = () => {
             </View>
           )}
         />
-        <Text>Education</Text>
+        <Text style={{marginLeft: 25, marginTop: 35}}>Education</Text>
         <Controller
           control={control}
           // rules={{required: true}}
           name="name"
           render={({field: {onChange, onBlur, value}}) => (
-            <View style={styles.container1}>
-              <View style={{marginLeft: 40}}>
+            <View style={[styles.container1, {width: '60%'}]}>
+              <View style={{marginLeft: 0}}>
                 <TextInput
                   style={{
                     borderWidth: 1,
-                    width: 170,
+                    width: '300%',
                     fontSize: 15,
                     backgroundColor: 'white',
                   }}
@@ -265,18 +290,18 @@ const BecomeTutor = () => {
             </View>
           )}
         />
-        <Text>Experience</Text>
+        <Text style={{marginLeft: 25, marginTop: 35}}>Experience</Text>
         <Controller
           control={control}
           // rules={{required: true}}
           name="name"
           render={({field: {onChange, onBlur, value}}) => (
-            <View style={styles.container1}>
-              <View style={{marginLeft: 40}}>
+            <View style={[styles.container1, {width: '60%'}]}>
+              <View style={{marginLeft: 0}}>
                 <TextInput
                   style={{
                     borderWidth: 1,
-                    width: 170,
+                    width: '300%',
                     fontSize: 15,
                     backgroundColor: 'white',
                   }}
@@ -292,18 +317,20 @@ const BecomeTutor = () => {
             </View>
           )}
         />
-        <Text>Current or Previous Profession</Text>
+        <Text style={{marginLeft: 25, marginTop: 35}}>
+          Current or Previous Profession
+        </Text>
         <Controller
           control={control}
           // rules={{required: true}}
           name="name"
           render={({field: {onChange, onBlur, value}}) => (
-            <View style={styles.container1}>
-              <View style={{marginLeft: 40}}>
+            <View style={[styles.container1, {width: '60%'}]}>
+              <View style={{marginLeft: 0}}>
                 <TextInput
                   style={{
                     borderWidth: 1,
-                    width: 170,
+                    width: '300%',
                     fontSize: 15,
                     backgroundColor: 'white',
                   }}
@@ -319,22 +346,46 @@ const BecomeTutor = () => {
             </View>
           )}
         />
-        <Text style={{fontWeight: 'bold'}}>Languages I speak</Text>
-        <Text>Languages: </Text>
-        <Text style={{color: MAIN_COLOR, fontSize: 15}}>
-          {arrLan.join(', ')}
+        <View
+          style={{
+            borderBottomColor: 'black',
+            borderBottomWidth: 1,
+            marginTop: 15,
+          }}
+        />
+        <Text
+          style={{
+            fontWeight: 'bold',
+            fontSize: 20,
+            margin: 10,
+            color: MAIN_COLOR,
+            marginTop: 45,
+          }}>
+          Languages I speak
+        </Text>
+        <Text style={{marginLeft: 25, marginBottom: 15}}>Languages: </Text>
+        <Text
+          style={{
+            color: 'red',
+            fontSize: 15,
+            marginLeft: 25,
+            marginBottom: 15,
+          }}>
+          {[...new Set(arrLan)].join(', ')}
         </Text>
         <View
           style={{
             alignItems: 'center',
-            borderWidth: 1,
-            paddingVertical: 3,
-            backgroundColor: MAIN_COLOR,
+            borderWidth: 0,
+            borderRadius: 30,
+            backgroundColor: '#35bb9b', 
             width: '40%',
             left: '30%',
           }}>
           <TouchableOpacity onPress={() => setModalVisible(true)}>
-            <Text style={{color: 'white'}}>Choose Language</Text>
+            <Text style={{color: 'white', paddingVertical: 15, fontSize: 15}}>
+              Choose Language
+            </Text>
           </TouchableOpacity>
         </View>
         <Modal
@@ -347,7 +398,10 @@ const BecomeTutor = () => {
           }}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text /*style={styles.modalText}*/>Select Languages (Scroll)</Text>
+              <Text /*style={styles.modalText}*/>
+                Select Languages (Scroll)
+              </Text>
+              <Text style={{marginTop: 5}}>*You can select one or more</Text>
               <FlatList
                 style={{marginBottom: '25%', marginTop: 10, borderWidth: 2}}
                 showsVerticalScrollIndicator={true}
@@ -357,9 +411,13 @@ const BecomeTutor = () => {
                   <View>
                     <TouchableOpacity
                       onPress={
-                        () => setArrLan([...arrLan, i.item.English]) /*alert(i.index)*/
+                        () =>
+                          setArrLan([
+                            ...arrLan,
+                            i.item.English,
+                          ]) /*alert(i.index)*/
                       }>
-                      <Text style={{fontSize: 18, marginBottom: 3}}>
+                      <Text style={{fontSize: 18, marginBottom: 6}}>
                         {`       ${i.item.English}`}
                       </Text>
                     </TouchableOpacity>
@@ -370,35 +428,52 @@ const BecomeTutor = () => {
                 style={{
                   alignItems: 'center',
                   borderWidth: 1,
-                  paddingVertical: 3,
-                  backgroundColor: MAIN_COLOR,
+                  borderRadius: 25,
+                  backgroundColor: '#35bb9b',
                   width: '40%',
                   left: '0%',
-                  marginBottom: '25%'
+                  marginBottom: '25%',
                 }}>
                 <TouchableOpacity
                   onPress={() => setModalVisible(!modalVisible)}>
-                  <Text style={{color: 'white'}}>Close</Text>
+                  <Text
+                    style={{color: 'white', paddingVertical: 10, fontSize: 20}}>
+                    Close
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
           </View>
         </Modal>
-
-
-        <Text style={{fontWeight: 'bold'}}>Who I teach</Text>
-        <Text>Introduction</Text>
+        <View
+          style={{
+            borderBottomColor: 'black',
+            borderBottomWidth: 1,
+            marginTop: 15,
+          }}
+        />
+        <Text
+          style={{
+            fontWeight: 'bold',
+            fontSize: 20,
+            margin: 10,
+            color: MAIN_COLOR,
+            marginTop: 45,
+          }}>
+          Who I teach
+        </Text>
+        <Text style={{marginLeft: 25}}>Introduction</Text>
         <Controller
           control={control}
           // rules={{required: true}}
           name="introduction"
           render={({field: {onChange, onBlur, value}}) => (
-            <View style={styles.container1}>
-              <View style={{marginLeft: 40}}>
+            <View style={[styles.container1, {width: '80%'}]}>
+              <View style={{marginLeft: 0}}>
                 <TextInput
                   style={{
                     borderWidth: 1,
-                    width: 170,
+                    width: '150%',
                     fontSize: 15,
                     backgroundColor: 'white',
                   }}
@@ -414,39 +489,50 @@ const BecomeTutor = () => {
             </View>
           )}
         />
-        
-        <Text>I am best at teaching students who are</Text>
+
+        <Text style={{marginLeft: 25, marginTop: 35}}>
+          I am best at teaching students who are
+        </Text>
         <View style={styles.container1}>
-              <View style={[styles.containerPicker, {marginLeft: 18}]}>
-                <Picker
-                  style={styles.picker}
-                  selectedValue={levelValue}
-                  onValueChange={levelValue => setLevelValue(levelValue)}>
-                  <Picker.Item label="Beginner" value="Beginner" />
-                  <Picker.Item label="Intermediate" value="Intermediate" />
-                  <Picker.Item label="Advanced" value="Advanced" />
-                </Picker>
-              </View>
-            </View>
-        
-        
-        <Text>My specialties are</Text>
-        <Text>Skills: </Text>
-        <Text style={{color: MAIN_COLOR, fontSize: 15}}>
-          {arrSkill.join(', ')}
+          <View style={[styles.containerPicker, {marginLeft: 0}]}>
+            <Picker
+              style={styles.picker}
+              selectedValue={levelValue}
+              onValueChange={levelValue => setLevelValue(levelValue)}>
+              <Picker.Item label="Beginner" value="Beginner" />
+              <Picker.Item label="Intermediate" value="Intermediate" />
+              <Picker.Item label="Advanced" value="Advanced" />
+            </Picker>
+          </View>
+        </View>
+
+        <Text style={{marginLeft: 25, marginTop: 35, marginBottom: 15}}>
+          My specialties are:
+        </Text>
+        {/* <Text style={{marginLeft: 25}}>Skills: </Text> */}
+        <Text
+          style={{
+            color: 'red',
+            fontSize: 15,
+            marginLeft: 25,
+            marginBottom: 15,
+          }}>
+          {[...new Set(arrSkill)].join(', ')}
         </Text>
         <View
           style={{
             alignItems: 'center',
-            borderWidth: 1,
-            paddingVertical: 3,
-            backgroundColor: MAIN_COLOR,
+            //borderWidth: 1,
+            borderRadius: 30,
+            backgroundColor: '#35bb9b',
             width: '40%',
             left: '30%',
-            marginBottom: 45,
+            marginBottom: 50,
           }}>
           <TouchableOpacity onPress={() => setModalVisible1(true)}>
-            <Text style={{color: 'white'}}>Choose Skill</Text>
+            <Text style={{color: 'white', paddingVertical: 15}}>
+              Choose Skill
+            </Text>
           </TouchableOpacity>
         </View>
         <Modal
@@ -460,8 +546,9 @@ const BecomeTutor = () => {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text /*style={styles.modalText}*/>Select Skills (Scroll)</Text>
+              <Text style={{marginTop: 5}}>*You can select one or more</Text>
               <FlatList
-                style={{marginBottom: '25%', marginTop: 10, borderWidth: 2}}
+                style={{marginBottom: '20%', marginTop: 10, borderWidth: 2}}
                 showsVerticalScrollIndicator={true}
                 initialNumToRender={5}
                 data={arrWhatToLearn1}
@@ -469,9 +556,10 @@ const BecomeTutor = () => {
                   <View>
                     <TouchableOpacity
                       onPress={
-                        () => setArrSkill([...arrSkill, i.item]) /*alert(i.index)*/
+                        () =>
+                          setArrSkill([...arrSkill, i.item]) /*alert(i.index)*/
                       }>
-                      <Text style={{fontSize: 18, marginBottom: 3}}>
+                      <Text style={{fontSize: 18, marginBottom: 8}}>
                         {`       ${i.item}`}
                       </Text>
                     </TouchableOpacity>
@@ -481,133 +569,33 @@ const BecomeTutor = () => {
               <View
                 style={{
                   alignItems: 'center',
+                  backgroundColor: '#35bb9b',
                   borderWidth: 1,
-                  paddingVertical: 3,
-                  backgroundColor: MAIN_COLOR,
+                  borderRadius: 15,
                   width: '40%',
                   left: '0%',
-                  marginBottom: '25%'
+                  marginBottom: '35%',
                 }}>
                 <TouchableOpacity
                   onPress={() => setModalVisible1(!modalVisible1)}>
-                  <Text style={{color: 'white'}}>Close</Text>
+                  <Text
+                    style={{color: 'white', paddingVertical: 8, fontSize: 20}}>
+                    Close
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
           </View>
         </Modal>
-        
 
-        {/* <Controller
-          control={control}
-          // rules={{required: true}}
-          name="phone"
-          render={({field: {onChange, onBlur, value}}) => (
-            <View style={styles.container1}>
-              <View>
-                <FontAwesome
-                  name={'phone'}
-                  size={25}
-                  color={MAIN_COLOR}
-                  style={{paddingLeft: 12}}
-                />
-              </View>
-              <View style={{marginLeft: 40}}>
-                <TextInput
-                  style={{borderWidth: 1, width: 170, height: 40, fontSize: 15}}
-                  value={value}
-                  keyboardType={'numeric'}
-                  placeholder={'Phone number'}
-                  onBlur={onBlur}
-                  onChangeText={value => onChange(value)}
-                />
-              </View>
-            </View>
-          )}
-        /> */}
-
-        {/* <Controller
-          control={control}
-          //rules={{required: true}}
-          name="language"
-          render={({field: {onChange, onBlur, value}}) => (
-            <View style={styles.container1}>
-              <View>
-                <MaterialIcons
-                  name={'language'}
-                  size={25}
-                  color={MAIN_COLOR}
-                  style={{paddingLeft: 12}}
-                />
-              </View>
-              <View style={[styles.containerPicker, {marginLeft: 35}]}>
-                <Picker
-                  style={styles.picker}
-                  selectedValue={pickerValue}
-                  onValueChange={itemValue => setPickerValue(itemValue)}>
-                  <Picker.Item label="English" value="English" />
-                  <Picker.Item label="Vietnamese" value="Vietnamese" />
-                </Picker>
-              </View>
-            </View>
-          )}
-        /> */}
-
-        {/* <Controller
-          control={control}
-          //rules={{required: true}}
-          name="level"
-          render={({field: {onChange, onBlur, value}}) => (
-            <View style={styles.container1}>
-              <View style={{paddingLeft: 5, justifyContent: 'center'}}>
-                <Text style={{fontSize: 17}}>Level:</Text>
-              </View>
-              <View style={[styles.containerPicker, {marginLeft: 18}]}>
-                <Picker
-                  style={styles.picker}
-                  selectedValue={levelValue}
-                  onValueChange={levelValue => setLevelValue(levelValue)}>
-                  <Picker.Item label="Beginner" value="Beginner" />
-                  <Picker.Item label="Intermediate" value="Intermediate" />
-                  <Picker.Item label="Advanced" value="Advanced" />
-                </Picker>
-              </View>
-            </View>
-          )}
-        /> */}
-
-        {/* <Controller
-          control={control}
-          //rules={{required: true}}
-          name="location"
-          render={({field: {onChange, onBlur, value}}) => (
-            <View style={styles.container1}>
-              <View>
-                <Ionicons
-                  name={'location'}
-                  size={25}
-                  color={MAIN_COLOR}
-                  style={{paddingLeft: 12}}
-                />
-              </View>
-              <View style={{marginLeft: 35}}>
-                <CountryPicker
-                  withFlag
-                  withFilter
-                  withCountryNameButton
-                  countryCode={country.cca2}
-                  onSelect={country =>
-                    setCountry({cca2: country.cca2, name: country.name})
-                  }
-                />
-              </View>
-            </View>
-          )}
-        /> */}
-
-        
         {/* {errors.email && <Text style={styles.error}>{'please type gmail'}</Text>} */}
-        <Button title="Save" handleSubmit={handleSubmit} onSubmit={onSubmit} />
+        <View style={{marginBottom: 25}}>
+          <Button
+            title="Next"
+            handleSubmit={handleSubmit}
+            onSubmit={onSubmit}
+          />
+        </View>
         <ImagePickerModal
           isVisible={visible}
           onClose={() => setVisible(false)}
@@ -626,8 +614,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   container1: {
-    left: '10%',
-    width: '80%',
+    // left: '3%',
+    justifyContent: 'center',
+    width: '100%',
     flexDirection: 'row',
     marginTop: 20,
   },

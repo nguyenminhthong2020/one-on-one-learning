@@ -33,12 +33,16 @@ import {MAIN_COLOR} from './src/globals/constant';
 ////import {Tag, TagActive, WelcomeButton} from './src/components/_common/FlexibleButton/FlexibleButton';
 //import ListMessage from './src/components/Main/Message/ListMessage';
 import BecomeTutor from './src/components/Main/Menu/BecomeTutor/BecomeTutor';
+//import VideoIntruction from './src/components/Main/Menu/BecomeTutor/VideoIntroduction';
+//import Approval from './src/components/Main/Menu/BecomeTutor/Approval';
 //import LanguageModal from './src/components/_common/LanguageModal/LanguageModal';
 
 const App = () => {
   return (
     //<Menu></Menu>
     <BecomeTutor/>
+    //<VideoIntruction/>
+    //<Approval />
     //<LanguageModal/>
     // <Suspense
     //   fallback={
