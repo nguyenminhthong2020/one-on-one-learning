@@ -247,7 +247,7 @@ const BecomeTutor = () => {
                 <TextInput
                   style={{
                     borderWidth: 1,
-                    width: '150%',
+                    width: 200,
                     fontSize: 15,
                     backgroundColor: 'white',
                   }}
@@ -270,11 +270,11 @@ const BecomeTutor = () => {
           name="name"
           render={({field: {onChange, onBlur, value}}) => (
             <View style={[styles.container1, {width: '60%'}]}>
-              <View style={{marginLeft: 0}}>
+              <View style={{marginLeft: 70}}>
                 <TextInput
                   style={{
                     borderWidth: 1,
-                    width: '300%',
+                    width: 200,
                     fontSize: 15,
                     backgroundColor: 'white',
                   }}
@@ -297,11 +297,11 @@ const BecomeTutor = () => {
           name="name"
           render={({field: {onChange, onBlur, value}}) => (
             <View style={[styles.container1, {width: '60%'}]}>
-              <View style={{marginLeft: 0}}>
+              <View style={{marginLeft: 70}}>
                 <TextInput
                   style={{
                     borderWidth: 1,
-                    width: '300%',
+                    width: 200,
                     fontSize: 15,
                     backgroundColor: 'white',
                   }}
@@ -326,11 +326,11 @@ const BecomeTutor = () => {
           name="name"
           render={({field: {onChange, onBlur, value}}) => (
             <View style={[styles.container1, {width: '60%'}]}>
-              <View style={{marginLeft: 0}}>
+              <View style={{marginLeft: 70}}>
                 <TextInput
                   style={{
                     borderWidth: 1,
-                    width: '300%',
+                    width: 200,
                     fontSize: 15,
                     backgroundColor: 'white',
                   }}
@@ -473,7 +473,7 @@ const BecomeTutor = () => {
                 <TextInput
                   style={{
                     borderWidth: 1,
-                    width: '150%',
+                    width: 200,
                     fontSize: 15,
                     backgroundColor: 'white',
                   }}
