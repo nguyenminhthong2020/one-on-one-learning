@@ -95,20 +95,57 @@ const ReportAlert = tutorName =>
         onPress: () => alert('Complete'),
         style: 'default',
       },
-      // {
-      //   text: "This profile is pretending be someone or is fake",
-      //   onPress: () => alert("Complete"),
-      //   style: 'default'
-      //   // style: "cancel"
-      // },
-      // { text: "Inappropriate profile photo",
-      //   onPress: () => alert("Complete"),
-      //   style: 'default'
-      // },
       {
         text: 'Cancel', //onPress: () => {alert("Cancel");console.log(123);},
         style: 'destructive',
       },
+    ],
+    {cancelable: true},
+  );
+
+const BookingDetailAlert = (student, tutor, date, time, price, balance) =>
+  price > balance ? Alert.alert(
+    `BOOKING DETAILS: FAIL`,
+    `1) Student: ${student}, tutor: ${tutor}. \n2) ${date}, ${time} \n3) Balance: ${balance}, Price: ${price}`,
+    [
+      {
+        text: 'Cancel', //onPress: () => {alert("Cancel");console.log(123);},
+        style: 'Cancel',
+      },
+    ],
+    {cancelable: true},
+  ):(
+    Alert.alert(
+      `BOOKING DETAILS: `,
+      `1) Student: ${student}, tutor: ${tutor}. \n2) ${date}, ${time} \n3) Balance: ${balance}, Price: ${price}`,
+      [
+        {
+          text: 'Book',
+          onPress: () => {console.log('Complete Book'), BookingSuccess()},
+          style: 'Cancel',
+        },
+        {
+          text: 'Cancel', //onPress: () => {alert("Cancel");console.log(123);},
+          style: 'Cancel',
+        },
+      ],
+      {cancelable: true},
+  ))
+
+  const BookingSuccess = () =>
+  Alert.alert(
+    `Booking details`,
+    `Bokking success !`,
+    [
+      {
+        text: 'Done',
+        //onPress: () => alert('Complete'),
+        style: 'default',
+      },
+      // {
+      //   text: 'Cancel', //onPress: () => {alert("Cancel");console.log(123);},
+      //   style: 'destructive',
+      // },
     ],
     {cancelable: true},
   );
@@ -203,7 +240,8 @@ const ModalTime = props => {   //props: student, tutor, arrayDateTime, id, isVis
     setModalVisibleTime(!isModalVisibleTime);
   };
   onPressHandler = (student, tutor, arrayDateTime, id, time) =>{
-    alert(`Student ${student}, Tutor ${tutor}, Date ${props.arrayDateTime[props.id].date}, Time ${time}`)
+    //alert(`Student ${student}, Tutor ${tutor}, Date ${props.arrayDateTime[props.id].date}, Time ${time}`)
+    BookingDetailAlert(student, tutor, props.arrayDateTime[props.id].date, time, 2, 2);
     toggleModalTime();
     props.setIsClick(false);
   }
