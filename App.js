@@ -37,7 +37,8 @@ import {MAIN_COLOR} from './src/globals/constant';
 //import VideoIntruction from './src/components/Main/Menu/BecomeTutor/VideoIntroduction';
 //import Approval from './src/components/Main/Menu/BecomeTutor/Approval';
 //import LanguageModal from './src/components/_common/LanguageModal/LanguageModal';
-import TutorDetailNew from './src/components/Main/Tutor/TutorDetail/TutorDetailNew';
+//import TutorDetailNew from './src/components/Main/Tutor/TutorDetail/TutorDetailNew';
+import ListMessage from './src/components/Main/Message/ListMessage';
 
 const App = () => {
   return (
@@ -45,7 +46,8 @@ const App = () => {
     //<Menu></Menu>
     //<BecomeTutor/>
     //<VideoIntruction/>
-    <TutorDetailNew />
+    //<TutorDetailNew />
+    <ListMessage />
     //<Approval /> 
     //<LanguageModal/>
     // <Suspense

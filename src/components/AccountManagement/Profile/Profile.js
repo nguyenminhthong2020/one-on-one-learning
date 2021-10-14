@@ -23,7 +23,7 @@ import {Picker} from '@react-native-picker/picker';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import CountryPicker from 'react-native-country-picker-modal';
 import moment from 'moment';
-import AvatarAccessory from '../../_common/AvatarAccessory/AvatarAccessory';
+// import AvatarAccessory from '../../_common/AvatarAccessory/AvatarAccessory';
 
 // Phần Image Picker cho Avatar
 import * as ImagePicker from 'react-native-image-picker';
