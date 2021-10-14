@@ -31,6 +31,8 @@ import { ImagePickerAvatar } from '../../_common/ImagePicker/image-picker-avatar
 import { ImagePickerModal } from '../../_common/ImagePicker/image-picker-modal';
 
 const Profile = () => {
+  console.log("render lại nữa nè");
+
   const {
     control,
     handleSubmit,
@@ -80,7 +82,7 @@ const Profile = () => {
   }, []);
   const uri = pickerResponse?.assets && pickerResponse.assets[0].uri;
 
-  const onChangeBirthday = e => {
+  const onChangeBirthday = e => { 
     setShowDatePicker(false);
     const str = JSON.stringify(e.nativeEvent.timestamp);
     _birthday = str.slice(1, 11);

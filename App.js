@@ -25,24 +25,28 @@ import {
 //import Home from './src/components/Main/Home/Home';
 // const Home = React.lazy(() => import('./src/components/Main/Home/Home'));
 import {MAIN_COLOR} from './src/globals/constant';
+//import TestCounter from './src/components/_common/TestCounter/TestCounter';
 //import Menu from './src/components/Main/Menu/Menu';
-//import Profile from './src/components/AccountManagement/Profile/Profile';
+// import Profile from './src/components/AccountManagement/Profile/Profile';
 // import Setting from './src/components/AccountManagement/Setting/Setting';
 //import Search from './src/components/Main/Tutor/Search/Search';
 //const Search = React.lazy(() =>import('./src/components/Main/Tutor/Search/Search'));
 ////import {Tag, TagActive, WelcomeButton} from './src/components/_common/FlexibleButton/FlexibleButton';
 //import ListMessage from './src/components/Main/Message/ListMessage';
-import BecomeTutor from './src/components/Main/Menu/BecomeTutor/BecomeTutor';
+//import BecomeTutor from './src/components/Main/Menu/BecomeTutor/BecomeTutor';
 //import VideoIntruction from './src/components/Main/Menu/BecomeTutor/VideoIntroduction';
 //import Approval from './src/components/Main/Menu/BecomeTutor/Approval';
 //import LanguageModal from './src/components/_common/LanguageModal/LanguageModal';
+import TutorDetailNew from './src/components/Main/Tutor/TutorDetail/TutorDetailNew';
 
 const App = () => {
   return (
+    // <TestCounter/>
     //<Menu></Menu>
-    <BecomeTutor/>
+    //<BecomeTutor/>
     //<VideoIntruction/>
-    //<Approval />
+    <TutorDetailNew />
+    //<Approval /> 
     //<LanguageModal/>
     // <Suspense
     //   fallback={
@@ -53,7 +57,7 @@ const App = () => {
     //   <Home></Home>
     // </Suspense>
     // <ListMessage/>
-    //<Profile></Profile>
+    // <Profile></Profile>
     //<Setting></Setting>
     // <Suspense
     //   fallback={

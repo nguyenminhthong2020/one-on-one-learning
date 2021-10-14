@@ -19,6 +19,7 @@
     "@react-navigation/native": "^6.0.4",
     "@react-navigation/native-stack": "^6.2.2",
     "@react-navigation/stack": "^6.0.9",
+    "expo-av": "^9.2.3",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "react": "17.0.2",
@@ -37,7 +38,9 @@
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.8.0",
     "react-native-svg": "^12.1.1",
-    "react-native-vector-icons": "^8.1.0"
+    "react-native-unimodules": "^0.14.8",
+    "react-native-vector-icons": "^8.1.0",
+    "react-native-video": "^5.2.0-alpha1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
