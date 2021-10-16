@@ -11,18 +11,17 @@ import {Text, View, Alert, StyleSheet, TouchableOpacity} from 'react-native';
 import Header from '../../_common/Header/Header';
 import ButtonIcon from '../../_common/Button/ButtonIcon';
 
-const Menu = () => {
+const Menu = (props) => {
 
   return (
     <View style={styles.container}>
-       <Header></Header>
        <View style={styles.content}>
-           <ButtonIcon type={'FontAwesome5'} name={'home'} title={'Home'} handleOnPress={() => alert('home')}/>
-           <ButtonIcon type={'AntDesign'} name={'user'} title={'Profile'} handleOnPress={() => alert('profile')}/>
+           {/* <ButtonIcon type={'FontAwesome5'} name={'home'} title={'Home'} handleOnPress={() => alert('home')}/> */}
+           <ButtonIcon type={'AntDesign'} name={'user'} title={'Profile'} handleOnPress={() => props.navigation.navigate("Profile")}/>
            <ButtonIcon type={'FontAwesome5'} name={'chalkboard-teacher'} title={'Tutor'} handleOnPress={() => alert('tutor')}/>
            <ButtonIcon type={'FontAwesome5'} name={'calendar-check'} title={'Schedule'} handleOnPress={() => alert('schedule')}/>
            <ButtonIcon type={'FontAwesome5'} name={'history'} title={'History'} handleOnPress={() => alert('histori')}/>
-           <ButtonIcon type={'FontAwesome5'} name={'graduation-cap'} title={'Courses'} handleOnPress={() => alert('courses')}/>
+           <ButtonIcon type={'FontAwesome5'} name={'graduation-cap'} title={'Courses'} handleOnPress={() => props.navigation.navigate("CourseNavigation")}/>
            <ButtonIcon type={'FontAwesome5'} name={'user-graduate'} title={'Became a tutor'} handleOnPress={() => alert('become tutor')}/>
            <ButtonIcon type={'AntDesign'} name={'logout'} title={'Logout'} handleOnPress={() => alert('logout')}/>
        </View>

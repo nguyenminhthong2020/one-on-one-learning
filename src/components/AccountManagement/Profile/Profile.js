@@ -8,6 +8,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  //SafeAreaView,
+  LogBox,
 } from 'react-native';
 //import {TextInput as SpecialTextInput} from 'react-native-paper';
 import {useForm, Controller, set} from 'react-hook-form';
@@ -27,11 +29,14 @@ import moment from 'moment';
 
 // Phần Image Picker cho Avatar
 import * as ImagePicker from 'react-native-image-picker';
-import { ImagePickerAvatar } from '../../_common/ImagePicker/image-picker-avatar';
-import { ImagePickerModal } from '../../_common/ImagePicker/image-picker-modal';
+import {ImagePickerAvatar} from '../../_common/ImagePicker/image-picker-avatar';
+import {ImagePickerModal} from '../../_common/ImagePicker/image-picker-modal';
 
 const Profile = () => {
-  console.log("render lại nữa nè");
+  console.log('render lại nữa nè');
+  useEffect(() => {
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+  }, []);
 
   const {
     control,
@@ -82,7 +87,7 @@ const Profile = () => {
   }, []);
   const uri = pickerResponse?.assets && pickerResponse.assets[0].uri;
 
-  const onChangeBirthday = e => { 
+  const onChangeBirthday = e => {
     setShowDatePicker(false);
     const str = JSON.stringify(e.nativeEvent.timestamp);
     _birthday = str.slice(1, 11);
@@ -105,7 +110,7 @@ const Profile = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View
         style={{
           flexDirection: 'row',
@@ -122,11 +127,11 @@ const Profile = () => {
           />
         </TouchableOpacity> */}
         <View style={{alignSelf: 'center'}}>
-        <TextInput
-          value={'thong123@gmail.com'}
-          editable={false}
-          style={{fontSize: 16, color: 'orange'}}
-        />
+          <TextInput
+            value={'thong123@gmail.com'}
+            editable={false}
+            style={{fontSize: 16, color: 'orange'}}
+          />
         </View>
       </View>
 
@@ -331,7 +336,7 @@ const Profile = () => {
         onImageLibraryPress={onImageLibraryPress}
         onCameraPress={onCameraPress}
       />
-    </View>
+    </ScrollView>
   );
 };
 

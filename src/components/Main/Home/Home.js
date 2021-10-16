@@ -36,8 +36,8 @@ const TutorItem = React.lazy(() => import('../common/TutorItem/TutorItem'));
 //import { Rating } from 'react-native-elements';  // = cái ở dưới
 //import FastImage from 'react-native-fast-image';
 
-const Home = () => {
-  const [state, setstate] = useState(false);
+const Home = (props) => {
+  const [state, setstate] = useState(true);
 
   const arrTitle = [
     'EnglishforKids',
@@ -287,7 +287,7 @@ const Home = () => {
   return (
     <View style={styles.container}>
       <Suspense fallback={<View></View>}>
-        <Header></Header>
+        <Header navigation={props.navigation} />
       </Suspense>
       {/* <Suspense fallback={<View></View>}><HeadContent state={state} setstate={setstate}></HeadContent></Suspense> */}
 

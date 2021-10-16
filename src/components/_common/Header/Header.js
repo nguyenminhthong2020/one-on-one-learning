@@ -11,7 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 //const Icon = React.lazy(() => import('react-native-vector-icons/Ionicons'));
 
-const Header = () => {
+const Header = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.shadow}>
@@ -27,7 +27,7 @@ const Header = () => {
             backgroundColor: 'red',
             borderColor: 'red',
           }}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => props.navigation.navigate("MenuNavigation")}>
             {/* <Suspense
               fallback={<ActivityIndicator size="small" color="#0000ff" />}> */}
               <Icon name="menu" size={30} color="white" />

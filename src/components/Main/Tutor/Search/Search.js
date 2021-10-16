@@ -253,7 +253,8 @@ const Search = () => {
             borderRadius: 5,
             height: 40,
             fontSize: 14,
-            width: '55%',
+            width: '60%',
+            backgroundColor: 'white',
           }}
           placeholder="search name..."
         />
