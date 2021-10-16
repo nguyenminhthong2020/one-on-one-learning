@@ -30,7 +30,7 @@ export default function ChangeSetting(props) {
           )}
           <Text style={styles.text}>{props.title}</Text>
           <View style={styles.switch}>
-            <Switch
+            <Switch 
   //             style={{transform: [{ scaleX:  moderateScale(1.5, 0.2) }, { scaleY:  
   //  moderateScale(1.5, 0.2) }]}}
               style={{transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }]}}
@@ -57,9 +57,10 @@ const styles = StyleSheet.create({
     left: '10%',
     width: '80%',
     margin: 10,
+    marginBottom: 15,
   },
   text: {
-    fontSize: 20,
+    fontSize: 18,
     // paddingLeft: 15,
     position: 'absolute',
     left: '20%',

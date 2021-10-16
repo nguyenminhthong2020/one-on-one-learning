@@ -246,12 +246,12 @@ const BecomeTutor = () => {
           // rules={{required: true}}
           name="name"
           render={({field: {onChange, onBlur, value}}) => (
-            <View style={[styles.container1, {width: '80%'}]}>
+            <View style={[styles.container1, {width: '100%'}]}>
               <View style={{marginLeft: 0}}>
                 <TextInput
                   style={{
                     borderWidth: 1,
-                    width: 200,
+                    width: 270,
                     fontSize: 15,
                     backgroundColor: 'white',
                   }}
@@ -273,12 +273,12 @@ const BecomeTutor = () => {
           // rules={{required: true}}
           name="name"
           render={({field: {onChange, onBlur, value}}) => (
-            <View style={[styles.container1, {width: '60%'}]}>
-              <View style={{marginLeft: 70}}>
+            <View style={[styles.container1, {width: '100%'}]}>
+              <View style={{marginLeft: 0}}>
                 <TextInput
                   style={{
                     borderWidth: 1,
-                    width: 200,
+                    width: 270,
                     fontSize: 15,
                     backgroundColor: 'white',
                   }}
@@ -300,18 +300,18 @@ const BecomeTutor = () => {
           // rules={{required: true}}
           name="name"
           render={({field: {onChange, onBlur, value}}) => (
-            <View style={[styles.container1, {width: '60%'}]}>
-              <View style={{marginLeft: 70}}>
+            <View style={[styles.container1, {width: '100%'}]}>
+              <View style={{marginLeft: 0}}>
                 <TextInput
                   style={{
                     borderWidth: 1,
-                    width: 200,
+                    width: 270,
                     fontSize: 15,
                     backgroundColor: 'white',
                   }}
                   //value={'Nguyễn Minh Thông'}
                   //keyboardType={'numeric'}
-                  placeholder={'School...'}
+                  placeholder={''}
                   numberOfLines={3}
                   multiline
                   onBlur={onBlur}
@@ -329,18 +329,18 @@ const BecomeTutor = () => {
           // rules={{required: true}}
           name="name"
           render={({field: {onChange, onBlur, value}}) => (
-            <View style={[styles.container1, {width: '60%'}]}>
-              <View style={{marginLeft: 70}}>
+            <View style={[styles.container1, {width: '100%'}]}>
+              <View style={{marginLeft: 0}}>
                 <TextInput
                   style={{
                     borderWidth: 1,
-                    width: 200,
+                    width: 270,
                     fontSize: 15,
                     backgroundColor: 'white',
                   }}
                   //value={'Nguyễn Minh Thông'}
                   //keyboardType={'numeric'}
-                  placeholder={'School...'}
+                  placeholder={''}
                   numberOfLines={3}
                   multiline
                   onBlur={onBlur}
@@ -472,18 +472,18 @@ const BecomeTutor = () => {
           // rules={{required: true}}
           name="introduction"
           render={({field: {onChange, onBlur, value}}) => (
-            <View style={[styles.container1, {width: '80%'}]}>
+            <View style={[styles.container1, {width: '100%'}]}>
               <View style={{marginLeft: 0}}>
                 <TextInput
                   style={{
                     borderWidth: 1,
-                    width: 200,
+                    width: 270,
                     fontSize: 15,
                     backgroundColor: 'white',
                   }}
                   //value={'Nguyễn Minh Thông'}
                   //keyboardType={'numeric'}
-                  placeholder={'Interests, hobbies,...'}
+                  placeholder={''}
                   numberOfLines={2}
                   multiline
                   onBlur={onBlur}

@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React from 'react';
 import {MAIN_COLOR, SECOND_COLOR} from '../../../globals/constant';
-import {Text, View, Alert, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, View, Alert, StyleSheet, ScrollView} from 'react-native';
 // import {useForm, Controller} from 'react-hook-form';
 // import Input from '../../../components/_common/Input/Input';
 // import Button from '../../../components/_common/Button/Button';
@@ -15,6 +15,7 @@ import ChangeSetting from '../../_common/ChangeSetting/ChangeSetting';
 const Setting = () => {
 
   return (
+    <ScrollView>
     <View style={styles.container}>
        {/* <Header></Header> */}
        <View style={styles.content}>
@@ -25,13 +26,14 @@ const Setting = () => {
            <ButtonIcon type={'FontAwesome5'} name={'history'} title={'History'} handleOnPress={() => alert('histori')}/>
            <ButtonIcon type={'FontAwesome5'} name={'graduation-cap'} title={'Courses'} handleOnPress={() => alert('courses')}/>
            <ButtonIcon type={'FontAwesome5'} name={'user-graduate'} title={'Became a tutor'} handleOnPress={() => alert('become tutor')}/> */}
-           <ChangeSetting type={'FontAwesome5'} name={'exchange-alt'} title={'Theme'}/>
-           <ChangeSetting type={'FontAwesome5'} name={'language'} title={'Language'}/>
+           <ChangeSetting type={'FontAwesome5'} name={'exchange-alt'} title={`Theme\nLight/Dark`}/>
+           <ChangeSetting type={'FontAwesome5'} name={'language'} title={`Language\n(English/Vietnamese)`}/>
            <View style={{marginTop: 25}}>
              <ButtonIcon type={'FontAwesome5'} name={'sign-out-alt'} title={'Log out'} handleOnPress={() => alert('log out')}/>
            </View>
        </View>
     </View>
+    </ScrollView>
   );
 };
 
@@ -42,7 +44,7 @@ const styles = StyleSheet.create({
   },
   content: {
       // backgroundColor: SECOND_COLOR,
-      marginTop: 40,
+      marginTop: 30,
       height: '100%',
   },
 });

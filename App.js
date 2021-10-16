@@ -19,8 +19,8 @@ import {
   // useColorScheme,
   View,
 } from 'react-native';
-// import Login from './src/components/Authentication/Login/Login';
-// import Register from './src/components/Authentication/Register/Register';
+//import Login from './src/components/Authentication/Login/Login';
+ import Register from './src/components/Authentication/Register/Register';
 // import ForgetPassword from './src/components/Authentication/ForgetPassword/ForgetPassword';
 // import NotifyForgetPassword from './src/components/Authentication/ForgetPassword/NotifyForgetPassword';
 //import Home from './src/components/Main/Home/Home';
@@ -154,12 +154,14 @@ const App = () => {
 
     // <ListCourseNew/>
 
+     //<Login></Login>
+        //<Register />
     <NavigationContainer>
       <Tab.Navigator /*tabBar={props => <MyTabBar {...props} />}*/  >
         <Tab.Screen name="HomeNavigation" component={HomeNavigation} options={{headerShown: false, title: 'Home'}}/>
         <Tab.Screen name="Message" component={ListMessage}  options={{headerShown: false}}/>
-        <Tab.Screen name="Upcoming" component={Upcoming} options={{headerShown: false}}/>
-        <Tab.Screen name="Tutors" component={Search}  options={{headerShown: false}}/>
+        <Tab.Screen name="Upcoming" component={Upcoming} />
+        <Tab.Screen name="Tutors" component={Search}  options={{headerShown: true}}/>
         <Tab.Screen name="Settings" component={Setting} />
       </Tab.Navigator>
     </NavigationContainer>

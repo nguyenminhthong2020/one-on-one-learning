@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, {Suspense, useCallback} from 'react';
+import React, {Suspense, useState} from 'react';
 import {
   //SafeAreaView,
   // ScrollView,
@@ -15,6 +15,8 @@ import {
   TouchableOpacity,
   Linking,
   Alert,
+  TextInput,
+  Modal,
 } from 'react-native';
 
 import {TabView, SceneMap} from 'react-native-tab-view';
@@ -102,10 +104,10 @@ const Item = props => (
       </View>
       <View style={{padding: 15}}>
         <Text style={{fontSize: 18, fontWeight: 'bold'}}>{props.title}</Text>
-        <Text style={{fontSize: 15, marginTop: 8, marginBottom: 18}}>
+        <Text style={{fontSize: 15, marginTop: 7, marginBottom: 14}}>
           Gain confidence speaking about familiar topics
         </Text>
-        <Text style={{color: 'black'}}>Beginner 10 lessons</Text>
+        <Text style={{color: 'black', textAlign: 'right'}}>Beginner 10 lessons</Text>
       </View>
     </View>
   </View>
@@ -132,7 +134,7 @@ const FirstRoute = props => {
         renderSectionHeader={({section: {title}}) => (
           <Text
             style={{
-              fontSize: 25,
+              fontSize: 22,
               color: 'black',
               fontWeight: 'bold',
               marginLeft: 10,
@@ -180,7 +182,9 @@ const SecondRoute = props => {
           <TouchableOpacity
             onPress={
               () => {
-                Linking.openURL('https://drive.google.com/drive/folders/1vdnKwSEr9v5yc3gEX90mqeuPdXkx3RY7').catch(err => {
+                Linking.openURL(
+                  'https://drive.google.com/drive/folders/1vdnKwSEr9v5yc3gEX90mqeuPdXkx3RY7',
+                ).catch(err => {
                   console.error('Failed opening page because: ', err);
                   alert('Failed to open page');
                 });
@@ -224,14 +228,237 @@ const ListCourse = props => {
     {key: 'course', title: 'Course'},
     {key: 'ebook', title: 'E-Book'},
   ]);
+  const arrLevel = [
+    'Any Level',
+    'Beginner',
+    'Upper-Beginner',
+    'Pre-Intermediate',
+    'Intermediate',
+    'Upper-Intermediate',
+    'Pre-advanced',
+    'Advanced',
+    'Very advanced',
+  ];
+  const arrCategory = [
+    'EnglishforKids',
+    'BusinessEnglish',
+    'ConversationalEnglish',
+    'STARTERS',
+    'MOVERS', 
+    'FLYERS', 
+    'KET', 
+    'PET', 
+    'IELTS',
+    'TOEFL',
+    'TOEIC',
+  ];
+  const [arrLevelSelected, setArrayLevelSelected] = useState([]);
+  const [modalVisible1, setModalVisible1] = useState(false);
+  const [arrCategorySelected, setArrayCategorySelected] = useState([]);
+  const [modalVisible2, setModalVisible2] = useState(false);
 
   return (
     <>
-      <View>
-        <Text style={{fontSize: 25, color: MAIN_COLOR, fontWeight: 'bold'}}>
+      {/* <View>
+        <Text
+          style={{
+            fontSize: 24,
+            color: MAIN_COLOR,
+            fontWeight: 'bold',
+            textAlign: 'center',
+          }}>
           Discover Courses
         </Text>
+      </View> */}
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{width: '25%'}}>
+          <Text style={{color: 'black', fontSize: 16, textAlign: 'center'}}>
+            Tìm kiếm:{' '}
+          </Text>
+        </View>
+        <View
+          style={{
+            height: 40,
+            backgroundColor: 'white',
+            width: '70%',
+            borderRadius: 20,
+            paddingHorizontal: 5,
+          }}>
+          <TextInput
+            placeholder="Search Name..."
+            style={{fontSize: 15}}></TextInput>
+        </View>
       </View>
+      <View>
+        <View style={{flexDirection: 'row', marginBottom: 2, marginLeft: 3, alignItems:'center'}}>
+          <View
+            style={{
+              alignItems: 'center',
+              borderRadius: 30,
+              backgroundColor: '#35bb9b',
+              width: '30%',
+              left: '0%',
+              borderWidth: 1,
+            }}>
+            <TouchableOpacity onPress={() => setModalVisible1(true)}>
+              <Text style={{color: 'white', paddingVertical: 10}}>
+                Choose Level
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{width: '70%'}}>
+            <Text
+              style={{
+                color: 'red',
+                fontSize: 14,
+                marginLeft: 5,
+              }}>
+              {[...new Set(arrLevelSelected)].join(', ')}
+            </Text>
+          </View>
+        </View>
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible1}
+          onRequestClose={() => {
+            setModalVisible1(!modalVisible1);
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text /*style={styles.modalText}*/>Select Levels (Scroll)</Text>
+              <Text style={{marginTop: 5}}>*You can select one or more</Text>
+              <FlatList
+                style={{marginBottom: '20%', marginTop: 10, borderWidth: 2}}
+                showsVerticalScrollIndicator={true}
+                initialNumToRender={5}
+                data={arrLevel}
+                renderItem={i => (
+                  <View>
+                    <TouchableOpacity
+                      onPress={
+                        () =>
+                          setArrayLevelSelected([
+                            ...arrLevelSelected,
+                            i.item,
+                          ]) /*alert(i.index)*/
+                      }>
+                      <Text style={{fontSize: 18, marginBottom: 8}}>
+                        {`       ${i.item}`}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+              />
+              <View
+                style={{
+                  alignItems: 'center',
+                  backgroundColor: '#35bb9b',
+                  borderWidth: 1,
+                  borderRadius: 15,
+                  width: '40%',
+                  left: '0%',
+                  marginBottom: '35%',
+                }}>
+                <TouchableOpacity
+                  onPress={() => setModalVisible1(!modalVisible1)}>
+                  <Text
+                    style={{color: 'white', paddingVertical: 8, fontSize: 20}}>
+                    Close
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      </View>
+
+      <View>
+        <View style={{flexDirection: 'row', marginLeft: 3, alignItems:'center', marginBottom: 2}}>
+          <View
+            style={{
+              alignItems: 'center',
+              borderRadius: 30,
+              backgroundColor: '#35bb9b',
+              width: '30%',
+              left: '0%',
+              borderWidth: 1,
+            }}>
+            <TouchableOpacity onPress={() => setModalVisible2(true)}>
+              <Text style={{color: 'white', paddingVertical: 6}}>
+                Choose Category
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{width: '70%'}}>
+            <Text
+              style={{
+                color: 'blue',
+                fontSize: 14,
+                marginLeft: 5,
+              }}>
+              {[...new Set(arrCategorySelected)].join(', ')}
+            </Text>
+          </View>
+        </View>
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible2}
+          onRequestClose={() => {
+            setModalVisible2(!modalVisible2);
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text /*style={styles.modalText}*/>Select Levels (Scroll)</Text>
+              <Text style={{marginTop: 5}}>*You can select one or more</Text>
+              <FlatList
+                style={{marginBottom: '20%', marginTop: 10, borderWidth: 2}}
+                showsVerticalScrollIndicator={true}
+                initialNumToRender={5}
+                data={arrCategory}
+                renderItem={i => (
+                  <View>
+                    <TouchableOpacity
+                      onPress={
+                        () =>
+                          setArrayCategorySelected([
+                            ...arrCategorySelected,
+                            i.item,
+                          ]) /*alert(i.index)*/
+                      }>
+                      <Text style={{fontSize: 18, marginBottom: 8}}>
+                        {`       ${i.item}`}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+              />
+              <View
+                style={{
+                  alignItems: 'center',
+                  backgroundColor: '#35bb9b',
+                  borderWidth: 1,
+                  borderRadius: 15,
+                  width: '40%',
+                  left: '0%',
+                  marginBottom: '35%',
+                }}>
+                <TouchableOpacity
+                  onPress={() => setModalVisible2(!modalVisible2)}>
+                  <Text
+                    style={{color: 'white', paddingVertical: 8, fontSize: 20}}>
+                    Close
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      </View>
+
       <TabView
         navigationState={{index, routes}}
         renderScene={renderScene}
@@ -241,5 +468,33 @@ const ListCourse = props => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  //   centeredView: {
+  //     flex: 1,
+  //     backgroundColor: 'yellow',
+  //     // justifyContent: "center",
+  //     // alignItems: "center",
+  //     // width: '90%',
+  //     // height: '90%'
+  //     marginTop: 22
+  // },
+  modalView: {
+    margin: 10, // 20
+    backgroundColor: 'white',
+    borderRadius: 20,
+    height: '100%',
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+});
 
 export default ListCourse;

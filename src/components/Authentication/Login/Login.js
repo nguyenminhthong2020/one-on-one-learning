@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React from 'react';
 import {MAIN_COLOR} from '../../../globals/constant';
-import {Text, View, Alert, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, View, Alert, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import Input from '../../../components/_common/Input/Input';
 import Button from '../../../components/_common/Button/Button';
@@ -17,6 +17,7 @@ const Login = () => {
   const onSubmit = data => alert(JSON.stringify(data));
 
   return (
+    <ScrollView>
     <View style={styles.container}>
       <View style={{alignItems: 'center'}}>
         <Text style={styles.text}>LOGIN</Text>
@@ -114,6 +115,7 @@ const Login = () => {
         </View>
       </View>
     </View>
+    </ScrollView>
   );
 };
 

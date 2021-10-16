@@ -7,7 +7,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from '../components/Main/Home/Home';
 import Menu from '../components/Main/Menu/Menu';
 import Profile from '../components/AccountManagement/Profile/Profile'
+import Search from '../components/Main/Tutor/Search/Search';
 import CourseNavigation from './CourseNavigation';
+import BecomeTutor from '../components/Main/Menu/BecomeTutor/BecomeTutor';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +20,7 @@ function MenuNavigation(props) {
         <Stack.Screen name="Menu" component={Menu} /> 
         {/* <Stack.Screen name="Home" component={Home} /> */}
         <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="BecomeTutor" component={BecomeTutor} options={{headerShown: true}}/>
         <Stack.Screen name="CourseNavigation" component={CourseNavigation} options={{headerShown: false}}/>
       </Stack.Navigator>
   );
