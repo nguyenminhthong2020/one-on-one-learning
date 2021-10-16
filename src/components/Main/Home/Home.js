@@ -329,7 +329,8 @@ const Home = (props) => {
       /> */}
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{marginBottom: 25}}>
+        //</View>style={{marginBottom: 25}}
+        >
         <Suspense fallback={<View></View>}>
           <HeadContent state={state} setstate={setstate}></HeadContent>
         </Suspense>

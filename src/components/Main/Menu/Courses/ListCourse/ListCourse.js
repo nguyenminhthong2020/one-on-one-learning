@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, {Suspense} from 'react';
+import React, {Suspense, useCallback} from 'react';
 import {
   //SafeAreaView,
   // ScrollView,
@@ -13,6 +13,8 @@ import {
   SectionList,
   useWindowDimensions,
   TouchableOpacity,
+  Linking,
+  Alert,
 } from 'react-native';
 
 import {TabView, SceneMap} from 'react-native-tab-view';
@@ -110,14 +112,20 @@ const Item = props => (
 );
 
 const FirstRoute = props => {
-  console.log('First Route props: ' + JSON.stringify(props));
+  //console.log('First Route props: ' + JSON.stringify(props));
   return (
     <View /*style={{flex: 1, backgroundColor: 'white'}}*/>
       <SectionList
         sections={arrayCourse}
         keyExtractor={(item, index) => item + index}
         renderItem={({item}) => (
-          <TouchableOpacity onPress={() => props.navigation.navigate("CourseDetail")/*alert(`Course thứ ${item}*/}>
+          <TouchableOpacity
+            onPress={
+              () =>
+                props.navigation.navigate(
+                  'CourseDetail',
+                ) /*alert(`Course thứ ${item}*/
+            }>
             <Item title={item} />
           </TouchableOpacity>
         )}
@@ -139,6 +147,24 @@ const FirstRoute = props => {
 };
 
 const SecondRoute = props => {
+  //const handlePress =(url)=> useCallback(async () => {
+  //   const supported = await Linking.canOpenURL(url);
+  //   if (supported) {
+  //     await Linking.openURL(url);
+  //   } else {
+  //     Alert.alert(`Don't know how to open this URL: ${url}`);
+  //   }
+  // }, [url]);
+  // const handlePress = async (url) => {
+  //   const supported = await Linking.canOpenURL(url);
+  //   alert(supported);
+  //   // if(supported){
+  //   //   await Linking.openURL(url);
+  //   // }else{
+  //   //   alert(`Can't open this URL: ${url}`);
+  //   // }
+  // }
+
   return (
     <View /*style={{flex: 1, backgroundColor: 'white'}}*/>
       <FlatList
@@ -151,10 +177,16 @@ const SecondRoute = props => {
           // <Suspense fallback={<View></View>} key={i.index}>
           //   <TutorItem onPress={() => onPressTutor(i.index)} tutor={i.item} />
           // </Suspense>
-          <TouchableOpacity onPress={() => alert(`E-book thứ ${i.index}`)}>
-            <Item
-              title={i.item.title}
-            />
+          <TouchableOpacity
+            onPress={
+              () => {
+                Linking.openURL('https://drive.google.com/drive/folders/1vdnKwSEr9v5yc3gEX90mqeuPdXkx3RY7').catch(err => {
+                  console.error('Failed opening page because: ', err);
+                  alert('Failed to open page');
+                });
+              } /*alert(`E-book thứ ${i.index}`)*/
+            }>
+            <Item title={i.item.title} />
           </TouchableOpacity>
         )}
       />
@@ -167,16 +199,21 @@ const SecondRoute = props => {
 //   ebook: SecondRoute,
 // });
 
-
 const ListCourse = props => {
   const layout = useWindowDimensions();
-  console.log("List Course prop: " + JSON.stringify(props));
-  const renderScene = ({ route }) => {
+  //console.log('List Course prop: ' + JSON.stringify(props));
+  const renderScene = ({route}) => {
     switch (route.key) {
       case 'course':
         return <FirstRoute navigation={props.navigation} />;
       case 'ebook':
-        return <SecondRoute navigation={props.navigation}/*style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.2)'}}*/ />;
+        return (
+          <SecondRoute
+            navigation={
+              props.navigation
+            } /*style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.2)'}}*/
+          />
+        );
       default:
         return null;
     }
