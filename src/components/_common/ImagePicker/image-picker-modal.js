@@ -19,12 +19,12 @@ export function ImagePickerModal({
       style={styles.modal}>
       <SafeAreaView style={styles.buttons}>
         <Pressable style={styles.button} onPress={onImageLibraryPress}>
-          <Image style={styles.buttonIcon} source={images.image} />
+          <Image style={styles.buttonIcon} source={require('./assets/image.jpg')} />
           <Text style={styles.buttonText}>Library</Text>
           <View style={{height: 40}}/>
         </Pressable>
         <Pressable style={styles.button} onPress={onCameraPress}>
-          <Image style={styles.buttonIcon} source={images.camera} />
+          <Image style={styles.buttonIcon} source={require('./assets/camera.png')} />
           <Text style={styles.buttonText}>Camera</Text>
           <View style={{height: 40}}/>
         </Pressable>
