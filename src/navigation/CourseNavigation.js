@@ -15,7 +15,7 @@ const Stack = createNativeStackNavigator();
 function CourseNavigation(props) {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="ListCourse" component={ListCourse} options={{headerShown: true}}/>
+      <Stack.Screen name="ListCourse" component={ListCourse} options={{headerShown: true, title: 'List Courses'}}/>
       <Stack.Screen name="CourseDetail" component={CourseDetail} options={{headerShown: false}}/>
       {/* <Tab.Screen name="ListEbook" component={ListEbook} /> */}
     </Stack.Navigator>

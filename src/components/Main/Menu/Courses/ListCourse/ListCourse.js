@@ -23,6 +23,7 @@ import {TabView, SceneMap} from 'react-native-tab-view';
 import {MAIN_COLOR} from '../../../../../globals/constant';
 import FastImage from 'react-native-fast-image';
 
+
 const arrayCourse = [
   {
     title: 'English For Beginners',
@@ -330,12 +331,12 @@ const ListCourse = props => {
               <Text /*style={styles.modalText}*/>Select Levels (Scroll)</Text>
               <Text style={{marginTop: 5}}>*You can select one or more</Text>
               <FlatList
-                style={{marginBottom: '20%', marginTop: 10, borderWidth: 2}}
+                style={{marginBottom: '5%', marginTop: 10, borderWidth: 2}}
                 showsVerticalScrollIndicator={true}
                 initialNumToRender={5}
                 data={arrLevel}
                 renderItem={i => (
-                  <View>
+                  <View style={{width: 220}}>
                     <TouchableOpacity
                       onPress={
                         () =>
@@ -344,8 +345,8 @@ const ListCourse = props => {
                             i.item,
                           ]) /*alert(i.index)*/
                       }>
-                      <Text style={{fontSize: 18, marginBottom: 8}}>
-                        {`       ${i.item}`}
+                      <Text style={{fontSize: 18, marginBottom: 8, textAlign: 'center'}}>
+                        {`${i.item}`}
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -359,7 +360,7 @@ const ListCourse = props => {
                   borderRadius: 15,
                   width: '40%',
                   left: '0%',
-                  marginBottom: '35%',
+                  marginBottom: '30%',
                 }}>
                 <TouchableOpacity
                   onPress={() => setModalVisible1(!modalVisible1)}>
@@ -415,7 +416,7 @@ const ListCourse = props => {
               <Text /*style={styles.modalText}*/>Select Levels (Scroll)</Text>
               <Text style={{marginTop: 5}}>*You can select one or more</Text>
               <FlatList
-                style={{marginBottom: '20%', marginTop: 10, borderWidth: 2}}
+                style={{marginBottom: '20%', marginTop: 10, borderWidth: 2, width: 250}}
                 showsVerticalScrollIndicator={true}
                 initialNumToRender={5}
                 data={arrCategory}
@@ -429,8 +430,8 @@ const ListCourse = props => {
                             i.item,
                           ]) /*alert(i.index)*/
                       }>
-                      <Text style={{fontSize: 18, marginBottom: 8}}>
-                        {`       ${i.item}`}
+                      <Text style={{fontSize: 18, marginBottom: 8, textAlign:'center'}}>
+                        {`${i.item}`}
                       </Text>
                     </TouchableOpacity>
                   </View>
