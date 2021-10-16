@@ -89,8 +89,12 @@ const Profile = () => {
 
   const onChangeBirthday = e => {
     setShowDatePicker(false);
+    if(e.nativeEvent.timestamp === undefined)
+    {
+      return;
+    }
     const str = JSON.stringify(e.nativeEvent.timestamp);
-    _birthday = str.slice(1, 11);
+    let _birthday = str.slice(1, 11);
     setBirthday(_birthday);
   };
 
@@ -149,7 +153,7 @@ const Profile = () => {
                 style={{paddingLeft: 12}}
               />
             </View>
-            <View style={{marginLeft: 40}}>
+            <View style={{marginLeft: 40, backgroundColor: 'white'}}>
               <TextInput
                 style={{borderWidth: 1, width: 170, height: 40, fontSize: 15}}
                 value={value}

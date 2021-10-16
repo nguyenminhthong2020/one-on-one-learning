@@ -95,8 +95,12 @@ const BecomeTutor = () => {
 
   const onChangeBirthday = e => {
     setShowDatePicker(false);
+    if(e.nativeEvent.timestamp === undefined)
+    {
+      return;
+    }
     const str = JSON.stringify(e.nativeEvent.timestamp);
-    _birthday = str.slice(1, 11);
+    let _birthday = str.slice(1, 11);
     setBirthday(_birthday);
   };
 
