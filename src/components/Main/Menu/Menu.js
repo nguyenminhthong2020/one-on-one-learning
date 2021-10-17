@@ -51,7 +51,7 @@ const Menu = props => {
             type={'FontAwesome5'}
             name={'graduation-cap'}
             title={'Courses'}
-            handleOnPress={() => props.navigation.navigate('CourseNavigation')}
+            handleOnPress={() => props.navigation.navigate('ListCourse')}
           />
           <ButtonIcon
             type={'FontAwesome5'}

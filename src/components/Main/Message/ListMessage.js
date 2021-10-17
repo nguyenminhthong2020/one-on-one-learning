@@ -28,7 +28,8 @@ import AvatarAccessory from '../../_common/AvatarAccessory/AvatarAccessory';
 //   );
 // };
 
-const ListMessage = () => {
+const ListMessage = (props) => {
+  //console.log("navigation: " + JSON.stringify(props.navigation));
   const array = [
     {
       id: 0,
@@ -79,7 +80,7 @@ const ListMessage = () => {
                 marginBottom: 20,
                 backgroundColor: 'white',
               }}>
-              <TouchableOpacity onPress={() => alert(i.item.lastMessage)}>
+              <TouchableOpacity onPress={() => props.navigation.navigate("TutorMessage")/*alert(i.item.lastMessage)*/}>
                 <View
                   style={{flexDirection: 'row', marginBottom: 5, marginTop: 5}}>
                   <View style={{marginLeft: 5}}>

@@ -48,12 +48,13 @@ import ListMessage from './src/components/Main/Message/ListMessage';
 
 import {NavigationContainer} from '@react-navigation/native';
 //import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+//import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+//import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import HomeNavigation from './src/navigation/HomeNavigation';
+import RootNavigation from './src/navigation/RootNavigation';
+
 
 
 // const Tab = createBottomTabNavigator(
@@ -141,7 +142,7 @@ import HomeNavigation from './src/navigation/HomeNavigation';
 
 const App = () => {
   //const Tab = createMaterialTopTabNavigator();
-  const Tab = createBottomTabNavigator();
+  // const Tab = createBottomTabNavigator();
 
   return (
     // <TestCounter/>
@@ -157,14 +158,9 @@ const App = () => {
      //<Login></Login>
         //<Register />
     <NavigationContainer>
-      <Tab.Navigator /*tabBar={props => <MyTabBar {...props} />}*/  >
-        <Tab.Screen name="HomeNavigation" component={HomeNavigation} options={{headerShown: false, title: 'Home'}}/>
-        <Tab.Screen name="Message" component={ListMessage}  options={{headerShown: false}}/>
-        <Tab.Screen name="Upcoming" component={Upcoming} />
-        <Tab.Screen name="Tutors" component={Search}  options={{headerShown: true}}/>
-        <Tab.Screen name="Settings" component={Setting} />
-      </Tab.Navigator>
+       <RootNavigation />
     </NavigationContainer>
+    
 
     //<Approval />
     //<LanguageModal/>

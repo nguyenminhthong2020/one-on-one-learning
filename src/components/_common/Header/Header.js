@@ -27,7 +27,7 @@ const Header = (props) => {
             backgroundColor: 'red',
             borderColor: 'red',
           }}>
-          <TouchableOpacity onPress={() => props.navigation.navigate("MenuNavigation")}>
+          <TouchableOpacity onPress={() => props.navigation.navigate("Menu")}>
             {/* <Suspense
               fallback={<ActivityIndicator size="small" color="#0000ff" />}> */}
               <Icon name="menu" size={30} color="white" />

@@ -308,7 +308,7 @@ const ModalTime = props => {   //props: student, tutor, arrayDateTime, id, isVis
     <View></View>
   );
 };
-const TutorDetailNew = () => {
+const TutorDetailNew = (props) => {
   //const video = React.useRef(null);
   //const [status, setStatus] = React.useState({});
   const [like, setLike] = useState(false);
@@ -636,7 +636,7 @@ const TutorDetailNew = () => {
               marginTop: 15,
             }}>
             <View>
-              <TouchableOpacity onPress={() => alert('Message')}>
+              <TouchableOpacity onPress={() => props.navigation.navigate("TutorMessage")}>
                 <View style={{alignItems: 'center'}}>
                   <View style={{marginBottom: 3}}>
                     <MaterialIcons

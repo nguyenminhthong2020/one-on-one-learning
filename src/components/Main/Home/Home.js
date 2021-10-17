@@ -235,7 +235,7 @@ const Home = (props) => {
     },
   ];
 
-  const onPressTutor = index => alert('link to tutor detail index ' + index);
+  //const onPressTutor = index =>  //alert('link to tutor detail index ' + index);
 
   const renderTestScrollView = () => {
     return array.map((tutor, index) => (
@@ -246,7 +246,7 @@ const Home = (props) => {
           </View>
         }
         key={index}>
-        <TutorItem onPress={() => onPressTutor(index)} tutor={tutor} />
+        <TutorItem onPress={() => props.navigation.navigate("TutorDetailNew")/*onPressTutor(index)*/} tutor={tutor} />
       </Suspense>
     ));
   };
