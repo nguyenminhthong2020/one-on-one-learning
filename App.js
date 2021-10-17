@@ -20,7 +20,7 @@ import {
   View,
 } from 'react-native';
 //import Login from './src/components/Authentication/Login/Login';
- import Register from './src/components/Authentication/Register/Register';
+ //import Register from './src/components/Authentication/Register/Register';
 // import ForgetPassword from './src/components/Authentication/ForgetPassword/ForgetPassword';
 // import NotifyForgetPassword from './src/components/Authentication/ForgetPassword/NotifyForgetPassword';
 //import Home from './src/components/Main/Home/Home';
@@ -30,8 +30,8 @@ import {
 //import TestCounter from './src/components/_common/TestCounter/TestCounter';
 //import Menu from './src/components/Main/Menu/Menu';
 // import Profile from './src/components/AccountManagement/Profile/Profile';
-import Setting from './src/components/AccountManagement/Setting/Setting';
-import Search from './src/components/Main/Tutor/Search/Search';
+// import Setting from './src/components/AccountManagement/Setting/Setting';
+// import Search from './src/components/Main/Tutor/Search/Search';
 //const Search = React.lazy(() =>import('./src/components/Main/Tutor/Search/Search'));
 ////import {Tag, TagActive, WelcomeButton} from './src/components/_common/FlexibleButton/FlexibleButton';
 //import ListMessage from './src/components/Main/Message/ListMessage';
@@ -40,21 +40,19 @@ import Search from './src/components/Main/Tutor/Search/Search';
 //import Approval from './src/components/Main/Menu/BecomeTutor/Approval';
 //import LanguageModal from './src/components/_common/LanguageModal/LanguageModal';
 //import TutorDetailNew from './src/components/Main/Tutor/TutorDetail/TutorDetailNew';
-import ListMessage from './src/components/Main/Message/ListMessage';
+//import ListMessage from './src/components/Main/Message/ListMessage';
 //import TutorMessage from './src/components/Main/Message/TutorMessage';
 
 //import ListCourse from './src/components/Main/Menu/Course/ListCourse/ListCourse';
- import Upcoming from './src/components/Main/Upcoming/Upcoming';
+ //import Upcoming from './src/components/Main/Upcoming/Upcoming';
 
+ import MainNavigation from './src/navigation/MainNavigation';
 import {NavigationContainer} from '@react-navigation/native';
 //import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 //import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 //import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-
-import RootNavigation from './src/navigation/RootNavigation';
-
+//import FontAwesome from 'react-native-vector-icons/FontAwesome';
+//import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 // const Tab = createBottomTabNavigator(
@@ -158,7 +156,7 @@ const App = () => {
      //<Login></Login>
         //<Register />
     <NavigationContainer>
-       <RootNavigation />
+       <MainNavigation />
     </NavigationContainer>
     
 

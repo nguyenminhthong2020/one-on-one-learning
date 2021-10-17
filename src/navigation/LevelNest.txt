@@ -1,2 +1,0 @@
-             ==> Stack 
-(Home, ListMessage, ListTutor, Upcoming, Setting)(TutorMessage)(TutorDetail)
