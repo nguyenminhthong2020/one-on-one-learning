@@ -39,13 +39,13 @@ const Menu = props => {
             type={'FontAwesome5'}
             name={'calendar-check'}
             title={'Schedule'}
-            handleOnPress={() => alert('schedule')}
+            handleOnPress={() => props.navigation.navigate("Schedule")}
           />
           <ButtonIcon
             type={'FontAwesome5'}
             name={'history'}
             title={'History'}
-            handleOnPress={() => alert('history')}
+            handleOnPress={() => props.navigation.navigate("History")}
           />
           <ButtonIcon
             type={'FontAwesome5'}

@@ -10,6 +10,8 @@ import Profile from '../components/AccountManagement/Profile/Profile';
 import ListCourse from '../components/Main/Menu/Courses/ListCourse/ListCourse';
 import CourseDetail from '../components/Main/Menu/Courses/CourseDetail/CourseDetail'
 import BecomeTutor from '../components/Main/Menu/BecomeTutor/BecomeTutor';
+import Schedule from '../components/Main/Menu/Schedule/Schedule';
+import History from '../components/Main/Menu/History/History';
 
 //import Menu from '../components/Main/Menu/Menu';
 
@@ -29,6 +31,8 @@ function HomeNavigation(props) {
         <Stack.Screen name="Home" component={Home} options={{headerShown: false}}/>
         <Stack.Screen name="Menu" component={Menu} options={{headerShown: true}}/>
         <Stack.Screen name="Profile" component={Profile} options={{headerShown: true}}/>
+        <Stack.Screen name="Schedule" component={Schedule} options={{headerShown: true}}/>
+        <Stack.Screen name="History" component={History} options={{headerShown: true}}/>
         <Stack.Screen name="ListCourse" component={ListCourse} options={{headerShown: false}}/>
         <Stack.Screen name="CourseDetail" component={CourseDetail} options={{headerShown: false}} />
         <Stack.Screen name="BecomeTutor" component={BecomeTutor} options={{headerShown: true, title: 'Become a tutor' }}/>
