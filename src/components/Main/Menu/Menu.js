@@ -1,12 +1,12 @@
 /* eslint-disable */
 import React from 'react';
-import {MAIN_COLOR, SECOND_COLOR} from '../../../globals/constant';
+import {SECOND_COLOR} from '../../../globals/constant';
 import {
-  Text,
+  //Text,
   View,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
+  //TouchableOpacity,
 } from 'react-native';
 // import {useForm, Controller} from 'react-hook-form';
 // import Input from '../../../components/_common/Input/Input';
@@ -14,7 +14,7 @@ import {
 // import {SocialIcon} from 'react-native-elements';
 //import Icon from 'react-native-vector-icons/Ionicons';
 
-import Header from '../../_common/Header/Header';
+//import Header from '../../_common/Header/Header';
 import ButtonIcon from '../../_common/Button/ButtonIcon';
 
 const Menu = props => {
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   },
   content: {
     // backgroundColor: SECOND_COLOR,
-    marginTop: 30,
+    marginTop: 20,
     height: '100%',
     backgroundColor: SECOND_COLOR,
   },

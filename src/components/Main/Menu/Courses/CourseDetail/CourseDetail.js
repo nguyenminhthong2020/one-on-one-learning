@@ -1,12 +1,12 @@
 /* eslint-disable */
-import React, {useState, Suspense} from 'react';
+import React, {useState} from 'react';
 import {
   Text,
   View,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
+  //TextInput,
+  //StyleSheet,
+  //TouchableOpacity,
+  //FlatList,
   ScrollView,
 } from 'react-native';
 
@@ -69,25 +69,28 @@ const CourseDetail = props => (
         shadowRadius: 3.84,
         elevation: 5,
       }}>
-      <View>
+      
         <FastImage
-          style={{width: '100%', height: 200}}
+          style={{width: '80%', height: 160, left: '10%'}}
           resizeMode={FastImage.resizeMode.cover}
           source={{
             uri: 'https://camblycurriculumicons.s3.amazonaws.com/5e2b895e541a832674533c18?h=d41d8cd98f00b204e9800998ecf8427e',
             priority: FastImage.priority.normal,
           }}
         />
-      </View>
+     
+
       <View style={{padding: 15}}>
         <Text style={{fontSize: 18, fontWeight: 'bold'}}>
           {'Basic Conversation Topics'}
         </Text>
-        <Text style={{fontSize: 15, marginTop: 8, marginBottom: 18}}>
+        <Text style={{fontSize: 15, marginTop: 8, marginBottom: 0}}>
           Gain confidence speaking about familiar topics
         </Text>
       </View>
     </View>
+
+
     <View style={{marginHorizontal: 10, marginBottom: 15, marginTop: 15}}>
       <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10}}>
         Overview
@@ -125,7 +128,7 @@ const CourseDetail = props => (
           // }}
         />
         <View>
-          <Text style={{fontWeight: 'bold', fontSize: 16, marginBottom: 5}}>What will you be able to do</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 16, marginBottom: 5}}> What will you be able to do</Text>
         </View> 
       </View>
       <Text style={{marginBottom: 16, fontSize: 16}}>
@@ -138,7 +141,6 @@ const CourseDetail = props => (
         Experience Level
       </Text>
       <View style={{flexDirection: 'row', marginBottom: 16}}>
-        <View>
           <Ionicons
             name={'people'}
             size={15}
@@ -149,7 +151,7 @@ const CourseDetail = props => (
             //   marginRight: 10,
             // }}
           />
-        </View>
+        
         <View>
           <Text style={{fontSize: 16}}> Beginner</Text>
         </View>
@@ -158,7 +160,7 @@ const CourseDetail = props => (
       Course Length
       </Text>
       <View style={{flexDirection: 'row', marginBottom: 16}}>
-        <View>
+        
           <AntDesign
             name={'book'}
             size={15}
@@ -169,7 +171,8 @@ const CourseDetail = props => (
             //   marginRight: 10,
             // }}
           />
-        </View>
+        
+        
         <View>
           <Text style={{fontSize: 16}}> 10 Topics</Text>
         </View>
@@ -199,6 +202,6 @@ const CourseDetail = props => (
 //   );
 // };
 
-const styles = StyleSheet.create({});
+//const styles = StyleSheet.create({});
 
 export default CourseDetail;

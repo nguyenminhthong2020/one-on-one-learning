@@ -1,15 +1,15 @@
 /* eslint-disable */
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {MAIN_COLOR} from '../../../globals/constant';
 
 export default function Button(props) {
   const {title, handleSubmit, onSubmit} = props;
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
+      <Pressable style={styles.button} onPress={handleSubmit(onSubmit)}>
         <Text style={styles.text}>{title}</Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }

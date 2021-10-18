@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {MAIN_COLOR} from '../../../globals/constant';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -9,7 +9,7 @@ export default function ButtonIcon(props) {
   return (
     <View style={styles.container}>
       <View style={styles.rowbtn}>
-        <TouchableOpacity style={styles.button} onPress={props.handleOnPress}>
+        <Pressable style={styles.button} onPress={props.handleOnPress}>
           {props.type === 'AntDesign' ? (
             <AntDesign
               name={props.name}
@@ -26,7 +26,7 @@ export default function ButtonIcon(props) {
             />
           )}
           <Text style={styles.text}>{props.title}</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   );
@@ -44,13 +44,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 10,
     borderWidth: 2,
-    paddingVertical: 5,
+    paddingVertical: 6,
     backgroundColor: 'white'
   },
   container: {
     left: '10%',
     width: '80%',
-    margin: 4,
+    margin: 5,
   },
   text: {
     fontSize: 20,

@@ -38,7 +38,7 @@ const SectionVideo = props => {
       volume={1.0}
       shouldCorrectPitch={true}
       muted={false}
-      paused={true}
+      paused={false}
       resizeMode="cover"
       controls={true}
       playWhenInactive={true}

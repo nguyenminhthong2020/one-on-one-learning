@@ -1,11 +1,11 @@
 /* eslint-disable */
-import React, {Suspense, useState} from 'react';
+import React, {useState} from 'react';
 import {
   //SafeAreaView,
   // ScrollView,
   // StatusBar,
   StyleSheet,
-  ActivityIndicator,
+  //ActivityIndicator,
   Text,
   // useColorScheme,
   View,
@@ -13,16 +13,17 @@ import {
   SectionList,
   useWindowDimensions,
   TouchableOpacity,
+  Pressable,
   Linking,
-  Alert,
+  //Alert,
   TextInput,
   Modal,
 } from 'react-native';
 
-import {TabView, SceneMap} from 'react-native-tab-view';
-import {MAIN_COLOR} from '../../../../../globals/constant';
+import {TabView /*SceneMap*/} from 'react-native-tab-view';
+//import {MAIN_COLOR} from '../../../../../globals/constant';
 import FastImage from 'react-native-fast-image';
-
+import { MAIN_COLOR } from '../../../../../globals/constant';
 
 const arrayCourse = [
   {
@@ -75,125 +76,129 @@ const arrayEbook = [
     title: 'Family and Friends 2',
   },
 ];
+const arrLevel = [
+  'Any Level',
+  'Beginner',
+  'Upper-Beginner',
+  'Pre-Intermediate',
+  'Intermediate',
+  'Upper-Intermediate',
+  'Pre-advanced',
+  'Advanced',
+  'Very advanced',
+];
 
 const Item = props => (
-  <View style={{margin: 5, borderRadius: 15}}>
-    {/* <Text style={{fontSize: 20}}>{props.title}</Text> */}
-    <View
-      style={{
-        backgroundColor: 'white',
-        //   marginHorizontal: 5,
-        //   marginVertical: 5,
-        //padding: 5,
-        margin: 10,
-        borderRadius: 8,
-        shadowColor: '#000',
-        shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-      }}>
-      <View>
-        <FastImage
-          style={{width: '100%', height: 200}}
-          resizeMode={FastImage.resizeMode.cover}
-          source={{
-            uri: 'https://camblycurriculumicons.s3.amazonaws.com/5e2b895e541a832674533c18?h=d41d8cd98f00b204e9800998ecf8427e',
-            priority: FastImage.priority.normal,
-          }}
-        />
-      </View>
-      <View style={{padding: 15}}>
-        <Text style={{fontSize: 18, fontWeight: 'bold'}}>{props.title}</Text>
-        <Text style={{fontSize: 15, marginTop: 7, marginBottom: 14}}>
-          Gain confidence speaking about familiar topics
-        </Text>
-        <Text style={{color: 'black', textAlign: 'right'}}>Beginner 10 lessons</Text>
-      </View>
+  <View
+    style={{
+      marginHorizontal: 40,
+      marginVertical: 20,
+      borderRadius: 15,
+      backgroundColor: 'white',
+      //   marginHorizontal: 5,
+      //   marginVertical: 5,
+      //padding: 5,
+      //margin: 10,
+      borderRadius: 8,
+      shadowColor: '#000',
+      shadowOffset: {width: 0, height: 2},
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+    }}>
+    <View style={{alignItems: 'center'}}>
+      <FastImage
+        style={{width: '80%', height: 160}}
+        resizeMode={FastImage.resizeMode.cover}
+        source={{
+          uri: 'https://camblycurriculumicons.s3.amazonaws.com/5e2b895e541a832674533c18?h=d41d8cd98f00b204e9800998ecf8427e',
+          priority: FastImage.priority.normal,
+        }}
+      />
+    </View>
+    <View style={{padding: 10}}>
+      <Text style={{fontSize: 18, fontWeight: 'bold'}}>{props.title}</Text>
+      <Text style={{fontSize: 15, marginTop: 6, marginBottom: 12}}>
+        Gain confidence speaking about familiar topics
+      </Text>
+      <Text style={{textAlign: 'right', color:'black'}}>Beginner   10 lessons</Text>
     </View>
   </View>
 );
 
+const renderItemFirstRoute = (item, navigation) => (
+  <Pressable onPress={() => navigation.navigate('CourseDetail')}>
+    <Item title={item} />
+  </Pressable>
+);
+const renderSectionHeader = ({section: {title}}) => (
+  <Text
+    style={{
+      fontSize: 22,
+      color: 'black',
+      fontWeight: 'bold',
+      marginLeft: 10,
+      marginTop: 20,
+    }}>
+    {title}
+  </Text>
+);
 const FirstRoute = props => {
   //console.log('First Route props: ' + JSON.stringify(props));
   return (
     <View /*style={{flex: 1, backgroundColor: 'white'}}*/>
       <SectionList
+        getItemLayout={(_, index) => ({
+          length: 200,
+          offset: 200 * index,
+          index,
+        })}
+        removeClippedSubviews={true}
+        windowSize={7}
         sections={arrayCourse}
         keyExtractor={(item, index) => item + index}
-        renderItem={({item}) => (
-          <TouchableOpacity
-            onPress={
-              () =>
-                props.navigation.navigate(
-                  'CourseDetail',
-                ) /*alert(`Course thứ ${item}*/
-            }>
-            <Item title={item} />
-          </TouchableOpacity>
-        )}
-        renderSectionHeader={({section: {title}}) => (
-          <Text
-            style={{
-              fontSize: 22,
-              color: 'black',
-              fontWeight: 'bold',
-              marginLeft: 10,
-              marginTop: 20,
-            }}>
-            {title}
-          </Text>
-        )}
+        renderItem={({item}) => renderItemFirstRoute(item, props.navigation)}
+        renderSectionHeader={renderSectionHeader}
       />
     </View>
   );
 };
 
-const SecondRoute = props => {
-  //const handlePress =(url)=> useCallback(async () => {
-  //   const supported = await Linking.canOpenURL(url);
-  //   if (supported) {
-  //     await Linking.openURL(url);
-  //   } else {
-  //     Alert.alert(`Don't know how to open this URL: ${url}`);
-  //   }
-  // }, [url]);
-  // const handlePress = async (url) => {
-  //   const supported = await Linking.canOpenURL(url);
-  //   alert(supported);
-  //   // if(supported){
-  //   //   await Linking.openURL(url);
-  //   // }else{
-  //   //   alert(`Can't open this URL: ${url}`);
-  //   // }
-  // }
+const openHanlde = () => {
+  Linking.openURL(
+    'https://drive.google.com/drive/folders/1vdnKwSEr9v5yc3gEX90mqeuPdXkx3RY7',
+  ).catch(err => {
+    console.error('Failed opening page because: ', err);
+    alert('Failed to open page');
+  });
+};
+
+const SecondRoute = () => {
+  const renderItem = i => (
+    // <Suspense fallback={<View></View>} key={i.index}>
+    //   <TutorItem onPress={() => onPressTutor(i.index)} tutor={i.item} />
+    // </Suspense>
+    <Pressable onPress={openHanlde /*alert(`E-book thứ ${i.index}`)*/}>
+      <Item title={i.item.title} />
+    </Pressable>
+  );
 
   return (
     <View /*style={{flex: 1, backgroundColor: 'white'}}*/>
       <FlatList
+        getItemLayout={(_, index) => ({
+          length: 200,
+          offset: 200 * index,
+          index,
+        })}
+        removeClippedSubviews={true}
+        windowSize={7}
         style={{marginBottom: 30, margin: 5}}
         //ListHeaderComponentStyle={{marginBottom: -20}}
         showsVerticalScrollIndicator={true}
         initialNumToRender={2}
         data={arrayEbook}
-        renderItem={i => (
-          // <Suspense fallback={<View></View>} key={i.index}>
-          //   <TutorItem onPress={() => onPressTutor(i.index)} tutor={i.item} />
-          // </Suspense>
-          <TouchableOpacity
-            onPress={
-              () => {
-                Linking.openURL(
-                  'https://drive.google.com/drive/folders/1vdnKwSEr9v5yc3gEX90mqeuPdXkx3RY7',
-                ).catch(err => {
-                  console.error('Failed opening page because: ', err);
-                  alert('Failed to open page');
-                });
-              } /*alert(`E-book thứ ${i.index}`)*/
-            }>
-            <Item title={i.item.title} />
-          </TouchableOpacity>
-        )}
+        renderItem={renderItem}
       />
     </View>
   );
@@ -229,32 +234,23 @@ const ListCourse = props => {
     {key: 'course', title: 'Course'},
     {key: 'ebook', title: 'E-Book'},
   ]);
-  const arrLevel = [
-    'Any Level',
-    'Beginner',
-    'Upper-Beginner',
-    'Pre-Intermediate',
-    'Intermediate',
-    'Upper-Intermediate',
-    'Pre-advanced',
-    'Advanced',
-    'Very advanced',
-  ];
+
   const arrCategory = [
     'EnglishforKids',
     'BusinessEnglish',
     'ConversationalEnglish',
     'STARTERS',
-    'MOVERS', 
-    'FLYERS', 
-    'KET', 
-    'PET', 
+    'MOVERS',
+    'FLYERS',
+    'KET',
+    'PET',
     'IELTS',
     'TOEFL',
     'TOEIC',
   ];
   const [arrLevelSelected, setArrayLevelSelected] = useState([]);
   const [modalVisible1, setModalVisible1] = useState(false);
+
   const [arrCategorySelected, setArrayCategorySelected] = useState([]);
   const [modalVisible2, setModalVisible2] = useState(false);
 
@@ -271,7 +267,7 @@ const ListCourse = props => {
           Discover Courses
         </Text>
       </View> */}
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 5}}>
         <View style={{width: '25%'}}>
           <Text style={{color: 'black', fontSize: 16, textAlign: 'center'}}>
             Tìm kiếm:{' '}
@@ -291,7 +287,13 @@ const ListCourse = props => {
         </View>
       </View>
       <View>
-        <View style={{flexDirection: 'row', marginBottom: 2, marginLeft: 3, alignItems:'center'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginBottom: 2,
+            marginLeft: 3,
+            alignItems: 'center',
+          }}>
           <View
             style={{
               alignItems: 'center',
@@ -301,11 +303,11 @@ const ListCourse = props => {
               left: '0%',
               borderWidth: 1,
             }}>
-            <TouchableOpacity onPress={() => setModalVisible1(true)}>
+            <Pressable onPress={() => setModalVisible1(true)}>
               <Text style={{color: 'white', paddingVertical: 10}}>
                 Choose Level
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
           <View style={{width: '70%'}}>
             <Text
@@ -328,7 +330,7 @@ const ListCourse = props => {
           }}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text /*style={styles.modalText}*/>Select Levels (Scroll)</Text>
+              <Text>Select Levels (Scroll)</Text>
               <Text style={{marginTop: 5}}>*You can select one or more</Text>
               <FlatList
                 style={{marginBottom: '5%', marginTop: 10, borderWidth: 2}}
@@ -338,14 +340,15 @@ const ListCourse = props => {
                 renderItem={i => (
                   <View style={{width: 220}}>
                     <TouchableOpacity
-                      onPress={
-                        () =>
-                          setArrayLevelSelected([
-                            ...arrLevelSelected,
-                            i.item,
-                          ]) /*alert(i.index)*/
+                      onPress={() =>
+                        setArrayLevelSelected([...arrLevelSelected, i.item])
                       }>
-                      <Text style={{fontSize: 18, marginBottom: 8, textAlign: 'center'}}>
+                      <Text
+                        style={{
+                          fontSize: 18,
+                          marginBottom: 8,
+                          textAlign: 'center',
+                        }}>
                         {`${i.item}`}
                       </Text>
                     </TouchableOpacity>
@@ -376,7 +379,13 @@ const ListCourse = props => {
       </View>
 
       <View>
-        <View style={{flexDirection: 'row', marginLeft: 3, alignItems:'center', marginBottom: 2}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginLeft: 3,
+            alignItems: 'center',
+            marginBottom: 2,
+          }}>
           <View
             style={{
               alignItems: 'center',
@@ -386,11 +395,11 @@ const ListCourse = props => {
               left: '0%',
               borderWidth: 1,
             }}>
-            <TouchableOpacity onPress={() => setModalVisible2(true)}>
+            <Pressable onPress={() => setModalVisible2(true)}>
               <Text style={{color: 'white', paddingVertical: 6}}>
                 Choose Category
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
           <View style={{width: '70%'}}>
             <Text
@@ -416,13 +425,18 @@ const ListCourse = props => {
               <Text /*style={styles.modalText}*/>Select Levels (Scroll)</Text>
               <Text style={{marginTop: 5}}>*You can select one or more</Text>
               <FlatList
-                style={{marginBottom: '20%', marginTop: 10, borderWidth: 2, width: 250}}
+                style={{
+                  marginBottom: '20%',
+                  marginTop: 10,
+                  borderWidth: 2,
+                  width: 250,
+                }}
                 showsVerticalScrollIndicator={true}
                 initialNumToRender={5}
                 data={arrCategory}
                 renderItem={i => (
                   <View>
-                    <TouchableOpacity
+                    <Pressable
                       onPress={
                         () =>
                           setArrayCategorySelected([
@@ -430,10 +444,15 @@ const ListCourse = props => {
                             i.item,
                           ]) /*alert(i.index)*/
                       }>
-                      <Text style={{fontSize: 18, marginBottom: 8, textAlign:'center'}}>
+                      <Text
+                        style={{
+                          fontSize: 18,
+                          marginBottom: 8,
+                          textAlign: 'center',
+                        }}>
                         {`${i.item}`}
                       </Text>
-                    </TouchableOpacity>
+                    </Pressable>
                   </View>
                 )}
               />
@@ -447,13 +466,13 @@ const ListCourse = props => {
                   left: '0%',
                   marginBottom: '35%',
                 }}>
-                <TouchableOpacity
+                <Pressable
                   onPress={() => setModalVisible2(!modalVisible2)}>
                   <Text
                     style={{color: 'white', paddingVertical: 8, fontSize: 20}}>
                     Close
                   </Text>
-                </TouchableOpacity>
+                </Pressable>
               </View>
             </View>
           </View>

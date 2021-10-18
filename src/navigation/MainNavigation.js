@@ -27,16 +27,10 @@ const Tab = createBottomTabNavigator();
 function MainTabs(props) {
   return (
     <Tab.Navigator
-    //initialRouteName="Home"
-    // tabBarOptions={{
-    //         activeTintColor: '#F14506',
-    //         inactiveTintColor: '#000',
-    //         style: {
-    //             backgroundColor: "#fff",
-    //             borderTopColor: 'rgba(225,225,225,0.2)'
-    //         },
-    //     }}
-    >
+      //initialRouteName="Home"
+      screenOptions={{
+        tabBarStyle: {height: 55},
+      }}>
       <Tab.Screen
         name="Home"
         component={Home}

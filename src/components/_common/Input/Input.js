@@ -2,7 +2,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, TextInput} from 'react-native';
 //import {TextInput} from 'react-native-paper';
-import {MailOutlined} from '@ant-design/icons';
 
 export default function Input(props) {
   const {label, secureTextEntry, placeholder, value, onBlur, onChange} =

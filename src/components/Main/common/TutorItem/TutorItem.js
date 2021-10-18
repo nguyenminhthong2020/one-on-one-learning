@@ -10,7 +10,7 @@ import {
   View,
   Image,
   StyleSheet,
-  TouchableOpacity,
+  Pressable,
   //ScrollView,
 } from 'react-native';
 
@@ -44,7 +44,7 @@ const TutorItem = props => {
   const [like, setLike] = useState(false);
 
   return (
-    <TouchableOpacity onPress={props.onPress} style={{marginBottom: 10}}>
+    <Pressable onPress={props.onPress} style={{marginBottom: 10}}>
       <View style={styles.shadowProp}>
         <View>
           {like === false ? (
@@ -139,7 +139,7 @@ const TutorItem = props => {
           {props.tutor.description}
         </Text>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

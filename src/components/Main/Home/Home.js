@@ -2,8 +2,8 @@
 import React, {Suspense, useState} from 'react';
 import {
   MAIN_COLOR,
-  SECOND_COLOR,
-  NUM_OF_LINES,
+  // SECOND_COLOR,
+  // NUM_OF_LINES,
 } from '../../../globals/constant';
 import {
   Text,
@@ -12,7 +12,8 @@ import {
   ActivityIndicator,
   StyleSheet,
   TouchableOpacity,
-  FlatList,
+  Pressable,
+  //FlatList,
   ScrollView,
 } from 'react-native';
 // import {useForm, Controller} from 'react-hook-form';
@@ -265,13 +266,13 @@ const Home = (props) => {
           />
           <MyTag title={'BusinessEnglish'} onPress={() => alert('filter')} />
         </View>
-        <View style={{flexDirection: 'row', marginTop: 2}}>
+        <View style={{flexDirection: 'row', marginTop: 3}}>
           <MyTag title={'EnglishforKids'} onPress={() => alert('filter')} />
           <MyTag title={'STARTERS'} onPress={() => alert('filter')} />
           <MyTag title={'FLYERS'} onPress={() => alert('filter')} />
           <MyTag title={'KET'} onPress={() => alert('filter')} />
         </View>
-        <View style={{flexDirection: 'row', marginTop: 2}}>
+        <View style={{flexDirection: 'row', marginTop: 3}}>
           <MyTag title={'MOVERS'} onPress={() => alert('filter')} />
           <MyTag title={'PET'} onPress={() => alert('filter')} />
           <MyTag title={'IELTS'} onPress={() => alert('filter')} />
@@ -350,9 +351,9 @@ const Home = (props) => {
           <Text style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
             Recommend Tutors
           </Text>
-          <TouchableOpacity onPress={() => alert('Search Tutor')}>
-            <Text style={{color: MAIN_COLOR, fontSize: 15}}>{`See All >`}</Text>
-          </TouchableOpacity>
+          <Pressable onPress={() => props.navigation.navigate("Tutors")}>
+            <Text style={{color: MAIN_COLOR, fontSize: 16}}>{`See All >`}</Text>
+          </Pressable>
         </View>
         {renderTestScrollView()}
       </ScrollView>

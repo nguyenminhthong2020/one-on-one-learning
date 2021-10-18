@@ -11,7 +11,7 @@ import {
   //SafeAreaView,
   LogBox,
 } from 'react-native';
-//import {TextInput as SpecialTextInput} from 'react-native-paper';
+
 import {useForm, Controller, set} from 'react-hook-form';
 import Button from '../../_common/Button/Button';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -33,7 +33,7 @@ import {ImagePickerAvatar} from '../../_common/ImagePicker/image-picker-avatar';
 import {ImagePickerModal} from '../../_common/ImagePicker/image-picker-modal';
 
 const Profile = () => {
-  console.log('render lại nữa nè');
+  //console.log('render lại nữa nè');
   useEffect(() => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
   }, []);

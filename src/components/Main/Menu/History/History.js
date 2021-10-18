@@ -4,10 +4,10 @@ import {MAIN_COLOR} from '../../../../globals/constant';
 import {
   Text,
   View,
-  TextInput,
+  //TextInput,
   StyleSheet,
-  TouchableOpacity,
-  FlatList,
+  Pressable,
+  //FlatList,
   //ScrollView,
 } from 'react-native';
 

@@ -2,11 +2,12 @@
 import React from 'react';
 import {
   StyleSheet,
-  Text,
-  TouchableOpacity,
+  //Text,
+  //TouchableOpacity,
   Image,
   View,
-  ImageBackground,
+  Pressable
+  //ImageBackground,
 } from 'react-native';
 
 import { images } from './assets';
@@ -18,7 +19,7 @@ export function ImagePickerAvatar({ uri, onPress }) {
       // source={images.whatsappBackground}
       >
       <View style={styles.avatar}>
-      <TouchableOpacity onPress={onPress}>
+      <Pressable onPress={onPress}>
         <Image
           style={styles.avatarImage}
           source={uri ? { uri } : images.avatar}
@@ -26,7 +27,7 @@ export function ImagePickerAvatar({ uri, onPress }) {
         <View style={styles.addButton}>
           <Image style={styles.addButtonIcon} source={images.addButton} />
         </View>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   );

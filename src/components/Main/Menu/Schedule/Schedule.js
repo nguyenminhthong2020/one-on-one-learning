@@ -4,10 +4,10 @@ import {MAIN_COLOR} from '../../../../globals/constant';
 import {
   Text,
   View,
-  TextInput,
+  //TextInput,
   StyleSheet,
-  TouchableOpacity,
-  FlatList,
+  Pressable,
+  //FlatList,
   //ScrollView,
 } from 'react-native';
 
@@ -115,7 +115,7 @@ const Schedule = () => {
                 marginTop: 20,
                 justifyContent: 'space-around',
               }}>
-              <TouchableOpacity style={{width: '48%'}}>
+              <Pressable style={{width: '48%'}}>
                 <View
                   style={{
                     width: '100%',
@@ -129,9 +129,9 @@ const Schedule = () => {
                     Cancel
                   </Text>
                 </View>
-              </TouchableOpacity>
+              </Pressable>
               {/* <View style={{width: '4%'}}></View> */}
-              <TouchableOpacity style={{width: '48%'}}>
+              <Pressable style={{width: '48%'}}>
                 <View
                   style={{
                     width: '100%',
@@ -145,7 +145,7 @@ const Schedule = () => {
                     Go to meeting
                   </Text>
                 </View>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </View>
         ))}

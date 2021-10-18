@@ -6,7 +6,8 @@ import {
   View,
   TextInput,
   StyleSheet,
-  TouchableOpacity,
+  //TouchableOpacity,
+  Pressable,
   FlatList,
   //ScrollView,
 } from 'react-native';
@@ -282,11 +283,11 @@ const Search = (props) => {
         />
       </View>
       <View style={styles.container1}>
-        <TouchableOpacity
+        <Pressable
           style={styles.button1}
           onPress={() => alert('search tutor')}>
           <Text style={styles.text1}>Search</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
       {/* <View style={{alignItems: 'center'}}>
       <TouchableOpacity style={{borderWidth: 1, borderColor: 'black', backgroundColor: MAIN_COLOR, paddingHorizontal: 10}}>

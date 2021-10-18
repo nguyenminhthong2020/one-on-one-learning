@@ -9,9 +9,10 @@ import {
   View,
   //Dimensions,
   TouchableOpacity,
+  Pressable,
   Image,
   FlatList,
-  TextInput,
+  //TextInput,
   Alert,
 } from 'react-native';
 //import Video from 'react-native-video';
@@ -19,8 +20,8 @@ import {
 //import testVideo from '../../../../../assets/video/test-video.mp4';
 import {
   MAIN_COLOR,
-  MAIN_CORLOR,
-  SECOND_COLOR,
+  // MAIN_CORLOR,
+  // SECOND_COLOR,
 } from '../../../../globals/constant';
 //import {Video, AVPlaybackStatus} from 'expo-av';
 // import Video from 'react-native-video';
@@ -240,6 +241,7 @@ const ModalTime = props => {   //props: student, tutor, arrayDateTime, id, isVis
     setModalVisibleTime(!isModalVisibleTime);
   };
   onPressHandler = (student, tutor, arrayDateTime, id, time) =>{
+    //alert("OK nè");
     //alert(`Student ${student}, Tutor ${tutor}, Date ${props.arrayDateTime[props.id].date}, Time ${time}`)
     BookingDetailAlert(student, tutor, props.arrayDateTime[props.id].date, time, 2, 2);
     toggleModalTime();
@@ -259,11 +261,11 @@ const ModalTime = props => {   //props: student, tutor, arrayDateTime, id, isVis
               fontSize: 18,
               textAlign: 'center',
             }}>
-            Picking your time
+            {`Picking your time\n(${props.arrayDateTime[props.id].date})`}
           </Text>
           { props.arrayDateTime[props.id].time.map((time, index) => (
             <View style={{marginHorizontal: 15, marginBottom: 6}} key={index}>
-              <TouchableOpacity
+              <Pressable
                 style={{
                   borderRadius: 40,
                   backgroundColor: MAIN_COLOR,
@@ -278,7 +280,7 @@ const ModalTime = props => {   //props: student, tutor, arrayDateTime, id, isVis
                   }}>
                   {time}
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           ))}
           <View style={{alignItems: 'center', marginTop: 25}}>
@@ -612,7 +614,7 @@ const TutorDetailNew = (props) => {
           </View>
 
           <View style={{marginHorizontal: 15}}>
-            <TouchableOpacity
+            <Pressable
               style={{
                 borderRadius: 40,
                 backgroundColor: MAIN_COLOR,
@@ -627,7 +629,7 @@ const TutorDetailNew = (props) => {
                 }}>
                 Booking
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
           <View
             style={{
@@ -636,7 +638,7 @@ const TutorDetailNew = (props) => {
               marginTop: 15,
             }}>
             <View>
-              <TouchableOpacity onPress={() => props.navigation.navigate("TutorMessage")}>
+              <Pressable onPress={() => props.navigation.navigate("TutorMessage")}>
                 <View style={{alignItems: 'center'}}>
                   <View style={{marginBottom: 3}}>
                     <MaterialIcons
@@ -664,10 +666,10 @@ const TutorDetailNew = (props) => {
                     </Text>
                   </View>
                 </View>
-              </TouchableOpacity>
+              </Pressable>
             </View>
             <View>
-              <TouchableOpacity onPress={() => ReportAlert('April Corpuz')}>
+              <Pressable onPress={() => ReportAlert('April Corpuz')}>
                 <View style={{alignItems: 'center'}}>
                   <View style={{marginBottom: 3}}>
                     <MaterialIcons
@@ -693,7 +695,7 @@ const TutorDetailNew = (props) => {
                     </Text>
                   </View>
                 </View>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </View>
           <View style={{marginTop: 20, marginHorizontal: 15}}>
@@ -835,7 +837,7 @@ const TutorDetailNew = (props) => {
           </View>
           <View
             style={{alignItems: 'center', marginTop: 30, marginBottom: '20%'}}>
-            <TouchableOpacity
+            <Pressable
               style={{
                 width: '50%',
                 borderRadius: 40,
@@ -851,7 +853,7 @@ const TutorDetailNew = (props) => {
                 }}>
                 Click to see
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
         <View style={{backgroundColor: 'white'}}>
@@ -976,7 +978,7 @@ const TutorDetailNew = (props) => {
                 <View
                   style={{marginHorizontal: 15, marginBottom: 6}}
                   key={index}>
-                  <TouchableOpacity
+                  <Pressable
                     style={{
                       borderRadius: 40,
                       backgroundColor: MAIN_COLOR,
@@ -991,7 +993,7 @@ const TutorDetailNew = (props) => {
                       }}>
                       {datetime.date}
                     </Text>
-                  </TouchableOpacity>
+                  </Pressable>
                   {isClick[index]?(<ModalTime setIsClick={setIsClickHandler} student={"Nguyễn Minh Thông"} tutor={"April Corpuz"} arrayDateTime={arrayDateTime} id={index} isVisible={true}/>):(<View></View>)} 
                 </View>
               ))}

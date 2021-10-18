@@ -1,14 +1,14 @@
 /* eslint-disable */
 import React /*{useState, useEffect, useCallback}*/ from 'react';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, View, StyleSheet, Pressable} from 'react-native';
 
 const MyTag = props => {
   return (
-    <TouchableOpacity onPress={props.onPress}>
+    <Pressable onPress={props.onPress}>
       <View style={[styles.view, {borderColor: 'rgb(100, 100, 100)'}]}>
         <Text style={styles.text}>{props.title}</Text>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 

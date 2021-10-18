@@ -7,6 +7,7 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  Pressable,
   FlatList,
   //ScrollView,
 } from 'react-native';
@@ -80,7 +81,7 @@ const ListMessage = (props) => {
                 marginBottom: 20,
                 backgroundColor: 'white',
               }}>
-              <TouchableOpacity onPress={() => props.navigation.navigate("TutorMessage")/*alert(i.item.lastMessage)*/}>
+              <Pressable onPress={() => props.navigation.navigate("TutorMessage")/*alert(i.item.lastMessage)*/}>
                 <View
                   style={{flexDirection: 'row', marginBottom: 5, marginTop: 5}}>
                   <View style={{marginLeft: 5}}>
@@ -130,7 +131,7 @@ const ListMessage = (props) => {
                     {i.item.time}
                   </Text>
                 </View>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           )}
         />
