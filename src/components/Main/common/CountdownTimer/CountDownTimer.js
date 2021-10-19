@@ -37,9 +37,9 @@ const CountdownTimer = props => {
   }, []);
 
   return isShow ? (
-    <View style={{padding: 12, backgroundColor: 'gray', marginHorizontal: 60, /*marginTop: '50%'*/}}>
-      <Text style={{color: 'white', fontSize: 18, textAlign: 'center'}}>Lessons will be started after</Text>
-      <Text style={{marginTop: 5, color: 'white', fontSize: 20, fontWeight: 'bold', textAlign: 'center'}}>{time.hours < 10 && '0'}{time.hours} : {time.minutes < 10 && '0'}{time.minutes} : {time.seconds < 10 && '0'}{time.seconds}</Text>
+    <View style={{height: '100%', padding: 0, backgroundColor: 'gray', marginHorizontal: 0, /*marginTop: '50%'*/}}>
+      <Text style={{color: 'white', fontSize: 17, textAlign: 'center'}}>Lessons will be started after</Text>
+      <Text style={{marginTop: 4, color: 'white', fontSize: 19, fontWeight: 'bold', textAlign: 'center'}}>{time.hours < 10 && '0'}{time.hours} : {time.minutes < 10 && '0'}{time.minutes} : {time.seconds < 10 && '0'}{time.seconds}</Text>
     </View>
   ) : (
     <></>
