@@ -102,7 +102,7 @@ function MainNavigation(props) {
       <Stack.Screen
         name="VideoCall"
         component={VideoCall}
-        options={{headerShown: false}}
+        options={{headerShown: true, title :'Lesson Room'}}
       />
       <Stack.Screen
         name="Profile"
