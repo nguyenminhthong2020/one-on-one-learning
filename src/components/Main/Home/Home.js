@@ -333,7 +333,7 @@ const Home = (props) => {
         //</View>style={{marginBottom: 25}}
         >
         <Suspense fallback={<View></View>}>
-          <HeadContent state={state} setstate={setstate}></HeadContent>
+          <HeadContent state={state} setstate={setstate} navigation={props.navigation}></HeadContent>
         </Suspense>
 
         <View style={{marginHorizontal: 18, marginTop: 20, marginBottom: 3}}>

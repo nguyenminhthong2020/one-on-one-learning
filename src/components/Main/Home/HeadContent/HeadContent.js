@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React, {useState} from 'react';
 import {MAIN_COLOR} from '../../../../globals/constant';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity, Pressable} from 'react-native';
 // import {useForm, Controller} from 'react-hook-form';
 // import Input from '../../../components/_common/Input/Input';
 // import Button from '../../../components/_common/Button/Button';
@@ -20,7 +20,7 @@ const HeadContent = props => {
       </View>
       <View style={{marginBottom: 10}}>
         <Text style={{fontSize: 17, color: 'white'}}>
-          Mon, 11 Oct 21 20:30 - 20:55
+          Wed, 20 Oct 21 20:30 - 20:55
         </Text>
       </View>
       <View
@@ -32,11 +32,11 @@ const HeadContent = props => {
           borderWidth: 1,
           backgroundColor: 'white',
         }}>
-        <TouchableOpacity>
+        <Pressable onPress={()=>props.navigation.navigate("VideoCall")}>
           <Text style={{fontSize: 16, color: MAIN_COLOR}}>
             Enter lesson room
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   ) : (

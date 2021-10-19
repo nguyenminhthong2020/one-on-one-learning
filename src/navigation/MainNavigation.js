@@ -20,6 +20,7 @@ import CourseDetail from '../components/Main/Menu/Courses/CourseDetail/CourseDet
 import BecomeTutor from '../components/Main/Menu/BecomeTutor/BecomeTutor';
 import Schedule from '../components/Main/Menu/Schedule/Schedule';
 import History from '../components/Main/Menu/History/History';
+import VideoCall from '../components/Main/VideoCall/VideoCall';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -97,6 +98,11 @@ function MainNavigation(props) {
         name="Menu"
         component={Menu}
         options={{headerShown: true}}
+      />
+      <Stack.Screen
+        name="VideoCall"
+        component={VideoCall}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Profile"
