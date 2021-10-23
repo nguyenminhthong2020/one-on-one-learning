@@ -72,7 +72,7 @@ const Schedule = () => {
             the meeting before 2 hours
           </Text>
         </View>
-        {arrComingClass.map((classComing, i) => (
+        {arrComingClass.length > 0 ? arrComingClass.map((classComing, i) => (
           <View style={styles.container} key={i}>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <View>
@@ -148,7 +148,9 @@ const Schedule = () => {
               </Pressable>
             </View>
           </View>
-        ))}
+        )): (
+          <View><Text>There is no lesson schedule yet!</Text></View>
+        )}
       </View>
     </View>
   );

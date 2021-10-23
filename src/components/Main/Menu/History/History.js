@@ -56,7 +56,7 @@ const History = () => {
           the details of the lessons you have attended
         </Text>
       </View>
-      {arrHistoryClass.map((arrHistoryClass, index) => (
+      {arrHistoryClass.length > 0 ? arrHistoryClass.map((arrHistoryClass, index) => (
         <View style={styles.container} key={index}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <View>
@@ -94,7 +94,13 @@ const History = () => {
             </View>
           </View>
         </View>
-      ))}
+      )): (
+        <View>
+          <Text>
+            Empty Data
+          </Text>
+        </View>
+      )}
     </View>
   );
 };

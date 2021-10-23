@@ -108,7 +108,7 @@ function VideoCall() {
       //   backgroundColor: 'black',
       // }}
       >
-      <View style={{height: 60}}><CountdownTimer timeStart={'Oct 20, 2021 20:30:00'} /></View>
+      <View style={{height: 60}}><CountdownTimer timeStart={'Oct 24, 2021 20:30:00'} /></View>
       <JitsiMeetView
         onConferenceTerminated={e => onConferenceTerminated(e)}
         onConferenceJoined={e => onConferenceJoined(e)}

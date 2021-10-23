@@ -20,7 +20,7 @@ const HeadContent = props => {
       </View>
       <View style={{marginBottom: 10}}>
         <Text style={{fontSize: 17, color: 'white'}}>
-          Wed, 20 Oct 21 20:30 - 20:55
+          Sun, 24 Oct 21 20:30 - 20:55
         </Text>
       </View>
       <View
