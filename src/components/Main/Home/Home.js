@@ -255,7 +255,7 @@ const Home = (props) => {
   const renderFilterTag = () => {
     return (
       <View>
-        <Text style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
+        <Text style={{fontSize: 18, fontWeight: 'bold', color: /*true ? 'white':*/'black'}}>
           Filter Tutors:{' '}
         </Text>
         <View style={{flexDirection: 'row', marginTop: 5}}>
@@ -348,7 +348,7 @@ const Home = (props) => {
             marginTop: 30,
             marginBottom: 3,
           }}>
-          <Text style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
+          <Text style={{fontSize: 18, fontWeight: 'bold', color: /*true ? 'white' : */'black'}}>
             Recommend Tutors
           </Text>
           <Pressable onPress={() => props.navigation.navigate("Tutors")}>

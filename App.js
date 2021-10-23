@@ -22,11 +22,12 @@ import {MAIN_COLOR} from './src/globals/constant';
 const MainNavigation = React.lazy(() =>
   import('./src/navigation/MainNavigation'),
 );
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, DarkTheme} from '@react-navigation/native';
+
 
 const App = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer /*theme={DarkTheme}*/>
       <Suspense
         fallback={
           <View
