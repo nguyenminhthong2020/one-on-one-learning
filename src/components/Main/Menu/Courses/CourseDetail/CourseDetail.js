@@ -8,6 +8,7 @@ import {
   //TouchableOpacity,
   //FlatList,
   ScrollView,
+  Pressable,
 } from 'react-native';
 
 import FastImage from 'react-native-fast-image';
@@ -87,6 +88,13 @@ const CourseDetail = props => (
         <Text style={{fontSize: 15, marginTop: 8, marginBottom: 0}}>
           Gain confidence speaking about familiar topics
         </Text>
+        <Pressable 
+           onPress={()=>alert("Discover")}
+           style={{backgroundColor: MAIN_COLOR, paddingVertical: 6, marginTop: 12, borderRadius: 12}}>
+          <Text style={{color: 'white', textAlign: 'center', fontSize: 15}}>
+            Discover
+          </Text>
+        </Pressable>
       </View>
     </View>
 
