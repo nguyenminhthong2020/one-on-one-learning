@@ -10,4 +10,4 @@ Mã số: 1612674
   2. Trên android, chạy npx react-native run-android, trên ios chạy npx react-native run-ios
 
 ### II. Các giai đoạn: 
-  1. Giai đoạn 1 (mockup-ui) : deadline 20/10/2021
+  1. Giai đoạn 1 (mockup-ui) : deadline 24/10/2021
