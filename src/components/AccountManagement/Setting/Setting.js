@@ -12,8 +12,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import ButtonIcon from '../../_common/Button/ButtonIcon';
 import ChangeSetting from '../../_common/ChangeSetting/ChangeSetting';
 
-const Setting = () => {
-
+const Setting = (props) => {
   return (
     <ScrollView>
     <View style={styles.container}>
@@ -26,8 +25,8 @@ const Setting = () => {
            <ButtonIcon type={'FontAwesome5'} name={'history'} title={'History'} handleOnPress={() => alert('histori')}/>
            <ButtonIcon type={'FontAwesome5'} name={'graduation-cap'} title={'Courses'} handleOnPress={() => alert('courses')}/>
            <ButtonIcon type={'FontAwesome5'} name={'user-graduate'} title={'Became a tutor'} handleOnPress={() => alert('become tutor')}/> */}
-           <ChangeSetting type={'FontAwesome5'} name={'exchange-alt'} title={`Theme\nLight/Dark`}/>
-           <ChangeSetting type={'FontAwesome5'} name={'language'} title={`Language\n(English/Vietnamese)`}/>
+           <ChangeSetting type={'FontAwesome5'} name={'exchange-alt'} title={`Theme\nLight/Dark`} type={'theme'}/>
+           <ChangeSetting type={'FontAwesome5'} name={'language'} title={`Language\n(English/Vietnamese)`} type={'lang'}/>
            <View style={{marginTop: 25}}>
              <ButtonIcon type={'FontAwesome5'} name={'sign-out-alt'} title={'Log out'} handleOnPress={() => alert('log out')}/>
            </View>

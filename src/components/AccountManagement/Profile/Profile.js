@@ -1,12 +1,13 @@
 /* eslint-disable */
 import React, {useState, useEffect, useCallback} from 'react';
-import {MAIN_COLOR} from '../../../globals/constant';
+import {MAIN_COLOR, SECOND_COLOR} from '../../../globals/constant';
 import {
   Text,
   View,
   TextInput,
   StyleSheet,
-  TouchableOpacity,
+  //TouchableOpacity,
+  Pressable,
   ScrollView,
   //SafeAreaView,
   LogBox,
@@ -25,6 +26,7 @@ import {Picker} from '@react-native-picker/picker';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import CountryPicker from 'react-native-country-picker-modal';
 import moment from 'moment';
+import { useDispatch, useSelector } from 'react-redux';
 // import AvatarAccessory from '../../_common/AvatarAccessory/AvatarAccessory';
 
 // Phần Image Picker cho Avatar
@@ -32,11 +34,16 @@ import * as ImagePicker from 'react-native-image-picker';
 import {ImagePickerAvatar} from '../../_common/ImagePicker/image-picker-avatar';
 import {ImagePickerModal} from '../../_common/ImagePicker/image-picker-modal';
 
-const Profile = () => {
+const Profile = (props) => {
   //console.log('render lại nữa nè');
   useEffect(() => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+    // dispatch()
   }, []);
+
+  const userEmail = useSelector(state => state.auth.current.email);
+  const userName = useSelector(state => state.auth.current.name);
+  const isDarkTheme = useSelector(state => state.theme.isDarkTheme)
 
   const {
     control,
@@ -51,11 +58,11 @@ const Profile = () => {
     {item: 'STARTERS', id: 3},
     {item: 'MOVERS', id: 4},
     {item: 'FLYERS', id: 5},
-    {item: 'KET', id: 5},
-    {item: 'PET', id: 6},
-    {item: 'IELTS', id: 7},
-    {item: 'TOEFL', id: 8},
-    {item: 'TOEIC', id: 9},
+    {item: 'KET', id: 6},
+    {item: 'PET', id: 7},
+    {item: 'IELTS', id: 8},
+    {item: 'TOEFL', id: 9},
+    {item: 'TOEIC', id: 10},
   ];
 
   const [pickerValue, setPickerValue] = useState('English');
@@ -114,7 +121,7 @@ const Profile = () => {
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} nestedScrollEnabled = {true}>
       <View
         style={{
           flexDirection: 'row',
@@ -132,13 +139,16 @@ const Profile = () => {
         </TouchableOpacity> */}
         <View style={{alignSelf: 'center'}}>
           <TextInput
-            value={'thong123@gmail.com'}
+            //value={'thong123@gmail.com'}
+            value = {userEmail}
             editable={false}
             style={{fontSize: 16, color: 'orange'}}
           />
         </View>
       </View>
-
+      <View style={{alignItems: 'center'}}>
+        <Text>Name: {userName}</Text>
+      </View>
       <Controller
         control={control}
         // rules={{required: true}}
@@ -210,7 +220,7 @@ const Profile = () => {
         render={({field: {onChange, onBlur, value}}) => (
           <View style={styles.container1}>
             <View style={{paddingLeft: 5, justifyContent: 'center'}}>
-              <Text style={{fontSize: 17}}>Level:</Text>
+              <Text style={{fontSize: 17, color: isDarkTheme? 'white': 'gray'}}>Level:</Text>
             </View>
             <View style={[styles.containerPicker, {marginLeft: 18}]}>
               <Picker
@@ -291,11 +301,11 @@ const Profile = () => {
               value={birthday}
               onChangeText={str => setBirthday(str)}
             />
-            <TouchableOpacity
+            <Pressable
               style={{marginRight: 5}}
               onPress={() => setShowDatePicker(true)}>
               <FontAwesome name="calendar" color="black" size={20} />
-            </TouchableOpacity>
+            </Pressable>
           </View>
           {showDatePicker && (
             <RNDateTimePicker
@@ -319,9 +329,9 @@ const Profile = () => {
         </View>
       </View>
       <View style={{paddingLeft: '20%'}}>
-        <Text style={{fontSize: 17}}>What to learn:</Text>
+        <Text style={{fontSize: 17, color: isDarkTheme?'white':'gray'}}>What to learn:</Text>
       </View>
-      <View style={{paddingLeft: '10%', marginBottom: 35}}>
+      <View style={{paddingLeft: '10%', marginBottom: 35, backgroundColor: isDarkTheme? 'white': SECOND_COLOR}}>
         <SelectBox
           label={false}
           options={arrWhatToLearn}
@@ -330,6 +340,7 @@ const Profile = () => {
           onTapClose={onMultiChange()}
           isMulti
           width={'90%'}
+          listOptionProps={{ nestedScrollEnabled: true }}
         />
       </View>
       {/* {errors.email && <Text style={styles.error}>{'please type gmail'}</Text>} */}

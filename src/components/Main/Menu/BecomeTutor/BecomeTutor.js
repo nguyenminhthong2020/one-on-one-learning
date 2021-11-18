@@ -120,7 +120,7 @@ const BecomeTutor = () => {
   }
 
   return (
-    <ScrollView>
+    <ScrollView nestedScrollEnabled = {true}>
       <View style={styles.container}>
         <View
           style={{
@@ -405,9 +405,9 @@ const BecomeTutor = () => {
               <Text /*style={styles.modalText}*/>
                 Select Languages (Scroll)
               </Text>
-              <Text style={{marginTop: 5}}>*You can select one or more</Text>
+              <Text style={{marginTop: 0}}>*You can select one or more</Text>
               <FlatList
-                style={{marginBottom: '25%', marginTop: 10, borderWidth: 2}}
+                style={{marginBottom: 10, marginTop: 10, borderWidth: 2}}
                 showsVerticalScrollIndicator={true}
                 initialNumToRender={10}
                 data={arrLanguage}
@@ -436,7 +436,7 @@ const BecomeTutor = () => {
                   backgroundColor: '#35bb9b',
                   width: '40%',
                   left: '0%',
-                  marginBottom: '25%',
+                  marginBottom: 0,
                 }}>
                 <TouchableOpacity
                   onPress={() => setModalVisible(!modalVisible)}>
@@ -552,7 +552,7 @@ const BecomeTutor = () => {
               <Text /*style={styles.modalText}*/>Select Skills (Scroll)</Text>
               <Text style={{marginTop: 5}}>*You can select one or more</Text>
               <FlatList
-                style={{marginBottom: '20%', marginTop: 10, borderWidth: 2}}
+                style={{marginBottom: 10, marginTop: 0, borderWidth: 2}}
                 showsVerticalScrollIndicator={true}
                 initialNumToRender={5}
                 data={arrWhatToLearn1}
@@ -578,7 +578,7 @@ const BecomeTutor = () => {
                   borderRadius: 15,
                   width: '40%',
                   left: '0%',
-                  marginBottom: '35%',
+                  marginBottom: 0,
                 }}>
                 <TouchableOpacity
                   onPress={() => setModalVisible1(!modalVisible1)}>

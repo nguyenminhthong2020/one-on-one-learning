@@ -7,7 +7,7 @@ import Input from '../../../components/_common/Input/Input';
 import Button from '../../../components/_common/Button/Button';
 import {SocialIcon} from 'react-native-elements';
 
-const ForgetPassword = () => {
+const ForgetPassword = (props) => {
   const {
     control,
     handleSubmit,

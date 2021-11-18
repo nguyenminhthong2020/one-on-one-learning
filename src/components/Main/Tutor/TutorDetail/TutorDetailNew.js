@@ -33,6 +33,7 @@ import Modal from 'react-native-modal';
 //import SectionVideo from './SectionVideo';
 const SectionVideo = React.lazy(() => import('./SectionVideo'));
 import ListTags from '../../../_common/ListTags/ListTags';
+import { useSelector } from 'react-redux';
 
 const FlatListItemSeparator = () => {
   return (
@@ -311,6 +312,7 @@ const ModalTime = props => {   //props: student, tutor, arrayDateTime, id, isVis
   );
 };
 const TutorDetailNew = (props) => {
+  const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
   //const video = React.useRef(null);
   //const [status, setStatus] = React.useState({});
   const [like, setLike] = useState(false);
@@ -564,7 +566,8 @@ const TutorDetailNew = (props) => {
                   style={{width: 80, height: 80, borderRadius: 40}}
                   resizeMode={FastImage.resizeMode.cover}
                   source={{
-                    uri: 'https://api.app.lettutor.com/avatar/cd0a440b-cd19-4c55-a2a2-612707b1c12cavatar1631029793834.jpg',
+                    //uri: 'https://api.app.lettutor.com/avatar/cd0a440b-cd19-4c55-a2a2-612707b1c12cavatar1631029793834.jpg',
+                    uri: props.route.params.uri,
                     priority: FastImage.priority.normal,
                   }}
                 />
@@ -573,11 +576,11 @@ const TutorDetailNew = (props) => {
                 <Text
                   style={{
                     fontSize: 18,
-                    color: 'black',
+                    color: isDarkTheme? 'white': 'black',
                     marginLeft: 6,
                     fontWeight: 'bold',
                   }}>
-                  {'April Corpuz'}
+                  {props.route.params.name}
                 </Text>
                 {/* <Rating 
                 style={{marginLeft: 6}}
@@ -601,7 +604,7 @@ const TutorDetailNew = (props) => {
                   <Image source={require('../../../../../assets/rating.png')} />
                 </View>
                 <View>
-                  <Text>{'  '}Philippines (the)</Text>
+                  <Text style={{color: isDarkTheme? 'white': 'gray'}}>{'  '}Philippines (the)</Text>
                 </View>
               </View>
             </View>
@@ -638,7 +641,10 @@ const TutorDetailNew = (props) => {
               marginTop: 15,
             }}>
             <View>
-              <Pressable onPress={() => props.navigation.navigate("TutorMessage")}>
+              <Pressable onPress={() => props.navigation.navigate("TutorMessage",{
+                uri: props.route.params.uri,
+                name: props.route.params.name,
+              })}>
                 <View style={{alignItems: 'center'}}>
                   <View style={{marginBottom: 3}}>
                     <MaterialIcons
@@ -699,7 +705,7 @@ const TutorDetailNew = (props) => {
             </View>
           </View>
           <View style={{marginTop: 20, marginHorizontal: 15}}>
-            <Text style={{fontSize: 16, color: 'black'}}>
+            <Text style={{fontSize: 16, color: isDarkTheme? 'white': 'black'}}>
               Hello there! I am an Industrial Engineer in the profession but
               chose to do online teaching because I love to meet different
               learners. I am an outgoing person and I have this passion for
@@ -720,7 +726,7 @@ const TutorDetailNew = (props) => {
           <View style={{marginTop: 30, marginHorizontal: 15}}>
             <Text
               style={{
-                color: 'black',
+                color: isDarkTheme? 'white': 'black',
                 fontSize: 16,
                 fontWeight: 'bold',
                 marginBottom: 2,
@@ -734,14 +740,14 @@ const TutorDetailNew = (props) => {
           <View style={{marginTop: 25, marginHorizontal: 15}}>
             <Text
               style={{
-                color: 'black',
+                color: isDarkTheme? 'white': 'black',
                 fontSize: 16,
                 fontWeight: 'bold',
                 marginBottom: 2,
               }}>
               Education
             </Text>
-            <Text style={{marginLeft: 5}}>
+            <Text style={{marginLeft: 5, color: isDarkTheme? 'white': 'black'}}>
               I have graduated with a degree in Bachelor of Science, major in
               Industrial Engineering, from a reputable university, Saint Louis
               University, Baguio City.
@@ -750,14 +756,14 @@ const TutorDetailNew = (props) => {
           <View style={{marginTop: 25, marginHorizontal: 15}}>
             <Text
               style={{
-                color: 'black',
+                color: isDarkTheme? 'white': 'black',
                 fontSize: 16,
                 fontWeight: 'bold',
                 marginBottom: 2,
               }}>
               Expericence
             </Text>
-            <Text style={{marginLeft: 5}}>
+            <Text style={{marginLeft: 5, color: isDarkTheme? 'white': 'black'}}>
               I have been teaching English online since 2020 catering to
               Japanese and Chinese students.
             </Text>
@@ -772,7 +778,7 @@ const TutorDetailNew = (props) => {
               }}>
               Interest
             </Text>
-            <Text style={{marginLeft: 5}}>
+            <Text style={{marginLeft: 5,color: isDarkTheme? 'white': 'black'}}>
               Cooking, Mingling with kids, Watch my small retail store,
               Travelling
             </Text>
@@ -780,19 +786,19 @@ const TutorDetailNew = (props) => {
           <View style={{marginTop: 25, marginHorizontal: 15}}>
             <Text
               style={{
-                color: 'black',
+                color: isDarkTheme? 'white':'black',
                 fontSize: 16,
                 fontWeight: 'bold',
                 marginBottom: 2,
               }}>
               Profession
             </Text>
-            <Text style={{marginLeft: 5}}>Online English Teacher</Text>
+            <Text style={{marginLeft: 5,color: isDarkTheme? 'white': 'black'}}>Online English Teacher</Text>
           </View>
           <View style={{marginTop: 25, marginHorizontal: 15}}>
             <Text
               style={{
-                color: 'black',
+                color: isDarkTheme? 'white':'black',
                 fontSize: 16,
                 fontWeight: 'bold',
                 marginBottom: 2,
@@ -815,7 +821,7 @@ const TutorDetailNew = (props) => {
           <View style={{marginTop: 25, marginHorizontal: 15}}>
             <Text
               style={{
-                color: 'black',
+                color: isDarkTheme? 'white':'black',
                 fontSize: 16,
                 fontWeight: 'bold',
                 marginBottom: 2,

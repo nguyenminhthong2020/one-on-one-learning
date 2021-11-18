@@ -32,12 +32,15 @@ import MyTag from '../../_common/FlexibleButton/TagFlexibleButton';
 //import TutorItem from '../common/TutorItem/TutorItem';
 
 const TutorItem = React.lazy(() => import('../common/TutorItem/TutorItem'));
+import { useSelector } from 'react-redux';
 
 //import {Rating} from 'react-native-ratings';
 //import { Rating } from 'react-native-elements';  // = cái ở dưới
 //import FastImage from 'react-native-fast-image';
 
 const Home = (props) => {
+  const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
+
   const [state, setstate] = useState(true);
 
   const arrTitle = [
@@ -247,7 +250,10 @@ const Home = (props) => {
           </View>
         }
         key={index}>
-        <TutorItem onPress={() => props.navigation.navigate("TutorDetailNew")/*onPressTutor(index)*/} tutor={tutor} />
+        <TutorItem onPress={() => props.navigation.navigate("TutorDetailNew", {
+          uri: tutor.uri,
+          name: tutor.name,
+        })/*onPressTutor(index)*/} tutor={tutor} />
       </Suspense>
     ));
   };
@@ -255,7 +261,7 @@ const Home = (props) => {
   const renderFilterTag = () => {
     return (
       <View>
-        <Text style={{fontSize: 18, fontWeight: 'bold', color: /*true ? 'white':*/'black'}}>
+        <Text style={{fontSize: 18, fontWeight: 'bold', color: isDarkTheme ? 'white':'black'}}>
           Filter Tutors:{' '}
         </Text>
         <View style={{flexDirection: 'row', marginTop: 5}}>
@@ -348,11 +354,11 @@ const Home = (props) => {
             marginTop: 30,
             marginBottom: 3,
           }}>
-          <Text style={{fontSize: 18, fontWeight: 'bold', color: /*true ? 'white' : */'black'}}>
+          <Text style={{fontSize: 18, fontWeight: 'bold', color: isDarkTheme ? 'white' : 'black'}}>
             Recommend Tutors
           </Text>
           <Pressable onPress={() => props.navigation.navigate("Tutors")}>
-            <Text style={{color: MAIN_COLOR, fontSize: 16}}>{`See All >`}</Text>
+            <Text style={{color: isDarkTheme ? 'yellow' : MAIN_COLOR, fontSize: 16}}>{`See All >`}</Text>
           </Pressable>
         </View>
         {renderTestScrollView()}

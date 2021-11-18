@@ -7,7 +7,7 @@ import Input from '../../../components/_common/Input/Input';
 import Button from '../../../components/_common/Button/Button';
 import {SocialIcon} from 'react-native-elements';
 
-const Register = () => {
+const Register = (props) => {
   const {
     control,
     handleSubmit,
@@ -17,11 +17,11 @@ const Register = () => {
   const onSubmit = data => alert(JSON.stringify(data));
 
   return (
-    <ScrollView>
     <View style={styles.container}>
       {/* <View style={{alignItems: 'center'}}>
         <Text style={styles.text}>LOGIN</Text>
       </View> */}
+      <ScrollView>
       <Controller
         control={control}
         rules={{
@@ -149,8 +149,8 @@ const Register = () => {
           </View>
         </View>
       </View>
+      </ScrollView>
     </View>
-    </ScrollView>
   );
 };
 

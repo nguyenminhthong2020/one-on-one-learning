@@ -5,8 +5,12 @@ import {MAIN_COLOR} from '../../../globals/constant';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { moderateScale } from 'react-native-size-matters';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeTheme } from '../../../redux/slices/setting/themeSlice';
 
 export default function ChangeSetting(props) {
+  const dispatch = useDispatch();
+  const isDarkTheme = useSelector(state => state.theme.isDarkTheme)
   const [state, setstate] = useState(true);
 
   return (
@@ -28,14 +32,19 @@ export default function ChangeSetting(props) {
               style={{paddingLeft: 15}}
             />
           )}
-          <Text style={styles.text}>{props.title}</Text>
+          <Text style={[styles.text,{color: isDarkTheme?'white':'gray'}]}>{props.title}</Text>
           <View style={styles.switch}>
             <Switch 
   //             style={{transform: [{ scaleX:  moderateScale(1.5, 0.2) }, { scaleY:  
   //  moderateScale(1.5, 0.2) }]}}
               style={{transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }]}}
               value={state}
-              onValueChange={value => setstate(value)}
+              onValueChange={value => {
+                setstate(value)
+                if(props.type=='theme'){
+                  dispatch(changeTheme());
+              }
+              }}
             />
           </View>
         </View>

@@ -16,8 +16,11 @@ import {
 
 //import Header from '../../_common/Header/Header';
 import ButtonIcon from '../../_common/Button/ButtonIcon';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../../redux/slices/auth/loginSlice';
 
 const Menu = props => {
+  const dispatch = useDispatch();
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -53,6 +56,12 @@ const Menu = props => {
             title={'Courses'}
             handleOnPress={() => props.navigation.navigate('ListCourse')}
           />
+           <ButtonIcon
+            type={'FontAwesome5'}
+            name={'heart'}
+            title={'Favorites'}
+            handleOnPress={() => props.navigation.navigate('Favorites')}
+          />
           <ButtonIcon
             type={'FontAwesome5'}
             name={'user-graduate'}
@@ -63,7 +72,10 @@ const Menu = props => {
             type={'AntDesign'}
             name={'logout'}
             title={'Logout'}
-            handleOnPress={() => alert('logout')}
+            handleOnPress={() => {
+              dispatch(logout());
+              props.navigation.navigate('Login')
+            }}
           />
         </View>
       </View>

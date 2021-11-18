@@ -19,8 +19,14 @@ import ListCourse from '../components/Main/Menu/Courses/ListCourse/ListCourse';
 import CourseDetail from '../components/Main/Menu/Courses/CourseDetail/CourseDetail';
 import BecomeTutor from '../components/Main/Menu/BecomeTutor/BecomeTutor';
 import Schedule from '../components/Main/Menu/Schedule/Schedule';
+import Favorites from '../components/Main/Menu/Favorites/Favorites';
 import History from '../components/Main/Menu/History/History';
 import VideoCall from '../components/Main/VideoCall/VideoCall';
+import Login from '../components/Authentication/Login/Login';
+import ForgetPassword from '../components/Authentication/ForgetPassword/ForgetPassword';
+import NotifyForgetPassword from '../components/Authentication/ForgetPassword/NotifyForgetPassword';
+import Register from '../components/Authentication/Register/Register';
+import { useSelector} from 'react-redux';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -87,8 +93,28 @@ function MainTabs(props) {
 }
 
 function MainNavigation(props) {
+  const check = useSelector(state => state.auth.isLoggin);
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+       initialRouteName={check == true ? "MainTabs": "Login"}
+    >
+      <Stack.Screen 
+        name="Login"
+        component={Login}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen 
+        name="Register"
+        component={Register}
+      />
+      <Stack.Screen 
+        name="ForgetPassword"
+        component={ForgetPassword}
+      />
+      <Stack.Screen 
+        name="NotifyForgetPassword"
+        component={NotifyForgetPassword}
+      />
       <Stack.Screen
         name="MainTabs"
         component={MainTabs}
@@ -127,6 +153,11 @@ function MainNavigation(props) {
       <Stack.Screen
         name="Schedule"
         component={Schedule}
+        options={{headerShown: true}}
+      />
+      <Stack.Screen
+        name="Favorites"
+        component={Favorites}
         options={{headerShown: true}}
       />
       <Stack.Screen

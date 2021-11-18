@@ -18,7 +18,7 @@ import CountryPicker from 'react-native-country-picker-modal';
 import TutorItem from '../../common/TutorItem/TutorItem';
 //const TutorItem = React.lazy(()=>{'../../common/TutorItem/TutorItem'});
 
-const Search = (props) => {
+const Search = props => {
   const array = [
     {
       id: 0,
@@ -219,7 +219,16 @@ const Search = (props) => {
             // <Suspense fallback={<View></View>} key={i.index}>
             //   <TutorItem onPress={() => onPressTutor(i.index)} tutor={i.item} />
             // </Suspense>
-            <TutorItem onPress={() => props.navigation.navigate("TutorDetailNew")/*onPressTutor(i.index)*/} tutor={i.item} />
+            <TutorItem
+              onPress={
+                () =>
+                  props.navigation.navigate('TutorDetailNew', {
+                    uri: i.item.uri,
+                    name: i.item.name,
+                  }) /*onPressTutor(i.index)*/
+              }
+              tutor={i.item}
+            />
           )}
         />
       </View>
@@ -283,9 +292,7 @@ const Search = (props) => {
         />
       </View>
       <View style={styles.container1}>
-        <Pressable
-          style={styles.button1}
-          onPress={() => alert('search tutor')}>
+        <Pressable style={styles.button1} onPress={() => alert('search tutor')}>
           <Text style={styles.text1}>Search</Text>
         </Pressable>
       </View>

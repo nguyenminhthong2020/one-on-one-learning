@@ -13,8 +13,10 @@ import {
 //import {SearchBar} from 'react-native-elements';
 // import {useForm, Controller} from 'react-hook-form';
 import FastImage from 'react-native-fast-image';
+import { useSelector } from 'react-redux';
 
 const Upcoming = () => {
+  const isDarkTheme = useSelector(state => state.theme.isDarkTheme)
   const upcomingClass = {
     id: 0,
     name: 'April Corpuz',
@@ -36,11 +38,11 @@ const Upcoming = () => {
         </View>
         <View>
           <View style={{margin: 5}}>
-            <Text style={{fontSize: 17, color: 'black'}}>April Corpuz</Text>
+            <Text style={{fontSize: 17, color: isDarkTheme? 'yellow': 'black'}}>April Corpuz</Text>
           </View>
           <View style={{flexDirection: 'row'}}>
             <View style={{marginHorizontal: 5}}>
-              <Text>2021-10-11</Text>
+              <Text style={{color: isDarkTheme? 'white': 'gray'}}>2021-10-11</Text>
             </View>
             <View style={{marginLeft: 4}}>
               <Text style={{color: MAIN_COLOR}}>20:30</Text>

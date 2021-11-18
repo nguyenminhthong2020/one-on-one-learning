@@ -79,7 +79,7 @@ const MessageOfStudent = props => {
   );
 };
 
-const TutorMessage = () => {
+const TutorMessage = (props) => {
   const array = [
     {
       id: 0,
@@ -352,7 +352,8 @@ const TutorMessage = () => {
             style={{width: 32, height: 32, borderRadius: 20}}
             resizeMode={FastImage.resizeMode.cover}
             source={{
-              uri: 'https://api.app.lettutor.com/avatar/cd0a440b-cd19-4c55-a2a2-612707b1c12cavatar1631029793834.jpg',
+              // uri: 'https://api.app.lettutor.com/avatar/cd0a440b-cd19-4c55-a2a2-612707b1c12cavatar1631029793834.jpg',
+              uri: props.route.params.uri,
               priority: FastImage.priority.normal,
             }}
           />
@@ -360,7 +361,7 @@ const TutorMessage = () => {
         <View>
           <Text style={{fontSize: 16, color: MAIN_COLOR, fontWeight: 'bold'}}>
             {' '}
-            April Corpuz
+            {props.route.params.name}
           </Text>
         </View>
       </View>
@@ -384,7 +385,8 @@ const TutorMessage = () => {
             ) : (
               <MessageOfTutor
                 uri={
-                  'https://api.app.lettutor.com/avatar/cd0a440b-cd19-4c55-a2a2-612707b1c12cavatar1631029793834.jpg'
+                  // 'https://api.app.lettutor.com/avatar/cd0a440b-cd19-4c55-a2a2-612707b1c12cavatar1631029793834.jpg'
+                  props.route.params.uri
                 }
                 message={i.item.message}
               />

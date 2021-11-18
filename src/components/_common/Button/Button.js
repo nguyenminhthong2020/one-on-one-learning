@@ -16,13 +16,13 @@ export default function Button(props) {
 
 const styles = StyleSheet.create({
   button: {
-    borderRadius: 15,
+    borderRadius: 20,
     backgroundColor: MAIN_COLOR,
     paddingVertical: 10,
   },
   container: {
-    width: '80%',
-    left: '10%',
+    width: '50%',
+    left: '25%',
   },
   text: {
     color: 'white',

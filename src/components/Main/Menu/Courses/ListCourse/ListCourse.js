@@ -333,7 +333,7 @@ const ListCourse = props => {
               <Text>Select Levels (Scroll)</Text>
               <Text style={{marginTop: 5}}>*You can select one or more</Text>
               <FlatList
-                style={{marginBottom: '5%', marginTop: 10, borderWidth: 2}}
+                style={{marginBottom: 10, marginTop: 0, borderWidth: 2}}
                 showsVerticalScrollIndicator={true}
                 initialNumToRender={5}
                 data={arrLevel}
@@ -363,7 +363,7 @@ const ListCourse = props => {
                   borderRadius: 15,
                   width: '40%',
                   left: '0%',
-                  marginBottom: '30%',
+                  marginBottom: 0,
                 }}>
                 <TouchableOpacity
                   onPress={() => setModalVisible1(!modalVisible1)}>
@@ -423,10 +423,10 @@ const ListCourse = props => {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text /*style={styles.modalText}*/>Select Levels (Scroll)</Text>
-              <Text style={{marginTop: 5}}>*You can select one or more</Text>
+              <Text style={{marginTop: 0}}>*You can select one or more</Text>
               <FlatList
                 style={{
-                  marginBottom: '20%',
+                  marginBottom: 10,
                   marginTop: 10,
                   borderWidth: 2,
                   width: 250,
@@ -464,7 +464,7 @@ const ListCourse = props => {
                   borderRadius: 15,
                   width: '40%',
                   left: '0%',
-                  marginBottom: '35%',
+                  marginBottom: 0,
                 }}>
                 <Pressable
                   onPress={() => setModalVisible2(!modalVisible2)}>
