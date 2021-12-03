@@ -41,6 +41,7 @@ const initialState = {
         Language: "Ngôn ngữ",
         What_to_learn: "Chủ đề muốn học",
         Save: "Lưu",
+        Country: "Quốc gia"
       },
     en: {
         Home: "Home",
@@ -79,7 +80,8 @@ const initialState = {
         Theme: "Theme",
         Language: "Language",
         What_to_learn: "What to learn",
-        Save: "Save"
+        Save: "Save",
+        Country: "Country"
       }
 }
 

@@ -75,7 +75,7 @@ const TutorItemSearch = props => {
               style={{width: 60, height: 60, borderRadius: 30}}
               resizeMode={FastImage.resizeMode.cover}
               source={{
-                uri: props.tutor.uri,
+                uri: props.tutor.avatar,
                 priority: FastImage.priority.normal,
               }}
             />
@@ -102,7 +102,7 @@ const TutorItemSearch = props => {
                 isDisabled={true}
               /> */}
             <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 1, marginLeft: 20}}>
-            <Text style={{color: 'orange'}}>{props.tutor.startingValue}/5 </Text>
+            <Text style={{color: 'orange'}}>{5}/5 </Text>
             <Image 
               //style={{marginLeft: 30}}
               //resizeMode={FastImage.resizeMode.cover}
@@ -112,11 +112,11 @@ const TutorItemSearch = props => {
           </View>
         </View>
         {/* <TagActiveList arrTitle={props.tutor.arrTitle} /> */}
-         <ListTags arr={props.tutor.arrTitle}/>
+         <ListTags arr={props.tutor.specialties.split(",")}/>
         <Text
           numberOfLines={NUM_OF_LINES}
           style={{fontSize: 15, color: 'black', marginTop: 5}}>
-          {props.tutor.description}
+          {props.tutor.bio}
         </Text>
       </View>
     </Pressable>
