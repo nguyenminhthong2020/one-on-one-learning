@@ -17,8 +17,12 @@ import CountryPicker from 'react-native-country-picker-modal';
 // import {useForm, Controller} from 'react-hook-form';
 import TutorItem from '../../common/TutorItem/TutorItem';
 //const TutorItem = React.lazy(()=>{'../../common/TutorItem/TutorItem'});
+import { useSelector } from 'react-redux';
+
 
 const Search = props => {
+  const langState = useSelector(state => state.lang);
+
   const array = [
     {
       id: 0,
@@ -255,7 +259,7 @@ const Search = props => {
           marginTop: 10,
         }}>
         <Text style={{fontSize: 17, color: MAIN_COLOR, fontWeight: 'bold'}}>
-          *Name:{'   '}
+          *{langState[langState.currentLang].Name}:{'   '}
         </Text>
         <TextInput
           style={{
@@ -266,7 +270,7 @@ const Search = props => {
             width: '60%',
             backgroundColor: 'white',
           }}
-          placeholder="search name..."
+          placeholder={langState == "en" ? "search name..." : "tìm theo tên..."}
         />
       </View>
       <View
@@ -278,7 +282,7 @@ const Search = props => {
           marginBottom: 15,
         }}>
         <Text style={{fontSize: 17, color: MAIN_COLOR, fontWeight: 'bold'}}>
-          *Select country:{'  '}
+          *{langState[langState.currentLang].Select_country}:{'  '}
         </Text>
         <CountryPicker
           withFlag
@@ -293,7 +297,9 @@ const Search = props => {
       </View>
       <View style={styles.container1}>
         <Pressable style={styles.button1} onPress={() => alert('search tutor')}>
-          <Text style={styles.text1}>Search</Text>
+          <Text style={styles.text1}>
+          {langState[langState.currentLang].Search}
+          </Text>
         </Pressable>
       </View>
       {/* <View style={{alignItems: 'center'}}>

@@ -13,6 +13,8 @@ import {
 
 // import {useForm, Controller} from 'react-hook-form';
 import FastImage from 'react-native-fast-image';
+import { useSelector } from 'react-redux';
+
 
 const Schedule = () => {
   const arrComingClass = [
@@ -55,7 +57,8 @@ const Schedule = () => {
   // // }
   // // const onPressPrev = () => {
   // // }
-
+ 
+  const langState = useSelector(state => state.lang);
   return (
     <View>
       <View>
@@ -126,7 +129,7 @@ const Schedule = () => {
                   }}>
                   <Text
                     style={{color: 'white', textAlign: 'center', fontSize: 18}}>
-                    Cancel
+                    {langState[langState.currentLang].Cancel}
                   </Text>
                 </View>
               </Pressable>
@@ -142,7 +145,7 @@ const Schedule = () => {
                   }}>
                   <Text
                     style={{color: 'white', textAlign: 'center', fontSize: 18}}>
-                    Go to meeting
+                    {langState[langState.currentLang].Go_to_meeting}
                   </Text>
                 </View>
               </Pressable>

@@ -28,10 +28,25 @@ import NotifyForgetPassword from '../components/Authentication/ForgetPassword/No
 import Register from '../components/Authentication/Register/Register';
 import { useSelector} from 'react-redux';
 
+// import i18n from "../utils/i18n";
+// const home = i18n.t("Home");
+// const message = i18n.t("Message");
+// const upcoming = i18n.t("Upcoming");
+// const tutors = i18n.t("Tutors");
+// const settings = i18n.t("Settings");
+// import { useTranslation } from 'react-i18next'
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function MainTabs(props) {
+  //const currentLang = useSelector(state => state.lang.currentLang);
+  //console.log(currentLang);
+  const langState = useSelector(state => state.lang);
+  //console.log(langState[langState.currentLang].Home);
+  // const currentLang = useSelector(state => state.lang.currentLang);
+
+
   return (
     <Tab.Navigator
       //initialRouteName="Home"
@@ -42,6 +57,7 @@ function MainTabs(props) {
         name="Home"
         component={Home}
         options={{
+          title: langState[langState.currentLang].Home,
           headerShown: false,
           tabBarIcon: ({color, size}) => (
             <FontAwesome name="home" color={color} size={size} />
@@ -52,6 +68,7 @@ function MainTabs(props) {
         name="Message"
         component={ListMessage}
         options={{
+          title: langState[langState.currentLang].Message,
           headerShown: false,
           tabBarIcon: ({color, size}) => (
             <Ionicons name="chatbubbles" color={color} size={size} />
@@ -62,6 +79,7 @@ function MainTabs(props) {
         name="Upcoming"
         component={Upcoming}
         options={{
+          title: langState[langState.currentLang].Upcoming,
           headerShown: true,
           tabBarIcon: ({color, size}) => (
             <Ionicons name="time-outline" color={color} size={size} />
@@ -72,6 +90,7 @@ function MainTabs(props) {
         name="Tutors"
         component={Search}
         options={{
+          title: langState[langState.currentLang].Tutors,
           headerShown: false,
           tabBarIcon: ({color, size}) => (
             <FontAwesome name="group" color={color} size={size} />
@@ -82,6 +101,7 @@ function MainTabs(props) {
         name="Settings"
         component={Setting}
         options={{
+          title: langState[langState.currentLang].Settings,
           headerShown: true,
           tabBarIcon: ({color, size}) => (
             <Ionicons name="settings" color={color} size={size} />
@@ -93,6 +113,7 @@ function MainTabs(props) {
 }
 
 function MainNavigation(props) {
+  const langState = useSelector(state => state.lang);
   const check = useSelector(state => state.auth.isLoggin);
   return (
     <Stack.Navigator
@@ -153,7 +174,9 @@ function MainNavigation(props) {
       <Stack.Screen
         name="Schedule"
         component={Schedule}
-        options={{headerShown: true}}
+        options={{headerShown: true,
+         title: langState[langState.currentLang].Schedule
+        }}
       />
       <Stack.Screen
         name="Favorites"
@@ -168,7 +191,7 @@ function MainNavigation(props) {
       <Stack.Screen
         name="History"
         component={History}
-        options={{headerShown: true}}
+        options={{headerShown: true, title: langState[langState.currentLang].History}}
       />
       <Stack.Screen
         name="TutorMessage"

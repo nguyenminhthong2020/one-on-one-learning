@@ -40,6 +40,7 @@ import { useSelector } from 'react-redux';
 
 const Home = (props) => {
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
+  const langState = useSelector(state => state.lang);
 
   const [state, setstate] = useState(true);
 
@@ -262,7 +263,7 @@ const Home = (props) => {
     return (
       <View>
         <Text style={{fontSize: 18, fontWeight: 'bold', color: isDarkTheme ? 'white':'black'}}>
-          Filter Tutors:{' '}
+          {langState[langState.currentLang].Filter_Tutors}:{' '}
         </Text>
         <View style={{flexDirection: 'row', marginTop: 5}}>
           <MyTag title={'All'} onPress={() => alert('all')} />
@@ -355,10 +356,12 @@ const Home = (props) => {
             marginBottom: 3,
           }}>
           <Text style={{fontSize: 18, fontWeight: 'bold', color: isDarkTheme ? 'white' : 'black'}}>
-            Recommend Tutors
+          {langState[langState.currentLang].Recommend_Tutors}
           </Text>
           <Pressable onPress={() => props.navigation.navigate("Tutors")}>
-            <Text style={{color: isDarkTheme ? 'yellow' : MAIN_COLOR, fontSize: 16}}>{`See All >`}</Text>
+            <Text style={{color: isDarkTheme ? 'yellow' : MAIN_COLOR, fontSize: 16}}>
+            {langState[langState.currentLang].See_All} {'>'}
+            </Text>
           </Pressable>
         </View>
         {renderTestScrollView()}

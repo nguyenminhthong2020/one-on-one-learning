@@ -318,6 +318,8 @@ const TutorDetailNew = (props) => {
   const [like, setLike] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModalVisibleBooking, setModalVisibleBooking] = useState(false);
+  const langState = useSelector(state => state.lang);
+
   
   const arrayDateTime = [
     {
@@ -630,7 +632,7 @@ const TutorDetailNew = (props) => {
                   textAlign: 'center',
                   fontSize: 18,
                 }}>
-                Booking
+                {langState[langState.currentLang].Booking}
               </Text>
             </Pressable>
           </View>
@@ -668,7 +670,7 @@ const TutorDetailNew = (props) => {
                         fontWeight: 'bold',
                         fontSize: 16,
                       }}>
-                      Message
+                      {langState[langState.currentLang].Message}
                     </Text>
                   </View>
                 </View>
@@ -697,7 +699,7 @@ const TutorDetailNew = (props) => {
                         fontWeight: 'bold',
                         fontSize: 16,
                       }}>
-                      Report
+                      {langState[langState.currentLang].Report}
                     </Text>
                   </View>
                 </View>
@@ -731,7 +733,7 @@ const TutorDetailNew = (props) => {
                 fontWeight: 'bold',
                 marginBottom: 2,
               }}>
-              Languages
+              {langState[langState.currentLang].Languages}
             </Text>
             <View style={{marginLeft: 5}}>
               <ListTags arr={['English', 'Tagalog']} />
@@ -745,7 +747,7 @@ const TutorDetailNew = (props) => {
                 fontWeight: 'bold',
                 marginBottom: 2,
               }}>
-              Education
+              {langState[langState.currentLang].Education}
             </Text>
             <Text style={{marginLeft: 5, color: isDarkTheme? 'white': 'black'}}>
               I have graduated with a degree in Bachelor of Science, major in
@@ -761,7 +763,7 @@ const TutorDetailNew = (props) => {
                 fontWeight: 'bold',
                 marginBottom: 2,
               }}>
-              Expericence
+              {langState[langState.currentLang].Experience}
             </Text>
             <Text style={{marginLeft: 5, color: isDarkTheme? 'white': 'black'}}>
               I have been teaching English online since 2020 catering to
@@ -776,7 +778,7 @@ const TutorDetailNew = (props) => {
                 fontWeight: 'bold',
                 marginBottom: 2,
               }}>
-              Interest
+              {langState[langState.currentLang].Interest}
             </Text>
             <Text style={{marginLeft: 5,color: isDarkTheme? 'white': 'black'}}>
               Cooking, Mingling with kids, Watch my small retail store,
@@ -791,7 +793,7 @@ const TutorDetailNew = (props) => {
                 fontWeight: 'bold',
                 marginBottom: 2,
               }}>
-              Profession
+              {langState[langState.currentLang].Profession}
             </Text>
             <Text style={{marginLeft: 5,color: isDarkTheme? 'white': 'black'}}>Online English Teacher</Text>
           </View>
@@ -803,7 +805,7 @@ const TutorDetailNew = (props) => {
                 fontWeight: 'bold',
                 marginBottom: 2,
               }}>
-              Specialities
+              {langState[langState.currentLang].Specialities}
             </Text>
             <View style={{marginLeft: 5}}>
               <ListTags
@@ -826,7 +828,7 @@ const TutorDetailNew = (props) => {
                 fontWeight: 'bold',
                 marginBottom: 2,
               }}>
-              Course
+              {langState[langState.currentLang].Courses}
             </Text>
           </View>
 
@@ -838,7 +840,7 @@ const TutorDetailNew = (props) => {
                 fontWeight: 'bold',
                 marginBottom: 2,
               }}>
-              Rating and Comments (13)
+              {langState[langState.currentLang].Rating_and_Comments} (13)
             </Text>
           </View>
           <View
@@ -857,7 +859,7 @@ const TutorDetailNew = (props) => {
                   textAlign: 'center',
                   fontSize: 18,
                 }}>
-                Click to see
+                {langState[langState.currentLang].Click_to_see}
               </Text>
             </Pressable>
           </View>

@@ -7,11 +7,16 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { moderateScale } from 'react-native-size-matters';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeTheme } from '../../../redux/slices/setting/themeSlice';
+// import { changeLanguage } from 'i18next';
+import {change} from '../../../redux/slices/setting/langSlice1';
 
 export default function ChangeSetting(props) {
   const dispatch = useDispatch();
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme)
   const [state, setstate] = useState(true);
+
+  // const currentLang = useSelector(state => state.theme.isDarkTheme);
+  // const i18n = useSelector(state => state.lang.i18n);
 
   return (
     <View style={styles.container}>
@@ -43,6 +48,8 @@ export default function ChangeSetting(props) {
                 setstate(value)
                 if(props.type=='theme'){
                   dispatch(changeTheme());
+              }else{
+                dispatch(change());
               }
               }}
             />

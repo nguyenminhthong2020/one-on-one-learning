@@ -44,6 +44,7 @@ const Profile = (props) => {
   const userEmail = useSelector(state => state.auth.current.email);
   const userName = useSelector(state => state.auth.current.name);
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme)
+  const langState = useSelector(state => state.lang);
 
   const {
     control,
@@ -147,7 +148,7 @@ const Profile = (props) => {
         </View>
       </View>
       <View style={{alignItems: 'center'}}>
-        <Text>Name: {userName}</Text>
+        <Text>{langState[langState.currentLang].Name}: {userName}</Text>
       </View>
       <Controller
         control={control}
@@ -329,7 +330,8 @@ const Profile = (props) => {
         </View>
       </View>
       <View style={{paddingLeft: '20%'}}>
-        <Text style={{fontSize: 17, color: isDarkTheme?'white':'gray'}}>What to learn:</Text>
+        <Text style={{fontSize: 17, color: isDarkTheme?'white':'gray'}}>
+        {langState[langState.currentLang].What_to_learn}:</Text>
       </View>
       <View style={{paddingLeft: '10%', marginBottom: 35, backgroundColor: isDarkTheme? 'white': SECOND_COLOR}}>
         <SelectBox
@@ -344,7 +346,7 @@ const Profile = (props) => {
         />
       </View>
       {/* {errors.email && <Text style={styles.error}>{'please type gmail'}</Text>} */}
-      <Button title="Save" handleSubmit={handleSubmit} onSubmit={onSubmit} />
+      <Button title={langState[langState.currentLang].Save} handleSubmit={handleSubmit} onSubmit={onSubmit} />
       <ImagePickerModal
         isVisible={visible}
         onClose={() => setVisible(false)}

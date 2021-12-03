@@ -16,11 +16,13 @@ import {
 
 //import Header from '../../_common/Header/Header';
 import ButtonIcon from '../../_common/Button/ButtonIcon';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../../redux/slices/auth/loginSlice';
 
 const Menu = props => {
   const dispatch = useDispatch();
+  const langState = useSelector(state => state.lang);
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -29,7 +31,7 @@ const Menu = props => {
           <ButtonIcon
             type={'AntDesign'}
             name={'user'}
-            title={'Profile'}
+            title={langState[langState.currentLang].Profile}
             handleOnPress={() => props.navigation.navigate('Profile')}
           />
           {/* <ButtonIcon
@@ -41,37 +43,37 @@ const Menu = props => {
           <ButtonIcon
             type={'FontAwesome5'}
             name={'calendar-check'}
-            title={'Schedule'}
+            title={langState[langState.currentLang].Schedule}
             handleOnPress={() => props.navigation.navigate("Schedule")}
           />
           <ButtonIcon
             type={'FontAwesome5'}
             name={'history'}
-            title={'History'}
+            title={langState[langState.currentLang].History}
             handleOnPress={() => props.navigation.navigate("History")}
           />
           <ButtonIcon
             type={'FontAwesome5'}
             name={'graduation-cap'}
-            title={'Courses'}
+            title={langState[langState.currentLang].Courses}
             handleOnPress={() => props.navigation.navigate('ListCourse')}
           />
            <ButtonIcon
             type={'FontAwesome5'}
             name={'heart'}
-            title={'Favorites'}
+            title={langState[langState.currentLang].Favorite}
             handleOnPress={() => props.navigation.navigate('Favorites')}
           />
           <ButtonIcon
             type={'FontAwesome5'}
             name={'user-graduate'}
-            title={'Become a tutor'}
+            title={langState[langState.currentLang].Become_a_tutor}
             handleOnPress={() => props.navigation.navigate('BecomeTutor')}
           />
           <ButtonIcon
             type={'AntDesign'}
             name={'logout'}
-            title={'Logout'}
+            title={langState[langState.currentLang].Logout}
             handleOnPress={() => {
               dispatch(logout());
               props.navigation.navigate('Login')

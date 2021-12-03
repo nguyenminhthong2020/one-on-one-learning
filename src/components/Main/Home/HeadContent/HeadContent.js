@@ -6,17 +6,28 @@ import {Text, View, StyleSheet, TouchableOpacity, Pressable} from 'react-native'
 // import Input from '../../../components/_common/Input/Input';
 // import Button from '../../../components/_common/Button/Button';
 // import {SocialIcon} from 'react-native-elements';
+import { useSelector} from 'react-redux';
 
 const HeadContent = props => {
+  const langState = useSelector(state => state.lang);
+
   return props.state === true ? (
     <View style={styles.headContent}>
       <View style={{marginBottom: 10, marginTop: 10}}>
-        <Text style={{fontSize: 18, color: 'white'}}>
+        {
+          langState.currentLang == "en" ?
+          <Text style={{fontSize: 18, color: 'white'}}>
           Total lesson time is 0 hours 0 minutes
+        </Text> : 
+        <Text style={{fontSize: 18, color: 'white'}}>
+          Tổng thời gian học là 0 giờ 0 phút
         </Text>
+        }
       </View>
       <View style={{marginBottom: 10}}>
-        <Text style={{fontSize: 17, color: 'white'}}>Upcoming Lesson</Text>
+        <Text style={{fontSize: 17, color: 'white'}}>
+          {langState[langState.currentLang].Upcoming_Lesson}
+        </Text>
       </View>
       <View style={{marginBottom: 10}}>
         <Text style={{fontSize: 17, color: 'white'}}>
@@ -34,7 +45,7 @@ const HeadContent = props => {
         }}>
         <Pressable onPress={()=>props.navigation.navigate("VideoCall")}>
           <Text style={{fontSize: 16, color: MAIN_COLOR}}>
-            Enter lesson room
+          {langState[langState.currentLang].Enter_lesson_room}
           </Text>
         </Pressable>
       </View>
@@ -42,7 +53,10 @@ const HeadContent = props => {
   ) : (
     <View style={styles.headContent}>
       <View style={{marginBottom: 20, marginTop: 30}}>
-        <Text style={{fontSize: 18, color: 'white'}}>Welcome to LetTutor</Text>
+        {langState.currentLang == "en" ?
+          <Text style={{fontSize: 18, color: 'white'}}>Welcome to LetTutor</Text> :
+          <Text style={{fontSize: 18, color: 'white'}}>Chào mừng đến LetTutor</Text>
+          }
       </View>
       {/* <View style={{marginBottom: 10}}>
           <Text style={{fontSize: 18, color: 'white'}}>
