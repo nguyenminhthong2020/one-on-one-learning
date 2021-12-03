@@ -43,18 +43,25 @@ const Home = (props) => {
   const dispatch = useDispatch();
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
   const langState = useSelector(state => state.lang);
-  
-  const [array, setArray] = useState([]);
+
   const [spec, setSpec] = useState([""]);
-  const arrayState = useSelector(state => state.searchtutor.rows);
+  const [array, setArray] = useState([]);
+
+
   useEffect(() => {
     dispatch(searchSpecAsync(
       {
         specialties: spec
       }
     ));
-    setArray(arrayState);
   }, [spec])
+  
+
+  const arrayState = useSelector(state => state.searchtutor.rows);
+  useEffect(() => {
+    setArray(arrayState);
+  }, [arrayState])
+ 
 
 
   const [state, setstate] = useState(true);
@@ -279,29 +286,63 @@ const Home = (props) => {
   const renderFilterTag = () => {
     return (
       <View>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <Text style={{fontSize: 18, fontWeight: 'bold', color: isDarkTheme ? 'white':'black'}}>
-          {langState[langState.currentLang].Filter_Tutors}:{' '}
+          {langState[langState.currentLang].Filter_Tutors}: {' '} 
+          {/* {' '} */}
         </Text>
+        <Text style={{color: isDarkTheme? "yellow": "red"}}>{spec}</Text>
+        </View>
         <View style={{flexDirection: 'row', marginTop: 5}}>
-          <MyTag title={'All'} onPress={() => alert('all')} />
+          <MyTag title={'All'} onPress={() => {
+            // alert('all');
+            setSpec([""]);
+          }} />
           <MyTag
             title={'ConversationalEnglish'}
-            onPress={() => alert('filter')}
+            onPress={() => {
+              // alert('conversational-english');
+              setSpec(["conversational-english"]);
+              }}
           />
-          <MyTag title={'BusinessEnglish'} onPress={() => alert('filter')} />
+          <MyTag title={'BusinessEnglish'} onPress={() => {
+            // alert('business-english');
+            setSpec(["business-english"])
+            }} />
         </View>
         <View style={{flexDirection: 'row', marginTop: 3}}>
-          <MyTag title={'EnglishforKids'} onPress={() => alert('filter')} />
-          <MyTag title={'STARTERS'} onPress={() => alert('filter')} />
-          <MyTag title={'FLYERS'} onPress={() => alert('filter')} />
-          <MyTag title={'KET'} onPress={() => alert('filter')} />
+          <MyTag title={'EnglishforKids'} onPress={() => {
+            // alert('english-for-kids');
+            setSpec(["english-for-kids"]);
+          }} />
+          <MyTag title={'STARTERS'} onPress={() => {
+            // alert('starters');
+            setSpec("starters");
+          }} />
+          <MyTag title={'FLYERS'} onPress={() => {
+            // alert('flyers');
+            setSpec(["flyers"])}} />
+          <MyTag title={'KET'} onPress={() => {
+          // alert('ket');
+          setSpec(["ket"]);
+          }} />
         </View>
         <View style={{flexDirection: 'row', marginTop: 3}}>
-          <MyTag title={'MOVERS'} onPress={() => alert('filter')} />
-          <MyTag title={'PET'} onPress={() => alert('filter')} />
-          <MyTag title={'IELTS'} onPress={() => alert('filter')} />
-          <MyTag title={'TOEFL'} onPress={() => alert('filter')} />
-          <MyTag title={'TOEIC'} onPress={() => alert('filter')} />
+          <MyTag title={'MOVERS'} onPress={() => {
+            // alert('movers');
+            setSpec(["movers"]);
+          }} />
+          <MyTag title={'PET'} onPress={() => setSpec(["pet"])} />
+          <MyTag title={'IELTS'} onPress={() => {
+            // alert('ielts');
+            setSpec(["ielts"]);
+            }} />
+          <MyTag title={'TOEFL'} onPress={() => {
+            // alert('toefl');
+            setSpec(["toefl"])}} />
+          <MyTag title={'TOEIC'} onPress={() => {
+          // alert('toeic');
+          setSpec(["toeic"])}} />
         </View>
         {/* <View style={{flexDirection: 'row'}}>
            </View> */}
