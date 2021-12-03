@@ -6,6 +6,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import loginReducer from './slices/auth/loginSlice';
 import themeReducer from './slices/setting/themeSlice';
 import langReducer1 from "./slices/setting/langSlice1";
+import searchTutorReducer from "./slices/tutor/searchSlice";
+import moreTutorReducer from "./slices/tutor/moreSlice";
 
 const persistConfig = {
   key: 'root',
@@ -17,6 +19,8 @@ const reducers = combineReducers({
     auth: loginReducer,
     theme: themeReducer,
     lang: langReducer1,
+    searchtutor: searchTutorReducer,
+    moretutor: moreTutorReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers)

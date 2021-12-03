@@ -21,7 +21,7 @@ import ListTags from '../../../_common/ListTags/ListTags';
 //import {Rating} from 'react-native-ratings';
 import FastImage from 'react-native-fast-image';
 
-const TutorItem = props => {
+const TutorItemSearch = props => {
   /*
   const tutor = {
       id: 0,
@@ -47,7 +47,7 @@ const TutorItem = props => {
     <Pressable onPress={props.onPress} style={{marginBottom: 10}}>
       <View style={styles.shadowProp}>
         <View>
-          {like === false ? (
+          {/* {like === false ? (
             <AntDesign
               name={'heart'}
               size={22}
@@ -67,15 +67,15 @@ const TutorItem = props => {
                 setLike(!like);
               }}
             />
-          )}
+          )} */}
         </View>
-        <View style={{flexDirection: 'row', marginBottom: 5, marginTop: 8}}>
+        <View style={{flexDirection: 'row', marginBottom: 5, marginTop: 0}}>
           <View>
             <FastImage
               style={{width: 60, height: 60, borderRadius: 30}}
               resizeMode={FastImage.resizeMode.cover}
               source={{
-                uri: props.tutor.avatar,
+                uri: props.tutor.uri,
                 priority: FastImage.priority.normal,
               }}
             />
@@ -102,7 +102,7 @@ const TutorItem = props => {
                 isDisabled={true}
               /> */}
             <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 1, marginLeft: 20}}>
-            <Text style={{color: 'orange'}}>{5}/5 </Text>
+            <Text style={{color: 'orange'}}>{props.tutor.startingValue}/5 </Text>
             <Image 
               //style={{marginLeft: 30}}
               //resizeMode={FastImage.resizeMode.cover}
@@ -110,33 +110,13 @@ const TutorItem = props => {
             />
             </View>
           </View>
-          {/* <View style={{justifyContent: 'flex-start', marginLeft: 30, marginTop: -13}}>
-             {
-               like === false ? (<AntDesign
-                  name={'heart'}
-                  size={20}
-                  color={'gray'}
-                  style={{paddingLeft: 12}}
-                  style={{textAlign: 'right'}}
-                  //style={{marginRight: 0}}
-                  onPress={() => {setLike(!like)}}
-                />)
-                : (<AntDesign
-                  name={'heart'}
-                  size={20}
-                  color={'rgb(240, 72, 72)'}
-                  style={{paddingLeft: 12}}
-                  onPress={() => {setLike(!like)}}
-                />)
-             }
-          </View> */}
         </View>
         {/* <TagActiveList arrTitle={props.tutor.arrTitle} /> */}
-         <ListTags arr={props.tutor.specialties.split(",")}/>
+         <ListTags arr={props.tutor.arrTitle}/>
         <Text
           numberOfLines={NUM_OF_LINES}
           style={{fontSize: 15, color: 'black', marginTop: 5}}>
-          {props.tutor.bio}
+          {props.tutor.description}
         </Text>
       </View>
     </Pressable>
@@ -164,4 +144,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TutorItem;
+export default TutorItemSearch;

@@ -16,6 +16,7 @@ import CountryPicker from 'react-native-country-picker-modal';
 
 // import {useForm, Controller} from 'react-hook-form';
 import TutorItem from '../../common/TutorItem/TutorItem';
+import TutorItemSearch from '../../common/TutorItem/TutorItemSearch';
 //const TutorItem = React.lazy(()=>{'../../common/TutorItem/TutorItem'});
 import { useSelector } from 'react-redux';
 
@@ -223,7 +224,7 @@ const Search = props => {
             // <Suspense fallback={<View></View>} key={i.index}>
             //   <TutorItem onPress={() => onPressTutor(i.index)} tutor={i.item} />
             // </Suspense>
-            <TutorItem
+            <TutorItemSearch
               onPress={
                 () =>
                   props.navigation.navigate('TutorDetailNew', {
