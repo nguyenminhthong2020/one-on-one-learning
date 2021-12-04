@@ -25,7 +25,7 @@ const Login = (props) => {
   
 
   const check = useSelector(state => state.auth.isLoggin);
-  console.log(check);
+  // console.log(check);
 
   const onSubmit = function(data){
     //dispatch()
@@ -36,14 +36,14 @@ const Login = (props) => {
   }
   
   useEffect(() => {
-    console.log("dispatch nè");
+    // console.log("dispatch nè");
     if(check == true){
       props.navigation.navigate("MainTabs");
     }
   }, [check])
 
   useEffect(() => {
-       console.log("dispatch nè");
+      //  console.log("dispatch nè");
        if(check == true){
          props.navigation.navigate("MainTabs");
        }

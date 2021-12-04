@@ -32,37 +32,48 @@ import MyTag from '../../_common/FlexibleButton/TagFlexibleButton';
 //import TutorItem from '../common/TutorItem/TutorItem';
 
 const TutorItem = React.lazy(() => import('../common/TutorItem/TutorItem'));
-import { useSelector, useDispatch } from 'react-redux';
-import { searchSpecAsync } from '../../../redux/slices/tutor/searchSlice';
+import {useSelector, useDispatch} from 'react-redux';
+import {searchSpecAsync} from '../../../redux/slices/tutor/searchSlice';
+import {moreAsync} from '../../../redux/slices/tutor/moreSlice';
 
 //import {Rating} from 'react-native-ratings';
 //import { Rating } from 'react-native-elements';  // = cái ở dưới
 //import FastImage from 'react-native-fast-image';
 
-const Home = (props) => {
+const Home = props => {
   const dispatch = useDispatch();
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
   const langState = useSelector(state => state.lang);
 
-  const [spec, setSpec] = useState([""]);
+  const [spec, setSpec] = useState(['']);
   const [array, setArray] = useState([]);
 
+  useEffect(() => {
+    dispatch(
+      moreAsync({
+        page: 1,
+        perPage: 9,
+      }),
+    );
+  }, []);
+  const listFavorite = useSelector(state => state.moretutor.rows);
+  // console.log("\nIn list favorite")
+  // console.log(listFavorite);
 
   useEffect(() => {
-    dispatch(searchSpecAsync(
-      {
-        specialties: spec
-      }
-    ));
-  }, [spec])
-  
+    dispatch(
+      searchSpecAsync({
+        filters: {specialties: spec, date: '2021-12-04T06:03:15.995Z'},
+        page: 1,
+        perPage: 12,
+      }),
+    );
+  }, [spec]);
 
   const arrayState = useSelector(state => state.searchtutor.rows);
   useEffect(() => {
     setArray(arrayState);
-  }, [arrayState])
- 
-
+  }, [arrayState]);
 
   const [state, setstate] = useState(true);
 
@@ -263,11 +274,26 @@ const Home = (props) => {
 
   // ];
 
-
   //const onPressTutor = index =>  //alert('link to tutor detail index ' + index);
 
   const renderTestScrollView = () => {
-    return array.map((tutor, index) => (
+    let arrayFav = [];
+    let arrayNoFav = [];
+
+    array.forEach(item => 
+      listFavorite.includes(item.userId) ? 
+      arrayFav.push({...item, isFavorite: true}) : 
+      arrayNoFav.push({...item, isFavorite: false}));
+    
+    const array1 = [...arrayFav, ...arrayNoFav];
+
+    return array1.length == 0 ? 
+    (<View style={{marginTop: 20}}>
+       <Text style={{fontSize: 20, color: isDarkTheme ? "yellow": "blue", textAlign: 'center'}}>
+           No Tutor !
+       </Text>
+    </View>) : 
+    array1.map((tutor, index) => (
       <Suspense
         fallback={
           <View style={{alignItems: 'center'}}>
@@ -275,10 +301,16 @@ const Home = (props) => {
           </View>
         }
         key={index}>
-        <TutorItem onPress={() => props.navigation.navigate("TutorDetailNew", {
-          uri: tutor.avatar,
-          name: tutor.name,
-        })/*onPressTutor(index)*/} tutor={tutor} />
+        <TutorItem
+          onPress={
+            () =>
+              props.navigation.navigate('TutorDetailNew', {
+                uri: tutor.avatar,
+                name: tutor.name,
+              }) /*onPressTutor(index)*/
+          }
+          tutor={tutor}
+        />
       </Suspense>
     ));
   };
@@ -287,62 +319,99 @@ const Home = (props) => {
     return (
       <View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <Text style={{fontSize: 18, fontWeight: 'bold', color: isDarkTheme ? 'white':'black'}}>
-          {langState[langState.currentLang].Filter_Tutors}: {' '} 
-          {/* {' '} */}
-        </Text>
-        <Text style={{color: isDarkTheme? "yellow": "red"}}>{spec}</Text>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: 'bold',
+              color: isDarkTheme ? 'white' : 'black',
+            }}>
+            {langState[langState.currentLang].Filter_Tutors}: {/* {' '} */}
+          </Text>
+          <Text style={{color: isDarkTheme ? 'yellow' : 'red'}}>{spec}</Text>
         </View>
         <View style={{flexDirection: 'row', marginTop: 5}}>
-          <MyTag title={'All'} onPress={() => {
-            // alert('all');
-            setSpec([""]);
-          }} />
+          <MyTag
+            title={'All'}
+            onPress={() => {
+              // alert('all');
+              setSpec(['']);
+            }}
+          />
           <MyTag
             title={'ConversationalEnglish'}
             onPress={() => {
               // alert('conversational-english');
-              setSpec(["conversational-english"]);
-              }}
+              setSpec(['conversational-english']);
+            }}
           />
-          <MyTag title={'BusinessEnglish'} onPress={() => {
-            // alert('business-english');
-            setSpec(["business-english"])
-            }} />
+          <MyTag
+            title={'BusinessEnglish'}
+            onPress={() => {
+              // alert('business-english');
+              setSpec(['business-english']);
+            }}
+          />
         </View>
         <View style={{flexDirection: 'row', marginTop: 3}}>
-          <MyTag title={'EnglishforKids'} onPress={() => {
-            // alert('english-for-kids');
-            setSpec(["english-for-kids"]);
-          }} />
-          <MyTag title={'STARTERS'} onPress={() => {
-            // alert('starters');
-            setSpec("starters");
-          }} />
-          <MyTag title={'FLYERS'} onPress={() => {
-            // alert('flyers');
-            setSpec(["flyers"])}} />
-          <MyTag title={'KET'} onPress={() => {
-          // alert('ket');
-          setSpec(["ket"]);
-          }} />
+          <MyTag
+            title={'EnglishforKids'}
+            onPress={() => {
+              // alert('english-for-kids');
+              setSpec(['english-for-kids']);
+            }}
+          />
+          <MyTag
+            title={'STARTERS'}
+            onPress={() => {
+              // alert('starters');
+              setSpec('starters');
+            }}
+          />
+          <MyTag
+            title={'FLYERS'}
+            onPress={() => {
+              // alert('flyers');
+              setSpec(['flyers']);
+            }}
+          />
+          <MyTag
+            title={'KET'}
+            onPress={() => {
+              // alert('ket');
+              setSpec(['ket']);
+            }}
+          />
         </View>
         <View style={{flexDirection: 'row', marginTop: 3}}>
-          <MyTag title={'MOVERS'} onPress={() => {
-            // alert('movers');
-            setSpec(["movers"]);
-          }} />
-          <MyTag title={'PET'} onPress={() => setSpec(["pet"])} />
-          <MyTag title={'IELTS'} onPress={() => {
-            // alert('ielts');
-            setSpec(["ielts"]);
-            }} />
-          <MyTag title={'TOEFL'} onPress={() => {
-            // alert('toefl');
-            setSpec(["toefl"])}} />
-          <MyTag title={'TOEIC'} onPress={() => {
-          // alert('toeic');
-          setSpec(["toeic"])}} />
+          <MyTag
+            title={'MOVERS'}
+            onPress={() => {
+              // alert('movers');
+              setSpec(['movers']);
+            }}
+          />
+          <MyTag title={'PET'} onPress={() => setSpec(['pet'])} />
+          <MyTag
+            title={'IELTS'}
+            onPress={() => {
+              // alert('ielts');
+              setSpec(['ielts']);
+            }}
+          />
+          <MyTag
+            title={'TOEFL'}
+            onPress={() => {
+              // alert('toefl');
+              setSpec(['toefl']);
+            }}
+          />
+          <MyTag
+            title={'TOEIC'}
+            onPress={() => {
+              // alert('toeic');
+              setSpec(['toeic']);
+            }}
+          />
         </View>
         {/* <View style={{flexDirection: 'row'}}>
            </View> */}
@@ -396,9 +465,12 @@ const Home = (props) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         //</View>style={{marginBottom: 25}}
-        >
+      >
         <Suspense fallback={<View></View>}>
-          <HeadContent state={state} setstate={setstate} navigation={props.navigation}></HeadContent>
+          <HeadContent
+            state={state}
+            setstate={setstate}
+            navigation={props.navigation}></HeadContent>
         </Suspense>
 
         <View style={{marginHorizontal: 18, marginTop: 20, marginBottom: 3}}>
@@ -413,12 +485,21 @@ const Home = (props) => {
             marginTop: 30,
             marginBottom: 3,
           }}>
-          <Text style={{fontSize: 18, fontWeight: 'bold', color: isDarkTheme ? 'white' : 'black'}}>
-          {langState[langState.currentLang].Recommend_Tutors}
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: 'bold',
+              color: isDarkTheme ? 'white' : 'black',
+            }}>
+            {langState[langState.currentLang].Recommend_Tutors}
           </Text>
-          <Pressable onPress={() => props.navigation.navigate("Tutors")}>
-            <Text style={{color: isDarkTheme ? 'yellow' : MAIN_COLOR, fontSize: 16}}>
-            {langState[langState.currentLang].See_All} {'>'}
+          <Pressable onPress={() => props.navigation.navigate('Tutors')}>
+            <Text
+              style={{
+                color: isDarkTheme ? 'yellow' : MAIN_COLOR,
+                fontSize: 16,
+              }}>
+              {langState[langState.currentLang].See_All} {'>'}
             </Text>
           </Pressable>
         </View>

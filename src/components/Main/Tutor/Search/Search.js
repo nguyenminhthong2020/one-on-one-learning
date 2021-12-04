@@ -22,6 +22,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { searchSpecAsync } from '../../../../redux/slices/tutor/searchSlice';
 import MyTag from '../../../_common/FlexibleButton/TagFlexibleButton';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { moreAsync } from '../../../../redux/slices/tutor/moreSlice';
 
 const Search = props => {
   const dispatch = useDispatch();
@@ -213,12 +214,22 @@ const Search = props => {
   const [array, setArray] = useState([]);
 
   //const [arrayShow, setArrayShow] = useState(array);
-
+  useEffect(() => {
+    dispatch(
+      moreAsync({
+        page: 1,
+        perPage: 9,
+      }),
+    );
+  }, []);
+  const listFavorite = useSelector(state => state.moretutor.rows);
 
   useEffect(() => {
     dispatch(searchSpecAsync(
       {
-        specialties: spec
+        filters: {specialties: spec, date: '2021-12-04T06:03:15.995Z'},
+        page: 1,
+        perPage: 12,
       }
     ));
   }, [spec])
@@ -232,24 +243,26 @@ const Search = props => {
   const [country, setCountry] = useState({name: '', cca2: ''}); // Vietnam, VN
   const [nameQuery, setNameQuery] = useState("");
 
-  const onPressTutor = index => alert('link to tutor detail index ' + index);
+  //const onPressTutor = index => alert('link to tutor detail index ' + index);
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme)
 
   const renderTest = array => {
-    return array.length == 0 ? (
+    const array1 = array.map(item => listFavorite.includes(item.userId) ? {...item, isFavorite: true} : {...item, isFavorite: false});
+
+    return array1.length == 0 ? (
       <View style={{alignItems: 'center', marginTop: 30}}>
         <Text style={{fontSize: 20, color: MAIN_COLOR}}>No Tutor !</Text>
       </View>
     ):(
       <View>
         <FlatList
-          style={{marginBottom: 150, marginTop: 10}}
+          style={{marginBottom: 260, marginTop: 10}}
           //ListHeaderComponentStyle={{marginBottom: -20}}
           showsVerticalScrollIndicator={true}
           initialNumToRender={3}
-          data={array}
+          data={array1}
           keyExtractor={(item, index) => index.toString()}
-          extraData={array}
+          extraData={array1}
           renderItem={i => (
             // <Suspense fallback={<View></View>} key={i.index}>
             //   <TutorItem onPress={() => onPressTutor(i.index)} tutor={i.item} />

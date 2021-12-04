@@ -29,7 +29,14 @@ export const searchSpecAsync = createAsyncThunk(
         try{
         //res = await axiosInstance1.get(`curated?per_page=${per_page}&page=${page}`);
         //return res.data.photos
-        const res = await searchApi.searchSpec(payload);  // payload: {specialties: []}
+        
+        // payload: 
+        // {
+        //     filters: {specialties: spec, date: '2021-12-04T06:03:15.995Z'},
+        //     page: 1,
+        //     perPage: 12,
+        //   }
+        const res = await searchApi.searchSpec(payload);  
         return res.rows;
       }catch(err){
         if(!err.data){

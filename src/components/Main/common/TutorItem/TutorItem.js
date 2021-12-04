@@ -41,7 +41,7 @@ const TutorItem = props => {
   }*/
 
   //const [score, setScore] = useState(5);
-  const [like, setLike] = useState(false);
+  const [like, setLike] = useState(props.tutor.isFavorite);
 
   return (
     <Pressable onPress={props.onPress} style={{marginBottom: 10}}>
