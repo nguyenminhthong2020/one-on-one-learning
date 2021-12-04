@@ -76,6 +76,9 @@ const Home = props => {
   }, [spec]);
 
   const arrayState = useSelector(state => state.searchtutor.rows);
+  // const states = useSelector(state => state.searchtutor);
+  // console.log(states.is);
+  // console.log(arrayState);
   useEffect(() => {
     setArray(arrayState);
   }, [arrayState]);

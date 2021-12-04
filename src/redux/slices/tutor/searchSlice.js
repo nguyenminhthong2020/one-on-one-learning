@@ -7,7 +7,8 @@ import { searchApi } from '../../../api/tutor/searchApi';
 https://api.app.lettutor.com/tutor/more?perPage=9&page=1
 */
 const initialState = {
-    rows: []
+    rows: [],
+    isPageTwoExist :false
 }
 export const searchSpecAsync = createAsyncThunk(
   'tutor/searchSpecAsync',
@@ -47,6 +48,25 @@ export const searchSpecAsync = createAsyncThunk(
    }
 );
 
+// payload 
+// filters: {specialties: spec, date: '2021-12-04T06:03:15.995Z'},
+//         page: 2,
+//         perPage: 12,
+export const isPageTwoExistAsync = createAsyncThunk(
+    'tutor/isPageTwoExistAsync',
+      async (payload, {rejectWithValue}) => {
+          try{
+          const res = await searchApi.searchSpec(payload);  
+          return res.rows.length > 0;
+        }catch(err){
+          if(!err.data){
+                    throw err
+                  }
+                  return rejectWithValue(err.data)
+        }
+     }
+  );
+
 
 const searchSlice = createSlice({
     name: 'searchtutor',
@@ -63,6 +83,10 @@ const searchSlice = createSlice({
         [searchSpecAsync.fulfilled]: (state, action) => {  
             //state.current = action.payload;
             state.rows = action.payload;
+        },
+        [isPageTwoExistAsync.fulfilled]: (state, action) => {  
+            //state.current = action.payload;
+            state.isPageTwoExist = action.payload;
         }
     }
 })
