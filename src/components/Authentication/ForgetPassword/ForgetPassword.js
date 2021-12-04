@@ -14,7 +14,11 @@ const ForgetPassword = (props) => {
     formState: {errors},
   } = useForm({mode: 'onBlur'});
 
-  const onSubmit = data => alert(JSON.stringify(data));
+  const onSubmit = data => 
+  {
+    //alert(JSON.stringify(data));
+    props.navigation.navigate("NotifyForgetPassword")
+  }
 
   return (
     <View style={styles.container}>

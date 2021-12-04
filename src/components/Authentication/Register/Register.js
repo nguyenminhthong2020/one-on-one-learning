@@ -14,14 +14,17 @@ const Register = (props) => {
     formState: {errors},
   } = useForm({mode: 'onBlur'});
 
-  const onSubmit = data => alert(JSON.stringify(data));
+  const onSubmit = data => {
+    alert("Your registration successfully.\n\nCheck email:\n"+data.email);
+    //alert(JSON.stringify(data));
+  }
 
   return (
+    // <ScrollView>
     <View style={styles.container}>
       {/* <View style={{alignItems: 'center'}}>
         <Text style={styles.text}>LOGIN</Text>
       </View> */}
-      <ScrollView>
       <Controller
         control={control}
         rules={{
@@ -104,7 +107,7 @@ const Register = (props) => {
       />
       </View>
       {/* <TouchableOpacity title="Submit" onPress={handleSubmit(onSubmit)} /> */}
-      <View style={{marginTop: 20, marginBottom: 20}}>
+      <View style={{marginTop: 15, marginBottom: 20}}>
         <Text style={{textAlign: 'center', marginBottom: 5}}>
           Or continute with
         </Text>
@@ -135,7 +138,7 @@ const Register = (props) => {
         </View>
         <View
           style={{
-            marginTop: 30,
+            marginTop: 18,
             flexDirection: 'row',
             justifyContent: 'center',
           }}>
@@ -149,14 +152,14 @@ const Register = (props) => {
           </View>
         </View>
       </View>
-      </ScrollView>
     </View>
+    // </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 15,
+    marginTop: 3,
     flex: 1,
     flexDirection: 'column',
   },
