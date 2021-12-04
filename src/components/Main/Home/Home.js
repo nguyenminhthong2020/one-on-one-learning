@@ -47,6 +47,7 @@ const Home = props => {
 
   const [spec, setSpec] = useState(['']);
   const [array, setArray] = useState([]);
+  const [listFav, setListFav] = useState([]);
 
   useEffect(() => {
     dispatch(
@@ -56,7 +57,11 @@ const Home = props => {
       }),
     );
   }, []);
+
   const listFavorite = useSelector(state => state.moretutor.rows);
+  useEffect(() => {
+    setListFav(listFavorite);
+  }, [listFavorite]);
   // console.log("\nIn list favorite")
   // console.log(listFavorite);
 
@@ -281,9 +286,9 @@ const Home = props => {
     let arrayNoFav = [];
 
     array.forEach(item => 
-      listFavorite.includes(item.userId) ? 
-      arrayFav.push({...item, isFavorite: true}) : 
-      arrayNoFav.push({...item, isFavorite: false}));
+      listFav.includes(item.userId) ? 
+      arrayFav.push({...item}) : 
+      arrayNoFav.push({...item}));
     
     const array1 = [...arrayFav, ...arrayNoFav];
 

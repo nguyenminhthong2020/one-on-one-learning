@@ -20,8 +20,12 @@ import ListTags from '../../../_common/ListTags/ListTags';
 
 //import {Rating} from 'react-native-ratings';
 import FastImage from 'react-native-fast-image';
+import { useDispatch, useSelector } from 'react-redux';
+import { addFavAsync, removeFavAsync } from '../../../../redux/slices/tutor/moreSlice';
+
 
 const TutorItem = props => {
+  const dispatch = useDispatch();
   /*
   const tutor = {
       id: 0,
@@ -41,20 +45,35 @@ const TutorItem = props => {
   }*/
 
   //const [score, setScore] = useState(5);
-  const [like, setLike] = useState(props.tutor.isFavorite);
+  let isFav = useSelector(state => state.moretutor.rows);
+  let check = isFav.includes(props.tutor.userId);
+
+  //const [like, setLike] = useState(check);
+  
 
   return (
     <Pressable onPress={props.onPress} style={{marginBottom: 10}}>
       <View style={styles.shadowProp}>
         <View>
-          {like === false ? (
+          {check === false ? (
             <AntDesign
               name={'heart'}
               size={22}
               color={'gray'}
               style={{textAlign: 'right', marginBottom: -15, marginRight: 10}}
               onPress={() => {
-                setLike(!like);
+                // console.log(isFav);
+                // console.log(props.tutor.userId);
+                dispatch(
+                  addFavAsync(
+                    {
+                      currentList : isFav,
+                      tutorId: props.tutor.userId
+                    }
+                  )
+                )
+                //console.log(isFav);
+                // setLike(like);
               }}
             />
           ) : (
@@ -64,7 +83,15 @@ const TutorItem = props => {
               color={'rgb(240, 72, 72)'}
               style={{textAlign: 'right', marginBottom: -15, marginRight: 10}}
               onPress={() => {
-                setLike(!like);
+                dispatch(
+                  removeFavAsync(
+                    {
+                      currentList : isFav,
+                      tutorId: props.tutor.userId
+                    }
+                  )
+                )
+                // setLike(like);
               }}
             />
           )}

@@ -29,12 +29,52 @@ const response = {
 }
 
 export const moreApi = {
+    add : (payload) => {   
+        return new Promise((resolve, reject) => {
+            setTimeout(
+                () => {
+                    if (1 == 1) {
+                        let testList = [...payload.currentList];
+                        testList.push(payload.tutorId);
+                        resolve(
+                            {
+                                rows: testList//response.tutors.rows.forEach(item => item.userId)
+                            }
+                        )
+                    } else {
+                        reject({
+                            isLooad: false,
+                        })
+                    }
+                }, 100);
+        })
+    },
+    remove: (payload) => {
+        return new Promise((resolve, reject) => {
+            setTimeout(
+                () => {
+                    if (1 == 1) {
+                        let testList = [...payload.currentList];
+                        let newTestList = testList.filter(item => item != payload.tutorId)
+                        resolve(
+                            {
+                                rows: newTestList//response.tutors.rows.forEach(item => item.userId)
+                            }
+                        )
+                    } else {
+                        reject({
+                            isLooad: false,
+                        })
+                    }
+                }, 100);
+        })
+    },
     more: (payload) => {
         return new Promise((resolve, reject) => {
             setTimeout(
                 () => {
                     if (1 == 1) {
-                        const testList = [
+                        let testList = [
                             "cd0a440b-cd19-4c55-a2a2-612707b1c12c",
                             "86248137-6f7d-4cf5-ad2e-34da42722b28"
                         ]

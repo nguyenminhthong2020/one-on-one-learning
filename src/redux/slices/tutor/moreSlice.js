@@ -40,6 +40,40 @@ export const moreAsync = createAsyncThunk(
    }
 );
 
+export const addFavAsync = createAsyncThunk(
+    'tutor/moreAsync',
+      async (payload, {rejectWithValue}) => {
+          try{
+          //res = await axiosInstance1.get(`curated?per_page=${per_page}&page=${page}`);
+          //return res.data.photos
+          const res = await moreApi.add(payload);  
+          return res.rows;
+        }catch(err){
+          if(!err.data){
+                    throw err
+                  }
+                  return rejectWithValue(err.data)
+        }
+     }
+  );
+
+export const removeFavAsync = createAsyncThunk(
+    'tutor/moreAsync',
+      async (payload, {rejectWithValue}) => {
+          try{
+          //res = await axiosInstance1.get(`curated?per_page=${per_page}&page=${page}`);
+          //return res.data.photos
+          const res = await moreApi.remove(payload);  
+          return res.rows;
+        }catch(err){
+          if(!err.data){
+                    throw err
+                  }
+                  return rejectWithValue(err.data)
+        }
+     }
+  );
+
 const moreSlice = createSlice({
     name: 'moretutor',
     initialState,
@@ -53,6 +87,14 @@ const moreSlice = createSlice({
     },
     extraReducers:{
         [moreAsync.fulfilled]: (state, action) => {  // moreAsync = get list favorite tutor
+            //state.current = action.payload;
+            state.rows = action.payload;
+        },
+        [addFavAsync.fulfilled]: (state, action) => {  
+            //state.current = action.payload;
+            state.rows = action.payload;
+        },
+        [removeFavAsync.fulfilled]: (state, action) => {  
             //state.current = action.payload;
             state.rows = action.payload;
         }
