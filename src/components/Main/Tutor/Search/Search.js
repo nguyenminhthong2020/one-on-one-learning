@@ -125,8 +125,9 @@ const Search = props => {
             onPress={
               () =>
                 props.navigation.navigate('TutorDetailNew', {
-                  uri: item.avatar,
-                  name: item.name,
+                  // uri: item.avatar,
+                  // name: item.name,
+                  tutor: item
                 }) /*onPressTutor(i.index)*/
             }
             tutor={item}

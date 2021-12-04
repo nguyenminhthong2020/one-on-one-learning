@@ -33,7 +33,8 @@ import Modal from 'react-native-modal';
 //import SectionVideo from './SectionVideo';
 const SectionVideo = React.lazy(() => import('./SectionVideo'));
 import ListTags from '../../../_common/ListTags/ListTags';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
+import CountryPicker from 'react-native-country-picker-modal';
 
 const FlatListItemSeparator = () => {
   return (
@@ -47,7 +48,7 @@ const FlatListItemSeparator = () => {
   );
 };
 const FavoriteComponent = () => {
-  console.log('Render lại tim <3');
+  //console.log('Render lại tim <3');
   const [like, setLike] = useState(false);
 
   return (
@@ -106,35 +107,38 @@ const ReportAlert = tutorName =>
   );
 
 const BookingDetailAlert = (student, tutor, date, time, price, balance) =>
-  price > balance ? Alert.alert(
-    `BOOKING DETAILS: FAIL`,
-    `1) Student: ${student}, tutor: ${tutor}. \n2) ${date}, ${time} \n3) Balance: ${balance}, Price: ${price}`,
-    [
-      {
-        text: 'Cancel', //onPress: () => {alert("Cancel");console.log(123);},
-        style: 'Cancel',
-      },
-    ],
-    {cancelable: true},
-  ):(
-    Alert.alert(
-      `BOOKING DETAILS: `,
-      `1) Student: ${student}, tutor: ${tutor}. \n2) ${date}, ${time} \n3) Balance: ${balance}, Price: ${price}`,
-      [
-        {
-          text: 'Book',
-          onPress: () => {console.log('Complete Book'), BookingSuccess()},
-          style: 'Cancel',
-        },
-        {
-          text: 'Cancel', //onPress: () => {alert("Cancel");console.log(123);},
-          style: 'Cancel',
-        },
-      ],
-      {cancelable: true},
-  ))
+  price > balance
+    ? Alert.alert(
+        `BOOKING DETAILS: FAIL`,
+        `1) Student: ${student}, tutor: ${tutor}. \n2) ${date}, ${time} \n3) Balance: ${balance}, Price: ${price}`,
+        [
+          {
+            text: 'Cancel', //onPress: () => {alert("Cancel");console.log(123);},
+            style: 'Cancel',
+          },
+        ],
+        {cancelable: true},
+      )
+    : Alert.alert(
+        `BOOKING DETAILS: `,
+        `1) Student: ${student}, tutor: ${tutor}. \n2) ${date}, ${time} \n3) Balance: ${balance}, Price: ${price}`,
+        [
+          {
+            text: 'Book',
+            onPress: () => {
+              console.log('Complete Book'), BookingSuccess();
+            },
+            style: 'Cancel',
+          },
+          {
+            text: 'Cancel', //onPress: () => {alert("Cancel");console.log(123);},
+            style: 'Cancel',
+          },
+        ],
+        {cancelable: true},
+      );
 
-  const BookingSuccess = () =>
+const BookingSuccess = () =>
   Alert.alert(
     `Booking details`,
     `Bokking success !`,
@@ -151,7 +155,6 @@ const BookingDetailAlert = (student, tutor, date, time, price, balance) =>
     ],
     {cancelable: true},
   );
-
 
 // const ModalReport = () => {
 //   console.log('Render Modal Report');
@@ -236,18 +239,26 @@ const BookingDetailAlert = (student, tutor, date, time, price, balance) =>
 // };
 
 // Modal Time
-const ModalTime = props => {   //props: student, tutor, arrayDateTime, id, isVisible
+const ModalTime = props => {
+  //props: student, tutor, arrayDateTime, id, isVisible
   const [isModalVisibleTime, setModalVisibleTime] = useState(props.isVisible);
   const toggleModalTime = () => {
     setModalVisibleTime(!isModalVisibleTime);
   };
-  onPressHandler = (student, tutor, arrayDateTime, id, time) =>{
+  onPressHandler = (student, tutor, arrayDateTime, id, time) => {
     //alert("OK nè");
     //alert(`Student ${student}, Tutor ${tutor}, Date ${props.arrayDateTime[props.id].date}, Time ${time}`)
-    BookingDetailAlert(student, tutor, props.arrayDateTime[props.id].date, time, 2, 2);
+    BookingDetailAlert(
+      student,
+      tutor,
+      props.arrayDateTime[props.id].date,
+      time,
+      2,
+      2,
+    );
     toggleModalTime();
     props.setIsClick(false);
-  }
+  };
   return isModalVisibleTime ? (
     <View style={{backgroundColor: 'white'}}>
       <Modal isVisible={isModalVisibleTime}>
@@ -264,7 +275,7 @@ const ModalTime = props => {   //props: student, tutor, arrayDateTime, id, isVis
             }}>
             {`Picking your time\n(${props.arrayDateTime[props.id].date})`}
           </Text>
-          { props.arrayDateTime[props.id].time.map((time, index) => (
+          {props.arrayDateTime[props.id].time.map((time, index) => (
             <View style={{marginHorizontal: 15, marginBottom: 6}} key={index}>
               <Pressable
                 style={{
@@ -272,7 +283,15 @@ const ModalTime = props => {   //props: student, tutor, arrayDateTime, id, isVis
                   backgroundColor: MAIN_COLOR,
                   paddingVertical: 10,
                 }}
-                onPress={()=>onPressHandler(props.student, props.tutor, props.arrayDateTime, props.id, time)}>
+                onPress={() =>
+                  onPressHandler(
+                    props.student,
+                    props.tutor,
+                    props.arrayDateTime,
+                    props.id,
+                    time,
+                  )
+                }>
                 <Text
                   style={{
                     color: 'white',
@@ -311,7 +330,7 @@ const ModalTime = props => {   //props: student, tutor, arrayDateTime, id, isVis
     <View></View>
   );
 };
-const TutorDetailNew = (props) => {
+const TutorDetailNew = props => {
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
   //const video = React.useRef(null);
   //const [status, setStatus] = React.useState({});
@@ -320,7 +339,6 @@ const TutorDetailNew = (props) => {
   const [isModalVisibleBooking, setModalVisibleBooking] = useState(false);
   const langState = useSelector(state => state.lang);
 
-  
   const arrayDateTime = [
     {
       id: 0,
@@ -396,8 +414,9 @@ const TutorDetailNew = (props) => {
   ];
   const arrayIsClick = arrayDateTime.map((v, i) => false);
   const [isClick, setIsClick] = useState(arrayIsClick);
-  
-  const setIsClickHandler = (value) => setIsClick(arrayIsClick.map((v, i) => i === value ? false : v));
+
+  const setIsClickHandler = value =>
+    setIsClick(arrayIsClick.map((v, i) => (i === value ? false : v)));
   // const [isModalVisibleTime, setModalVisibleTime] = useState(false);
 
   //const [isModalVisibleReport, setModalVisibleReport] = useState(false);
@@ -515,13 +534,12 @@ const TutorDetailNew = (props) => {
               backgroundColor: 'gray',
               borderWidth: 1,
               borderColor: MAIN_COLOR,
-              //marginBottom: 15,
             }}>
             <Suspense
               fallback={<ActivityIndicator size="large" color="#00ff00" />}>
               <SectionVideo
                 uri={
-                  'https://api.app.lettutor.com/video/cd0a440b-cd19-4c55-a2a2-612707b1c12cvideo1631029793846.mp4'
+                  props.route.params.tutor.video
                 }
               />
             </Suspense>
@@ -569,7 +587,7 @@ const TutorDetailNew = (props) => {
                   resizeMode={FastImage.resizeMode.cover}
                   source={{
                     //uri: 'https://api.app.lettutor.com/avatar/cd0a440b-cd19-4c55-a2a2-612707b1c12cavatar1631029793834.jpg',
-                    uri: props.route.params.uri,
+                    uri: props.route.params.tutor.avatar,
                     priority: FastImage.priority.normal,
                   }}
                 />
@@ -578,11 +596,11 @@ const TutorDetailNew = (props) => {
                 <Text
                   style={{
                     fontSize: 18,
-                    color: isDarkTheme? 'white': 'black',
+                    color: isDarkTheme ? 'white' : 'black',
                     marginLeft: 6,
                     fontWeight: 'bold',
                   }}>
-                  {props.route.params.name}
+                  {props.route.params.tutor.name}
                 </Text>
                 {/* <Rating 
                 style={{marginLeft: 6}}
@@ -606,16 +624,17 @@ const TutorDetailNew = (props) => {
                   <Image source={require('../../../../../assets/rating.png')} />
                 </View>
                 <View>
-                  <Text style={{color: isDarkTheme? 'white': 'gray'}}>{'  '}Philippines (the)</Text>
+                  <CountryPicker
+                    //withFlag
+                    //withFilter
+                    withCountryNameButton
+                    countryCode={props.route.params.tutor.country}
+                    onSelect={country => {}
+                    }
+                  />
                 </View>
               </View>
             </View>
-
-            {/* <Text
-              numberOfLines={NUM_OF_LINES}
-              style={{fontSize: 15, color: 'black', marginTop: 5}}>
-              {props.tutor.description}
-            </Text> */}
           </View>
 
           <View style={{marginHorizontal: 15}}>
@@ -643,24 +662,19 @@ const TutorDetailNew = (props) => {
               marginTop: 15,
             }}>
             <View>
-              <Pressable onPress={() => props.navigation.navigate("TutorMessage",{
-                uri: props.route.params.uri,
-                name: props.route.params.name,
-              })}>
+              <Pressable
+                onPress={() =>
+                  props.navigation.navigate('TutorMessage', {
+                    uri: props.route.params.uri,
+                    name: props.route.params.name,
+                  })
+                }>
                 <View style={{alignItems: 'center'}}>
                   <View style={{marginBottom: 3}}>
                     <MaterialIcons
                       name={'message'}
                       size={27}
                       color={MAIN_COLOR}
-                      // style={{
-                      //   textAlign: 'right',
-                      //   marginBottom: -50,
-                      //   marginRight: 10,
-                      // }}
-                      // onPress={() => {
-                      //   alert("Message")
-                      // }}
                     />
                   </View>
                   <View>
@@ -684,12 +698,6 @@ const TutorDetailNew = (props) => {
                       name={'report'}
                       size={27}
                       color={MAIN_COLOR}
-                      // style={{
-                      //   textAlign: 'right',
-                      //   marginBottom: -50,
-                      //   marginRight: 10,
-                      // }}
-                      // onPress={ReportAlert}
                     />
                   </View>
                   <View>
@@ -707,28 +715,15 @@ const TutorDetailNew = (props) => {
             </View>
           </View>
           <View style={{marginTop: 20, marginHorizontal: 15}}>
-            <Text style={{fontSize: 16, color: isDarkTheme? 'white': 'black'}}>
-              Hello there! I am an Industrial Engineer in the profession but
-              chose to do online teaching because I love to meet different
-              learners. I am an outgoing person and I have this passion for
-              dealing with different people and seeing them progress with my
-              help as their teacher. In fact, making friends is one of my best
-              skills. I am very good at adapting to new environments and new
-              situations. I am very friendly and can easily get along well with
-              everyone. I have obtained a 120-Hour TEFL Certificate. I get a
-              variety of teaching techniques. I know that there are fast and not
-              so fast learners. So don't worry, I will be with you every step of
-              the way going at your own pace. Let's practice what you already
-              know and add something new each day. With my skills and
-              experiences, I can assure you that I can provide adequate English
-              learning effectively and efficiently. Together, let's make English
-              learning fun.
+            <Text
+              style={{fontSize: 16, color: isDarkTheme ? 'white' : 'black'}}>
+              {props.route.params.tutor.bio}
             </Text>
           </View>
           <View style={{marginTop: 30, marginHorizontal: 15}}>
             <Text
               style={{
-                color: isDarkTheme? 'white': 'black',
+                color: isDarkTheme ? 'white' : 'black',
                 fontSize: 16,
                 fontWeight: 'bold',
                 marginBottom: 2,
@@ -736,38 +731,37 @@ const TutorDetailNew = (props) => {
               {langState[langState.currentLang].Languages}
             </Text>
             <View style={{marginLeft: 5}}>
-              <ListTags arr={['English', 'Tagalog']} />
+              <Text style={{color: isDarkTheme ? 'yellow' : MAIN_COLOR}}>{props.route.params.tutor.languages}</Text>
             </View>
           </View>
           <View style={{marginTop: 25, marginHorizontal: 15}}>
             <Text
               style={{
-                color: isDarkTheme? 'white': 'black',
+                color: isDarkTheme ? 'white' : 'black',
                 fontSize: 16,
                 fontWeight: 'bold',
                 marginBottom: 2,
               }}>
               {langState[langState.currentLang].Education}
             </Text>
-            <Text style={{marginLeft: 5, color: isDarkTheme? 'white': 'black'}}>
-              I have graduated with a degree in Bachelor of Science, major in
-              Industrial Engineering, from a reputable university, Saint Louis
-              University, Baguio City.
+            <Text
+              style={{marginLeft: 5, color: isDarkTheme ? 'white' : 'black'}}>
+             {props.route.params.tutor.education}
             </Text>
           </View>
           <View style={{marginTop: 25, marginHorizontal: 15}}>
             <Text
               style={{
-                color: isDarkTheme? 'white': 'black',
+                color: isDarkTheme ? 'white' : 'black',
                 fontSize: 16,
                 fontWeight: 'bold',
                 marginBottom: 2,
               }}>
               {langState[langState.currentLang].Experience}
             </Text>
-            <Text style={{marginLeft: 5, color: isDarkTheme? 'white': 'black'}}>
-              I have been teaching English online since 2020 catering to
-              Japanese and Chinese students.
+            <Text
+              style={{marginLeft: 5, color: isDarkTheme ? 'white' : 'black'}}>
+              {props.route.params.tutor.experience}
             </Text>
           </View>
           <View style={{marginTop: 25, marginHorizontal: 15}}>
@@ -780,27 +774,30 @@ const TutorDetailNew = (props) => {
               }}>
               {langState[langState.currentLang].Interest}
             </Text>
-            <Text style={{marginLeft: 5,color: isDarkTheme? 'white': 'black'}}>
-              Cooking, Mingling with kids, Watch my small retail store,
-              Travelling
+            <Text
+              style={{marginLeft: 5, color: isDarkTheme ? 'white' : 'black'}}>
+              {props.route.params.tutor.interests}
             </Text>
           </View>
           <View style={{marginTop: 25, marginHorizontal: 15}}>
             <Text
               style={{
-                color: isDarkTheme? 'white':'black',
+                color: isDarkTheme ? 'white' : 'black',
                 fontSize: 16,
                 fontWeight: 'bold',
                 marginBottom: 2,
               }}>
               {langState[langState.currentLang].Profession}
             </Text>
-            <Text style={{marginLeft: 5,color: isDarkTheme? 'white': 'black'}}>Online English Teacher</Text>
+            <Text
+              style={{marginLeft: 5, color: isDarkTheme ? 'white' : 'black'}}>
+              {props.route.params.tutor.profession}
+            </Text>
           </View>
           <View style={{marginTop: 25, marginHorizontal: 15}}>
             <Text
               style={{
-                color: isDarkTheme? 'white':'black',
+                color: isDarkTheme ? 'white' : 'black',
                 fontSize: 16,
                 fontWeight: 'bold',
                 marginBottom: 2,
@@ -808,22 +805,14 @@ const TutorDetailNew = (props) => {
               {langState[langState.currentLang].Specialities}
             </Text>
             <View style={{marginLeft: 5}}>
-              <ListTags
-                arr={[
-                  'EnglishforBussiness',
-                  'Conversational',
-                  'EnglishforKids',
-                  'STARTERS',
-                  'MOVERS',
-                ]}
-              />
+              <Text style={{color: isDarkTheme ? 'yellow' : MAIN_COLOR}}>{props.route.params.tutor.specialties}</Text>
             </View>
           </View>
 
           <View style={{marginTop: 25, marginHorizontal: 15}}>
             <Text
               style={{
-                color: isDarkTheme? 'white':'black',
+                color: isDarkTheme ? 'white' : 'black',
                 fontSize: 16,
                 fontWeight: 'bold',
                 marginBottom: 2,
@@ -992,7 +981,11 @@ const TutorDetailNew = (props) => {
                       backgroundColor: MAIN_COLOR,
                       paddingVertical: 10,
                     }}
-                    onPress={()=>setIsClick(arrayIsClick.map((v, i) => i === index?true:v))}>
+                    onPress={() =>
+                      setIsClick(
+                        arrayIsClick.map((v, i) => (i === index ? true : v)),
+                      )
+                    }>
                     <Text
                       style={{
                         color: 'white',
@@ -1002,7 +995,18 @@ const TutorDetailNew = (props) => {
                       {datetime.date}
                     </Text>
                   </Pressable>
-                  {isClick[index]?(<ModalTime setIsClick={setIsClickHandler} student={"Nguyễn Minh Thông"} tutor={"April Corpuz"} arrayDateTime={arrayDateTime} id={index} isVisible={true}/>):(<View></View>)} 
+                  {isClick[index] ? (
+                    <ModalTime
+                      setIsClick={setIsClickHandler}
+                      student={'Nguyễn Minh Thông'}
+                      tutor={'April Corpuz'}
+                      arrayDateTime={arrayDateTime}
+                      id={index}
+                      isVisible={true}
+                    />
+                  ) : (
+                    <View></View>
+                  )}
                 </View>
               ))}
               <View style={{alignItems: 'center', marginTop: 25}}>

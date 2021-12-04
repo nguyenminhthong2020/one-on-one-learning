@@ -313,8 +313,9 @@ const Home = props => {
           onPress={
             () =>
               props.navigation.navigate('TutorDetailNew', {
-                uri: tutor.avatar,
-                name: tutor.name,
+                // uri: tutor.avatar,
+                // name: tutor.name,
+                tutor: tutor
               }) /*onPressTutor(index)*/
           }
           tutor={tutor}
