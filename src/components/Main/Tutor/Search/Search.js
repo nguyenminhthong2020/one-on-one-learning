@@ -31,6 +31,7 @@ const Search = props => {
 
   const [spec, setSpec] = useState(['']);
   const [array, setArray] = useState([]);
+  const [arrayShow, setArrayShow] = useState(array);
   const [currentPage, setCurrentPage] = useState(1);
 
   //const [arrayShow, setArrayShow] = useState(array);
@@ -75,6 +76,7 @@ const Search = props => {
   const arrayState = useSelector(state => state.searchtutor.rows);
   useEffect(() => {
     setArray(arrayState);
+    setArrayShow(array);
   }, [arrayState]);
 
   const [country, setCountry] = useState({name: '', cca2: ''}); // Vietnam, VN
@@ -256,15 +258,15 @@ const Search = props => {
           style={styles.button1}
           onPress={() => {
             if (nameQuery.length > 0 && country.name.length == 0) {
-              setArray(array.filter(item => item.name.includes(nameQuery)));
+              setArrayShow(array.filter(item => item.name.toLowerCase().includes(nameQuery.toLowerCase())));
             } else if (nameQuery.length == 0 && country.name.length > 0) {
-              setArray(array.filter(item => item.country == country.cca2));
+              setArrayShow(array.filter(item => item.country == country.cca2));
             } else if (nameQuery.length > 0 && country.name.length > 0) {
-              setArray(
+              setArrayShow(
                 array.filter(
                   item =>
                     item.country == country.cca2 &&
-                    item.name.includes(nameQuery),
+                    item.name.toLowerCase().includes(nameQuery.toLowerCase()),
                 ),
               );
             } else {
@@ -372,7 +374,7 @@ const Search = props => {
           }}
         />
       </View>
-      {renderTest(array)}
+      {renderTest(arrayShow)}
     </ScrollView>
   );
 };
