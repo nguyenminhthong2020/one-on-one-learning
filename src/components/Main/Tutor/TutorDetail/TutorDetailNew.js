@@ -629,8 +629,8 @@ const TutorDetailNew = props => {
               <Pressable
                 onPress={() =>
                   props.navigation.navigate('TutorMessage', {
-                    uri: props.route.params.uri,
-                    name: props.route.params.name,
+                    uri: props.route.params.tutor.avatar,
+                    name: props.route.params.tutor.name,
                   })
                 }>
                 <View style={{alignItems: 'center'}}>
