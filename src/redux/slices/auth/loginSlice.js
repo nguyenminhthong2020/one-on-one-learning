@@ -30,7 +30,7 @@ export const loginAsync = createAsyncThunk(
 //   }
    async(payload, thunkAPI) => {
        const currentUser = await userApi.login(payload);
-       return currentUser;
+       return currentUser.current;
     //    if(currentUser.isLogging == false){
     //        alert("Loggin fail");
     //        return currentUser;
@@ -39,6 +39,20 @@ export const loginAsync = createAsyncThunk(
     //    }
    }
 );
+
+export const changeInfoAsync = createAsyncThunk(
+    'auth/changeInfoAsync',
+     async(payload, thunkAPI) => {
+         const currentUser = await userApi.changeInfo(payload)
+         return currentUser.current;
+      //    if(currentUser.isLogging == false){
+      //        alert("Loggin fail");
+      //        return currentUser;
+      //    }else{
+      //        return currentUser;
+      //    }
+     }
+  );
 
 const loginSlice = createSlice({
     name: 'login',
@@ -55,7 +69,13 @@ const loginSlice = createSlice({
         [loginAsync.fulfilled]: (state, action) => {
             //state.current = action.payload;
             state.current = action.payload; // = currentUser
-            console.log("Action nè: " + JSON.stringify(action));
+            //console.log("Action nè: " + JSON.stringify(action));
+            state.isLoggin = true;
+        },
+        [changeInfoAsync.fulfilled]: (state, action) => {
+            //state.current = action.payload;
+            state.current = action.payload; // = currentUser
+            //console.log("Action nè: " + JSON.stringify(action));
             state.isLoggin = true;
         }
     }

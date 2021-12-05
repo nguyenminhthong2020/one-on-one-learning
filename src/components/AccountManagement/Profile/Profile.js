@@ -27,6 +27,8 @@ import RNDateTimePicker from '@react-native-community/datetimepicker';
 import CountryPicker from 'react-native-country-picker-modal';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
+import { changeInfoAsync } from '../../../redux/slices/auth/loginSlice';
+
 // import AvatarAccessory from '../../_common/AvatarAccessory/AvatarAccessory';
 
 // Phần Image Picker cho Avatar
@@ -35,14 +37,16 @@ import {ImagePickerAvatar} from '../../_common/ImagePicker/image-picker-avatar';
 import {ImagePickerModal} from '../../_common/ImagePicker/image-picker-modal';
 
 const Profile = (props) => {
-  //console.log('render lại nữa nè');
+  //console.log('render nè');
   useEffect(() => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     // dispatch()
   }, []);
-
-  const userEmail = useSelector(state => state.auth.current.email);
-  const userName = useSelector(state => state.auth.current.name);
+  const dispatch = useDispatch();
+  
+  const current = useSelector(state => state.auth.current);
+  // console.log('current nè');
+  // console.log(current);
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme)
   const langState = useSelector(state => state.lang);
 
@@ -53,25 +57,46 @@ const Profile = (props) => {
   } = useForm({mode: 'onBlur'});
 
   const arrWhatToLearn = [
-    {item: 'EnglishforKids', id: 0},
-    {item: 'BusinessEnglish', id: 1},
-    {item: 'ConversationalEnglish', id: 2},
-    {item: 'STARTERS', id: 3},
-    {item: 'MOVERS', id: 4},
-    {item: 'FLYERS', id: 5},
-    {item: 'KET', id: 6},
-    {item: 'PET', id: 7},
-    {item: 'IELTS', id: 8},
-    {item: 'TOEFL', id: 9},
-    {item: 'TOEIC', id: 10},
+    {item: 'English for Kids', id: 3},
+    {item: 'Business English', id: 4},
+    {item: 'Conversational English', id: 5},
+  ];
+  const arrWhatToLearn1 = [
+    {item: 'STARTERS', id: 1},
+    {item: 'MOVERS', id: 2},
+    {item: 'FLYERS', id: 3},
+    {item: 'KET', id: 4},
+    {item: 'PET', id: 5},
+    {item: 'IELTS', id: 6},
+    {item: 'TOEFL', id: 7},
+    {item: 'TOEIC', id: 8},
   ];
 
-  const [pickerValue, setPickerValue] = useState('English');
-  const [whatToLearn, setWhatToLearn] = useState([]);
-  const [levelValue, setLevelValue] = useState('Beginner');
+  const newwhatToLearn = [...current.user.learnTopics].map(function(item){
+      return {
+        item: item.name,
+        id: item.id
+      }
+  });
+  const newwhatToLearn1 = [...current.user.testPreparations].map(function(item){
+    return {
+      item: item.name,
+      id: item.id
+    }
+});
+  const _level = current.user.level;
+  const _birthday = current.user.birthday;
+  const _country = current.user.country;
+  const _language = current.user.language == null ? 'English' : current.user.language;
+
+  const [whatToLearn, setWhatToLearn] = useState(newwhatToLearn);
+  const [whatToLearn1, setWhatToLearn1] = useState(newwhatToLearn1);
+  const [levelValue, setLevelValue] = useState(_level);
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [birthday, setBirthday] = useState('1998-10-27');
-  const [country, setCountry] = useState({name: 'Vietnam', cca2: 'VN'});
+  const [birthday, setBirthday] = useState(_birthday);
+  const [pickerValue, setPickerValue] = useState(_language);
+  //const [country, setCountry] = useState({name: 'Vietnam', cca2: 'VN'});
+  const [country, setCountry] = useState({name: '', cca2: _country})
 
   // image Picker:
   const [pickerResponse, setPickerResponse] = useState(null);
@@ -106,19 +131,37 @@ const Profile = (props) => {
     setBirthday(_birthday);
   };
 
-  const onSubmit = data =>
-    alert(
-      JSON.stringify({
-        ...data,
+  const onSubmit = data => 
+    {
+      alert("Update successfull")
+      dispatch(changeInfoAsync(
+        {
+              ...data,
         birthday: birthday,
-        country: country.name,
+        country: country.cca2,
+        level: levelValue,
         language: pickerValue,
         whatToLearn: whatToLearn,
-      }),
-    );
+        whatToLearn1: whatToLearn1
+        }
+      ))
+    }
+    // alert(
+    //   JSON.stringify({
+    //     ...data,
+    //     birthday: birthday,
+    //     country: country.name,
+    //     language: pickerValue,
+    //     whatToLearn: whatToLearn,
+    //     whatToLearn1: whatToLearn1
+    //   }),
+    //);
 
   function onMultiChange() {
     return item => setWhatToLearn(xorBy(whatToLearn, [item], 'id'));
+  }
+  function onMultiChange1() {
+    return item => setWhatToLearn1(xorBy(whatToLearn1, [item], 'id'));
   }
 
   return (
@@ -138,17 +181,28 @@ const Profile = (props) => {
             uri="https://image.freepik.com/free-vector/cute-orange-robot-cat-avatar_79416-86.jpg"
           />
         </TouchableOpacity> */}
-        <View style={{alignSelf: 'center'}}>
+        {/* <View style={{alignSelf: 'center'}}>
           <TextInput
             //value={'thong123@gmail.com'}
             value = {userEmail}
             editable={false}
             style={{fontSize: 16, color: 'orange'}}
           />
+        </View> */}
+        <View style={{flexDirection: 'column', justifyContent: 'center', marginLeft: 5}}>
+        <View style={{alignSelf: 'center'}}>
+          <TextInput
+            //value={'thong123@gmail.com'}
+            value = {current.user.email}
+            editable={false}
+            style={{fontSize: 16, color: 'orange'}}
+          />
         </View>
-      </View>
       <View style={{alignItems: 'center'}}>
-        <Text>{langState[langState.currentLang].Name}: {userName}</Text>
+        {/* <Text>{langState[langState.currentLang].Name}: {userName}</Text> */}
+        <Text>{current.user.name}</Text>
+      </View>
+        </View>
       </View>
       <Controller
         control={control}
@@ -168,6 +222,7 @@ const Profile = (props) => {
               <TextInput
                 style={{borderWidth: 1, width: 170, height: 40, fontSize: 15}}
                 value={value}
+                defaultValue={current.user.phone}
                 keyboardType={'numeric'}
                 placeholder={'Phone number'}
                 onBlur={onBlur}
@@ -228,9 +283,9 @@ const Profile = (props) => {
                 style={styles.picker}
                 selectedValue={levelValue}
                 onValueChange={levelValue => setLevelValue(levelValue)}>
-                <Picker.Item label="Beginner" value="Beginner" />
-                <Picker.Item label="Intermediate" value="Intermediate" />
-                <Picker.Item label="Advanced" value="Advanced" />
+                <Picker.Item label="BEGINNER" value="BEGINNER" />
+                <Picker.Item label="INTERMEDIATE" value="INTERMEDIATE" />
+                <Picker.Item label="ADVANCED" value="ADVANCED" />
               </Picker>
             </View>
           </View>
@@ -274,7 +329,7 @@ const Profile = (props) => {
         )}
       />
 
-      <View style={[styles.container1, {marginBottom: 25}]}>
+      <View style={[styles.container1, {marginBottom: 20}]}>
         <View>
           <FontAwesome
             name={'birthday-cake'}
@@ -330,16 +385,31 @@ const Profile = (props) => {
         </View>
       </View>
       <View style={{paddingLeft: '20%'}}>
-        <Text style={{fontSize: 17, color: isDarkTheme?'white':'gray'}}>
-        {langState[langState.currentLang].What_to_learn}:</Text>
+        <Text style={{fontSize: 17, color: isDarkTheme?'white':'gray'}}>{langState[langState.currentLang].What_to_learn}:</Text>
       </View>
-      <View style={{paddingLeft: '10%', marginBottom: 35, backgroundColor: isDarkTheme? 'white': SECOND_COLOR}}>
+      <View style={{paddingLeft: '10%', marginBottom: 15, backgroundColor: isDarkTheme? 'white': SECOND_COLOR}}>
         <SelectBox
           label={false}
           options={arrWhatToLearn}
           selectedValues={whatToLearn}
           onMultiSelect={onMultiChange()}
           onTapClose={onMultiChange()}
+          isMulti
+          width={'90%'}
+          listOptionProps={{ nestedScrollEnabled: true }}
+        />
+      </View>
+      <View style={{paddingLeft: '20%'}}>
+        <Text style={{fontSize: 17, color: isDarkTheme?'white':'gray'}}>
+        {langState[langState.currentLang].What_to_learn} (2):</Text>
+      </View>
+      <View style={{paddingLeft: '10%', marginBottom: 25, backgroundColor: isDarkTheme? 'white': SECOND_COLOR}}>
+        <SelectBox
+          label={false}
+          options={arrWhatToLearn1}
+          selectedValues={whatToLearn1}
+          onMultiSelect={onMultiChange1()}
+          onTapClose={onMultiChange1()}
           isMulti
           width={'90%'}
           listOptionProps={{ nestedScrollEnabled: true }}
