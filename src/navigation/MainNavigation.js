@@ -8,6 +8,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import TutorMessage from '../components/Main/Message/TutorMessage';
 import TutorDetailNew from '../components/Main/Tutor/TutorDetail/TutorDetailNew';
+import TutorDetailComment from '../components/Main/Tutor/TutorDetail/TutorDetailComment';
 import ListMessage from '../components/Main/Message/ListMessage';
 import Upcoming from '../components/Main/Upcoming/Upcoming';
 import Search from '../components/Main/Tutor/Search/Search';
@@ -160,6 +161,11 @@ function MainNavigation(props) {
         name="TutorDetailNew"
         component={TutorDetailNew}
         options={{headerShown: false}}
+      />
+       <Stack.Screen
+        name="TutorDetailComment"
+        component={TutorDetailComment}
+        options={{headerShown: true, title: 'Rating and Comment'}}
       />
       <Stack.Screen
         name="ListCourse"

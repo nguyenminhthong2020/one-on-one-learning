@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, {Suspense, useState, useRef, useEffect} from 'react';
+import React, {Suspense, useState, useRef, useEffect, useMemo} from 'react';
 import {
   ScrollView,
   // StatusBar,
@@ -32,28 +32,26 @@ import Modal from 'react-native-modal';
 //import {Constants} from 'react-native-unimodules';
 //import SectionVideo from './SectionVideo';
 const SectionVideo = React.lazy(() => import('./SectionVideo'));
-import ListTags from '../../../_common/ListTags/ListTags';
-import {useSelector} from 'react-redux';
+//import ListTags from '../../../_common/ListTags/ListTags';
+import {useDispatch, useSelector} from 'react-redux';
 import CountryPicker from 'react-native-country-picker-modal';
+import { detailApi } from '../../../../api/tutor/detailApi';
+import { addFavAsync, removeFavAsync } from '../../../../redux/slices/tutor/moreSlice';
 
-const FlatListItemSeparator = () => {
-  return (
-    <View
-      style={{
-        height: 0,
-        borderWidth: 1,
-        marginBottom: 5,
-      }}
-    />
-  );
-};
-const FavoriteComponent = () => {
+
+
+const FavoriteComponent = (props) => {
   //console.log('Render lại tim <3');
-  const [like, setLike] = useState(false);
+  const dispatch = useDispatch();
+
+  let isFav = useSelector(state => state.moretutor.rows);
+  let check = isFav.includes(props.route.params.tutor.userId);
+
+  // const [like, setLike] = useState(check);
 
   return (
     <View>
-      {like === false ? (
+      {check === false ? (
         <AntDesign
           name={'heart'}
           size={22}
@@ -64,8 +62,14 @@ const FavoriteComponent = () => {
             marginRight: 10,
           }}
           onPress={() => {
-            alert('Favorite tutor sucessfully !');
-            setLike(!like);
+            dispatch(
+                  addFavAsync(
+                    {
+                      currentList : isFav,
+                      tutorId: props.route.params.tutor.userId
+                    }
+                  )
+                )
           }}
         />
       ) : (
@@ -79,8 +83,14 @@ const FavoriteComponent = () => {
             marginRight: 10,
           }}
           onPress={() => {
-            alert('Unfavorite tutor sucessfully !');
-            setLike(!like);
+            dispatch(
+                  removeFavAsync(
+                    {
+                      currentList : isFav,
+                      tutorId: props.route.params.tutor.userId
+                    }
+                  )
+                )
           }}
         />
       )}
@@ -331,10 +341,24 @@ const ModalTime = props => {
   );
 };
 const TutorDetailNew = props => {
+  // const dispatch = useDispatch();
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
+  
+  const [detailTutor, setDetailTutor] = useState({result : {avgRating: 4.5}});
+  useEffect(() => {
+    (async function getDetail(){
+      const res = await detailApi.detail({userId: props.route.params.tutor.userId})
+      if(res.result.avgRating)
+      {setDetailTutor(res)}
+    })()
+  }, [])
+
   //const video = React.useRef(null);
   //const [status, setStatus] = React.useState({});
-  const [like, setLike] = useState(false);
+  // let isFav = useSelector(state => state.moretutor.rows);
+  // let check = isFav.includes(props.tutor.userId);
+
+  //const [like, setLike] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModalVisibleBooking, setModalVisibleBooking] = useState(false);
   const langState = useSelector(state => state.lang);
@@ -435,71 +459,10 @@ const TutorDetailNew = props => {
   //   setModalVisibleReport(!isModalVisibleReport);
   // };
 
-  const myUrl = `https://api.app.lettutor.com/video/cd0a440b-cd19-4c55-a2a2-612707b1c12cvideo1631029793846.mp4`;
+  //const myUrl = `https://api.app.lettutor.com/video/cd0a440b-cd19-4c55-a2a2-612707b1c12cvideo1631029793846.mp4`;
   //const _myUrl = Constants.linkingUri(myUrl);
-  const array = [
-    {
-      id: 0,
-      name: 'Thông',
-      avatar:
-        'https://i.pinimg.com/originals/4d/86/5e/4d865ea47a8675d682ff35ad904a0af6.png',
-      comment: 'Interesting hour. Thank you very much !',
-      rating: 5,
-      timestamp: '21:00:05 01/10/2021',
-    },
-    {
-      id: 1,
-      name: 'Tuấn',
-      avatar: 'https://avatarfiles.alphacoders.com/739/thumb-73989.jpg',
-      comment: 'Very good. Thank you',
-      rating: 4.5,
-      timestamp: '13:05:05 28/09/2021',
-    },
-    {
-      id: 2,
-      name: 'Sỹ',
-      avatar: 'https://avatarfiles.alphacoders.com/739/thumb-73989.jpg',
-      comment: 'Interesting hour. Thank you very much !',
-      rating: 5,
-      timestamp: '21:00:05 01/10/2021',
-    },
-    {
-      id: 3,
-      name: 'Thịnh',
-      avatar:
-        'https://i.pinimg.com/originals/4d/86/5e/4d865ea47a8675d682ff35ad904a0af6.png',
-      comment: 'Interesting hour. Thank you very much !',
-      rating: 5,
-      timestamp: '21:00:05 01/10/2021',
-    },
-    {
-      id: 4,
-      name: 'Hari',
-      avatar:
-        'https://i.pinimg.com/originals/4d/86/5e/4d865ea47a8675d682ff35ad904a0af6.png',
-      comment: 'Interesting hour. Thank you very much !',
-      rating: 5,
-      timestamp: '21:00:05 01/10/2021',
-    },
-    {
-      id: 5,
-      name: 'Thành',
-      avatar:
-        'https://i.pinimg.com/originals/4d/86/5e/4d865ea47a8675d682ff35ad904a0af6.png',
-      comment: 'Interesting hour. Thank you very much !',
-      rating: 5,
-      timestamp: '21:00:05 01/10/2021',
-    },
-    {
-      id: 6,
-      name: 'Thy',
-      avatar:
-        'https://i.pinimg.com/originals/4d/86/5e/4d865ea47a8675d682ff35ad904a0af6.png',
-      comment: 'Interesting hour. Thank you very much !',
-      rating: 5,
-      timestamp: '21:00:05 01/10/2021',
-    },
-  ];
+  
+
   // Dimensions.get('window').width
   console.log('Render lại hết đây :v');
   return (
@@ -546,7 +509,7 @@ const TutorDetailNew = props => {
           </View>
 
           <View style={{margin: 15, marginTop: 18, marginBottom: 10}}>
-            <FavoriteComponent />
+            <FavoriteComponent {...props}/>
             {/* <View>
               {like === false ? (
                 <AntDesign
@@ -620,7 +583,8 @@ const TutorDetailNew = props => {
                     marginTop: 1,
                     marginLeft: 20,
                   }}>
-                  <Text style={{color: 'orange'}}>{5}/5 </Text>
+                  {/* <Text style={{color: 'orange'}}>{3}/5 </Text> */}
+                  <Text style={{color: 'orange'}}>{detailTutor.result.avgRating}/5 </Text>
                   <Image source={require('../../../../../assets/rating.png')} />
                 </View>
                 <View>
@@ -829,11 +793,11 @@ const TutorDetailNew = props => {
                 fontWeight: 'bold',
                 marginBottom: 2,
               }}>
-              {langState[langState.currentLang].Rating_and_Comments} (13)
+              {langState[langState.currentLang].Rating_and_Comments} ({props.route.params.tutor.feedbacks.length})
             </Text>
           </View>
           <View
-            style={{alignItems: 'center', marginTop: 30, marginBottom: '20%'}}>
+            style={{alignItems: 'center', marginTop: 10, marginBottom: '20%'}}>
             <Pressable
               style={{
                 width: '50%',
@@ -841,7 +805,9 @@ const TutorDetailNew = props => {
                 backgroundColor: '#e54594',
                 paddingVertical: 10,
               }}
-              onPress={toggleModal}>
+              //onPress={toggleModal}>
+              onPress={()=>props.navigation.navigate("TutorDetailComment", {feedbacks: props.route.params.tutor.feedbacks})}
+              >
               <Text
                 style={{
                   color: 'white',
@@ -853,7 +819,7 @@ const TutorDetailNew = props => {
             </Pressable>
           </View>
         </View>
-        <View style={{backgroundColor: 'white'}}>
+        {/* <View style={{backgroundColor: 'white'}}>
           <Modal isVisible={isModalVisible}>
             <View
               style={{backgroundColor: 'white', width: '100%', height: '80%'}}>
@@ -954,7 +920,7 @@ const TutorDetailNew = props => {
               </View>
             </View>
           </Modal>
-        </View>
+        </View> */}
         <View style={{backgroundColor: 'white'}}>
           <Modal isVisible={isModalVisibleBooking}>
             <View
