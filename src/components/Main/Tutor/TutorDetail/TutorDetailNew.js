@@ -587,7 +587,8 @@ const TutorDetailNew = props => {
                   <Text style={{color: 'orange'}}>{detailTutor.result.avgRating}/5 </Text>
                   <Image source={require('../../../../../assets/rating.png')} />
                 </View>
-                <View>
+                {isDarkTheme ? 
+                <View style={{backgroundColor: 'white'}}>
                   <CountryPicker
                     //withFlag
                     //withFilter
@@ -597,6 +598,16 @@ const TutorDetailNew = props => {
                     }
                   />
                 </View>
+                :<View>
+                  <CountryPicker
+                    //withFlag
+                    //withFilter
+                    withCountryNameButton
+                    countryCode={props.route.params.tutor.country}
+                    onSelect={country => {}
+                    }
+                  />
+                </View>}
               </View>
             </View>
           </View>

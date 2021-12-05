@@ -27,6 +27,7 @@ import Login from '../components/Authentication/Login/Login';
 import ForgetPassword from '../components/Authentication/ForgetPassword/ForgetPassword';
 import NotifyForgetPassword from '../components/Authentication/ForgetPassword/NotifyForgetPassword';
 import Register from '../components/Authentication/Register/Register';
+import FeedbackList from '../components/AccountManagement/Setting/FeedbackList';
 import { useSelector} from 'react-redux';
 
 // import i18n from "../utils/i18n";
@@ -198,6 +199,11 @@ function MainNavigation(props) {
         name="History"
         component={History}
         options={{headerShown: true, title: langState[langState.currentLang].History}}
+      />
+      <Stack.Screen
+        name="FeedbackList"
+        component={FeedbackList}
+        options={{headerShown: true, title: langState[langState.currentLang].FeedbackList}}
       />
       <Stack.Screen
         name="TutorMessage"

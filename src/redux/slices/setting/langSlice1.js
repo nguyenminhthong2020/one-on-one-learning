@@ -41,7 +41,10 @@ const initialState = {
         Language: "Ngôn ngữ",
         What_to_learn: "Chủ đề muốn học",
         Save: "Lưu",
-        Country: "Quốc gia"
+        Country: "Quốc gia",
+        viewFeedbacks: "Xem Feedback",
+        FeedbackList: "Danh sách Feedback",
+        noData: "Chưa có dữ liệu",
       },
     en: {
         Home: "Home",
@@ -81,7 +84,10 @@ const initialState = {
         Language: "Language",
         What_to_learn: "What to learn",
         Save: "Save",
-        Country: "Country"
+        Country: "Country",
+        viewFeedbacks: "View Feedbacks",
+        FeedbackList: "Feedback List",
+        noData: "No Data"
       }
 }
 
