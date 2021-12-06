@@ -97,6 +97,7 @@ const Profile = (props) => {
   const [pickerValue, setPickerValue] = useState(_language);
   //const [country, setCountry] = useState({name: 'Vietnam', cca2: 'VN'});
   const [country, setCountry] = useState({name: '', cca2: _country})
+  const [name, setName] = useState(current.user.name);
 
   // image Picker:
   const [pickerResponse, setPickerResponse] = useState(null);
@@ -138,6 +139,7 @@ const Profile = (props) => {
         {
               ...data,
         birthday: birthday,
+        name: name,
         country: country.cca2,
         level: levelValue,
         language: pickerValue,
@@ -166,6 +168,7 @@ const Profile = (props) => {
 
   return (
     <ScrollView style={styles.container} nestedScrollEnabled = {true}>
+     <View>
       <View
         style={{
           flexDirection: 'row',
@@ -174,21 +177,6 @@ const Profile = (props) => {
         }}>
         {/* <View> */}
         <ImagePickerAvatar uri={uri} onPress={() => setVisible(true)} />
-        {/* </View> */}
-        {/* <TouchableOpacity onPress={() => alert('change avatar')}>
-          <AvatarAccessory
-            nsize={9}
-            uri="https://image.freepik.com/free-vector/cute-orange-robot-cat-avatar_79416-86.jpg"
-          />
-        </TouchableOpacity> */}
-        {/* <View style={{alignSelf: 'center'}}>
-          <TextInput
-            //value={'thong123@gmail.com'}
-            value = {userEmail}
-            editable={false}
-            style={{fontSize: 16, color: 'orange'}}
-          />
-        </View> */}
         <View style={{flexDirection: 'column', justifyContent: 'center', marginLeft: 5}}>
         <View style={{alignSelf: 'center'}}>
           <TextInput
@@ -198,12 +186,60 @@ const Profile = (props) => {
             style={{fontSize: 16, color: 'orange'}}
           />
         </View>
-      <View style={{alignItems: 'center'}}>
-        {/* <Text>{langState[langState.currentLang].Name}: {userName}</Text> */}
-        <Text>{current.user.name}</Text>
-      </View>
         </View>
       </View>
+
+      {/* <Controller
+        control={control}
+        // rules={{required: true}}
+        name="name"
+        render={({field: {onChange, onBlur, value}}) => (
+          <View style={{
+            left: '10%',
+            width: '80%',
+            flexDirection: 'row',
+            marginTop: 20,
+          }}>
+            <View style={{paddingLeft: 0, justifyContent: 'center'}}>
+              <Text style={{fontSize: 17, color: isDarkTheme? 'white': 'gray'}}>
+              {langState[langState.currentLang].Name}:</Text>
+            </View>
+            <View style={{marginLeft: 18, backgroundColor: 'white'}}>
+              <TextInput
+                style={{borderWidth: 1, width: 170, height: 40, fontSize: 15}}
+                value={value}
+                defaultValue={current.user.name}
+                //keyboardType={'numeric'}
+                placeholder={'Name'}
+                onBlur={onBlur}
+                onChangeText={value => onChange(value)}
+              />
+            </View>
+          </View>
+        )}
+      /> */}
+      <View style={{
+            left: '10%',
+            width: '80%',
+            flexDirection: 'row',
+            marginTop: 20,
+          }}>
+            <View style={{paddingLeft: 0, justifyContent: 'center'}}>
+              <Text style={{fontSize: 17, color: isDarkTheme? 'white': 'gray'}}>
+              {langState[langState.currentLang].Name}:</Text>
+            </View>
+            <View style={{marginLeft: 18, backgroundColor: 'white'}}>
+              <TextInput
+                style={{borderWidth: 1, width: 170, height: 40, fontSize: 15}}
+                value={name}
+                defaultValue={current.user.name}
+                //keyboardType={'numeric'}
+                placeholder={'Name'}
+                // onBlur={onBlur}
+                onChangeText={value => setName(value)}
+              />
+            </View>
+          </View>
       <Controller
         control={control}
         // rules={{required: true}}
@@ -385,7 +421,7 @@ const Profile = (props) => {
         </View>
       </View>
       <View style={{paddingLeft: '20%'}}>
-        <Text style={{fontSize: 17, color: isDarkTheme?'white':'gray'}}>{langState[langState.currentLang].What_to_learn}:</Text>
+        <Text style={{fontSize: 17, color: isDarkTheme?'white':'gray'}}>{langState[langState.currentLang].Subject}:</Text>
       </View>
       <View style={{paddingLeft: '10%', marginBottom: 15, backgroundColor: isDarkTheme? 'white': SECOND_COLOR}}>
         <SelectBox
@@ -401,7 +437,7 @@ const Profile = (props) => {
       </View>
       <View style={{paddingLeft: '20%'}}>
         <Text style={{fontSize: 17, color: isDarkTheme?'white':'gray'}}>
-        {langState[langState.currentLang].What_to_learn} (2):</Text>
+        {langState[langState.currentLang].TestPreparation}:</Text>
       </View>
       <View style={{paddingLeft: '10%', marginBottom: 25, backgroundColor: isDarkTheme? 'white': SECOND_COLOR}}>
         <SelectBox
@@ -423,6 +459,7 @@ const Profile = (props) => {
         onImageLibraryPress={onImageLibraryPress}
         onCameraPress={onCameraPress}
       />
+      </View>
     </ScrollView>
   );
 };

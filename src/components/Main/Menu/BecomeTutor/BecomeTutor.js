@@ -30,17 +30,19 @@ import CountryPicker from 'react-native-country-picker-modal';
 //import AvatarAccessory from '../../_common/AvatarAccessory/AvatarAccessory';
 
 // Phần Image Picker cho Avatar
+import { useSelector, useDispatch } from 'react-redux';
 import * as ImagePicker from 'react-native-image-picker';
 import {ImagePickerAvatar} from '../../../_common/ImagePicker/image-picker-avatar';
 import {ImagePickerModal} from '../../../_common/ImagePicker/image-picker-modal';
 
-const BecomeTutor = () => {
+const BecomeTutor = (props) => {
   const {
     control,
     handleSubmit,
     formState: {errors},
   } = useForm({mode: 'onBlur'});
-
+  
+  const current = useSelector(state => state.auth.current);
   const [pickerValue, setPickerValue] = useState('English');
   const [whatToLearn, setWhatToLearn] = useState([]);
   const [levelValue, setLevelValue] = useState('Beginner');
@@ -105,7 +107,8 @@ const BecomeTutor = () => {
   };
 
   const onSubmit = data =>
-    alert(
+    {
+      alert(
       JSON.stringify({
         ...data,
         birthday: birthday,
@@ -114,6 +117,8 @@ const BecomeTutor = () => {
         whatToLearn: whatToLearn,
       }),
     );
+    props.navigation.navigate('VideoIntroduction')
+    }
 
   function onMultiChange() {
     return item => setWhatToLearn(xorBy(whatToLearn, [item], 'id'));
@@ -154,7 +159,7 @@ const BecomeTutor = () => {
                     height: 40,
                     fontSize: 15,
                   }}
-                  value={'Nguyễn Minh Thông'}
+                  value={current.user.name}
                   //keyboardType={'numeric'}
                   //placeholder={'Phone number'}
                   onBlur={onBlur}

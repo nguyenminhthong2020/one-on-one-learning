@@ -22,6 +22,8 @@ import CourseDetail from '../components/Main/Menu/Courses/CourseDetail/CourseDet
 import Discover from '../components/Main/Menu/Courses/CourseDetail/Discover';
 import DiscoverDetail from '../components/Main/Menu/Courses/CourseDetail/DiscoverDetail';
 import BecomeTutor from '../components/Main/Menu/BecomeTutor/BecomeTutor';
+import VideoIntroduction from '../components/Main/Menu/BecomeTutor/VideoIntroduction';
+import Approval from '../components/Main/Menu/BecomeTutor/Approval';
 import Schedule from '../components/Main/Menu/Schedule/Schedule';
 import Favorites from '../components/Main/Menu/Favorites/Favorites';
 import History from '../components/Main/Menu/History/History';
@@ -212,6 +214,16 @@ function MainNavigation(props) {
         name="BecomeTutor"
         component={BecomeTutor}
         options={{headerShown: true, title: 'Become a tutor'}}
+      />
+      <Stack.Screen
+        name="VideoIntroduction"
+        component={VideoIntroduction}
+        options={{headerShown: true, title: 'Video Introduction'}}
+      />
+      <Stack.Screen
+        name="Approval"
+        component={Approval}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="History"

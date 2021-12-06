@@ -45,6 +45,8 @@ const initialState = {
         viewFeedbacks: "Xem Feedback",
         FeedbackList: "Danh sách Feedback",
         noData: "Chưa có dữ liệu",
+        Subject: "Chủ đề",
+        TestPreparation: "Luyện thi"
       },
     en: {
         Home: "Home",
@@ -87,7 +89,9 @@ const initialState = {
         Country: "Country",
         viewFeedbacks: "View Feedbacks",
         FeedbackList: "Feedback List",
-        noData: "No Data"
+        noData: "No Data",
+        Subject: "Subject",
+        TestPreparation: "Test Preparation"
       }
 }
 

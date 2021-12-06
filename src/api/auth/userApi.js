@@ -169,7 +169,8 @@ export const userApi = {
                       {
                           isLogging: true,
                           current: 
-                          {user: {...response.user, 
+                          {user: {...response.user,
+                            name: payload.name,
                             birthday : payload.birthday,
                             country: payload.country,
                             level: payload.level,
