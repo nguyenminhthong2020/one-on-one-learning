@@ -16,42 +16,7 @@ import {MAIN_COLOR} from '../../../../../globals/constant';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const arrayTopic = [
-  {
-    id: 0,
-    title: 'Foods You Love'
-  },
-  {
-    id: 1,
-    title: 'Foods You Love'
-  },
-  {
-    id: 2,
-    title: 'Foods You Love'
-  },
-  {
-    id: 3,
-    title: 'Foods You Love'
-  },{
-    id: 4,
-    title: 'Foods You Love'
-  },{
-    id: 5,
-    title: 'Foods You Love'
-  },{
-    id: 6,
-    title: 'Foods You Love'
-  },{
-    id: 7,
-    title: 'Foods You Love'
-  },{
-    id: 8,
-    title: 'Foods You Love'
-  },{
-    id: 9,
-    title: 'Foods You Love'
-  }
-]
+
 const CourseDetail = props => (
   <ScrollView>
   <View style={{margin: 5, borderRadius: 15}}>
@@ -75,7 +40,7 @@ const CourseDetail = props => (
           style={{width: '80%', height: 160, left: '10%'}}
           resizeMode={FastImage.resizeMode.cover}
           source={{
-            uri: 'https://camblycurriculumicons.s3.amazonaws.com/5e2b895e541a832674533c18?h=d41d8cd98f00b204e9800998ecf8427e',
+            uri: props.route.params.item.imageUrl,
             priority: FastImage.priority.normal,
           }}
         />
@@ -83,15 +48,15 @@ const CourseDetail = props => (
 
       <View style={{padding: 15}}>
         <Text style={{fontSize: 18, fontWeight: 'bold'}}>
-          {'Basic Conversation Topics'}
+          {props.route.params.item.name}
         </Text>
         <Text style={{fontSize: 15, marginTop: 8, marginBottom: 0}}>
-          Gain confidence speaking about familiar topics
+          {props.route.params.item.description}
         </Text>
         <Pressable 
-           onPress={()=>alert("Discover")}
-           style={{backgroundColor: MAIN_COLOR, paddingVertical: 6, marginTop: 12, borderRadius: 12}}>
-          <Text style={{color: 'white', textAlign: 'center', fontSize: 15}}>
+           onPress={()=>props.navigation.navigate('Discover', {item: props.route.params.item})}
+           style={{backgroundColor: MAIN_COLOR, paddingVertical: 8, marginTop: 12, borderRadius: 12}}>
+          <Text style={{color: 'white', textAlign: 'center', fontSize: 18}}>
             Discover
           </Text>
         </Pressable>
@@ -119,10 +84,7 @@ const CourseDetail = props => (
         </View>
       </View>
       <Text style={{marginBottom: 12, fontSize: 16}}>
-        It can be intimidating to speak with a foreigner, no matter how much
-        grammar and vocabulary you've mastered. If you have basic knowledge of
-        English but have not spent much time speaking, this course will help you
-        ease into your first English conversations.
+        {props.route.params.item.reason}
       </Text>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <AntDesign
@@ -140,10 +102,7 @@ const CourseDetail = props => (
         </View> 
       </View>
       <Text style={{marginBottom: 16, fontSize: 16}}>
-        This course covers vocabulary at the CEFR A2 level. You will build
-        confidence while learning to speak about a variety of common, everyday
-        topics. In addition, you will build implicit grammar knowledge as your
-        tutor models correct answers and corrects your mistakes.
+        {props.route.params.item.purpose}
       </Text>
       <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10}}>
         Experience Level
@@ -161,7 +120,7 @@ const CourseDetail = props => (
           />
         
         <View>
-          <Text style={{fontSize: 16}}> Beginner</Text>
+          <Text style={{fontSize: 16}}> {props.route.params.item.level1}</Text>
         </View>
       </View>
       <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10}}>
@@ -182,21 +141,21 @@ const CourseDetail = props => (
         
         
         <View>
-          <Text style={{fontSize: 16}}> 10 Topics</Text>
+          <Text style={{fontSize: 16}}> {props.route.params.item.topics.length} Topics</Text>
         </View>
       </View>
       <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10}}>
       List Topics
       </Text>
-      <View>
+      <View style={{marginBottom: 10}}>
          {
-           arrayTopic.map((topic, index) => <View key={index} style={{marginBottom: 2,}}><Text style={{fontSize: 16}}>{index + 1}. {topic.title}</Text></View>)
+          props.route.params.item.topics.map((topic, index) => <View key={index} style={{marginBottom: 2,}}><Text style={{fontSize: 16}}>{index + 1}. {topic.name}</Text></View>)
          }
       </View>
-      <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10, marginTop: 16}}>
+      {/* <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10, marginTop: 16}}>
       Suggested Tutors
       </Text>
-      <Text style={{fontSize: 16}}>Michelle Barredo</Text>
+      <Text style={{fontSize: 16}}>Michelle Barredo</Text> */}
     </View>
   </View>
   </ScrollView>

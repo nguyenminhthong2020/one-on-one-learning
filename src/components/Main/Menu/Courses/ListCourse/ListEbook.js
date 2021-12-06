@@ -19,7 +19,6 @@ import {
   TextInput,
   Modal,
 } from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {TabView /*SceneMap*/} from 'react-native-tab-view';
 //import {MAIN_COLOR} from '../../../../../globals/constant';
@@ -28,24 +27,6 @@ import { MAIN_COLOR } from '../../../../../globals/constant';
 import { useDispatch, useSelector } from 'react-redux';
 import { response } from '../../../../../api/course/searchApi';
 
-const arrayCourse = [
-  {
-    title: 'English For Beginners',
-    data: ['Pizza', 'Burger', 'Risotto'],
-  },
-  {
-    title: 'Conversational English',
-    data: ['French Fries', 'Onion Rings', 'Fried Shrimps'],
-  },
-  {
-    title: 'Business English',
-    data: ['Water', 'Coke', 'Beer'],
-  },
-  {
-    title: 'IELTS',
-    data: ['Cheese Cake', 'Ice Cream'],
-  },
-];
 
 const arrayEbook = [
   {
@@ -128,76 +109,23 @@ const Item = props => (
         style={{width: '80%', height: 160}}
         resizeMode={FastImage.resizeMode.cover}
         source={{
-          uri: props.item.imageUrl,
+          uri: 'https://api.app.lettutor.com/file/be4c3df8-3b1b-4c8f-a5cc-75a8e2e6626afilewhat_a_world.jpeg',
           priority: FastImage.priority.normal,
         }}
       />
     </View>
     <View style={{padding: 10}}>
-      <Text style={{fontSize: 18, fontWeight: 'bold'}}>{props.item.name}</Text>
+      <Text style={{fontSize: 18, fontWeight: 'bold'}}>{props.title}</Text>
       <Text style={{fontSize: 15, marginTop: 6, marginBottom: 12}}>
-        {props.item.description}
+        Gain confidence speaking about familiar topics
       </Text>
-      <Text style={{textAlign: 'right', color:'black'}}>{props.item.level1}   {props.item.topics.length} lessons</Text>
+      <Text style={{textAlign: 'right', color:'black'}}>Beginner   10 lessons</Text>
     </View>
   </View>
 );
 
-const renderItemFirstRoute = (item, navigation) => (
-  <Pressable onPress={() => navigation.navigate('CourseDetail', {item: item})}>
-    <Item item={item} />
-  </Pressable>
-);
-// const renderSectionHeader = ({section: {title}}) => (
-//   <Text
-//     style={{
-//       fontSize: 22,
-//       color: 'black',
-//       fontWeight: 'bold',
-//       marginLeft: 10,
-//       marginTop: 20,
-//     }}>
-//     {title}
-//   </Text>
-// );
-const FirstRoute = props => {
 
-  return (
-    <View /*style={{flex: 1, backgroundColor: 'white'}}*/>
-      {/* <SectionList
-        getItemLayout={(_, index) => ({
-          length: 200,
-          offset: 200 * index,
-          index,
-        })}
-        removeClippedSubviews={true}
-        windowSize={7}
-        sections={arrayCourse}
-        keyExtractor={(item, index) => item + index}
-        renderItem={({item}) => renderItemFirstRoute(item, props.navigation)}
-        renderSectionHeader={renderSectionHeader}
-      /> */}
-      
-      <FlatList
-        getItemLayout={(_, index) => ({
-          length: 200,
-          offset: 200 * index,
-          index,
-        })}
-        removeClippedSubviews={true}
-        windowSize={4}
-        // style={{ marginBottom: 120, marginTop: 10 }}
-        showsVerticalScrollIndicator={true}
-        initialNumToRender={10}
-        data={props._arrayCourseFilter}
-        extraData={props._arrayCourseFilter}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({item}) => renderItemFirstRoute(item, props.navigation)}
-        disableVirtualization={false}
-      />
-    </View>
-  );
-};
+
 
 const openHanlde = () => {
   Linking.openURL(
@@ -208,13 +136,43 @@ const openHanlde = () => {
   });
 };
 
+const SecondRoute = () => {
+  const renderItem = i => (
+    // <Suspense fallback={<View></View>} key={i.index}>
+    //   <TutorItem onPress={() => onPressTutor(i.index)} tutor={i.item} />
+    // </Suspense>
+    <Pressable onPress={openHanlde /*alert(`E-book thứ ${i.index}`)*/}>
+      <Item title={i.item.title} />
+    </Pressable>
+  );
+
+  return (
+    <View /*style={{flex: 1, backgroundColor: 'white'}}*/>
+      <FlatList
+        getItemLayout={(_, index) => ({
+          length: 200,
+          offset: 200 * index,
+          index,
+        })}
+        removeClippedSubviews={true}
+        windowSize={7}
+        style={{marginBottom: 30, margin: 5}}
+        //ListHeaderComponentStyle={{marginBottom: -20}}
+        showsVerticalScrollIndicator={true}
+        initialNumToRender={2}
+        data={arrayEbook}
+        renderItem={renderItem}
+      />
+    </View>
+  );
+};
 
 // const renderScene = SceneMap({
 //   course: FirstRoute,
 //   ebook: SecondRoute,
 // });
 
-const ListCourse = props => {
+const ListEbook = props => {
   const dispatch = useDispatch();
   //const dataListCourse = useSelector(state => state.searchcourse.data);
 
@@ -302,25 +260,16 @@ const ListCourse = props => {
 
   const [_arrayCourseFilter, set_arrayCourseFilter] = useState(response.data.rows);
   const onSearchCourse = () => {
-    let x = [...new Set(arrLevelSelected)]
-    let y = [...new Set(arrCategorySelected)]
-    if(x.length == 0 || x.includes('Any Level')){
-      x = [...arrLevel]
-    }
-    if(y.length == 0){
-      y = [...arrCategory]
-    }
+    const x = [...new Set(arrLevelSelected)]
+    const y = [...new Set(arrCategorySelected)]
     let arrRows = response.data.rows.filter(function (i) {
-      //console.log(i.level1);
       if (
-        i.name.toLocaleLowerCase().includes(query.toLocaleLowerCase()) 
-        && x.includes(i.level1)  
-        && y.includes(i.categories[0].title
-        )
+        i.name.includes(payload.q) &&
+        x.includes(i.level1) && // Nhớ level là chuỗi
+        y.includes(i.categories[0].title)
       ) {
         return true;
       }else {return false;}
-
     });
     set_arrayCourseFilter(
       arrRows
@@ -328,14 +277,23 @@ const ListCourse = props => {
   }
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    {key: 'course', title: 'Course'},
+    // {key: 'course', title: 'Course'},
+    {key: 'ebook', title: 'E-Book'},
   ]);
 
 
   const renderScene = ({route}) => {
     switch (route.key) {
-      case 'course':
-        return <FirstRoute navigation={props.navigation} _arrayCourseFilter={_arrayCourseFilter}/>;
+      // case 'course':
+      //   return <></>;
+      case 'ebook':
+        return (
+          <SecondRoute
+            navigation={
+              props.navigation
+            } /*style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.2)'}}*/
+          />
+        );
       default:
         return null;
     }
@@ -353,7 +311,7 @@ const ListCourse = props => {
           style={{
             height: 40,
             backgroundColor: 'white',
-            width: {query}!= ''? '55%': '65%',
+            width: '70%',
             borderRadius: 20,
             paddingHorizontal: 5,
           }}>
@@ -363,15 +321,6 @@ const ListCourse = props => {
             placeholder="Search Name..."
             style={{fontSize: 15}}></TextInput>
         </View>
-        {query != '' && <AntDesign
-          name={'close'}
-          size={22}
-          color={'red'}
-          style={{marginLeft: 10}}
-          onPress={() => {
-            setQuery('')
-          }}
-        />}
       </View>
       <View>
         <View
@@ -381,16 +330,13 @@ const ListCourse = props => {
             marginLeft: 3,
             alignItems: 'center',
           }}>
-          
-          <View style={{flexDirection: 'column', justifyContent: 'center', width: '30%',
-              left: '0%',}}>
           <View
             style={{
               alignItems: 'center',
               borderRadius: 30,
               backgroundColor: '#35bb9b',
-              // width: '30%',
-              // left: '0%',
+              width: '30%',
+              left: '0%',
               borderWidth: 1,
             }}>
             <Pressable onPress={() => setModalVisible1(true)}>
@@ -398,16 +344,6 @@ const ListCourse = props => {
                 Choose Level
               </Text>
             </Pressable>
-          </View>
-          {arrLevelSelected.length != 0 && <AntDesign
-          name={'close'}
-          size={22}
-          color={'red'}
-          style={{marginLeft: 10}}
-          onPress={() => {
-            setArrayLevelSelected([]);
-          }}
-        />}
           </View>
           <View style={{width: '70%'}}>
             <Text
@@ -486,16 +422,13 @@ const ListCourse = props => {
             alignItems: 'center',
             marginBottom: 2,
           }}>
-          
-        <View style={{flexDirection: 'column', justifyContent:'center',width: '30%',
-              left: '0%',}}>
-        <View
+          <View
             style={{
               alignItems: 'center',
               borderRadius: 30,
               backgroundColor: '#35bb9b',
-              // width: '30%',
-              // left: '0%',
+              width: '30%',
+              left: '0%',
               borderWidth: 1,
             }}>
             <Pressable onPress={() => setModalVisible2(true)}>
@@ -504,16 +437,6 @@ const ListCourse = props => {
               </Text>
             </Pressable>
           </View>
-          {arrCategorySelected.length != 0 && <AntDesign
-          name={'close'}
-          size={22}
-          color={'red'}
-          style={{marginLeft: 10}}
-          onPress={() => {
-            setArrayCategorySelected([])
-          }}
-        />}
-        </View>
           <View style={{width: '70%'}}>
             <Text
               style={{
@@ -533,10 +456,10 @@ const ListCourse = props => {
               width: '40%',
               left: '30%',
               borderWidth: 1,
-              marginBottom: 2
+              marginBottom: 1
             }}>
-            <Pressable onPress={onSearchCourse} style={{ width: '100%'}}>
-              <Text style={{color: 'white', paddingVertical: 7, fontWeight: 'bold', fontSize: 16, textAlign: 'center'}}>
+            <Pressable onPress={onSearchCourse}>
+              <Text style={{color: 'white', paddingVertical: 6, fontWeight: 'bold'}}>
                 Search
               </Text>
             </Pressable>
@@ -637,4 +560,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ListCourse;
+export default ListEbook;

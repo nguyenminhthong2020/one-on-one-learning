@@ -17,7 +17,10 @@ import Home from '../components/Main/Home/Home';
 import Menu from '../components/Main/Menu/Menu';
 import Profile from '../components/AccountManagement/Profile/Profile';
 import ListCourse from '../components/Main/Menu/Courses/ListCourse/ListCourse';
+import ListEbook from '../components/Main/Menu/Courses/ListCourse/ListEbook';
 import CourseDetail from '../components/Main/Menu/Courses/CourseDetail/CourseDetail';
+import Discover from '../components/Main/Menu/Courses/CourseDetail/Discover';
+import DiscoverDetail from '../components/Main/Menu/Courses/CourseDetail/DiscoverDetail';
 import BecomeTutor from '../components/Main/Menu/BecomeTutor/BecomeTutor';
 import Schedule from '../components/Main/Menu/Schedule/Schedule';
 import Favorites from '../components/Main/Menu/Favorites/Favorites';
@@ -174,8 +177,23 @@ function MainNavigation(props) {
         options={{headerShown: false}}
       />
       <Stack.Screen
+        name="ListEbook"
+        component={ListEbook}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
         name="CourseDetail"
         component={CourseDetail}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Discover"
+        component={Discover}
+        options={{headerShown: true}}
+      />
+      <Stack.Screen
+        name="DiscoverDetail"
+        component={DiscoverDetail}
         options={{headerShown: false}}
       />
       <Stack.Screen

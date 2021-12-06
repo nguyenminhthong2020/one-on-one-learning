@@ -2,7 +2,7 @@ package com.app;
 
 //import com.horcrux.svg.SvgPackage;
 //import com.reactnativecommunity.webview.RNCWebViewPackage;
-import com.app.generated.BasePackageList;
+// import com.app.generated.BasePackageList;
 import com.brentvatne.react.ReactVideoPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import android.app.Application;
@@ -19,11 +19,11 @@ import androidx.annotation.Nullable;
 import com.reactnativejitsimeet.RNJitsiMeetPackage; 
 
 import java.util.Arrays;
-import org.unimodules.adapters.react.ModuleRegistryAdapter;
-import org.unimodules.adapters.react.ReactModuleRegistryProvider;
+// import org.unimodules.adapters.react.ModuleRegistryAdapter;
+// import org.unimodules.adapters.react.ReactModuleRegistryProvider;
 
 public class MainApplication extends Application implements ReactApplication {
-  private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(new BasePackageList().getPackageList(), null);
+  // private final ReactModuleRegistryProvider mModuleRegistryProvider = new ReactModuleRegistryProvider(new BasePackageList().getPackageList(), null);
 
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {
@@ -40,10 +40,11 @@ public class MainApplication extends Application implements ReactApplication {
           // packages.add(new MyReactNativePackage());
           //packages.add(new SvgPackage());
           // new ReactVideoPackage()
-          List<ReactPackage> unimodules = Arrays.<ReactPackage>asList(
-            new ModuleRegistryAdapter(mModuleRegistryProvider)
-          );
-          packages.addAll(unimodules);
+          
+          // List<ReactPackage> unimodules = Arrays.<ReactPackage>asList(
+          //   new ModuleRegistryAdapter(mModuleRegistryProvider)
+          // );
+          // packages.addAll(unimodules);
           return packages;
         }
 

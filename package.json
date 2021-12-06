@@ -44,7 +44,6 @@
     "react-native-screens": "^3.8.0",
     "react-native-svg": "^12.1.1",
     "react-native-tab-view": "^3.1.1",
-    "react-native-unimodules": "^0.14.8",
     "react-native-vector-icons": "^8.1.0",
     "react-native-video": "^5.2.0-alpha1",
     "react-redux": "^7.2.6",

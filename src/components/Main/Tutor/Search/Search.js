@@ -215,13 +215,22 @@ const Search = props => {
             borderRadius: 5,
             height: 40,
             fontSize: 14,
-            width: '60%',
+            width: '55%',
             backgroundColor: 'white',
           }}
           value={nameQuery}
           onChangeText={value => setNameQuery(value)}
           placeholder={langState == 'en' ? 'search name...' : 'tìm theo tên...'}
         />
+        {nameQuery != '' && <AntDesign
+          name={'close'}
+          size={22}
+          color={'red'}
+          style={{marginLeft: 10}}
+          onPress={() => {
+            setNameQuery('');
+          }}
+        />}
       </View>
       <View
         style={{
@@ -244,15 +253,15 @@ const Search = props => {
             setCountry({cca2: country.cca2, name: country.name})
           }
         />
-        <AntDesign
-          name={'reload1'}
+        {country.cca2 != '' && <AntDesign
+          name={'close'}
           size={22}
           color={'red'}
           style={{marginLeft: 10}}
           onPress={() => {
             setCountry({cca2: '', name: ''});
           }}
-        />
+        />}
       </View>
       <View style={styles.container1}>
         <Pressable

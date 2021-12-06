@@ -1,5 +1,5 @@
 apply plugin: "com.android.application"
-apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
+// apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
 import com.android.build.OutputFile
 
 /**
@@ -89,7 +89,7 @@ project.ext.vectoricons = [
 
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 apply from: "../../node_modules/react-native/react.gradle"
-apply from: "../../node_modules/expo-constants/scripts/get-app-config-android.gradle"
+// apply from: "../../node_modules/expo-constants/scripts/get-app-config-android.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -145,6 +145,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
     splits {
         abi {
@@ -230,7 +231,7 @@ dependencies {
     // implementation 'com.google.android.exoplayer:exoplayer-dash:2.15.1'
     // implementation 'com.google.android.exoplayer:exoplayer-ui:2.15.1'
     // implementation 'com.google.android.exoplayer:extension-okhttp:2.9.2'
-    addUnimodulesDependencies()
+    // addUnimodulesDependencies()
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
         exclude group:'com.facebook.fbjni'

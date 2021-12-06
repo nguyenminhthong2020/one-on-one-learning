@@ -58,6 +58,12 @@ const Menu = props => {
             title={langState[langState.currentLang].Courses}
             handleOnPress={() => props.navigation.navigate('ListCourse')}
           />
+          <ButtonIcon
+            type={'AntDesign'}
+            name={'book'}
+            title={'Ebooks'}
+            handleOnPress={() => props.navigation.navigate('ListEbook')}
+          />
            <ButtonIcon
             type={'FontAwesome5'}
             name={'heart'}
