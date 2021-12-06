@@ -9,6 +9,7 @@ import langReducer1 from "./slices/setting/langSlice1";
 import searchTutorReducer from "./slices/tutor/searchSlice";
 import moreTutorReducer from "./slices/tutor/moreSlice";
 import searchCourseReducer from "./slices/course/searchCourseSlice";
+import searchEbookReducer from "./slices/course/searchEbookSlice";
 
 const persistConfig = {
   key: 'root',
@@ -22,7 +23,8 @@ const reducers = combineReducers({
     lang: langReducer1,
     searchtutor: searchTutorReducer,
     moretutor: moreTutorReducer,
-    searchcourse: searchCourseReducer
+    searchcourse: searchCourseReducer,
+    searchebook: searchEbookReducer
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers)
