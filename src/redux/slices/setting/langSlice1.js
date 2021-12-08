@@ -46,7 +46,8 @@ const initialState = {
         FeedbackList: "Danh sách Feedback",
         noData: "Chưa có dữ liệu",
         Subject: "Chủ đề",
-        TestPreparation: "Luyện thi"
+        TestPreparation: "Luyện thi",
+        No_Upcoming_Lesson: "Bạn không có bài học sắp tới nào"
       },
     en: {
         Home: "Home",
@@ -91,7 +92,8 @@ const initialState = {
         FeedbackList: "Feedback List",
         noData: "No Data",
         Subject: "Subject",
-        TestPreparation: "Test Preparation"
+        TestPreparation: "Test Preparation",
+        No_Upcoming_Lesson: "You have no upcoming lesson"
       }
 }
 
