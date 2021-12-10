@@ -20,8 +20,6 @@ import {
 //import testVideo from '../../../../../assets/video/test-video.mp4';
 import {
   MAIN_COLOR,
-  // MAIN_CORLOR,
-  // SECOND_COLOR,
 } from '../../../../globals/constant';
 //import {Video, AVPlaybackStatus} from 'expo-av';
 // import Video from 'react-native-video';
@@ -29,10 +27,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FastImage from 'react-native-fast-image';
 import Modal from 'react-native-modal';
-//import {Constants} from 'react-native-unimodules';
-//import SectionVideo from './SectionVideo';
+
 const SectionVideo = React.lazy(() => import('./SectionVideo'));
-//import ListTags from '../../../_common/ListTags/ListTags';
 import {useDispatch, useSelector} from 'react-redux';
 import CountryPicker from 'react-native-country-picker-modal';
 import { detailApi } from '../../../../api/tutor/detailApi';
