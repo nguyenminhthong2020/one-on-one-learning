@@ -11,11 +11,12 @@ import {Text, View, Alert, StyleSheet, ScrollView, Linking} from 'react-native';
 
 import ButtonIcon from '../../_common/Button/ButtonIcon';
 import ChangeSetting from '../../_common/ChangeSetting/ChangeSetting';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../../redux/slices/auth/loginSlice';
 
 
 const Setting = (props) => {
+  const dispatch = useDispatch();
   const langState = useSelector(state => state.lang);
 
   const openHanlde = () => {
