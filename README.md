@@ -11,3 +11,5 @@ Mã số: 1612674
 
 ### II. Các giai đoạn: 
   1. Giai đoạn 1 (mockup-ui) : deadline 24/10/2021
+  2. milestone 2 (offline-app) :
+  https://youtu.be/vWsNPRH2YAU 

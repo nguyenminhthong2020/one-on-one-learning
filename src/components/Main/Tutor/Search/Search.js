@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, {useState, Suspense} from 'react';
+import React, {useState, Suspense, useEffect} from 'react';
 import {MAIN_COLOR, SECOND_COLOR} from '../../../../globals/constant';
 import {
   Text,
@@ -9,225 +9,186 @@ import {
   //TouchableOpacity,
   Pressable,
   FlatList,
-  //ScrollView,
+  ScrollView,
 } from 'react-native';
 //import {SearchBar} from 'react-native-elements';
 import CountryPicker from 'react-native-country-picker-modal';
 
 // import {useForm, Controller} from 'react-hook-form';
 import TutorItem from '../../common/TutorItem/TutorItem';
+import TutorItemSearch from '../../common/TutorItem/TutorItemSearch';
 //const TutorItem = React.lazy(()=>{'../../common/TutorItem/TutorItem'});
+import {useSelector, useDispatch} from 'react-redux';
+import {searchSpecAsync} from '../../../../redux/slices/tutor/searchSlice';
+import MyTag from '../../../_common/FlexibleButton/TagFlexibleButton';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {moreAsync} from '../../../../redux/slices/tutor/moreSlice';
+import {isPageTwoExistAsync} from '../../../../redux/slices/tutor/searchSlice';
 
-const Search = (props) => {
-  const array = [
-    {
-      id: 0,
-      name: 'April Corpuz',
-      uri: 'https://api.app.lettutor.com/avatar/cd0a440b-cd19-4c55-a2a2-612707b1c12cavatar1631029793834.jpg',
-      startingValue: 5,
-      arrTitle: [
-        'EnglishforKids',
-        'BusinessEnglish',
-        'ConversationalEnglish',
-        'STARTERS',
-        'MOVERS',
-      ],
-      like: false,
-      description: `Hello there! I am an Industrial Engineer in the profession but chose to do online teaching because I love to meet different learners. I am an outgoing person and I have this passion for dealing with different people and seeing them progress with my help as their teacher. In fact, making friends is one of my best skills. I am very good at adapting to new environments and new situations. I am very friendly and can easily get along well with everyone. I have obtained a 120-Hour TEFL Certificate. I get a variety of teaching techniques. I know that there are fast and not so fast learners. So don't worry, I will be with you every step of the way going at your own pace. Let's practice what you already know and add something new each day. With my skills and experiences, I can assure you that I can provide adequate English learning effectively and efficiently. Together, let's make English learning fun.`,
-    },
-    {
-      id: 1,
-      name: 'Nhi Lam',
-      uri: 'https://api.app.lettutor.com/avatar/86248137-6f7d-4cf5-ad2e-34da42722b28avatar1628058042246.jpg',
-      startingValue: 4.5,
-      arrTitle: ['EnglishforKids', 'ConversationalEnglish', 'IELTS'],
-      like: false,
-      description: `Hi, I am teacher Nhi. I have been teaching English for 2 years. I used to study abroad in Sydney for 7 years. During my time as an overseas student, I had spoken with many people from diverse cultural backgrounds; therefore, I have strong listening and speaking skills. I love teaching English and I will devote to helping you improve your English skills if you book my class. I am also patient and understanding because I know for many people, English is a tough language to master. In my class, I will help you correct your pronunciation and deliver the lessons in a way that is easy for you to understand. If you book my class, you will have many chances to practice your speaking skills and also improve your pronunciation and grammatical knowledge. Besides that, if you need me to, I will share my personal tips to study English more effectively with you and show you the importance of having fun and practice while learning English. As an English teacher, I constantly update my English knowledge to better serve my career and students.`,
-    },
-    {
-      id: 2,
-      name: 'Joan Gacer',
-      uri: 'https://api.app.lettutor.com/avatar/8c4e58c4-e9d1-4353-b64d-41b573c5a3e9avatar1632284832414.jpg',
-      startingValue: 4,
-      arrTitle: [
-        'EnglishforKids',
-        'BusinessEnglish',
-        'ConversationalEnglish',
-        'STARTERS',
-        'MOVERS',
-        'FLYERS',
-        'KET',
-        'PET',
-        'IELTS',
-        'TOEFL',
-      ],
-      like: false,
-      description: `I was a customer service sales executive for 3 years before I become an ESL teacher I am trained to deliver excellent service to my clients so I can help you with business English dealing with customers or in sales-related jobs and a lot more, I also love to teach beginner, intermediate and advance I speak slowly and clearly so that the student can easily follow my instructions and pronunciation. In my class, I want environment-friendly fun and engaging I have many activities designed to help your enthusiasm in learning the language. I'm so excited to meet you in one of my classes let us have fun while learning English. See you there.`,
-    },
-    {
-      id: 3,
-      name: 'April Corpuz',
-      uri: 'https://api.app.lettutor.com/avatar/cd0a440b-cd19-4c55-a2a2-612707b1c12cavatar1631029793834.jpg',
-      startingValue: 5,
-      arrTitle: [
-        'EnglishforKids',
-        'BusinessEnglish',
-        'ConversationalEnglish',
-        'STARTERS',
-        'MOVERS',
-      ],
-      like: false,
-      description: `Hello there! I am an Industrial Engineer in the profession but chose to do online teaching because I love to meet different learners. I am an outgoing person and I have this passion for dealing with different people and seeing them progress with my help as their teacher. In fact, making friends is one of my best skills. I am very good at adapting to new environments and new situations. I am very friendly and can easily get along well with everyone. I have obtained a 120-Hour TEFL Certificate. I get a variety of teaching techniques. I know that there are fast and not so fast learners. So don't worry, I will be with you every step of the way going at your own pace. Let's practice what you already know and add something new each day. With my skills and experiences, I can assure you that I can provide adequate English learning effectively and efficiently. Together, let's make English learning fun.`,
-    },
-    {
-      id: 4,
-      name: 'April Corpuz',
-      uri: 'https://api.app.lettutor.com/avatar/86248137-6f7d-4cf5-ad2e-34da42722b28avatar1628058042246.jpg',
-      startingValue: 4.7,
-      arrTitle: [
-        'English',
-        'Vietnamese',
-        'Korean',
-        'French',
-        'Spanish',
-        'Mandarin',
-      ],
-      like: false,
-      description: `Hi, I am teacher Nhi. I have been teaching English for 2 years. I used to study abroad in Sydney for 7 years. During my time as an overseas student, I had spoken with many people from diverse cultural backgrounds; therefore, I have strong listening and speaking skills. I love teaching English and I will devote to helping you improve your English skills if you book my class. I am also patient and understanding because I know for many people, English is a tough language to master. In my class, I will help you correct your pronunciation and deliver the lessons in a way that is easy for you to understand. If you book my class, you will have many chances to practice your speaking skills and also improve your pronunciation and grammatical knowledge. Besides that, if you need me to, I will share my personal tips to study English more effectively with you and show you the importance of having fun and practice while learning English. As an English teacher, I constantly update my English knowledge to better serve my career and students.`,
-    },
-    {
-      id: 5,
-      name: 'April Corpuz',
-      uri: 'https://api.app.lettutor.com/avatar/86248137-6f7d-4cf5-ad2e-34da42722b28avatar1628058042246.jpg',
-      startingValue: 4.7,
-      arrTitle: [
-        'English',
-        'Vietnamese',
-        'Korean',
-        'French',
-        'Spanish',
-        'Mandarin',
-      ],
-      like: false,
-      description: `Hi, I am teacher Nhi. I have been teaching English for 2 years. I used to study abroad in Sydney for 7 years. During my time as an overseas student, I had spoken with many people from diverse cultural backgrounds; therefore, I have strong listening and speaking skills. I love teaching English and I will devote to helping you improve your English skills if you book my class. I am also patient and understanding because I know for many people, English is a tough language to master. In my class, I will help you correct your pronunciation and deliver the lessons in a way that is easy for you to understand. If you book my class, you will have many chances to practice your speaking skills and also improve your pronunciation and grammatical knowledge. Besides that, if you need me to, I will share my personal tips to study English more effectively with you and show you the importance of having fun and practice while learning English. As an English teacher, I constantly update my English knowledge to better serve my career and students.`,
-    },
-    {
-      id: 6,
-      name: 'April Corpuz',
-      uri: 'https://api.app.lettutor.com/avatar/86248137-6f7d-4cf5-ad2e-34da42722b28avatar1628058042246.jpg',
-      startingValue: 4.7,
-      arrTitle: [
-        'English',
-        'Vietnamese',
-        'Korean',
-        'French',
-        'Spanish',
-        'Mandarin',
-      ],
-      like: false,
-      description: `Hi, I am teacher Nhi. I have been teaching English for 2 years. I used to study abroad in Sydney for 7 years. During my time as an overseas student, I had spoken with many people from diverse cultural backgrounds; therefore, I have strong listening and speaking skills. I love teaching English and I will devote to helping you improve your English skills if you book my class. I am also patient and understanding because I know for many people, English is a tough language to master. In my class, I will help you correct your pronunciation and deliver the lessons in a way that is easy for you to understand. If you book my class, you will have many chances to practice your speaking skills and also improve your pronunciation and grammatical knowledge. Besides that, if you need me to, I will share my personal tips to study English more effectively with you and show you the importance of having fun and practice while learning English. As an English teacher, I constantly update my English knowledge to better serve my career and students.`,
-    },
-    {
-      id: 7,
-      name: 'April Corpuz',
-      uri: 'https://api.app.lettutor.com/avatar/86248137-6f7d-4cf5-ad2e-34da42722b28avatar1628058042246.jpg',
-      startingValue: 4.7,
-      arrTitle: [
-        'English',
-        'Vietnamese',
-        'Korean',
-        'French',
-        'Spanish',
-        'Mandarin',
-      ],
-      like: false,
-      description: `Hi, I am teacher Nhi. I have been teaching English for 2 years. I used to study abroad in Sydney for 7 years. During my time as an overseas student, I had spoken with many people from diverse cultural backgrounds; therefore, I have strong listening and speaking skills. I love teaching English and I will devote to helping you improve your English skills if you book my class. I am also patient and understanding because I know for many people, English is a tough language to master. In my class, I will help you correct your pronunciation and deliver the lessons in a way that is easy for you to understand. If you book my class, you will have many chances to practice your speaking skills and also improve your pronunciation and grammatical knowledge. Besides that, if you need me to, I will share my personal tips to study English more effectively with you and show you the importance of having fun and practice while learning English. As an English teacher, I constantly update my English knowledge to better serve my career and students.`,
-    },
-    {
-      id: 8,
-      name: 'April Corpuz',
-      uri: 'https://api.app.lettutor.com/avatar/86248137-6f7d-4cf5-ad2e-34da42722b28avatar1628058042246.jpg',
-      startingValue: 4.7,
-      arrTitle: [
-        'English',
-        'Vietnamese',
-        'Korean',
-        'French',
-        'Spanish',
-        'Mandarin',
-      ],
-      like: false,
-      description: `Hi, I am teacher Nhi. I have been teaching English for 2 years. I used to study abroad in Sydney for 7 years. During my time as an overseas student, I had spoken with many people from diverse cultural backgrounds; therefore, I have strong listening and speaking skills. I love teaching English and I will devote to helping you improve your English skills if you book my class. I am also patient and understanding because I know for many people, English is a tough language to master. In my class, I will help you correct your pronunciation and deliver the lessons in a way that is easy for you to understand. If you book my class, you will have many chances to practice your speaking skills and also improve your pronunciation and grammatical knowledge. Besides that, if you need me to, I will share my personal tips to study English more effectively with you and show you the importance of having fun and practice while learning English. As an English teacher, I constantly update my English knowledge to better serve my career and students.`,
-    },
-    {
-      id: 9,
-      name: 'April Corpuz',
-      uri: 'https://api.app.lettutor.com/avatar/86248137-6f7d-4cf5-ad2e-34da42722b28avatar1628058042246.jpg',
-      startingValue: 4.7,
-      arrTitle: [
-        'English',
-        'Vietnamese',
-        'Korean',
-        'French',
-        'Spanish',
-        'Mandarin',
-      ],
-      like: false,
-      description: `Hi, I am teacher Nhi. I have been teaching English for 2 years. I used to study abroad in Sydney for 7 years. During my time as an overseas student, I had spoken with many people from diverse cultural backgrounds; therefore, I have strong listening and speaking skills. I love teaching English and I will devote to helping you improve your English skills if you book my class. I am also patient and understanding because I know for many people, English is a tough language to master. In my class, I will help you correct your pronunciation and deliver the lessons in a way that is easy for you to understand. If you book my class, you will have many chances to practice your speaking skills and also improve your pronunciation and grammatical knowledge. Besides that, if you need me to, I will share my personal tips to study English more effectively with you and show you the importance of having fun and practice while learning English. As an English teacher, I constantly update my English knowledge to better serve my career and students.`,
-    },
-    {
-      id: 10,
-      name: 'April Corpuz',
-      uri: 'https://api.app.lettutor.com/avatar/86248137-6f7d-4cf5-ad2e-34da42722b28avatar1628058042246.jpg',
-      startingValue: 4.7,
-      arrTitle: [
-        'English',
-        'Vietnamese',
-        'Korean',
-        'French',
-        'Spanish',
-        'Mandarin',
-      ],
-      like: false,
-      description: `Hi, I am teacher Nhi. I have been teaching English for 2 years. I used to study abroad in Sydney for 7 years. During my time as an overseas student, I had spoken with many people from diverse cultural backgrounds; therefore, I have strong listening and speaking skills. I love teaching English and I will devote to helping you improve your English skills if you book my class. I am also patient and understanding because I know for many people, English is a tough language to master. In my class, I will help you correct your pronunciation and deliver the lessons in a way that is easy for you to understand. If you book my class, you will have many chances to practice your speaking skills and also improve your pronunciation and grammatical knowledge. Besides that, if you need me to, I will share my personal tips to study English more effectively with you and show you the importance of having fun and practice while learning English. As an English teacher, I constantly update my English knowledge to better serve my career and students.`,
-    },
-    {
-      id: 11,
-      name: 'Ralf Bippert',
-      uri: 'https://api.app.lettutor.com/avatar/49f9eafe-fe94-4eb4-83f9-bbe4ee5f6e24avatar1630907827384.jpg',
-      startingValue: 4,
-      arrTitle: ['EnglishforKids', 'ConversationalEnglish'],
-      like: false,
-      description: `Hello there, My name is Ralf I am a well-rounded teacher good at teaching communication classes as well as teaching younger kids. If you are a beginner or intermediate student I am here to help you learn. Hope to see you soon.`,
-    },
-  ];
+const Search = props => {
+  const dispatch = useDispatch();
+  const langState = useSelector(state => state.lang);
 
-  const [country, setCountry] = useState({name: 'Vietnam', cca2: 'VN'});
+  const [spec, setSpec] = useState(['']);
+  const [array, setArray] = useState([]);
+  const [arrayShow, setArrayShow] = useState(array);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const onPressTutor = index => alert('link to tutor detail index ' + index);
+  //const [arrayShow, setArrayShow] = useState(array);
+  useEffect(() => {
+    dispatch(
+      moreAsync({
+        page: 1,
+        perPage: 9,
+      }),
+    );
+  }, []);
+  //const listFavorite = useSelector(state => state.moretutor.rows);
+
+  useEffect(() => {
+    dispatch(
+      searchSpecAsync({
+        filters: {specialties: spec, date: '2021-12-04T06:03:15.995Z'},
+        page: 1,
+        perPage: 12,
+      }),
+    );
+    dispatch(
+      isPageTwoExistAsync({
+        filters: {specialties: spec, date: '2021-12-04T06:03:15.995Z'},
+        page: 2,
+        perPage: 12,
+      }),
+    );
+    setCurrentPage(1);
+  }, [spec]);
+
+  useEffect(() => {
+    dispatch(
+      searchSpecAsync({
+        filters: {specialties: spec, date: '2021-12-04T06:03:15.995Z'},
+        page: currentPage,
+        perPage: 12,
+      }),
+    );
+  }, [currentPage]);
+
+  const arrayState = useSelector(state => state.searchtutor.rows);
+  useEffect(() => {
+    setArray(arrayState);
+    setArrayShow(array);
+  }, [arrayState]);
+
+  const [country, setCountry] = useState({name: '', cca2: ''}); // Vietnam, VN
+  const [nameQuery, setNameQuery] = useState('');
+
+  //const onPressTutor = index => alert('link to tutor detail index ' + index);
+  const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
+
+  // const handlePageTwo = function () {
+  //   dispatch(
+  //     isPageTwoExistAsync({
+  //       filters: {specialties: spec, date: '2021-12-04T06:03:15.995Z'},
+  //       page: 2,
+  //       perPage: 12,
+  //     }),
+  //   );
+  // };
+  const isPageTwo = useSelector(state => state.searchtutor.isPageTwoExist);
+  // useEffect(() => {
+  //   if (isPageTwo == true) {
+  //     dispatch(
+  //       searchSpecAsync({
+  //         filters: {specialties: spec, date: '2021-12-04T06:03:15.995Z'},
+  //         page: 2,
+  //         perPage: 12,
+  //       }),
+  //     );
+  //     setCurrentPage(2);
+  //   }else{
+  //     alert("No page 2");
+  //   }
+  // }, [isPageTwo]);
 
   const renderTest = array => {
-    return (
-      <View>
-        <FlatList
-          style={{marginBottom: 150, marginTop: 10}}
-          //ListHeaderComponentStyle={{marginBottom: -20}}
-          showsVerticalScrollIndicator={true}
-          initialNumToRender={3}
-          data={array}
-          renderItem={i => (
-            // <Suspense fallback={<View></View>} key={i.index}>
-            //   <TutorItem onPress={() => onPressTutor(i.index)} tutor={i.item} />
-            // </Suspense>
-            <TutorItem onPress={() => props.navigation.navigate("TutorDetailNew")/*onPressTutor(i.index)*/} tutor={i.item} />
-          )}
-        />
+    //const array1 = array.map(item => listFavorite.includes(item.userId) ? {...item, isFavorite: true} : {...item, isFavorite: false});
+
+    return array.length == 0 ? (
+      <View style={{alignItems: 'center', marginTop: 30}}>
+        <Text style={{fontSize: 20, color: MAIN_COLOR}}>No Tutor !</Text>
+      </View>
+    ) : (
+      <View style={{marginTop: 5}}>
+        {array.map((item, index) => (
+          <TutorItemSearch
+            key={index}
+            onPress={
+              () =>
+                props.navigation.navigate('TutorDetailNew', {
+                  // uri: item.avatar,
+                  // name: item.name,
+                  tutor: item
+                }) /*onPressTutor(i.index)*/
+            }
+            tutor={item}
+          />
+        ))}
+        {
+          isPageTwo == true ? <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            marginVertical: 15,
+          }}>
+          <Pressable
+            onPress={() => setCurrentPage(1)}
+            style={{
+              backgroundColor: MAIN_COLOR,
+              marginRight: 20,
+              width: 70,
+              borderRadius: 20,
+              paddingVertical: 6,
+            }}>
+            <Text
+              style={{
+                color: currentPage == 1 ? 'yellow' : 'white',
+                textAlign: 'center',
+                fontSize: 16,
+                fontWeight: 'bold',
+              }}>
+              1
+            </Text>
+          </Pressable>
+          <Pressable
+            onPress={() => setCurrentPage(2)}
+            style={{
+              backgroundColor: MAIN_COLOR,
+              width: 70,
+              borderRadius: 20,
+              paddingVertical: 6,
+            }}>
+            <Text
+              style={{
+                color: currentPage == 2 ? 'yellow' : 'white',
+                textAlign: 'center',
+                fontSize: 16,
+                fontWeight: 'bold',
+              }}>
+              2
+            </Text>
+          </Pressable>
+        </View>
+        : 
+        <>
+        </>
+        }
+        
       </View>
     );
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {/* <SearchBar
         round={true}
         inputContainerStyle={{backgroundColor: 'white'}}
@@ -246,7 +207,7 @@ const Search = (props) => {
           marginTop: 10,
         }}>
         <Text style={{fontSize: 17, color: MAIN_COLOR, fontWeight: 'bold'}}>
-          *Name:{'   '}
+          *{langState[langState.currentLang].Name}:{'   '}
         </Text>
         <TextInput
           style={{
@@ -254,11 +215,22 @@ const Search = (props) => {
             borderRadius: 5,
             height: 40,
             fontSize: 14,
-            width: '60%',
+            width: '55%',
             backgroundColor: 'white',
           }}
-          placeholder="search name..."
+          value={nameQuery}
+          onChangeText={value => setNameQuery(value)}
+          placeholder={langState == 'en' ? 'search name...' : 'tìm theo tên...'}
         />
+        {nameQuery != '' && <AntDesign
+          name={'close'}
+          size={22}
+          color={'red'}
+          style={{marginLeft: 10}}
+          onPress={() => {
+            setNameQuery('');
+          }}
+        />}
       </View>
       <View
         style={{
@@ -269,7 +241,7 @@ const Search = (props) => {
           marginBottom: 15,
         }}>
         <Text style={{fontSize: 17, color: MAIN_COLOR, fontWeight: 'bold'}}>
-          *Select country:{'  '}
+          *{langState[langState.currentLang].Country}:{'  '}
         </Text>
         <CountryPicker
           withFlag
@@ -281,21 +253,139 @@ const Search = (props) => {
             setCountry({cca2: country.cca2, name: country.name})
           }
         />
+        {country.cca2 != '' && <AntDesign
+          name={'close'}
+          size={22}
+          color={'red'}
+          style={{marginLeft: 10}}
+          onPress={() => {
+            setCountry({cca2: '', name: ''});
+          }}
+        />}
       </View>
       <View style={styles.container1}>
         <Pressable
           style={styles.button1}
-          onPress={() => alert('search tutor')}>
-          <Text style={styles.text1}>Search</Text>
+          onPress={() => {
+            if (nameQuery.length > 0 && country.name.length == 0) {
+              setArrayShow(array.filter(item => item.name.toLowerCase().includes(nameQuery.toLowerCase())));
+            } else if (nameQuery.length == 0 && country.name.length > 0) {
+              setArrayShow(array.filter(item => item.country == country.cca2));
+            } else if (nameQuery.length > 0 && country.name.length > 0) {
+              setArrayShow(
+                array.filter(
+                  item =>
+                    item.country == country.cca2 &&
+                    item.name.toLowerCase().includes(nameQuery.toLowerCase()),
+                ),
+              );
+            } else {
+              setSpec(['']);
+            }
+          }}>
+          <Text style={styles.text1}>
+            {langState[langState.currentLang].Search}
+          </Text>
         </Pressable>
       </View>
-      {/* <View style={{alignItems: 'center'}}>
-      <TouchableOpacity style={{borderWidth: 1, borderColor: 'black', backgroundColor: MAIN_COLOR, paddingHorizontal: 10}}>
-        <Text style={{color: 'white'}}>Search</Text>
-      </TouchableOpacity>
-      </View> */}
-      {renderTest(array)}
-    </View>
+      <View
+        style={{flexDirection: 'row', alignItems: 'center', marginLeft: 10}}>
+        <Text
+          style={{
+            fontSize: 18,
+            fontWeight: 'bold',
+            color: isDarkTheme ? 'white' : 'black',
+          }}>
+          {langState[langState.currentLang].Filter_Tutors}: {/* {' '} */}
+        </Text>
+        <Text style={{color: isDarkTheme ? 'yellow' : 'red'}}>{spec}</Text>
+      </View>
+      <View style={{flexDirection: 'row', marginTop: 5, marginLeft: 10}}>
+        <MyTag
+          title={'All'}
+          onPress={() => {
+            // alert('all');
+            setSpec(['']);
+          }}
+        />
+        <MyTag
+          title={'ConversationalEnglish'}
+          onPress={() => {
+            // alert('conversational-english');
+            setSpec(['conversational-english']);
+          }}
+        />
+        <MyTag
+          title={'BusinessEnglish'}
+          onPress={() => {
+            // alert('business-english');
+            setSpec(['business-english']);
+          }}
+        />
+      </View>
+      <View style={{flexDirection: 'row', marginTop: 3, marginLeft: 10}}>
+        <MyTag
+          title={'EnglishforKids'}
+          onPress={() => {
+            // alert('english-for-kids');
+            setSpec(['english-for-kids']);
+          }}
+        />
+        <MyTag
+          title={'STARTERS'}
+          onPress={() => {
+            // alert('starters');
+            setSpec('starters');
+          }}
+        />
+        <MyTag
+          title={'FLYERS'}
+          onPress={() => {
+            // alert('flyers');
+            setSpec(['flyers']);
+          }}
+        />
+        <MyTag
+          title={'KET'}
+          onPress={() => {
+            // alert('ket');
+            setSpec(['ket']);
+          }}
+        />
+      </View>
+      <View style={{flexDirection: 'row', marginTop: 3, marginLeft: 10}}>
+        <MyTag
+          title={'MOVERS'}
+          onPress={() => {
+            // alert('movers');
+            setSpec(['movers']);
+          }}
+        />
+        <MyTag title={'PET'} onPress={() => setSpec(['pet'])} />
+        <MyTag
+          title={'IELTS'}
+          onPress={() => {
+            // alert('ielts');
+            setSpec(['ielts']);
+          }}
+        />
+        <MyTag
+          title={'TOEFL'}
+          onPress={() => {
+            // alert('toefl');
+            setSpec(['toefl']);
+          }}
+        />
+        <MyTag
+          title={'TOEIC'}
+          onPress={() => {
+            // alert('toeic');
+            setSpec(['toeic']);
+          }}
+        />
+      </View>
+      {renderTest(arrayShow)}
+    </ScrollView>
   );
 };
 

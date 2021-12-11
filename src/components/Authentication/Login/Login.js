@@ -1,24 +1,58 @@
 /* eslint-disable */
-import React from 'react';
+import React, {useEffect} from 'react';
 import {MAIN_COLOR} from '../../../globals/constant';
-import {Text, View, Alert, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
+import {Text, View, Alert, StyleSheet, TouchableOpacity, Pressable} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import Input from '../../../components/_common/Input/Input';
 import Button from '../../../components/_common/Button/Button';
 import {SocialIcon} from 'react-native-elements';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginAsync } from '../../../redux/slices/auth/loginSlice';
+import { init } from '../../../redux/slices/auth/loginSlice';
+import LinearGradient from 'react-native-linear-gradient';
 
-const Login = () => {
+const Login = (props) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+   dispatch(init());
+  }, [])
+
   const {
     control,
     handleSubmit,
     formState: {errors},
   } = useForm({mode: 'onBlur'});
+  
 
-  const onSubmit = data => alert(JSON.stringify(data));
+  const check = useSelector(state => state.auth.isLoggin);
+  // console.log(check);
+
+  const onSubmit = function(data){
+    //dispatch()
+    dispatch(loginAsync({
+      email: data.email,
+      password: data.password
+    }))
+  }
+  
+  useEffect(() => {
+    // console.log("dispatch nè");
+    if(check == true){
+      props.navigation.navigate("MainTabs");
+    }
+  }, [check])
+
+  useEffect(() => {
+      //  console.log("dispatch nè");
+       if(check == true){
+         props.navigation.navigate("MainTabs");
+       }
+  }, [dispatch, check])
 
   return (
-    <ScrollView>
     <View style={styles.container}>
+      <LinearGradient colors={['white', 'white', 'green']}>
+      <View style={{height: 8}}></View>
       <View style={{alignItems: 'center'}}>
         <Text style={styles.text}>LOGIN</Text>
       </View>
@@ -41,6 +75,7 @@ const Login = () => {
         name="email"
       />
       {errors.email && <Text style={styles.error}>{'please type gmail'}</Text>}
+      <View style={{height: 5}}></View>
       <Controller
         control={control}
         rules={{
@@ -63,14 +98,14 @@ const Login = () => {
         <Text style={styles.error}>{'please type password'}</Text>
       )}
       <View style={styles.forgotpw}>
-        <TouchableOpacity onPress={() => alert('forgotpassword')}>
+        <Pressable onPress={() => props.navigation.navigate("ForgetPassword")}>
           <Text style={styles.forgotpwText}>Forgot Password ?</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
       <Button title="Log In" handleSubmit={handleSubmit} onSubmit={onSubmit} />
       {/* <TouchableOpacity title="Submit" onPress={handleSubmit(onSubmit)} /> */}
-      <View style={{marginTop: 20, marginBottom: 20}}>
-        <Text style={{textAlign: 'center', marginBottom: 5}}>
+      <View style={{marginTop: 18}}>
+        <Text style={{textAlign: 'center', marginBottom: 0}}>
           Or continute with
         </Text>
         <View
@@ -100,28 +135,30 @@ const Login = () => {
         </View>
         <View
           style={{
-            marginTop: 30,
+            marginTop: 15,
             flexDirection: 'row',
             justifyContent: 'center',
           }}>
           <View>
-            <Text style={{fontSize: 18}}>Don't have account? </Text>
+            <Text style={{fontSize: 18,}}>Don't have account? </Text>
           </View>
           <View>
-            <TouchableOpacity onPress={() => alert('signup')}>
-              <Text style={{color: MAIN_COLOR, fontSize: 18}}>Sign up</Text>
-            </TouchableOpacity>
+            <Pressable onPress={() => props.navigation.navigate("Register")}>
+              <Text style={{color: MAIN_COLOR, fontSize: 18, fontWeight: 'bold'}}>Sign up</Text>
+            </Pressable>
           </View>
+          <View style={{height: 450}}></View>
         </View>
       </View>
+      </LinearGradient>
     </View>
-    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 15,
+    marginTop: 0,
+    paddingTop: 0,
     flex: 1,
     flexDirection: 'column',
   },
@@ -132,13 +169,14 @@ const styles = StyleSheet.create({
   },
   forgotpw: {
     right: '10%',
-    marginTop: 22,
+    marginTop: 15,
     marginBottom: 15,
   },
   forgotpwText: {
     color: MAIN_COLOR,
     fontSize: 15,
     textAlign: 'right',
+    //fontWeight: 'bold'
   },
   error: {
     textAlign: 'center',

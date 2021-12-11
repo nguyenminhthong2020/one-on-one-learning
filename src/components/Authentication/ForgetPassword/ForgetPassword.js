@@ -7,14 +7,18 @@ import Input from '../../../components/_common/Input/Input';
 import Button from '../../../components/_common/Button/Button';
 import {SocialIcon} from 'react-native-elements';
 
-const ForgetPassword = () => {
+const ForgetPassword = (props) => {
   const {
     control,
     handleSubmit,
     formState: {errors},
   } = useForm({mode: 'onBlur'});
 
-  const onSubmit = data => alert(JSON.stringify(data));
+  const onSubmit = data => 
+  {
+    //alert(JSON.stringify(data));
+    props.navigation.navigate("NotifyForgetPassword")
+  }
 
   return (
     <View style={styles.container}>

@@ -15,6 +15,7 @@ import {
 // import {useForm, Controller} from 'react-hook-form';
 import FastImage from 'react-native-fast-image';
 import AvatarAccessory from '../../_common/AvatarAccessory/AvatarAccessory';
+import { useSelector } from 'react-redux';
 
 // const FlatListItemSeparator = () => {
 //   return (
@@ -30,6 +31,8 @@ import AvatarAccessory from '../../_common/AvatarAccessory/AvatarAccessory';
 // };
 
 const ListMessage = (props) => {
+  const isDarkTheme = useSelector(state => state.theme.isDarkTheme)
+  const langState = useSelector(state => state.lang);
   //console.log("navigation: " + JSON.stringify(props.navigation));
   const array = [
     {
@@ -81,7 +84,10 @@ const ListMessage = (props) => {
                 marginBottom: 20,
                 backgroundColor: 'white',
               }}>
-              <Pressable onPress={() => props.navigation.navigate("TutorMessage")/*alert(i.item.lastMessage)*/}>
+              <Pressable onPress={() => props.navigation.navigate("TutorMessage", {
+                 uri: i.item.uri,
+                 name: i.item.name
+              })/*alert(i.item.lastMessage)*/}>
                 <View
                   style={{flexDirection: 'row', marginBottom: 5, marginTop: 5}}>
                   <View style={{marginLeft: 5}}>
@@ -140,7 +146,7 @@ const ListMessage = (props) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: isDarkTheme? 'black': SECOND_COLOR}]}>
       {/* <SearchBar
         round={true}
         inputContainerStyle={{backgroundColor: 'white'}}
@@ -168,7 +174,7 @@ const ListMessage = (props) => {
               width: '100%',
               backgroundColor: 'white'
             }}
-            placeholder="search message..."
+            placeholder={langState == "en" ? "search message..." : "tìm tin nhắn..."}
           />
         </View>
       </View>
@@ -184,7 +190,9 @@ const ListMessage = (props) => {
         <TouchableOpacity
           style={styles.button1}
           onPress={() => alert('search tutor')}>
-          <Text style={styles.text1}>Search</Text>
+          <Text style={styles.text1}>
+          {langState[langState.currentLang].Search}
+          </Text>
         </TouchableOpacity>
       </View>
       {/* <View style={{alignItems: 'center'}}>

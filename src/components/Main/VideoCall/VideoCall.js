@@ -72,6 +72,7 @@ function VideoCall() {
         displayName: 'Thong9021',
         email: 'testthu9021@gmail.com',
         avatar: 'https:/gravatar.com/avatar/abc123',
+        //avatar: 'https://gamek.mediacdn.vn/zoom/220_160/133514250583805952/2021/6/26/avata-16246861354471549893846.jpg',
       };
       JitsiMeet.call(url, userInfo);
       /* Você também pode usar o JitsiMeet.audioCall (url) para chamadas apenas de áudio */
@@ -108,7 +109,8 @@ function VideoCall() {
       //   backgroundColor: 'black',
       // }}
       >
-      <View style={{height: 60}}><CountdownTimer timeStart={'Oct 24, 2021 20:30:00'} /></View>
+      {/* <View style={{height: 60}}><CountdownTimer timeStart={'Nov 05, 2021 20:30:00'} /></View> */}
+      <View style={{height: 60}}><CountdownTimer timeStart={new Date(Date.now() + 2 * 24*60*60*1000)} /></View>
       <JitsiMeetView
         onConferenceTerminated={e => onConferenceTerminated(e)}
         onConferenceJoined={e => onConferenceJoined(e)}

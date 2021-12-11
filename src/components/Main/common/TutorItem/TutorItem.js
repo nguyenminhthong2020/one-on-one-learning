@@ -20,8 +20,12 @@ import ListTags from '../../../_common/ListTags/ListTags';
 
 //import {Rating} from 'react-native-ratings';
 import FastImage from 'react-native-fast-image';
+import { useDispatch, useSelector } from 'react-redux';
+import { addFavAsync, removeFavAsync } from '../../../../redux/slices/tutor/moreSlice';
+
 
 const TutorItem = props => {
+  const dispatch = useDispatch();
   /*
   const tutor = {
       id: 0,
@@ -41,20 +45,35 @@ const TutorItem = props => {
   }*/
 
   //const [score, setScore] = useState(5);
-  const [like, setLike] = useState(false);
+  let isFav = useSelector(state => state.moretutor.rows);
+  let check = isFav.includes(props.tutor.userId);
+
+  //const [like, setLike] = useState(check);
+  
 
   return (
     <Pressable onPress={props.onPress} style={{marginBottom: 10}}>
       <View style={styles.shadowProp}>
         <View>
-          {like === false ? (
+          {check === false ? (
             <AntDesign
               name={'heart'}
               size={22}
               color={'gray'}
               style={{textAlign: 'right', marginBottom: -15, marginRight: 10}}
               onPress={() => {
-                setLike(!like);
+                // console.log(isFav);
+                // console.log(props.tutor.userId);
+                dispatch(
+                  addFavAsync(
+                    {
+                      currentList : isFav,
+                      tutorId: props.tutor.userId
+                    }
+                  )
+                )
+                //console.log(isFav);
+                // setLike(like);
               }}
             />
           ) : (
@@ -64,7 +83,15 @@ const TutorItem = props => {
               color={'rgb(240, 72, 72)'}
               style={{textAlign: 'right', marginBottom: -15, marginRight: 10}}
               onPress={() => {
-                setLike(!like);
+                dispatch(
+                  removeFavAsync(
+                    {
+                      currentList : isFav,
+                      tutorId: props.tutor.userId
+                    }
+                  )
+                )
+                // setLike(like);
               }}
             />
           )}
@@ -75,7 +102,7 @@ const TutorItem = props => {
               style={{width: 60, height: 60, borderRadius: 30}}
               resizeMode={FastImage.resizeMode.cover}
               source={{
-                uri: props.tutor.uri,
+                uri: props.tutor.avatar,
                 priority: FastImage.priority.normal,
               }}
             />
@@ -102,7 +129,7 @@ const TutorItem = props => {
                 isDisabled={true}
               /> */}
             <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 1, marginLeft: 20}}>
-            <Text style={{color: 'orange'}}>{props.tutor.startingValue}/5 </Text>
+            <Text style={{color: 'orange'}}>{5}/5 </Text>
             <Image 
               //style={{marginLeft: 30}}
               //resizeMode={FastImage.resizeMode.cover}
@@ -132,11 +159,11 @@ const TutorItem = props => {
           </View> */}
         </View>
         {/* <TagActiveList arrTitle={props.tutor.arrTitle} /> */}
-         <ListTags arr={props.tutor.arrTitle}/>
+         <ListTags arr={props.tutor.specialties.split(",")}/>
         <Text
           numberOfLines={NUM_OF_LINES}
           style={{fontSize: 15, color: 'black', marginTop: 5}}>
-          {props.tutor.description}
+          {props.tutor.bio}
         </Text>
       </View>
     </Pressable>

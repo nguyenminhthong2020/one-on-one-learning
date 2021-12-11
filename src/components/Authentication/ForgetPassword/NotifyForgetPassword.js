@@ -40,7 +40,7 @@ const NotifyForgetPassword = () => {
         <View style={styles.container1}>
           <TouchableOpacity
             style={styles.button}
-            onPress={()=>alert('resend link to mail')}>
+            onPress={()=>alert('An email has send successfully')}>
             <Text style={styles.text1}>Send again</Text>
           </TouchableOpacity>
         </View>

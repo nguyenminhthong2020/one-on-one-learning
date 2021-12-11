@@ -7,17 +7,20 @@ import Input from '../../../components/_common/Input/Input';
 import Button from '../../../components/_common/Button/Button';
 import {SocialIcon} from 'react-native-elements';
 
-const Register = () => {
+const Register = (props) => {
   const {
     control,
     handleSubmit,
     formState: {errors},
   } = useForm({mode: 'onBlur'});
 
-  const onSubmit = data => alert(JSON.stringify(data));
+  const onSubmit = data => {
+    alert("Your registration successfully.\n\nCheck email:\n"+data.email);
+    //alert(JSON.stringify(data));
+  }
 
   return (
-    <ScrollView>
+    // <ScrollView>
     <View style={styles.container}>
       {/* <View style={{alignItems: 'center'}}>
         <Text style={styles.text}>LOGIN</Text>
@@ -104,7 +107,7 @@ const Register = () => {
       />
       </View>
       {/* <TouchableOpacity title="Submit" onPress={handleSubmit(onSubmit)} /> */}
-      <View style={{marginTop: 20, marginBottom: 20}}>
+      <View style={{marginTop: 15, marginBottom: 20}}>
         <Text style={{textAlign: 'center', marginBottom: 5}}>
           Or continute with
         </Text>
@@ -135,7 +138,7 @@ const Register = () => {
         </View>
         <View
           style={{
-            marginTop: 30,
+            marginTop: 18,
             flexDirection: 'row',
             justifyContent: 'center',
           }}>
@@ -150,13 +153,13 @@ const Register = () => {
         </View>
       </View>
     </View>
-    </ScrollView>
+    // </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 15,
+    marginTop: 3,
     flex: 1,
     flexDirection: 'column',
   },

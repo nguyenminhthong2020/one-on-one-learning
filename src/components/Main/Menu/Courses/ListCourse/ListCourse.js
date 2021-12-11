@@ -19,11 +19,14 @@ import {
   TextInput,
   Modal,
 } from 'react-native';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {TabView /*SceneMap*/} from 'react-native-tab-view';
 //import {MAIN_COLOR} from '../../../../../globals/constant';
 import FastImage from 'react-native-fast-image';
 import { MAIN_COLOR } from '../../../../../globals/constant';
+import { useDispatch, useSelector } from 'react-redux';
+import { response } from '../../../../../api/course/searchApi';
 
 const arrayCourse = [
   {
@@ -87,6 +90,20 @@ const arrLevel = [
   'Advanced',
   'Very advanced',
 ];
+const arrCategory = [
+  'English for Kids',
+  'English for Beginners',
+  'Business English',
+  'Conversational English',
+  'STARTERS',
+  'MOVERS',
+  'FLYERS',
+  'KET',
+  'PET',
+  'IELTS',
+  'TOEFL',
+  'TOEIC',
+];
 
 const Item = props => (
   <View
@@ -111,43 +128,43 @@ const Item = props => (
         style={{width: '80%', height: 160}}
         resizeMode={FastImage.resizeMode.cover}
         source={{
-          uri: 'https://camblycurriculumicons.s3.amazonaws.com/5e2b895e541a832674533c18?h=d41d8cd98f00b204e9800998ecf8427e',
+          uri: props.item.imageUrl,
           priority: FastImage.priority.normal,
         }}
       />
     </View>
     <View style={{padding: 10}}>
-      <Text style={{fontSize: 18, fontWeight: 'bold'}}>{props.title}</Text>
+      <Text style={{fontSize: 18, fontWeight: 'bold'}}>{props.item.name}</Text>
       <Text style={{fontSize: 15, marginTop: 6, marginBottom: 12}}>
-        Gain confidence speaking about familiar topics
+        {props.item.description}
       </Text>
-      <Text style={{textAlign: 'right', color:'black'}}>Beginner   10 lessons</Text>
+      <Text style={{textAlign: 'right', color:'black'}}>{props.item.level1}   {props.item.topics.length} lessons</Text>
     </View>
   </View>
 );
 
 const renderItemFirstRoute = (item, navigation) => (
-  <Pressable onPress={() => navigation.navigate('CourseDetail')}>
-    <Item title={item} />
+  <Pressable onPress={() => navigation.navigate('CourseDetail', {item: item})}>
+    <Item item={item} />
   </Pressable>
 );
-const renderSectionHeader = ({section: {title}}) => (
-  <Text
-    style={{
-      fontSize: 22,
-      color: 'black',
-      fontWeight: 'bold',
-      marginLeft: 10,
-      marginTop: 20,
-    }}>
-    {title}
-  </Text>
-);
+// const renderSectionHeader = ({section: {title}}) => (
+//   <Text
+//     style={{
+//       fontSize: 22,
+//       color: 'black',
+//       fontWeight: 'bold',
+//       marginLeft: 10,
+//       marginTop: 20,
+//     }}>
+//     {title}
+//   </Text>
+// );
 const FirstRoute = props => {
-  //console.log('First Route props: ' + JSON.stringify(props));
+
   return (
     <View /*style={{flex: 1, backgroundColor: 'white'}}*/>
-      <SectionList
+      {/* <SectionList
         getItemLayout={(_, index) => ({
           length: 200,
           offset: 200 * index,
@@ -159,6 +176,24 @@ const FirstRoute = props => {
         keyExtractor={(item, index) => item + index}
         renderItem={({item}) => renderItemFirstRoute(item, props.navigation)}
         renderSectionHeader={renderSectionHeader}
+      /> */}
+      
+      <FlatList
+        getItemLayout={(_, index) => ({
+          length: 200,
+          offset: 200 * index,
+          index,
+        })}
+        removeClippedSubviews={true}
+        windowSize={4}
+        // style={{ marginBottom: 120, marginTop: 10 }}
+        showsVerticalScrollIndicator={true}
+        initialNumToRender={10}
+        data={props._arrayCourseFilter}
+        extraData={props._arrayCourseFilter}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({item}) => renderItemFirstRoute(item, props.navigation)}
+        disableVirtualization={false}
       />
     </View>
   );
@@ -173,36 +208,6 @@ const openHanlde = () => {
   });
 };
 
-const SecondRoute = () => {
-  const renderItem = i => (
-    // <Suspense fallback={<View></View>} key={i.index}>
-    //   <TutorItem onPress={() => onPressTutor(i.index)} tutor={i.item} />
-    // </Suspense>
-    <Pressable onPress={openHanlde /*alert(`E-book thứ ${i.index}`)*/}>
-      <Item title={i.item.title} />
-    </Pressable>
-  );
-
-  return (
-    <View /*style={{flex: 1, backgroundColor: 'white'}}*/>
-      <FlatList
-        getItemLayout={(_, index) => ({
-          length: 200,
-          offset: 200 * index,
-          index,
-        })}
-        removeClippedSubviews={true}
-        windowSize={7}
-        style={{marginBottom: 30, margin: 5}}
-        //ListHeaderComponentStyle={{marginBottom: -20}}
-        showsVerticalScrollIndicator={true}
-        initialNumToRender={2}
-        data={arrayEbook}
-        renderItem={renderItem}
-      />
-    </View>
-  );
-};
 
 // const renderScene = SceneMap({
 //   course: FirstRoute,
@@ -210,63 +215,134 @@ const SecondRoute = () => {
 // });
 
 const ListCourse = props => {
-  const layout = useWindowDimensions();
-  //console.log('List Course prop: ' + JSON.stringify(props));
-  const renderScene = ({route}) => {
-    switch (route.key) {
-      case 'course':
-        return <FirstRoute navigation={props.navigation} />;
-      case 'ebook':
-        return (
-          <SecondRoute
-            navigation={
-              props.navigation
-            } /*style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.2)'}}*/
-          />
-        );
-      default:
-        return null;
-    }
-  };
+  const dispatch = useDispatch();
+  //const dataListCourse = useSelector(state => state.searchcourse.data);
 
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    {key: 'course', title: 'Course'},
-    {key: 'ebook', title: 'E-Book'},
-  ]);
-
-  const arrCategory = [
-    'EnglishforKids',
-    'BusinessEnglish',
-    'ConversationalEnglish',
-    'STARTERS',
-    'MOVERS',
-    'FLYERS',
-    'KET',
-    'PET',
-    'IELTS',
-    'TOEFL',
-    'TOEIC',
-  ];
+  const [query, setQuery] = useState('');
   const [arrLevelSelected, setArrayLevelSelected] = useState([]);
   const [modalVisible1, setModalVisible1] = useState(false);
 
   const [arrCategorySelected, setArrayCategorySelected] = useState([]);
   const [modalVisible2, setModalVisible2] = useState(false);
 
+  const layout = useWindowDimensions();
+  // let listCate = [
+  //   {
+  //     id: "255c96b6-fd6f-4f43-8dbd-fec766e361e0",
+  //     title: "English for Kids",
+  //     key: "KID",
+  //   },
+  //   {
+  //     id: "488cc5f8-a5b1-45cd-8d3a-47e690f9298e",
+  //     title: "English for Beginners",
+  //     key: "BEGINNER",
+  //   },
+  //   {
+  //     id: "f01cf003-25d1-432f-aaab-bf0e8390e14f",
+  //     title: "Business English", 
+  //     key: "BUSINESS",     
+  //   },
+  //   {
+  //     id: "d95b69f7-b810-4cdf-b11d-49faaa71ff4b",
+  //     title: "Conversational English",
+  //     key: "CONVERSATIONAL",  
+  //   },
+  //   {
+  //     id: "968e7e18-10c0-4742-9ec6-6f5c71c517f5",
+  //     title: "For studying abroad",
+  //     key: "ABROAD",
+  //   },
+  //   {
+  //     id: "c4e7f418-4006-40f2-ba13-cbade54c1fd0",
+  //     title: "English for Traveling",
+  //     key: "TRAVEL",
+  //   },
+  //   {
+  //     id: "0b89ead7-0e92-4aec-abce-ecfeba10dea5",
+  //     title: "PET",
+  //     key: "PET",
+  //   },
+  //   {
+  //     id: "534a94f1-579b-497d-b891-47d8e28e1b2c",
+  //     title: "MOVERS",
+  //     key: "MOVERS",
+  //   },
+  //   {
+  //     id: "df9bd876-c631-413c-9228-cc3d6a5c34fa",
+  //     title: "FLYERS",
+  //     key: "FLYERS",
+  //   },
+  //   {
+  //     id: "248ca9f5-b46d-4a55-b81c-abafebff5876",
+  //     title: "KET",
+  //     key: "KET",
+  //   },
+  //   {
+  //     id: "1e662753-b305-47ad-a319-fa52340f5532",
+  //     title: "TOEIC",
+  //     key: "TOEIC",
+  //   },
+  //   {
+  //     id: "d87de7ba-bd4c-442c-8d58-957acb298f57",
+  //     title: "TOEFL",
+  //     key: "TOEFL",
+  //   },
+  //   {
+  //     id: "975f83f6-30c5-465d-8d98-65e4182369ba",
+  //     title: "STARTERS",
+  //     key: "STARTERS",
+  //   },
+  //   {
+  //     id: "fb92cf24-1736-4cd7-a042-fa3c37921cf8",
+  //     title: "IELTS",
+  //     key: "IELTS",
+  //   }
+  // ]
+
+
+  const [_arrayCourseFilter, set_arrayCourseFilter] = useState(response.data.rows);
+  const onSearchCourse = () => {
+    let x = [...new Set(arrLevelSelected)]
+    let y = [...new Set(arrCategorySelected)]
+    if(x.length == 0 || x.includes('Any Level')){
+      x = [...arrLevel]
+    }
+    if(y.length == 0){
+      y = [...arrCategory]
+    }
+    let arrRows = response.data.rows.filter(function (i) {
+      //console.log(i.level1);
+      if (
+        i.name.toLocaleLowerCase().includes(query.toLocaleLowerCase()) 
+        && x.includes(i.level1)  
+        && y.includes(i.categories[0].title
+        )
+      ) {
+        return true;
+      }else {return false;}
+
+    });
+    set_arrayCourseFilter(
+      arrRows
+    )
+  }
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    {key: 'course', title: 'Course'},
+  ]);
+
+
+  const renderScene = ({route}) => {
+    switch (route.key) {
+      case 'course':
+        return <FirstRoute navigation={props.navigation} _arrayCourseFilter={_arrayCourseFilter}/>;
+      default:
+        return null;
+    }
+  };
+
   return (
     <>
-      {/* <View>
-        <Text
-          style={{
-            fontSize: 24,
-            color: MAIN_COLOR,
-            fontWeight: 'bold',
-            textAlign: 'center',
-          }}>
-          Discover Courses
-        </Text>
-      </View> */}
       <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 5}}>
         <View style={{width: '25%'}}>
           <Text style={{color: 'black', fontSize: 16, textAlign: 'center'}}>
@@ -277,14 +353,25 @@ const ListCourse = props => {
           style={{
             height: 40,
             backgroundColor: 'white',
-            width: '70%',
+            width: {query}!= ''? '55%': '65%',
             borderRadius: 20,
             paddingHorizontal: 5,
           }}>
           <TextInput
+            value={query}
+            onChangeText={(value)=>setQuery(value)}
             placeholder="Search Name..."
             style={{fontSize: 15}}></TextInput>
         </View>
+        {query != '' && <AntDesign
+          name={'close'}
+          size={22}
+          color={'red'}
+          style={{marginLeft: 10}}
+          onPress={() => {
+            setQuery('')
+          }}
+        />}
       </View>
       <View>
         <View
@@ -294,13 +381,16 @@ const ListCourse = props => {
             marginLeft: 3,
             alignItems: 'center',
           }}>
+          
+          <View style={{flexDirection: 'column', justifyContent: 'center', width: '30%',
+              left: '0%',}}>
           <View
             style={{
               alignItems: 'center',
               borderRadius: 30,
               backgroundColor: '#35bb9b',
-              width: '30%',
-              left: '0%',
+              // width: '30%',
+              // left: '0%',
               borderWidth: 1,
             }}>
             <Pressable onPress={() => setModalVisible1(true)}>
@@ -308,6 +398,16 @@ const ListCourse = props => {
                 Choose Level
               </Text>
             </Pressable>
+          </View>
+          {arrLevelSelected.length != 0 && <AntDesign
+          name={'close'}
+          size={22}
+          color={'red'}
+          style={{marginLeft: 10}}
+          onPress={() => {
+            setArrayLevelSelected([]);
+          }}
+        />}
           </View>
           <View style={{width: '70%'}}>
             <Text
@@ -333,7 +433,7 @@ const ListCourse = props => {
               <Text>Select Levels (Scroll)</Text>
               <Text style={{marginTop: 5}}>*You can select one or more</Text>
               <FlatList
-                style={{marginBottom: '5%', marginTop: 10, borderWidth: 2}}
+                style={{marginBottom: 10, marginTop: 0, borderWidth: 2}}
                 showsVerticalScrollIndicator={true}
                 initialNumToRender={5}
                 data={arrLevel}
@@ -363,7 +463,7 @@ const ListCourse = props => {
                   borderRadius: 15,
                   width: '40%',
                   left: '0%',
-                  marginBottom: '30%',
+                  marginBottom: 0,
                 }}>
                 <TouchableOpacity
                   onPress={() => setModalVisible1(!modalVisible1)}>
@@ -386,13 +486,16 @@ const ListCourse = props => {
             alignItems: 'center',
             marginBottom: 2,
           }}>
-          <View
+          
+        <View style={{flexDirection: 'column', justifyContent:'center',width: '30%',
+              left: '0%',}}>
+        <View
             style={{
               alignItems: 'center',
               borderRadius: 30,
               backgroundColor: '#35bb9b',
-              width: '30%',
-              left: '0%',
+              // width: '30%',
+              // left: '0%',
               borderWidth: 1,
             }}>
             <Pressable onPress={() => setModalVisible2(true)}>
@@ -401,6 +504,16 @@ const ListCourse = props => {
               </Text>
             </Pressable>
           </View>
+          {arrCategorySelected.length != 0 && <AntDesign
+          name={'close'}
+          size={22}
+          color={'red'}
+          style={{marginLeft: 10}}
+          onPress={() => {
+            setArrayCategorySelected([])
+          }}
+        />}
+        </View>
           <View style={{width: '70%'}}>
             <Text
               style={{
@@ -412,6 +525,22 @@ const ListCourse = props => {
             </Text>
           </View>
         </View>
+        <View
+            style={{
+              alignItems: 'center',
+              borderRadius: 30,
+              backgroundColor: MAIN_COLOR,
+              width: '40%',
+              left: '30%',
+              borderWidth: 1,
+              marginBottom: 2
+            }}>
+            <Pressable onPress={onSearchCourse} style={{ width: '100%'}}>
+              <Text style={{color: 'white', paddingVertical: 7, fontWeight: 'bold', fontSize: 16, textAlign: 'center'}}>
+                Search
+              </Text>
+            </Pressable>
+          </View>
 
         <Modal
           animationType="slide"
@@ -423,10 +552,10 @@ const ListCourse = props => {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text /*style={styles.modalText}*/>Select Levels (Scroll)</Text>
-              <Text style={{marginTop: 5}}>*You can select one or more</Text>
+              <Text style={{marginTop: 0}}>*You can select one or more</Text>
               <FlatList
                 style={{
-                  marginBottom: '20%',
+                  marginBottom: 10,
                   marginTop: 10,
                   borderWidth: 2,
                   width: 250,
@@ -464,7 +593,7 @@ const ListCourse = props => {
                   borderRadius: 15,
                   width: '40%',
                   left: '0%',
-                  marginBottom: '35%',
+                  marginBottom: 0,
                 }}>
                 <Pressable
                   onPress={() => setModalVisible2(!modalVisible2)}>
@@ -490,15 +619,6 @@ const ListCourse = props => {
 };
 
 const styles = StyleSheet.create({
-  //   centeredView: {
-  //     flex: 1,
-  //     backgroundColor: 'yellow',
-  //     // justifyContent: "center",
-  //     // alignItems: "center",
-  //     // width: '90%',
-  //     // height: '90%'
-  //     marginTop: 22
-  // },
   modalView: {
     margin: 10, // 20
     backgroundColor: 'white',

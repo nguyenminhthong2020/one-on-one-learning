@@ -8,10 +8,11 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
+  Pressable
 } from 'react-native';
 
 
-const Approval = () => {
+const Approval = (props) => {
 
   return (
     <View style={styles.container}>
@@ -35,7 +36,7 @@ const Approval = () => {
           left: '0%',
           marginBottom: '35%',
         }}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>props.navigation.navigate("MainTabs")}>
           <Text style={{color: 'white', paddingVertical: 8, fontSize: 20}}>
             Back to Home
           </Text>
