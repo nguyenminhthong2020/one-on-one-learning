@@ -8,6 +8,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import TutorMessage from '../components/Main/Message/TutorMessage';
 import TutorDetailNew from '../components/Main/Tutor/TutorDetail/TutorDetailNew';
+import Booking from '../components/Main/Tutor/TutorDetail/Booking/Booking';
 import TutorDetailComment from '../components/Main/Tutor/TutorDetail/TutorDetailComment';
 import ListMessage from '../components/Main/Message/ListMessage';
 import Upcoming from '../components/Main/Upcoming/Upcoming';
@@ -167,6 +168,11 @@ function MainNavigation(props) {
         name="TutorDetailNew"
         component={TutorDetailNew}
         options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Booking"
+        component={Booking}
+        options={{headerShown: true, title: 'Schedule & Booking'}}
       />
        <Stack.Screen
         name="TutorDetailComment"

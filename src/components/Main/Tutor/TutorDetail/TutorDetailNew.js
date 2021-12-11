@@ -162,87 +162,6 @@ const BookingSuccess = () =>
     {cancelable: true},
   );
 
-// const ModalReport = () => {
-//   console.log('Render Modal Report');
-//   const [isModalVisibleReport, setModalVisibleReport] = useState(false);
-//   const toggleModalReport = () => {
-//     setModalVisibleReport(!isModalVisibleReport);
-//   };
-//   return (
-//     <View>
-//       <View>
-//         <TouchableOpacity>
-//           <View style={{alignItems: 'center'}}>
-//             <View style={{marginBottom: 3}}>
-//               <MaterialIcons
-//                 name={'report'}
-//                 size={27}
-//                 color={MAIN_COLOR}
-//                 // style={{
-//                 //   textAlign: 'right',
-//                 //   marginBottom: -50,
-//                 //   marginRight: 10,
-//                 // }}
-//                 onPress={toggleModalReport}
-//               />
-//             </View>
-//             <View>
-//               <Text
-//                 style={{
-//                   color: MAIN_COLOR,
-//                   fontWeight: 'bold',
-//                   fontSize: 16,
-//                 }}>
-//                 Report
-//               </Text>
-//             </View>
-//           </View>
-//         </TouchableOpacity>
-//       </View>
-//       <View style={{backgroundColor: 'white'}}>
-//         <Modal isVisible={isModalVisibleReport}>
-//           <View
-//             style={{backgroundColor: 'white', width: '100%', height: '60%'}}>
-//             <Text
-//               style={{
-//                 color: 'black',
-//                 marginLeft: 5,
-//                 marginBottom: 15,
-//                 fontWeight: 'bold',
-//                 fontSize: 20,
-//               }}>
-//               Help us understand what's happening...
-//             </Text>
-//             <View
-//               style={{borderWidth: 1, marginHorizontal: 5, marginBottom: 10}}>
-//               <TextInput multiline={true} numberOfLines={5}></TextInput>
-//             </View>
-//             <View style={{alignItems: 'center'}}>
-//               <TouchableOpacity
-//                 style={{
-//                   width: '50%',
-//                   borderRadius: 40,
-//                   backgroundColor: '#e54594',
-//                   paddingVertical: 10,
-//                   marginBottom: 5,
-//                 }}
-//                 onPress={toggleModalReport}>
-//                 <Text
-//                   style={{
-//                     color: 'white',
-//                     textAlign: 'center',
-//                     fontSize: 18,
-//                   }}>
-//                   Send report
-//                 </Text>
-//               </TouchableOpacity>
-//             </View>
-//           </View>
-//         </Modal>
-//       </View>
-//     </View>
-//   );
-// };
 
 // Modal Time
 const ModalTime = props => {
@@ -262,8 +181,8 @@ const ModalTime = props => {
       2,
       2,
     );
-    toggleModalTime();
-    props.setIsClick(false);
+    //toggleModalTime();
+    //props.setIsClick(false);
   };
   return isModalVisibleTime ? (
     <View style={{backgroundColor: 'white'}}>
@@ -434,6 +353,7 @@ const TutorDetailNew = props => {
   ];
   const arrayIsClick = arrayDateTime.map((v, i) => false);
   const [isClick, setIsClick] = useState(arrayIsClick);
+  //console.log(isClick);
 
   const setIsClickHandler = value =>
     setIsClick(arrayIsClick.map((v, i) => (i === value ? false : v)));
@@ -445,6 +365,7 @@ const TutorDetailNew = props => {
     setModalVisible(!isModalVisible);
   };
   const toggleModalBooking = () => {
+    setIsClick(arrayIsClick);
     setModalVisibleBooking(!isModalVisibleBooking);
   };
   // const toggleModalTime = () => {
@@ -506,39 +427,6 @@ const TutorDetailNew = props => {
 
           <View style={{margin: 15, marginTop: 18, marginBottom: 10}}>
             <FavoriteComponent {...props}/>
-            {/* <View>
-              {like === false ? (
-                <AntDesign
-                  name={'heart'}
-                  size={22}
-                  color={'gray'}
-                  style={{
-                    textAlign: 'right',
-                    marginBottom: -50,
-                    marginRight: 10,
-                  }}
-                  onPress={() => {
-                    alert('Favorite tutor sucessfully !');
-                    setLike(!like);
-                  }}
-                />
-              ) : (
-                <AntDesign
-                  name={'heart'}
-                  size={22}
-                  color={'rgb(240, 72, 72)'}
-                  style={{
-                    textAlign: 'right',
-                    marginBottom: -50,
-                    marginRight: 10,
-                  }}
-                  onPress={() => {
-                    alert('Unfavorite tutor sucessfully !');
-                    setLike(!like);
-                  }}
-                />
-              )}
-            </View> */}
             <View style={{flexDirection: 'row', marginBottom: 5, marginTop: 8}}>
               <View>
                 <FastImage
@@ -615,7 +503,10 @@ const TutorDetailNew = props => {
                 backgroundColor: MAIN_COLOR,
                 paddingVertical: 10,
               }}
-              onPress={toggleModalBooking}>
+              //onPress={toggleModalBooking}>
+              onPress={()=>props.navigation.navigate("Booking", {
+                tutorId: props.route.params.tutor.userId,
+              })}>
               <Text
                 style={{
                   color: 'white',
@@ -826,108 +717,6 @@ const TutorDetailNew = props => {
             </Pressable>
           </View>
         </View>
-        {/* <View style={{backgroundColor: 'white'}}>
-          <Modal isVisible={isModalVisible}>
-            <View
-              style={{backgroundColor: 'white', width: '100%', height: '80%'}}>
-              <Text
-                style={{
-                  color: 'black',
-                  marginLeft: 5,
-                  marginBottom: 5,
-                  fontWeight: 'bold',
-                  marginTop: 5,
-                  fontSize: 15,
-                }}>
-                Comments: (scroll to see all)
-              </Text>
-              <FlatList
-                style={{marginBottom: 20, marginTop: 10}}
-                //ListHeaderComponentStyle={{marginBottom: -20}}
-                ItemSeparatorComponent={FlatListItemSeparator}
-                showsVerticalScrollIndicator={true}
-                initialNumToRender={2}
-                data={array}
-                renderItem={i => (
-                  //<View><Text>{JSON.stringify(i.item)}</Text></View>
-                  <View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        marginBottom: 5,
-                        marginTop: 8,
-                        marginLeft: 5,
-                      }}>
-                      <View>
-                        <FastImage
-                          style={{width: 30, height: 30, borderRadius: 15}}
-                          resizeMode={FastImage.resizeMode.cover}
-                          source={{
-                            uri: `${i.item.avatar}`,
-                            priority: FastImage.priority.normal,
-                          }}
-                        />
-                      </View>
-                      <View style={{justifyContent: 'space-between'}}>
-                        <Text
-                          style={{
-                            fontSize: 12,
-                            color: 'black',
-                            marginLeft: 6,
-                            fontWeight: 'bold',
-                          }}>
-                          {i.item.name}
-                        </Text>
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            marginTop: 1,
-                            marginLeft: 20,
-                          }}>
-                          <Text style={{color: 'orange'}}>
-                            {i.item.rating}/5{' '}
-                          </Text>
-                          <Image
-                            source={require('../../../../../assets/rating.png')}
-                          />
-                        </View>
-                      </View>
-                    </View>
-                    <View style={{marginLeft: 5}}>
-                      <Text style={{color: 'black'}}>{i.item.comment}</Text>
-                    </View>
-                    <View>
-                      <Text style={{textAlign: 'right'}}>
-                        {i.item.timestamp}
-                      </Text>
-                    </View>
-                  </View>
-                )}
-              />
-              <View style={{alignItems: 'center', marginTop: 30}}>
-                <TouchableOpacity
-                  style={{
-                    width: '50%',
-                    borderRadius: 40,
-                    backgroundColor: '#e54594',
-                    paddingVertical: 10,
-                    marginBottom: 5,
-                  }}
-                  onPress={toggleModal}>
-                  <Text
-                    style={{
-                      color: 'white',
-                      textAlign: 'center',
-                      fontSize: 18,
-                    }}>
-                    Close
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </Modal>
-        </View> */}
         <View style={{backgroundColor: 'white'}}>
           <Modal isVisible={isModalVisibleBooking}>
             <View
@@ -968,7 +757,7 @@ const TutorDetailNew = props => {
                       {datetime.date}
                     </Text>
                   </Pressable>
-                  {isClick[index] ? (
+                  {/* {isClick[index] == true ? (
                     <ModalTime
                       setIsClick={setIsClickHandler}
                       student={'Nguyễn Minh Thông'}
@@ -979,7 +768,7 @@ const TutorDetailNew = props => {
                     />
                   ) : (
                     <View></View>
-                  )}
+                  )} */}
                 </View>
               ))}
               <View style={{alignItems: 'center', marginTop: 25}}>
@@ -1005,46 +794,6 @@ const TutorDetailNew = props => {
             </View>
           </Modal>
         </View>
-        {/* <View style={{backgroundColor: 'white'}}>
-          <Modal isVisible={isModalVisibleReport}>
-            <View
-              style={{backgroundColor: 'white', width: '100%', height: '60%'}}>
-              <Text
-                style={{
-                  color: 'black',
-                  marginLeft: 5,
-                  marginBottom: 15,
-                  fontWeight: 'bold',
-                  fontSize: 20,
-                }}>
-                Help us understand what's happening...
-              </Text>
-              <View style={{borderWidth: 1, marginHorizontal: 5, marginBottom: 10}}>
-                <TextInput multiline={true} numberOfLines={5}></TextInput>
-              </View>
-              <View style={{alignItems: 'center'}}>
-                <TouchableOpacity
-                  style={{
-                    width: '50%',
-                    borderRadius: 40,
-                    backgroundColor: '#e54594',
-                    paddingVertical: 10,
-                    marginBottom: 5,
-                  }}
-                  onPress={toggleModalReport}>
-                  <Text
-                    style={{
-                      color: 'white',
-                      textAlign: 'center',
-                      fontSize: 18,
-                    }}>
-                    Send report
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </Modal>
-        </View> */}
       </ScrollView>
     </View>
   );
