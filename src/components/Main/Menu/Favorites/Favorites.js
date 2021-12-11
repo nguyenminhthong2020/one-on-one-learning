@@ -54,8 +54,7 @@ export default function Favorites(props) {
           onPress={
             () =>
               props.navigation.navigate('TutorDetailNew', {
-                uri: tutor.avatar,
-                name: tutor.name,
+                tutor: tutor,
               }) /*onPressTutor(index)*/
           }
           key={index}
