@@ -195,6 +195,7 @@ const Booking = props => {
   const langState = useSelector(state => state.lang);
 
   useEffect(() => {
+    let cancel = false;
     getScheduleBooking({tutorId: props.route.params.tutorId}).then(data => {
 
       const now = new Date().getTime();
@@ -256,9 +257,13 @@ const Booking = props => {
       //   console.log(item.date)
       //   item.time.forEach(time => console.log(time.startEnd))
       // })
+      if (cancel) return;
       setArrayDateTime(arrDate);
 
     });
+    return () => { 
+      cancel = true;
+    }
   }, []);
 
   // const arrayDateTime = [

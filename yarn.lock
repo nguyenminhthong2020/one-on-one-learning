@@ -6223,10 +6223,10 @@
     "prop-types" "^15.7.2"
     "yargs" "^16.1.1"
 
-"react-native-video@^5.2.0-alpha1":
-  "integrity" "sha512-UkvawdXCdInfvV/w8HMnjDnWDirSwEyOyWsY6IJbguZk9xc0chXKM010DwkdTFldY0bkWXEP2XHyEPh/AKwKcg=="
-  "resolved" "https://registry.npmjs.org/react-native-video/-/react-native-video-5.2.0-alpha1.tgz"
-  "version" "5.2.0-alpha1"
+"react-native-video@^5.2.0":
+  "integrity" "sha512-5SK1lxyzrCkZF+WuxUxLR1Pt65E0rsWB1w1GrGxSLdC9zWYBumcmuHl+wPJ7UQvznjaH2Ze7uU1R3arejI7+WQ=="
+  "resolved" "https://registry.npmjs.org/react-native-video/-/react-native-video-5.2.0.tgz"
+  "version" "5.2.0"
   dependencies:
     "keymirror" "^0.1.1"
     "prop-types" "^15.7.2"

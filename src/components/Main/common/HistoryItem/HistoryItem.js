@@ -47,8 +47,8 @@ const HistoryItem = (props) => {
                   <View style={{marginLeft: 4}}>
                     <Text style={{color: MAIN_COLOR}}>
                       {
-                        arrHistoryClass.scheduleDetailInfo.scheduleInfo
-                          .startTime
+                        (new Date(arrHistoryClass.scheduleDetailInfo.scheduleInfo
+                          .startTimestamp)).toLocaleTimeString().substring(0, 5)
                       }
                     </Text>
                   </View>
@@ -57,7 +57,10 @@ const HistoryItem = (props) => {
                   </View>
                   <View>
                     <Text style={{color: 'red'}}>
-                      {arrHistoryClass.scheduleDetailInfo.scheduleInfo.endTime}
+                    {
+                        (new Date(arrHistoryClass.scheduleDetailInfo.scheduleInfo
+                          .endTimestamp)).toLocaleTimeString().substring(0, 5)
+                      }
                     </Text>
                   </View>
                 </View>
