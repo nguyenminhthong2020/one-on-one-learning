@@ -17,6 +17,8 @@ import {
 } from 'react-native';
 import {MAIN_COLOR} from '../../../../../globals/constant';
 import Modal from 'react-native-modal';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+
 import {useDispatch, useSelector} from 'react-redux';
 import {getScheduleBooking} from '../../../../../api/booking/bookingApi';
 
@@ -88,104 +90,6 @@ const BookingSuccess = () =>
     {cancelable: true},
   );
 
-// Modal Time
-const ModalTime = props => {
-  //props: student, tutor, arrayDateTime, id, isVisible
-  const [isModalVisibleTime, setModalVisibleTime] = useState(props.isVisible);
-  const toggleModalTime = () => {
-    setModalVisibleTime(!isModalVisibleTime);
-  };
-  onPressHandler = (student, tutor, arrayDateTime, id, time) => {
-    //alert("OK nè");
-    //alert(`Student ${student}, Tutor ${tutor}, Date ${props.arrayDateTime[props.id].date}, Time ${time}`)
-    BookingDetailAlert(
-      student,
-      tutor,
-      props.arrayDateTime[props.id].date,
-      time,
-      2,
-      2,
-    );
-    //toggleModalTime();
-    //props.setIsClick(false);
-  };
-  return isModalVisibleTime ? (
-    <View style={{backgroundColor: 'white'}}>
-      <Modal isVisible={isModalVisibleTime}>
-       {/* <ScrollView> */}
-        <View style={{backgroundColor: 'white', width: '100%', height: '100%'}}>
-          <Text
-            style={{
-              color: 'black',
-              marginLeft: 5,
-              marginBottom: 10,
-              fontWeight: 'bold',
-              marginTop: 5,
-              fontSize: 18,
-              textAlign: 'center',
-            }}>
-            {`Picking your time\n(${props.arrayDateTime[props.id].date})`}
-          </Text>
-          {props.arrayDateTime[props.id].time.map((time, index) => (
-            <View style={{marginHorizontal: 80, marginBottom: 6}} key={index}>
-              <Pressable
-                style={{
-                  borderRadius: 40,
-                  backgroundColor: time.isBooked ? 'grey' : MAIN_COLOR,
-                  paddingVertical: 10,
-                }}
-                onPress={() => {
-                  if(time.isBooked == false)
-                  {onPressHandler(
-                    props.student,
-                    props.tutor,
-                    props.arrayDateTime,
-                    props.id,
-                    time.startEnd,
-                  )}else{
-         
-                  }
-                }}>
-                <Text
-                  style={{
-                    color: 'white',
-                    textAlign: 'center',
-                    fontSize: 16,
-                  }}>
-                  {time.isBooked == true ? 'Reserved': time.startEnd}
-                </Text>
-              </Pressable>
-            </View>
-          ))}
-          <View style={{alignItems: 'center', marginTop: 25}}>
-            <TouchableOpacity
-              style={{
-                width: '50%',
-                borderRadius: 40,
-                backgroundColor: '#e54594',
-                paddingVertical: 10,
-                marginBottom: 5,
-              }}
-              onPress={toggleModalTime}>
-              <Text
-                style={{
-                  color: 'white',
-                  textAlign: 'center',
-                  fontSize: 18,
-                }}>
-                Close
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        {/* </ScrollView> */}
-      </Modal>
-    </View>
-  ) : (
-    <View></View>
-  );
-};
-
 const Booking = props => {
   const [arrayDateTime, setArrayDateTime] = useState([]);
 
@@ -197,7 +101,6 @@ const Booking = props => {
   useEffect(() => {
     let cancel = false;
     getScheduleBooking({tutorId: props.route.params.tutorId}).then(data => {
-
       const now = new Date().getTime();
       // console.log(data[0]);
       const schedule = data.filter(function (item) {
@@ -213,42 +116,65 @@ const Booking = props => {
         }
       });
 
-    //   let tg;
-    // for(let i = 0; i < schedule.length - 1; i++){
-    //     for(let j = i + 1; j < schedule.length; j++){
-    //         if((schedule[i].scheduleDetails[0].startPeriodTimestamp/100000) > (schedule[j].scheduleDetails[0].endPeriodTimestamp/100000)){
-    //             // Hoan vi 2 so a[i] va a[j]
-    //             tg = schedule[i];
-    //             schedule[i] = schedule[j];
-    //             schedule[j] = tg;        
-    //         }
-    //     }
-    // }
-    // schedule.forEach(item => {
-    //   console.log((new Date(item.scheduleDetails[0].startPeriodTimestamp)).toLocaleDateString().slice(0, 5))
-    // })
-     
+      //   let tg;
+      // for(let i = 0; i < schedule.length - 1; i++){
+      //     for(let j = i + 1; j < schedule.length; j++){
+      //         if((schedule[i].scheduleDetails[0].startPeriodTimestamp/100000) > (schedule[j].scheduleDetails[0].endPeriodTimestamp/100000)){
+      //             // Hoan vi 2 so a[i] va a[j]
+      //             tg = schedule[i];
+      //             schedule[i] = schedule[j];
+      //             schedule[j] = tg;
+      //         }
+      //     }
+      // }
+      // schedule.forEach(item => {
+      //   console.log((new Date(item.scheduleDetails[0].startPeriodTimestamp)).toLocaleDateString().slice(0, 5))
+      // })
+
       let arrDate = [];
       for (let i = 0; i < 7; i++) {
-        const day = new Date(now + i * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+        const day = new Date(now + i * 24 * 60 * 60 * 1000)
+          .toISOString()
+          .slice(0, 10);
         // console.log(day)
-        let arrTime  = [];
-        for(let j = 0; j < schedule.length; j ++ )
-        {
-          if((new Date(schedule[j].scheduleDetails[0].startPeriodTimestamp)).toISOString().slice(0, 10) == day){
+        let arrTime = [];
+        for (let j = 0; j < schedule.length; j++) {
+          if (
+            new Date(schedule[j].scheduleDetails[0].startPeriodTimestamp)
+              .toISOString()
+              .slice(0, 10) == day
+          ) {
+            // console.log(schedule[j].scheduleDetails[0].bookingInfo)
+            let check = false;
+            if (schedule[j].scheduleDetails[0].bookingInfo.length > 0) {
+              if (
+                schedule[j].scheduleDetails[0].bookingInfo[0].userId ==
+                '37264873-797b-473d-bf4c-fb017fec076f'
+              ) {
+                check = true;
+              }
+            }
             //console.log((new Date(schedule[j].scheduleDetails[0].startPeriodTimestamp)).toLocaleTimeString());
             //console.log((new Date(schedule[j].scheduleDetails[0].startPeriodTimestamp)).toISOString().slice(0, 10))
             arrTime.push({
               isBooked: schedule[j].scheduleDetails[0].isBooked,
+              isBookedByMe: check,
               // startPeriodTimestamp: schedule[j].scheduleDetails[0].startPeriodTimestamp,
               // endPeriodTimestamp: schedule[j].scheduleDetails[0].endPeriodTimestamp,
-              startEnd: (new Date(schedule[j].scheduleDetails[0].startPeriodTimestamp)).toLocaleTimeString().slice(0, 5) + "-" + (new Date(schedule[j].scheduleDetails[0].endPeriodTimestamp)).toLocaleTimeString().slice(0, 5)
+              startEnd:
+                new Date(schedule[j].scheduleDetails[0].startPeriodTimestamp)
+                  .toLocaleTimeString()
+                  .slice(0, 5) +
+                '-' +
+                new Date(schedule[j].scheduleDetails[0].endPeriodTimestamp)
+                  .toLocaleTimeString()
+                  .slice(0, 5),
             });
           }
-        } 
+        }
         arrDate.push({
           date: day,
-          time: arrTime
+          time: arrTime,
           // startPeriodTimestamp: schedule[j].scheduleDetails[0].startPeriodTimestamp,
           // endPeriodTimestamp: schedule[j].scheduleDetails[0].endPeriodTimestamp,
         });
@@ -259,11 +185,10 @@ const Booking = props => {
       // })
       if (cancel) return;
       setArrayDateTime(arrDate);
-
     });
-    return () => { 
+    return () => {
       cancel = true;
-    }
+    };
   }, []);
 
   // const arrayDateTime = [
@@ -346,7 +271,136 @@ const Booking = props => {
   const setIsClickHandler = value =>
     setIsClick(arrayIsClick.map((v, i) => (i === value ? false : v)));
 
-  //console.log('Render booking');
+  // Modal Time
+  const ModalTime = props => {
+    //props: student, tutor, arrayDateTime, id, isVisible
+    const [isModalVisibleTime, setModalVisibleTime] = useState(props.isVisible);
+    const toggleModalTime = () => {
+      setModalVisibleTime(!isModalVisibleTime);
+    };
+    onPressHandler = (student, tutor, arrayDateTime, id, time) => {
+      //alert("OK nè");
+      //alert(`Student ${student}, Tutor ${tutor}, Date ${props.arrayDateTime[props.id].date}, Time ${time}`)
+      BookingDetailAlert(
+        student,
+        tutor,
+        props.arrayDateTime[props.id].date,
+        time,
+        2,
+        2,
+      );
+      //toggleModalTime();
+      //props.setIsClick(false);
+    };
+    return isModalVisibleTime ? (
+      <View style={{backgroundColor: 'white'}}>
+        <Modal isVisible={isModalVisibleTime}>
+          {/* <ScrollView> */}
+          <View
+            style={{backgroundColor: 'white', width: '100%', height: '100%'}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                // borderBottomWidth: 1,
+                // marginBottom: 5
+                // marginHorizontal: 10,
+              }}>
+              <View></View>
+              <Text
+                style={{
+                  color: 'black',
+                  marginLeft: 5,
+                  marginBottom: 10,
+                  fontWeight: 'bold',
+                  marginTop: 5,
+                  fontSize: 18,
+                  textAlign: 'center',
+                }}>
+                {`Picking your time\n(${props.arrayDateTime[props.id].date})`}
+              </Text>
+              <EvilIcons
+                name={'close'}
+                size={32}
+                color={'gray'}
+                style={{marginTop: 5, marginRight: 5}}
+                onPress={toggleModalTime}
+              />
+            </View>
+
+            <ScrollView showsHorizontalScrollIndicator={true}>
+              {props.arrayDateTime[props.id].time.map((time, index) => (
+                <View
+                  style={{marginBottom: 7, marginHorizontal: 100}}
+                  key={index}>
+                  <Pressable
+                    style={{
+                      borderRadius: 40,
+                      backgroundColor:
+                        time.isBooked == true
+                          ? time.isBookedByMe
+                            ? 'rgb(46, 204, 113)'
+                            : 'grey'
+                          : MAIN_COLOR,
+                      paddingVertical: 5,
+                      // paddingHorizontal: 18
+                    }}
+                    onPress={() => {
+                      if (time.isBooked == false) {
+                        onPressHandler(
+                          props.student,
+                          props.tutor,
+                          props.arrayDateTime,
+                          props.id,
+                          time.startEnd,
+                        );
+                      } else {
+                      }
+                    }}>
+                    <Text
+                      style={{
+                        color: 'white',
+                        textAlign: 'center',
+                        fontSize: 16,
+                      }}>
+                      {time.isBooked == true && time.isBookedByMe == false
+                        ? 'Reserved'
+                        : time.startEnd}
+                      {/* {time.startEnd} */}
+                    </Text>
+                  </Pressable>
+                </View>
+              ))}
+            </ScrollView>
+            {/* <View style={{alignItems: 'center', marginTop: 25}}>
+                <TouchableOpacity
+                  style={{
+                    width: '50%',
+                    borderRadius: 40,
+                    backgroundColor: '#e54594',
+                    paddingVertical: 10,
+                    marginBottom: 5,
+                  }}
+                  onPress={toggleModalTime}>
+                  <Text
+                    style={{
+                      color: 'white',
+                      textAlign: 'center',
+                      fontSize: 18,
+                    }}>
+                    Close
+                  </Text>
+                </TouchableOpacity>
+              </View> */}
+          </View>
+          {/* </ScrollView> */}
+        </Modal>
+      </View>
+    ) : (
+      <View></View>
+    );
+  };
+
   return (
     <View style={{marginTop: 0}}>
       <ScrollView>
@@ -369,44 +423,56 @@ const Booking = props => {
             }}>
             Picking your date
           </Text>
-          {arrayDateTime.length > 0 ? arrayDateTime.map((datetime, index) => (
-            <View style={{marginBottom: 6, width: 120}} key={index}>
-              <Pressable
-                style={{
-                  borderRadius: 40,
-                  backgroundColor: MAIN_COLOR,
-                  paddingVertical: 10,
-                }}
-                onPress={() =>
-                  setIsClick(
-                    arrayIsClick.map((v, i) => (i === index ? true : v)),
-                  )
-                }>
-                <Text
+          {arrayDateTime.length > 0 ? (
+            arrayDateTime.map((datetime, index) => (
+              <View style={{marginBottom: 6, width: 120}} key={index}>
+                <Pressable
                   style={{
-                    color: 'white',
-                    textAlign: 'center',
-                    fontSize: 16,
-                  }}>
-                  {datetime.date}
-                </Text>
-              </Pressable>
-              {isClick[index] == true ? (
-                <ModalTime
-                  setIsClick={setIsClickHandler}
-                  student={'Nguyễn Minh Thông'}
-                  tutor={props.route.params.name}
-                  arrayDateTime={arrayDateTime}
-                  id={index}
-                  isVisible={true}
-                />
-              ) : (
-                <View></View>
-              )}
+                    borderRadius: 40,
+                    backgroundColor: MAIN_COLOR,
+                    paddingVertical: 10,
+                  }}
+                  onPress={() =>
+                    setIsClick(
+                      arrayIsClick.map((v, i) => (i === index ? true : v)),
+                    )
+                  }>
+                  <Text
+                    style={{
+                      color: 'white',
+                      textAlign: 'center',
+                      fontSize: 16,
+                    }}>
+                    {datetime.date}
+                  </Text>
+                </Pressable>
+                {isClick[index] == true ? (
+                  <ModalTime
+                    setIsClick={setIsClickHandler}
+                    student={'Nguyễn Minh Thông'}
+                    tutor={props.route.params.name}
+                    arrayDateTime={arrayDateTime}
+                    id={index}
+                    isVisible={true}
+                  />
+                ) : (
+                  <View></View>
+                )}
+              </View>
+            ))
+          ) : (
+            <View>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  marginTop: 30,
+                  fontSize: 25,
+                  color: MAIN_COLOR,
+                }}>
+                Loading...
+              </Text>
             </View>
-          )): <View>
-            <Text style={{textAlign: 'center', marginTop: 30, fontSize: 25, color: MAIN_COLOR}}>Loading...</Text>
-          </View>}
+          )}
         </View>
       </ScrollView>
     </View>

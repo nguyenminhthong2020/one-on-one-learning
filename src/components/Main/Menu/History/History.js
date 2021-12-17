@@ -27,6 +27,8 @@ const History = () => {
   });
 
   useEffect(() => {
+    let isMounted = true;
+
     const dateTimeLte = new Date().getTime();
     const str = `booking/list/student?page=1&perPage=10&dateTimeLte=${dateTimeLte}&orderBy=meeting&sortBy=desc`;
     getHistory({str: str}).then(data => {
@@ -38,13 +40,17 @@ const History = () => {
         }
         // setArrPagination(arrCount);
         // setArrHistory(data.rows);
-        setArrHistoryPagination({
+        if(isMounted)
+        {setArrHistoryPagination({
           currentPage: 1,
           arrHistory: data.rows,
           arrPagination: arrCount.slice(0, 5),
-        });
+        });}
       }
     });
+    return () => {
+      isMounted = false;
+      };
   }, []);
 
   return (
@@ -64,9 +70,9 @@ const History = () => {
           </Suspense>
         ))
       ) : (
-        <View style={{marginTop: 20}}>
-          <Text style={{textAlign: 'center', color: MAIN_COLOR, fontSize: 20}}>
-            Empty Data
+        <View style={{marginTop: 40}}>
+          <Text style={{textAlign: 'center', color: MAIN_COLOR, fontSize: 25}}>
+            Loading...
           </Text>
         </View>
       )}

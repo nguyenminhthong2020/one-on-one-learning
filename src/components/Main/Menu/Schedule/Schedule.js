@@ -29,6 +29,8 @@ const Schedule = () => {
   });
 
   useEffect(() => {
+    let isMounted = true;
+
     const dateTimeLte = new Date().getTime();
     const str = `booking/list/student?page=1&perPage=10&dateTimeGte=${dateTimeLte}&orderBy=meeting&sortBy=asc`;
 
@@ -41,13 +43,18 @@ const Schedule = () => {
         }
         // setArrPagination(arrCount);
         // setArrHistory(data.rows);
+        if(isMounted ){
         setArrSchedulePagination({
           currentPage: 1,
           arrSchedule: data.rows,
           arrPagination: arrCount.slice(0, 5),
         });
       }
+      }
     });
+    return () => {
+      isMounted = false;
+      };
   }, []);
 
   const handleCancel = Id => {
@@ -169,9 +176,9 @@ const Schedule = () => {
           </View>
         ))
       ) : (
-        <View style={{marginTop: 20}}>
-          <Text style={{textAlign: 'center', color: MAIN_COLOR, fontSize: 20}}>
-            Empty Data
+        <View style={{marginTop: 40}}>
+          <Text style={{textAlign: 'center', color: MAIN_COLOR, fontSize: 25}}>
+            Loading...
           </Text>
         </View>
       )}

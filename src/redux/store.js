@@ -15,7 +15,7 @@ const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   //whitelist: ['theme', 'lang'],
-  //blacklist: ['theme']
+  blacklist: ['searchcourse', 'searchebook', 'searchtutor']
 }
 const reducers = combineReducers({
     auth: loginReducer,

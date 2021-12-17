@@ -214,12 +214,12 @@ function MainNavigation(props) {
       <Stack.Screen
         name="Favorites"
         component={Favorites}
-        options={{headerShown: true}}
+        options={{headerShown: true, title: langState[langState.currentLang].Favorite}}
       />
       <Stack.Screen
         name="BecomeTutor"
         component={BecomeTutor}
-        options={{headerShown: true, title: 'Become a tutor'}}
+        options={{headerShown: true, title: langState[langState.currentLang].Become_a_tutor}}
       />
       <Stack.Screen
         name="VideoIntroduction"
