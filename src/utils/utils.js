@@ -1,5 +1,8 @@
 /* eslint-disable */
-import moment from 'moment';
-// export const toDateStringHandle = (date) => {
-//    return date.toSring().split(' ').slice(1, 4);
-// }
+import axios from 'axios';
+
+export const axiosInstance = axios.create({
+    baseURL: "https://api.app.lettutor.com/",
+    timeout: 5000,
+    //'Content-Type': 'application/json'
+  });

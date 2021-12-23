@@ -118,8 +118,8 @@ const Schedule = () => {
                   <View style={{marginLeft: 4}}>
                     <Text style={{color: MAIN_COLOR}}>
                       {
-                        arrScheduleClass.scheduleDetailInfo.scheduleInfo
-                          .startTime
+                          (new Date(arrScheduleClass.scheduleDetailInfo.scheduleInfo
+                          .startTimestamp)).toLocaleTimeString().substring(0, 5)
                       }
                     </Text>
                   </View>
@@ -128,7 +128,10 @@ const Schedule = () => {
                   </View>
                   <View>
                     <Text style={{color: 'red'}}>
-                      {arrScheduleClass.scheduleDetailInfo.scheduleInfo.endTime}
+                      {
+                        (new Date(arrScheduleClass.scheduleDetailInfo.scheduleInfo
+                          .endTimestamp)).toLocaleTimeString().substring(0, 5)
+                      }
                     </Text>
                   </View>
                 </View>

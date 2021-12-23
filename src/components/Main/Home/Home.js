@@ -36,20 +36,33 @@ import {useSelector, useDispatch} from 'react-redux';
 import {searchSpecAsync} from '../../../redux/slices/tutor/searchSlice';
 import {moreAsync} from '../../../redux/slices/tutor/moreSlice';
 
+import axios from 'axios';
+import { logout, initNew } from '../../../redux/slices/auth/loginSlice';
+
 //import {Rating} from 'react-native-ratings';
 //import { Rating } from 'react-native-elements';  // = cái ở dưới
 //import FastImage from 'react-native-fast-image';
 
 const Home = props => {
   const dispatch = useDispatch();
+
+  const current = useSelector(state => state.auth.current);
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
   const langState = useSelector(state => state.lang);
 
   const [spec, setSpec] = useState(['']);
   const [array, setArray] = useState([]);
   const [listFav, setListFav] = useState([]);
-
+  
+  const axiosInstance1 = axios.create({
+    baseURL: 'https://api.app.lettutor.com/',
+    timeout: 5000,
+    headers: {
+      Authorization: 'Bearer ' + current.tokens.access.token,
+    },
+  });
   useEffect(() => {
+
     dispatch(
       moreAsync({
         page: 1,
