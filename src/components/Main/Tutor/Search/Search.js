@@ -4,40 +4,89 @@ import {MAIN_COLOR, SECOND_COLOR} from '../../../../globals/constant';
 import {
   Text,
   View,
-  TextInput,
+  // TextInput,
   StyleSheet,
   //TouchableOpacity,
+  ActivityIndicator,
   Pressable,
-  FlatList,
+  // FlatList,
   ScrollView,
-  SafeAreaView,
+  // SafeAreaView,
 } from 'react-native';
 import {SearchBar} from 'react-native-elements';
-import CountryPicker from 'react-native-country-picker-modal';
+// import CountryPicker from 'react-native-country-picker-modal';
 
 // import {useForm, Controller} from 'react-hook-form';
 //import TutorItem from '../../common/TutorItem/TutorItem';
-import TutorItemSearch from '../../common/TutorItem/TutorItemSearch';
-//const TutorItem = React.lazy(()=>{'../../common/TutorItem/TutorItem'});
+//import TutorItemSearch from '../../common/TutorItem/TutorItemSearch';
+const TutorItemSearch = React.lazy(()=> import('../../common/TutorItem/TutorItemSearch.js'));
 import {useSelector, useDispatch} from 'react-redux';
-import {searchSpecAsync} from '../../../../redux/slices/tutor/searchSlice';
+// import {searchSpecAsync} from '../../../../redux/slices/tutor/searchSlice';
 import MyTag from '../../../_common/FlexibleButton/TagFlexibleButton';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import {moreAsync} from '../../../../redux/slices/tutor/moreSlice';
-import {isPageTwoExistAsync} from '../../../../redux/slices/tutor/searchSlice';
+// import AntDesign from 'react-native-vector-icons/AntDesign';
+// import {moreAsync} from '../../../../redux/slices/tutor/moreSlice';
+// import {isPageTwoExistAsync} from '../../../../redux/slices/tutor/searchSlice';
+import axios from 'axios';
 
 const Search = props => {
-  const dispatch = useDispatch();
+  //console.log('render Search');
+  // const dispatch = useDispatch();
+
   const langState = useSelector(state => state.lang);
   const current = useSelector(state => state.auth.current);
+  const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
 
+  //const isPageTwo = useSelector(state => state.searchtutor.isPageTwoExist);
+
+  const [nameQuery, setNameQuery] = useState('');
   const [spec, setSpec] = useState(['']);
-  const [array, setArray] = useState([]);
-  const [arrayShow, setArrayShow] = useState(array); 
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [array, setArray] = useState([]);
+  // const [arrayShow, setArrayShow] = useState(array);
+  // const [currentPage, setCurrentPage] = useState(1);
 
+  const [arrTutorPagination, setArrTutorPagination] = useState({
+    arrTutor: [],
+    arrPagination: [],
+    currentPage: 1,
+  });
 
-  //const [arrayShow, setArrayShow] = useState(array);
+  const axiosInstance1 = axios.create({
+    baseURL: 'https://api.app.lettutor.com/',
+    timeout: 5000,
+    headers: {
+      Authorization: 'Bearer ' + current.tokens.access.token,
+    },
+  });
+
+  useEffect(() => {
+    let isMounted = true;
+
+    axiosInstance1
+      .post(`tutor/search`, {
+        filters: {specialties: spec, date: new Date().toISOString()},
+        page: 1,
+        perPage: 12,
+      })
+      .then(res => {
+        if (res.data.count > 0) {
+          const _countPage = ~~(res.data.count / 12) + 1;
+          let arrCount = [];
+          for (let i = 0; i < _countPage; i++) {
+            arrCount.push(i);
+          }
+          if (isMounted) {
+            setArrTutorPagination({
+              currentPage: 1,
+              arrTutor: res.data.rows,
+              arrPagination: arrCount.slice(0, 5),
+            });
+          }
+        }
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, [spec]);
 
   // useEffect(() => {
   //   dispatch(
@@ -51,61 +100,61 @@ const Search = props => {
 
   //const listFavorite = useSelector(state => state.moretutor.rows);
 
-  useEffect(() => {
-    dispatch(
-      searchSpecAsync({
-        accessToken: current.tokens.access.token,
-        filters: {specialties: spec, date: new Date().toISOString()},
-        page: 1,
-        perPage: 12,
-      }),
-    );
-    dispatch(
-      isPageTwoExistAsync({
-        filters: {specialties: spec, date: new Date().toISOString()},
-        page: 2,
-        perPage: 12,
-      }),
-    );
-    setCurrentPage(1);
-  }, [spec]);
+  // useEffect(() => {
+  //   dispatch(
+  //     searchSpecAsync({
+  //       accessToken: current.tokens.access.token,
+  //       filters: {specialties: spec, date: new Date().toISOString()},
+  //       page: 1,
+  //       perPage: 12,
+  //     }),
+  //   );
+  //   dispatch(
+  //     isPageTwoExistAsync({
+  //       filters: {specialties: spec, date: new Date().toISOString()},
+  //       page: 2,
+  //       perPage: 12,
+  //     }),
+  //   );
+  //   setCurrentPage(1);
+  // }, [spec]);
 
-  useEffect(() => {
-    dispatch(
-      searchSpecAsync({
-        accessToken: current.tokens.access.token,
-        filters: {specialties: spec, date: new Date().toISOString()},
-        page: currentPage,
-        perPage: 12,
-      }),
-    );
-  }, [currentPage]);
+  // useEffect(() => {
+  //   dispatch(
+  //     searchSpecAsync({
+  //       accessToken: current.tokens.access.token,
+  //       filters: {specialties: spec, date: new Date().toISOString()},
+  //       page: currentPage,
+  //       perPage: 12,
+  //     }),
+  //   );
+  // }, [currentPage]);
 
-  const arrayState = useSelector(state => state.searchtutor.rows);
-  useEffect(() => {
-    setArray(arrayState);
-    setArrayShow(array);
-  }, [arrayState]);
+  // const arrayState = useSelector(state => state.searchtutor.rows);
+  // useEffect(() => {
+  //   setArray(arrayState);
+  //   setArrayShow(array);
+  // }, [arrayState]);
 
   //const [country, setCountry] = useState({name: '', cca2: ''}); // Vietnam, VN
-  const [nameQuery, setNameQuery] = useState('');
 
-
-  const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
-
-  const isPageTwo = useSelector(state => state.searchtutor.isPageTwoExist);
-  
-
-  const renderTest = array => {
-    return array.length == 0 ? (
+  const renderTest = arrTutorPagination => {
+    return arrTutorPagination.arrTutor.length == 0 ? (
       <View style={{alignItems: 'center', marginTop: 30}}>
         <Text style={{fontSize: 20, color: MAIN_COLOR}}>No Tutor !</Text>
       </View>
     ) : (
       <View style={{marginTop: 5}}>
-        {array.map((item, index) => (
+        {arrTutorPagination.arrTutor.map((item, index) => (
+          <Suspense
+        fallback={
+          <View style={{alignItems: 'center'}}>
+            <ActivityIndicator size="large" color="#00ff00" />
+          </View>
+        }
+        key={index}>
           <TutorItemSearch
-            key={index}
+            // key={index}
             onPress={
               () =>
                 props.navigation.navigate('TutorDetailNew', {
@@ -116,51 +165,95 @@ const Search = props => {
             }
             tutor={item}
           />
+          </Suspense>
         ))}
-        {isPageTwo == true ? (
+        {arrTutorPagination.arrTutor.length > 0 ? (
           <View
             style={{
               flexDirection: 'row',
               justifyContent: 'center',
-              marginVertical: 15,
+              paddingTop: 20,
             }}>
-            <Pressable
-              onPress={() => setCurrentPage(1)}
-              style={{
-                backgroundColor: MAIN_COLOR,
-                marginRight: 20,
-                width: 70,
-                borderRadius: 20,
-                paddingVertical: 6,
-              }}>
-              <Text
-                style={{
-                  color: currentPage == 1 ? 'yellow' : 'white',
-                  textAlign: 'center',
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                }}>
-                1
-              </Text>
-            </Pressable>
-            <Pressable
-              onPress={() => setCurrentPage(2)}
-              style={{
-                backgroundColor: MAIN_COLOR,
-                width: 70,
-                borderRadius: 20,
-                paddingVertical: 6,
-              }}>
-              <Text
-                style={{
-                  color: currentPage == 2 ? 'yellow' : 'white',
-                  textAlign: 'center',
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                }}>
-                2
-              </Text>
-            </Pressable>
+            {arrTutorPagination.arrPagination.map((item, index) =>
+              index + 1 == arrTutorPagination.currentPage ? (
+                <View
+                  key={index}
+                  style={{
+                    marginHorizontal: 8,
+                    width: 40,
+                    borderColor: MAIN_COLOR,
+                    backgroundColor: MAIN_COLOR,
+                    borderWidth: 1,
+                    borderColor: MAIN_COLOR,
+                    paddingVertical: 5,
+                    borderRadius: 5,
+                    marginBottom: 20
+                  }}>
+                  <Text style={{color: 'white', textAlign: 'center'}}>
+                    {index + 1}
+                  </Text>
+                </View>
+              ) : (
+                <Pressable
+                  key={index}
+                  onPress={() => {
+                    axiosInstance1
+                      .post(`tutor/search`, {
+                        filters: {
+                          specialties: spec,
+                          date: new Date().toISOString(),
+                        },
+                        page: index + 1,
+                        perPage: 12,
+                      })
+                      .then(res => {
+                        if (res.data.count > 0) {
+                          const newArrTutor = res.data.rows.filter(item =>
+                        item.name
+                          .toLowerCase()
+                          .includes(nameQuery.toLowerCase()),
+                      );
+                    // if(newArrTutor.length > 0)
+                    //       {
+                          let arrCount = [];
+
+                          if(index == 0)
+                          {
+                          const _countPage = ~~(newArrTutor.length / 12) + 1;
+                          for (let i = 0; i < _countPage; i++) {
+                            arrCount.push(i);
+                          }
+                          }else{
+                            for (let i = 0; i < index + 1; i++) {
+                            arrCount.push(i);
+                          }
+                          }
+          
+
+                          setArrTutorPagination({
+                            currentPage: index + 1,
+                            arrTutor: newArrTutor,
+                            arrPagination: arrCount.slice(0, 5),
+                          });
+                        //}
+                        }
+                      });
+                  }}
+                  style={{
+                    marginHorizontal: 8,
+                    borderColor: 'black',
+                    backgroundColor: 'white',
+                    borderWidth: 1,
+                    borderColor: 'black',
+                    paddingVertical: 5,
+                    width: 40,
+                    borderRadius: 5,
+                    marginBottom: 20
+                  }}>
+                  <Text style={{textAlign: 'center'}}>{index + 1}</Text>
+                </Pressable>
+              ),
+            )}
           </View>
         ) : (
           <></>
@@ -174,7 +267,11 @@ const Search = props => {
       <SearchBar
         round={true}
         containerStyle={{backgroundColor: 'black'}}
-        inputContainerStyle={{backgroundColor: 'white', height: 35, borderRadius: 5}}
+        inputContainerStyle={{
+          backgroundColor: 'white',
+          height: 35,
+          borderRadius: 5,
+        }}
         inputStyle={{backgroundColor: 'white', height: 20, fontSize: 15}}
         placeholder={
           langState.currentLang == 'en' ? 'search tutors...' : 'tìm theo tên...'
@@ -202,11 +299,42 @@ const Search = props => {
             //   setSpec(['']);
             // }
             if (nameQuery.length > 0) {
-              setArrayShow(
-                array.filter(item =>
-                  item.name.toLowerCase().includes(nameQuery.toLowerCase()),
-                ),
-              );
+              axiosInstance1
+                .post(`tutor/search`, {
+                  filters: {specialties: spec, date: new Date().toISOString()},
+                  page: 1,
+                  perPage: 12,
+                })
+                .then(res => {
+                  if (res.data.count > 0) {
+                    const newArrTutor = res.data.rows.filter(item =>
+                        item.name
+                          .toLowerCase()
+                          .includes(nameQuery.toLowerCase()),
+                      );
+                    // if(newArrTutor.length > 0)
+                    // {
+                      const _countPage = ~~(newArrTutor.length / 12) + 1;
+                      let arrCount = [];
+                      for (let i = 0; i < _countPage; i++) {
+                        arrCount.push(i);
+                      }
+                      
+                      setArrTutorPagination({
+                        currentPage: 1,
+                        arrTutor: newArrTutor,
+                        arrPagination: arrCount.slice(0, 5),
+                      });
+                    //}
+                  }
+                });
+
+              // setArrTutorPagination({
+              //   arrTutor: array.filter(item =>
+              //     item.name.toLowerCase().includes(nameQuery.toLowerCase()),
+              //   ),
+              // }
+              // );
             } else {
               setSpec(['']);
             }
@@ -217,21 +345,24 @@ const Search = props => {
         </Pressable>
       </View>
       <View
-          style={{flexDirection: 'row', alignItems: 'center', marginLeft: 10}}>
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: 'bold',
-              color: isDarkTheme ? 'white' : 'black',
-            }}>
-            {langState[langState.currentLang].Filter_Tutors}: {/* {' '} */}
-          </Text>
-          <Text style={{color: isDarkTheme ? 'yellow' : 'red'}}>{spec}</Text>
-        </View>
-        
-        <View>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{marginHorizontal: 10, marginBottom: 5}}>
-        <MyTag
+        style={{flexDirection: 'row', alignItems: 'center', marginLeft: 10, marginBottom: 1}}>
+        <Text
+          style={{
+            fontSize: 16,
+            fontWeight: 'bold',
+            color: isDarkTheme ? 'white' : 'black',
+          }}>
+          {langState[langState.currentLang].Filter_Tutors}: {/* {' '} */}
+        </Text>
+        <Text style={{color: isDarkTheme ? 'yellow' : 'red'}}>{spec}</Text>
+      </View>
+
+      <View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{marginHorizontal: 10, marginBottom: 5}}>
+          <MyTag
             title={'All'}
             onPress={() => {
               setSpec(['']);
@@ -258,7 +389,7 @@ const Search = props => {
           <MyTag
             title={'STARTERS'}
             onPress={() => {
-              setSpec('starters');
+              setSpec(['starters']);    
             }}
           />
           <MyTag
@@ -299,8 +430,8 @@ const Search = props => {
             }}
           />
         </ScrollView>
-        </View>
-        {/* <View style={{flexDirection: 'row', marginTop: 5, marginLeft: 10}}>
+      </View>
+      {/* <View style={{flexDirection: 'row', marginTop: 5, marginLeft: 10}}>
           <MyTag
             title={'All'}
             onPress={() => {
@@ -440,8 +571,7 @@ const Search = props => {
         />}
       </View> */}
 
-        
-        {renderTest(arrayShow)}
+        {renderTest(arrTutorPagination)}
       </ScrollView>
     </>
   );

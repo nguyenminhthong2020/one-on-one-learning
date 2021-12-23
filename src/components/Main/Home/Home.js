@@ -33,7 +33,7 @@ import { logout, initNew } from '../../../redux/slices/auth/loginSlice';
 //import { Rating } from 'react-native-elements';  // = cái ở dưới
 
 const Home = props => {
-  console.log("render Home");
+  // console.log("render Home");
   const dispatch = useDispatch(); 
 
   const current = useSelector(state => state.auth.current);
