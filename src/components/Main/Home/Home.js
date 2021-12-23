@@ -11,7 +11,7 @@ import {
   //Alert,
   ActivityIndicator,
   StyleSheet,
-  TouchableOpacity,
+  //TouchableOpacity,
   Pressable,
   //FlatList,
   ScrollView,
@@ -33,7 +33,8 @@ import { logout, initNew } from '../../../redux/slices/auth/loginSlice';
 //import { Rating } from 'react-native-elements';  // = cái ở dưới
 
 const Home = props => {
-  const dispatch = useDispatch();
+  console.log("render Home");
+  const dispatch = useDispatch(); 
 
   const current = useSelector(state => state.auth.current);
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
@@ -107,19 +108,19 @@ const Home = props => {
 
   const [state, setstate] = useState(true);
 
-  const arrTitle = [
-    'EnglishforKids',
-    'BusinessEnglish',
-    'ConversationalEnglish',
-    'STARTERS',
-    'MOVERS',
-    'FLYERS',
-    'KET',
-    'PET',
-    'IELTS',
-    'TOEFL',
-    'TOEIC',
-  ];
+  // const arrTitle = [
+  //   'EnglishforKids',
+  //   'BusinessEnglish',
+  //   'ConversationalEnglish',
+  //   'STARTERS',
+  //   'MOVERS',
+  //   'FLYERS',
+  //   'KET',
+  //   'PET',
+  //   'IELTS',
+  //   'TOEFL',
+  //   'TOEIC',
+  // ];
   // let array = [
   //   // {
   //   //   id: 0,
