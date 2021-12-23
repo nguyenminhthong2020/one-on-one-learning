@@ -1,6 +1,7 @@
 /* eslint-disable */
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import { moreApi } from '../../../api/tutor/moreApi';
+import axios from 'axios';
+// import { moreApi } from '../../../api/tutor/moreApi';
 
 /* 
    Lấy list favorite tutor
@@ -11,65 +12,87 @@ const initialState = {
 }
 export const moreAsync = createAsyncThunk(
   'tutor/moreAsync',
-//   async (payload) => {
-//   	const resp = await fetch('http://localhost:7000/todos', {
-//   		method: 'POST',
-//   		headers: {
-//   			'Content-Type': 'application/json',
-//   		},
-//   		body: JSON.stringify({ title: payload.title }),
-//   	});
-
-//   	if (resp.ok) {
-//   		const todo = await resp.json();
-//   		return { todo };
-//   	}
-//   }
     async (payload, {rejectWithValue}) => {
-        try{
-        //res = await axiosInstance1.get(`curated?per_page=${per_page}&page=${page}`);
-        //return res.data.photos
-        const res = await moreApi.more(payload);  
-        return res.rows;
+      try{
+        const axiosInstance1 = axios.create({
+            baseURL: 'https://api.app.lettutor.com/',
+            timeout: 5000,
+            headers: {
+              Authorization: 'Bearer ' + payload.accessToken,
+            },
+          });
+        const res = await axiosInstance1.get(`tutor/more?perPage=${payload.perPage}&page=${payload.page}`);
+        let arrId;
+        if(res.data.favoriteTutor.length == 0){
+          arrId = [];
+        }else{
+          arrId = res.data.favoriteTutor.map(item => item.secondId);
+        }
+        return {
+            message: 'ok',
+            rows: arrId
+        }
       }catch(err){
-        if(!err.data){
-                  throw err
-                }
-                return rejectWithValue(err.data)
+        alert(err)
+        return {
+            message: err,
+        }
       }
-   }
+ }
 );
 
 export const addFavAsync = createAsyncThunk(
-    'tutor/moreAsync',
+    'tutor/addAsync',
       async (payload, {rejectWithValue}) => {
-          try{
-          //res = await axiosInstance1.get(`curated?per_page=${per_page}&page=${page}`);
-          //return res.data.photos
-          const res = await moreApi.add(payload);  
-          return res.rows;
+        try{
+          const axiosInstance1 = axios.create({
+              baseURL: 'https://api.app.lettutor.com/',
+              timeout: 5000,
+              headers: {
+                Authorization: 'Bearer ' + payload.accessToken,
+              },
+            });
+          const res = await axiosInstance1.post(`user/manageFavoriteTutor`, {
+            tutorId: payload.tutorId
+          });
+          alert('Favorite tutor successfully')
+          return {
+              message: 'ok',
+              tutorId: payload.tutorId
+          }
         }catch(err){
-          if(!err.data){
-                    throw err
-                  }
-                  return rejectWithValue(err.data)
+          alert(err)
+          return {
+              message: err,
+          }
         }
      }
   );
 
 export const removeFavAsync = createAsyncThunk(
-    'tutor/moreAsync',
+    'tutor/removeAsync',
       async (payload, {rejectWithValue}) => {
-          try{
-          //res = await axiosInstance1.get(`curated?per_page=${per_page}&page=${page}`);
-          //return res.data.photos
-          const res = await moreApi.remove(payload);  
-          return res.rows;
+        try{
+          const axiosInstance1 = axios.create({
+              baseURL: 'https://api.app.lettutor.com/',
+              timeout: 5000,
+              headers: {
+                Authorization: 'Bearer ' + payload.accessToken,
+              },
+            });
+          const res = await axiosInstance1.post(`user/manageFavoriteTutor`, {
+            tutorId: payload.tutorId
+          });
+          alert('Unfavorite tutor successfully')
+          return {
+              message: 'ok',
+              tutorId: payload.tutorId
+          }
         }catch(err){
-          if(!err.data){
-                    throw err
-                  }
-                  return rejectWithValue(err.data)
+          alert(err)
+          return {
+              message: err,
+          }
         }
      }
   );
@@ -78,25 +101,22 @@ const moreSlice = createSlice({
     name: 'moretutor',
     initialState,
     reducers:{
-        // init: (state, action) =>{
-        //     state.isLoggin = false;
-        // },
-        // logout: (state, action) =>{
-        //       state.isLoggin = false;
-        // }
     },
     extraReducers:{
         [moreAsync.fulfilled]: (state, action) => {  // moreAsync = get list favorite tutor
-            //state.current = action.payload;
-            state.rows = action.payload;
+          if(action.payload.message == 'ok'){
+            state.rows = action.payload.rows;
+          }
         },
         [addFavAsync.fulfilled]: (state, action) => {  
-            //state.current = action.payload;
-            state.rows = action.payload;
+          if(action.payload.message == 'ok'){
+            state.rows.push(action.payload.tutorId);
+          }
         },
         [removeFavAsync.fulfilled]: (state, action) => {  
-            //state.current = action.payload;
-            state.rows = action.payload;
+          if(action.payload.message == 'ok'){
+            state.rows = [...state.rows].filter(item => item != action.payload.tutorId)
+          }
         }
     }
 })

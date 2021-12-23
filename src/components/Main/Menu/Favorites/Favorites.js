@@ -20,11 +20,13 @@ export default function Favorites(props) {
 
   const [array, setArray] = useState([]);
   const listFavorite = useSelector(state => state.moretutor.rows);
+  const current = useSelector(state => state.auth.current);
 
   useEffect(() => {
     dispatch(
       searchSpecAsync({
-        filters: {specialties: [''], date: '2021-12-04T06:03:15.995Z'},
+        accessToken: current.tokens.access.token,
+        filters: {specialties: [''], date: new Date().toISOString()},
         page: 1,
         perPage: 12,
       }),

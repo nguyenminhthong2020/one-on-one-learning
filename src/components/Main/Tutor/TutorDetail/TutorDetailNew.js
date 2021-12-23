@@ -30,6 +30,7 @@ const FavoriteComponent = (props) => {
 
   let isFav = useSelector(state => state.moretutor.rows);
   let check = isFav.includes(props.route.params.tutor.userId);
+  const current = useSelector(state => state.auth.current);
 
   return (
     <View>
@@ -47,8 +48,9 @@ const FavoriteComponent = (props) => {
             dispatch(
                   addFavAsync(
                     {
-                      currentList : isFav,
-                      tutorId: props.route.params.tutor.userId
+                      // currentList : isFav,
+                      tutorId: props.route.params.tutor.userId,
+                      accessToken: current.tokens.access.token,
                     }
                   )
                 )
@@ -68,8 +70,9 @@ const FavoriteComponent = (props) => {
             dispatch(
                   removeFavAsync(
                     {
-                      currentList : isFav,
-                      tutorId: props.route.params.tutor.userId
+                      // currentList : isFav,
+                      tutorId: props.route.params.tutor.userId,
+                      accessToken: current.tokens.access.token,
                     }
                   )
                 )

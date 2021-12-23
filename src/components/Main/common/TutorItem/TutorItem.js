@@ -47,6 +47,7 @@ const TutorItem = props => {
   //const [score, setScore] = useState(5);
   let isFav = useSelector(state => state.moretutor.rows);
   let check = isFav.includes(props.tutor.userId);
+  const current = useSelector(state => state.auth.current);
 
   //const [like, setLike] = useState(check);
   
@@ -67,13 +68,12 @@ const TutorItem = props => {
                 dispatch(
                   addFavAsync(
                     {
-                      currentList : isFav,
-                      tutorId: props.tutor.userId
+                      // currentList : isFav,
+                      tutorId: props.tutor.userId,
+                      accessToken: current.tokens.access.token,
                     }
                   )
                 )
-                //console.log(isFav);
-                // setLike(like);
               }}
             />
           ) : (
@@ -86,12 +86,12 @@ const TutorItem = props => {
                 dispatch(
                   removeFavAsync(
                     {
-                      currentList : isFav,
-                      tutorId: props.tutor.userId
+                      // currentList : isFav,
+                      tutorId: props.tutor.userId,
+                      accessToken: current.tokens.access.token,
                     }
                   )
                 )
-                // setLike(like);
               }}
             />
           )}

@@ -1,6 +1,6 @@
 /* eslint-disable */
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import { userApi } from '../../../api/auth/userApi';
+// import { userApi } from '../../../api/auth/userApi';
 import axios from 'axios';
 import { axiosInstance } from '../../../utils/utils';
 

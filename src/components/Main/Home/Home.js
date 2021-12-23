@@ -16,20 +16,10 @@ import {
   //FlatList,
   ScrollView,
 } from 'react-native';
-// import {useForm, Controller} from 'react-hook-form';
-// import Input from '../../../components/_common/Input/Input';
-// import Button from '../../../components/_common/Button/Button';
-// import {SocialIcon} from 'react-native-elements';
 
-//import AntDesign from 'react-native-vector-icons/AntDesign';
-//import Header from '../../_common/Header/Header';
 const Header = React.lazy(() => import('../../_common/Header/Header'));
-//import HeadContent from './HeadContent/HeadContent';
 const HeadContent = React.lazy(() => import('./HeadContent/HeadContent'));
-//import {TagActiveList} from '../../_common/FlexibleButtonList/FlexibleButtonList';
-//import {Tag, TagActive} from '../../_common/FlexibleButton/FlexibleButton';
 import MyTag from '../../_common/FlexibleButton/TagFlexibleButton';
-//import TutorItem from '../common/TutorItem/TutorItem';
 
 const TutorItem = React.lazy(() => import('../common/TutorItem/TutorItem'));
 import {useSelector, useDispatch} from 'react-redux';
@@ -41,7 +31,6 @@ import { logout, initNew } from '../../../redux/slices/auth/loginSlice';
 
 //import {Rating} from 'react-native-ratings';
 //import { Rating } from 'react-native-elements';  // = cái ở dưới
-//import FastImage from 'react-native-fast-image';
 
 const Home = props => {
   const dispatch = useDispatch();
@@ -62,26 +51,49 @@ const Home = props => {
     },
   });
   useEffect(() => {
-
-    dispatch(
-      moreAsync({
-        page: 1,
-        perPage: 9,
-      }),
-    );
+    if (
+      new Date(current.tokens.access.expires).getTime() <= new Date().getTime()
+    ) {
+      if (
+        new Date(current.tokens.refresh.expires).getTime() <= new Date().getTime()
+      ) {
+        dispatch(logout());
+        props.navigation.navigate('Login');
+      } else {
+        (async () => {
+          const resRefresh = await axiosInstance1.post('auth/refresh-token', {
+            refreshToken: current.tokens.refresh.token,
+            timezone: 7,
+          });
+          dispatch(
+            initNew({
+              current: resRefresh.data,
+            }),
+          );
+        })();
+      }
+    }else{
+      dispatch(
+        moreAsync({
+          page: 1,
+          perPage: 9,
+          accessToken: current.tokens.access.token,
+        }),
+      );
+    }
   }, []);
 
   const listFavorite = useSelector(state => state.moretutor.rows);
   useEffect(() => {
     setListFav(listFavorite);
   }, [listFavorite]);
-  // console.log("\nIn list favorite")
-  // console.log(listFavorite);
+  
 
   useEffect(() => {
     dispatch(
       searchSpecAsync({
-        filters: {specialties: spec, date: '2021-12-04T06:03:15.995Z'},
+        accessToken: current.tokens.access.token,
+        filters: {specialties: spec, date: new Date().toISOString()},
         page: 1,
         perPage: 12,
       }),
@@ -89,9 +101,6 @@ const Home = props => {
   }, [spec]);
 
   const arrayState = useSelector(state => state.searchtutor.rows);
-  // const states = useSelector(state => state.searchtutor);
-  // console.log(states.is);
-  // console.log(arrayState);
   useEffect(() => {
     setArray(arrayState);
   }, [arrayState]);
@@ -486,7 +495,6 @@ const Home = props => {
       /> */}
       <ScrollView
         showsVerticalScrollIndicator={false}
-        //</View>style={{marginBottom: 25}}
       >
         <Suspense fallback={<View></View>}>
           <HeadContent

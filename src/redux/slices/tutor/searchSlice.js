@@ -1,6 +1,7 @@
 /* eslint-disable */
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import { searchApi } from '../../../api/tutor/searchApi';
+import axios from 'axios';
 
 /* 
    Lấy list favorite tutor
@@ -8,42 +9,34 @@ https://api.app.lettutor.com/tutor/more?perPage=9&page=1
 */
 const initialState = {
     rows: [],
+    count : 0,
     isPageTwoExist :false
 }
 export const searchSpecAsync = createAsyncThunk(
   'tutor/searchSpecAsync',
-//   async (payload) => {
-//   	const resp = await fetch('http://localhost:7000/todos', {
-//   		method: 'POST',
-//   		headers: {
-//   			'Content-Type': 'application/json',
-//   		},
-//   		body: JSON.stringify({ title: payload.title }),
-//   	});
-
-//   	if (resp.ok) {
-//   		const todo = await resp.json();
-//   		return { todo };
-//   	}
-//   }
     async (payload, {rejectWithValue}) => {
-        try{
-        //res = await axiosInstance1.get(`curated?per_page=${per_page}&page=${page}`);
-        //return res.data.photos
-        
-        // payload: 
-        // {
-        //     filters: {specialties: spec, date: '2021-12-04T06:03:15.995Z'},
-        //     page: 1,
-        //     perPage: 12,
-        //   }
-        const res = await searchApi.searchSpec(payload);  
-        return res.rows;
+      try{
+        const axiosInstance1 = axios.create({
+            baseURL: 'https://api.app.lettutor.com/',
+            timeout: 5000,
+            headers: {
+              Authorization: 'Bearer ' + payload.accessToken,
+            },
+          });
+        const res = await axiosInstance1.post(`tutor/search`, {
+          ...payload
+        });
+         
+        return {
+            message: 'ok',
+            rows: res.data.rows,
+            count: res.data.count
+        }
       }catch(err){
-        if(!err.data){
-                  throw err
-                }
-                return rejectWithValue(err.data)
+        alert(err)
+        return {
+            message: err,
+        }
       }
    }
 );
@@ -81,8 +74,10 @@ const searchSlice = createSlice({
     },
     extraReducers:{
         [searchSpecAsync.fulfilled]: (state, action) => {  
-            //state.current = action.payload;
-            state.rows = action.payload;
+          if(action.payload.message == 'ok'){
+            state.rows = action.payload.rows,
+            state.count = action.payload.count
+          }
         },
         [isPageTwoExistAsync.fulfilled]: (state, action) => {  
             //state.current = action.payload;
