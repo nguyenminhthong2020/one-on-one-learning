@@ -16,7 +16,6 @@ import {SearchBar} from 'react-native-elements';
 const TutorItemSearch = React.lazy(()=> import('../../common/TutorItem/TutorItemSearch.js'));
 import {useSelector, useDispatch} from 'react-redux';
 import MyTag from '../../../_common/FlexibleButton/TagFlexibleButton';
-// import AntDesign from 'react-native-vector-icons/AntDesign';
 import axios from 'axios';
 
 const Search = props => {
@@ -203,10 +202,10 @@ const Search = props => {
         containerStyle={{backgroundColor: 'black'}}
         inputContainerStyle={{
           backgroundColor: 'white',
-          height: 35,
+          height: 37,
           borderRadius: 5,
         }}
-        inputStyle={{backgroundColor: 'white', height: 20, fontSize: 15}}
+        inputStyle={{backgroundColor: 'white', height: 20, fontSize: 16}}
         placeholder={
           langState.currentLang == 'en' ? 'search tutors...' : 'tìm theo tên...'
         }

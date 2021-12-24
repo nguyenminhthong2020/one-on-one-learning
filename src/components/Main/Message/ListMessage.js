@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 //import {SearchBar} from 'react-native-elements';
 // import {useForm, Controller} from 'react-hook-form';
-import FastImage from 'react-native-fast-image';
+// import FastImage from 'react-native-fast-image';
 import AvatarAccessory from '../../_common/AvatarAccessory/AvatarAccessory';
 import { useSelector } from 'react-redux';
 
@@ -174,7 +174,7 @@ const ListMessage = (props) => {
               width: '100%',
               backgroundColor: 'white'
             }}
-            placeholder={langState == "en" ? "search message..." : "tìm tin nhắn..."}
+            placeholder={langState.currentLang == "en" ? "search message..." : "tìm tin nhắn..."}
           />
         </View>
       </View>
