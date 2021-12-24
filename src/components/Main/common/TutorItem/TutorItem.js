@@ -1,56 +1,25 @@
 /* eslint-disable */
 import React, {useState} from 'react';
-import {
-  MAIN_COLOR,
-  SECOND_COLOR,
-  NUM_OF_LINES,
-} from '../../../../globals/constant';
-import {
-  Text,
-  View,
-  Image,
-  StyleSheet,
-  Pressable,
-  //ScrollView,
-} from 'react-native';
+import {NUM_OF_LINES} from '../../../../globals/constant';
+import {Text, View, Image, StyleSheet, Pressable} from 'react-native';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
-//import {TagActiveList} from '../../../_common/FlexibleButtonList/FlexibleButtonList';
 import ListTags from '../../../_common/ListTags/ListTags';
-
 //import {Rating} from 'react-native-ratings';
 import FastImage from 'react-native-fast-image';
-import { useDispatch, useSelector } from 'react-redux';
-import { addFavAsync, removeFavAsync } from '../../../../redux/slices/tutor/moreSlice';
-
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  addFavAsync,
+  removeFavAsync,
+} from '../../../../redux/slices/tutor/moreSlice';
+import { handleAverage } from '../../../../utils/utils';
 
 const TutorItem = props => {
   const dispatch = useDispatch();
-  /*
-  const tutor = {
-      id: 0,
-      name: 'April Corpuz',
-      uri: 'https://api.app.lettutor.com/avatar/86248137-6f7d-4cf5-ad2e-34da42722b28avatar1628058042246.jpg',
-      startingValue: 4.7,
-      arrTitle: [
-        'English',
-        'Vietnamese',
-        'Korean',
-        'French',
-        'Spanish',
-        'Mandarin',
-      ],
-     like: false,
-     description : `Hi, I am teacher Nhi. I have been teaching English for 2 years. I used to study abroad in Sydney for 7 years. During my time as an overseas student, I had spoken with many people from diverse cultural backgrounds; therefore, I have strong listening and speaking skills. I love teaching English and I will devote to helping you improve your English skills if you book my class. I am also patient and understanding because I know for many people, English is a tough language to master. In my class, I will help you correct your pronunciation and deliver the lessons in a way that is easy for you to understand. If you book my class, you will have many chances to practice your speaking skills and also improve your pronunciation and grammatical knowledge. Besides that, if you need me to, I will share my personal tips to study English more effectively with you and show you the importance of having fun and practice while learning English. As an English teacher, I constantly update my English knowledge to better serve my career and students.`,
-  }*/
-
-  //const [score, setScore] = useState(5);
   let isFav = useSelector(state => state.moretutor.rows);
   let check = isFav.includes(props.tutor.userId);
   const current = useSelector(state => state.auth.current);
-
-  //const [like, setLike] = useState(check);
-  
+  const _rating  = handleAverage(props.tutor.feedbacks);
 
   return (
     <Pressable onPress={props.onPress} style={{marginBottom: 10}}>
@@ -63,17 +32,12 @@ const TutorItem = props => {
               color={'gray'}
               style={{textAlign: 'right', marginBottom: -15, marginRight: 10}}
               onPress={() => {
-                // console.log(isFav);
-                // console.log(props.tutor.userId);
                 dispatch(
-                  addFavAsync(
-                    {
-                      // currentList : isFav,
-                      tutorId: props.tutor.userId,
-                      accessToken: current.tokens.access.token,
-                    }
-                  )
-                )
+                  addFavAsync({
+                    tutorId: props.tutor.userId,
+                    accessToken: current.tokens.access.token,
+                  }),
+                );
               }}
             />
           ) : (
@@ -84,14 +48,11 @@ const TutorItem = props => {
               style={{textAlign: 'right', marginBottom: -15, marginRight: 10}}
               onPress={() => {
                 dispatch(
-                  removeFavAsync(
-                    {
-                      // currentList : isFav,
-                      tutorId: props.tutor.userId,
-                      accessToken: current.tokens.access.token,
-                    }
-                  )
-                )
+                  removeFavAsync({
+                    tutorId: props.tutor.userId,
+                    accessToken: current.tokens.access.token,
+                  }),
+                );
               }}
             />
           )}
@@ -128,13 +89,21 @@ const TutorItem = props => {
                 startingValue={props.tutor.startingValue}
                 isDisabled={true}
               /> */}
-            <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 1, marginLeft: 20}}>
-            <Text style={{color: 'orange'}}>{5}/5 </Text>
-            <Image 
-              //style={{marginLeft: 30}}
-              //resizeMode={FastImage.resizeMode.cover}
-              source={require('../../../../../assets/rating.png')}
-            />
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: 1,
+                marginLeft: 20,
+              }}>
+              <Text style={{color: 'orange'}}>{_rating} </Text>
+              {
+                _rating != 'No reviews yet' && <Image
+                //style={{marginLeft: 30}}
+                //resizeMode={FastImage.resizeMode.cover}
+                source={require('../../../../../assets/rating.png')}
+              />
+              }
             </View>
           </View>
           {/* <View style={{justifyContent: 'flex-start', marginLeft: 30, marginTop: -13}}>
@@ -158,8 +127,7 @@ const TutorItem = props => {
              }
           </View> */}
         </View>
-        {/* <TagActiveList arrTitle={props.tutor.arrTitle} /> */}
-         <ListTags arr={props.tutor.specialties.split(",")}/>
+        <ListTags arr={props.tutor.specialties.split(',')} />
         <Text
           numberOfLines={NUM_OF_LINES}
           style={{fontSize: 15, color: 'black', marginTop: 5}}>
@@ -176,8 +144,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   shadowProp: {
-    //borderWidth: 1,
-    
     backgroundColor: 'white',
     marginHorizontal: 10,
     marginVertical: 4,

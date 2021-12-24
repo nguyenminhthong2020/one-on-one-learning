@@ -1,48 +1,33 @@
 /* eslint-disable */
 import React, {useState, Suspense, useEffect} from 'react';
-import {MAIN_COLOR, SECOND_COLOR} from '../../../../globals/constant';
+import {MAIN_COLOR} from '../../../../globals/constant';
 import {
   Text,
   View,
-  // TextInput,
   StyleSheet,
-  //TouchableOpacity,
   ActivityIndicator,
   Pressable,
-  // FlatList,
   ScrollView,
-  // SafeAreaView,
 } from 'react-native';
 import {SearchBar} from 'react-native-elements';
 // import CountryPicker from 'react-native-country-picker-modal';
 
 // import {useForm, Controller} from 'react-hook-form';
-//import TutorItem from '../../common/TutorItem/TutorItem';
-//import TutorItemSearch from '../../common/TutorItem/TutorItemSearch';
 const TutorItemSearch = React.lazy(()=> import('../../common/TutorItem/TutorItemSearch.js'));
 import {useSelector, useDispatch} from 'react-redux';
-// import {searchSpecAsync} from '../../../../redux/slices/tutor/searchSlice';
 import MyTag from '../../../_common/FlexibleButton/TagFlexibleButton';
 // import AntDesign from 'react-native-vector-icons/AntDesign';
-// import {moreAsync} from '../../../../redux/slices/tutor/moreSlice';
-// import {isPageTwoExistAsync} from '../../../../redux/slices/tutor/searchSlice';
 import axios from 'axios';
 
 const Search = props => {
-  //console.log('render Search');
-  // const dispatch = useDispatch();
 
   const langState = useSelector(state => state.lang);
   const current = useSelector(state => state.auth.current);
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
 
-  //const isPageTwo = useSelector(state => state.searchtutor.isPageTwoExist);
-
   const [nameQuery, setNameQuery] = useState('');
   const [spec, setSpec] = useState(['']);
-  // const [array, setArray] = useState([]);
-  // const [arrayShow, setArrayShow] = useState(array);
-  // const [currentPage, setCurrentPage] = useState(1);
+
 
   const [arrTutorPagination, setArrTutorPagination] = useState({
     arrTutor: [],
@@ -88,54 +73,6 @@ const Search = props => {
     };
   }, [spec]);
 
-  // useEffect(() => {
-  //   dispatch(
-  //     moreAsync({
-  //       accessToken: current.tokens.access.token,
-  //       page: 1,
-  //       perPage: 9,
-  //     }),
-  //   );
-  // }, []);
-
-  //const listFavorite = useSelector(state => state.moretutor.rows);
-
-  // useEffect(() => {
-  //   dispatch(
-  //     searchSpecAsync({
-  //       accessToken: current.tokens.access.token,
-  //       filters: {specialties: spec, date: new Date().toISOString()},
-  //       page: 1,
-  //       perPage: 12,
-  //     }),
-  //   );
-  //   dispatch(
-  //     isPageTwoExistAsync({
-  //       filters: {specialties: spec, date: new Date().toISOString()},
-  //       page: 2,
-  //       perPage: 12,
-  //     }),
-  //   );
-  //   setCurrentPage(1);
-  // }, [spec]);
-
-  // useEffect(() => {
-  //   dispatch(
-  //     searchSpecAsync({
-  //       accessToken: current.tokens.access.token,
-  //       filters: {specialties: spec, date: new Date().toISOString()},
-  //       page: currentPage,
-  //       perPage: 12,
-  //     }),
-  //   );
-  // }, [currentPage]);
-
-  // const arrayState = useSelector(state => state.searchtutor.rows);
-  // useEffect(() => {
-  //   setArray(arrayState);
-  //   setArrayShow(array);
-  // }, [arrayState]);
-
   //const [country, setCountry] = useState({name: '', cca2: ''}); // Vietnam, VN
 
   const renderTest = arrTutorPagination => {
@@ -154,14 +91,11 @@ const Search = props => {
         }
         key={index}>
           <TutorItemSearch
-            // key={index}
             onPress={
               () =>
                 props.navigation.navigate('TutorDetailNew', {
-                  // uri: item.avatar,
-                  // name: item.name,
                   tutor: item,
-                }) /*onPressTutor(i.index)*/
+                }) 
             }
             tutor={item}
           />
@@ -352,7 +286,7 @@ const Search = props => {
             fontWeight: 'bold',
             color: isDarkTheme ? 'white' : 'black',
           }}>
-          {langState[langState.currentLang].Filter_Tutors}: {/* {' '} */}
+          {langState[langState.currentLang].Filter_Tutors}: 
         </Text>
         <Text style={{color: isDarkTheme ? 'yellow' : 'red'}}>{spec}</Text>
       </View>
@@ -438,18 +372,6 @@ const Search = props => {
               setSpec(['']);
             }}
           />
-          <MyTag
-            title={'ConversationalEnglish'}
-            onPress={() => {
-              setSpec(['conversational-english']);
-            }}
-          />
-          <MyTag
-            title={'BusinessEnglish'}
-            onPress={() => {
-              setSpec(['business-english']);
-            }}
-          />
         </View>
         <View style={{flexDirection: 'row', marginTop: 3, marginLeft: 10}}>
           <MyTag
@@ -458,49 +380,12 @@ const Search = props => {
               setSpec(['english-for-kids']);
             }}
           />
-          <MyTag
-            title={'STARTERS'}
-            onPress={() => {
-              setSpec('starters');
-            }}
-          />
-          <MyTag
-            title={'FLYERS'}
-            onPress={() => {
-              setSpec(['flyers']);
-            }}
-          />
-          <MyTag
-            title={'KET'}
-            onPress={() => {
-              setSpec(['ket']);
-            }}
-          />
         </View>
         <View style={{flexDirection: 'row', marginTop: 3, marginLeft: 10, marginBottom: 3}}>
           <MyTag
             title={'MOVERS'}
             onPress={() => {
               setSpec(['movers']);
-            }}
-          />
-          <MyTag title={'PET'} onPress={() => setSpec(['pet'])} />
-          <MyTag
-            title={'IELTS'}
-            onPress={() => {
-              setSpec(['ielts']);
-            }}
-          />
-          <MyTag
-            title={'TOEFL'}
-            onPress={() => {
-              setSpec(['toefl']);
-            }}
-          />
-          <MyTag
-            title={'TOEIC'}
-            onPress={() => {
-              setSpec(['toeic']);
             }}
           />
         </View> */}
