@@ -139,10 +139,12 @@ function MainNavigation(props) {
       <Stack.Screen 
         name="ForgetPassword"
         component={ForgetPassword}
+        options={{headerShown: true, title: 'Forgot password'}}
       />
       <Stack.Screen 
         name="NotifyForgetPassword"
         component={NotifyForgetPassword}
+        options={{headerShown: true, title: 'Forgot password'}}
       />
       <Stack.Screen
         name="MainTabs"

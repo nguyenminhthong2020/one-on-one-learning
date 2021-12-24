@@ -1,38 +1,43 @@
 /* eslint-disable */
 import React from 'react';
 import {MAIN_COLOR} from '../../../globals/constant';
-import {Text, View, Alert, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
-// import Input from '../../../components/_common/Input/Input';
-// import Button from '../../../components/_common/Button/Button';
-// import {SocialIcon} from 'react-native-elements';
+import { axiosInstance } from '../../../utils/utils';
 
-const NotifyForgetPassword = () => {
+const NotifyForgetPassword = (props) => {
   const {
     control,
     handleSubmit,
     formState: {errors},
   } = useForm({mode: 'onBlur'});
 
-  const onSubmit = data => alert(JSON.stringify(data));
+  const onSubmit = () => {
+    axiosInstance
+    .post(`user/forgotPassword`, {
+      email: props.route.params.email,
+    })
+    .then(res => {
+      alert("An email has send successfully");
+    }).catch(err => {
+       alert("Error: \n" + err.response.data.message);
+    });
+  }
 
   return (
     <View style={styles.container}>
-      <View style={{alignItems: 'center', marginTop: 20}}>
-        <Text style={styles.text}>FORGET PASSWORD</Text>
-      </View>
       <View style={{alignItems: 'center', marginTop: 25}}>
-        <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+        <Text style={{fontSize: 18, fontWeight: 'bold', color: MAIN_COLOR}}>
          Check your email
         </Text>
       </View>
-      <View style={{alignItems: 'center', marginTop: 10}}>
-        <Text style={{textAlign: 'center', fontSize: 18}}>
-         We just send an email to you with a link to reset your password
+      <View style={{alignItems: 'center', marginTop: 10, marginHorizontal: 20}}>
+        <Text style={{textAlign: 'center', fontSize: 18, color: 'black'}}>
+         We just send an email to you with a link to reset your password.
         </Text>
       </View>
       <View style={{alignItems: 'center', marginTop: 45}}>
-        <Text style={{fontSize: 18}}>
+        <Text style={{fontSize: 18, color: 'black'}}>
           Can't receive the email ?
         </Text>
       </View>
@@ -40,7 +45,7 @@ const NotifyForgetPassword = () => {
         <View style={styles.container1}>
           <TouchableOpacity
             style={styles.button}
-            onPress={()=>alert('An email has send successfully')}>
+            onPress={onSubmit}>
             <Text style={styles.text1}>Send again</Text>
           </TouchableOpacity>
         </View>
