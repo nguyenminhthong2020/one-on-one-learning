@@ -32,6 +32,7 @@ const FlatListItemSeparator = () => {
     );
   };
 const TutorDetailComment = (props) => {   //props : feedbacks  (array)
+    let arraySort = [...props.route.params.feedbacks].sort((y, x) => x.createdAt.localeCompare(y.createdAt));
     return (<View style={{marginHorizontal: 5, backgroundColor: 'white'}}>
         <FlatList
           style={{marginBottom: 20, marginTop: 15}}
@@ -39,8 +40,8 @@ const TutorDetailComment = (props) => {   //props : feedbacks  (array)
           ItemSeparatorComponent={FlatListItemSeparator}
           showsVerticalScrollIndicator={true}
           initialNumToRender={5}
-          extraData={props.route.params.feedbacks}
-          data={props.route.params.feedbacks}
+          extraData={arraySort}
+          data={arraySort}
           renderItem={i => (
             //<View><Text>{JSON.stringify(i.item)}</Text></View>
             <View>

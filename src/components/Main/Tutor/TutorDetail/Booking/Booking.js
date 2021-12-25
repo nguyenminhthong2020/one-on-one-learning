@@ -329,7 +329,7 @@ const Booking = props => {
             </View>
 
             <ScrollView showsHorizontalScrollIndicator={true}>
-              {props.arrayDateTime[props.id].time.map((time, index) => (
+              {props.arrayDateTime[props.id].time.sort((x, y) => x.startEnd.localeCompare(y.startEnd)).map((time, index) => (
                 <View
                   style={{marginBottom: 7, marginHorizontal: 100}}
                   key={index}>

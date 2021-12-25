@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, {Suspense, useState, useRef, useEffect, useMemo} from 'react';
+import React, {Suspense, useState, useEffect} from 'react';
 import {
   ScrollView,
   ActivityIndicator,
@@ -10,9 +10,7 @@ import {
   Alert,
 } from 'react-native';
 
-import {
-  MAIN_COLOR,
-} from '../../../../globals/constant';
+import {MAIN_COLOR} from '../../../../globals/constant';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FastImage from 'react-native-fast-image';
@@ -20,12 +18,14 @@ import FastImage from 'react-native-fast-image';
 const SectionVideo = React.lazy(() => import('./SectionVideo'));
 import {useDispatch, useSelector} from 'react-redux';
 import CountryPicker from 'react-native-country-picker-modal';
-import { detailApi } from '../../../../api/tutor/detailApi';
-import { addFavAsync, removeFavAsync } from '../../../../redux/slices/tutor/moreSlice';
+// import { detailApi } from '../../../../api/tutor/detailApi';
+import axios from 'axios';
+import {
+  addFavAsync,
+  removeFavAsync,
+} from '../../../../redux/slices/tutor/moreSlice';
 
-
-
-const FavoriteComponent = (props) => {
+const FavoriteComponent = props => {
   const dispatch = useDispatch();
 
   let isFav = useSelector(state => state.moretutor.rows);
@@ -46,14 +46,12 @@ const FavoriteComponent = (props) => {
           }}
           onPress={() => {
             dispatch(
-                  addFavAsync(
-                    {
-                      // currentList : isFav,
-                      tutorId: props.route.params.tutor.userId,
-                      accessToken: current.tokens.access.token,
-                    }
-                  )
-                )
+              addFavAsync({
+                // currentList : isFav,
+                tutorId: props.route.params.tutor.userId,
+                accessToken: current.tokens.access.token,
+              }),
+            );
           }}
         />
       ) : (
@@ -68,14 +66,12 @@ const FavoriteComponent = (props) => {
           }}
           onPress={() => {
             dispatch(
-                  removeFavAsync(
-                    {
-                      // currentList : isFav,
-                      tutorId: props.route.params.tutor.userId,
-                      accessToken: current.tokens.access.token,
-                    }
-                  )
-                )
+              removeFavAsync({
+                // currentList : isFav,
+                tutorId: props.route.params.tutor.userId,
+                accessToken: current.tokens.access.token,
+              }),
+            );
           }}
         />
       )}
@@ -101,18 +97,41 @@ const ReportAlert = tutorName =>
     {cancelable: true},
   );
 
-
 const TutorDetailNew = props => {
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
-  
-  const [detailTutor, setDetailTutor] = useState({result : {avgRating: 4.5}});
+  const current = useSelector(state => state.auth.current);
+  const axiosInstance1 = axios.create({
+    baseURL: 'https://api.app.lettutor.com/',
+    timeout: 5000,
+    headers: {
+      Authorization: 'Bearer ' + current.tokens.access.token,
+    },
+  });
+
+  const [detailTutor, setDetailTutor] = useState({
+    price: 0,
+    avgRating: 0,
+  });
+
   useEffect(() => {
-    (async function getDetail(){
-      const res = await detailApi.detail({userId: props.route.params.tutor.userId})
-      if(res.result.avgRating)
-      {setDetailTutor(res)}
-    })()
-  }, [])
+    let isMounted = true;
+    axiosInstance1
+      .get(`tutor/${props.route.params.tutor.userId}`)
+      .then(res => {
+        if (isMounted) {
+          setDetailTutor({
+            price: res.data.price,
+            avgRating: res.data.avgRating,
+          });
+        }
+      })
+      .catch(err => {
+        alert('Error: \n' + err.response.data.message);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   //const video = React.useRef(null);
   //const [status, setStatus] = React.useState({});
@@ -120,7 +139,6 @@ const TutorDetailNew = props => {
 
   //const myUrl = `https://api.app.lettutor.com/video/cd0a440b-cd19-4c55-a2a2-612707b1c12cvideo1631029793846.mp4`;
   //const _myUrl = Constants.linkingUri(myUrl);
-  
 
   return (
     <View style={{marginTop: 0}}>
@@ -157,16 +175,12 @@ const TutorDetailNew = props => {
             }}>
             <Suspense
               fallback={<ActivityIndicator size="large" color="#00ff00" />}>
-              <SectionVideo
-                uri={
-                  props.route.params.tutor.video
-                }
-              />
+              <SectionVideo uri={props.route.params.tutor.video} />
             </Suspense>
           </View>
 
           <View style={{margin: 15, marginTop: 18, marginBottom: 10}}>
-            <FavoriteComponent {...props}/>
+            <FavoriteComponent {...props} />
             <View style={{flexDirection: 'row', marginBottom: 5, marginTop: 8}}>
               <View>
                 <FastImage
@@ -207,30 +221,40 @@ const TutorDetailNew = props => {
                     marginTop: 1,
                     marginLeft: 20,
                   }}>
-                  <Text style={{color: 'orange'}}>{detailTutor.result.avgRating}/5 </Text>
-                  <Image source={require('../../../../../assets/rating.png')} />
+                  {detailTutor.avgRating == 0 ? (
+                    <Text style={{color: 'orange'}}>No reviews yet</Text>
+                  ) : (
+                    <>
+                      <Text style={{color: 'orange'}}>
+                        {detailTutor.avgRating}/5{' '}
+                      </Text>
+                      <Image
+                        source={require('../../../../../assets/rating.png')}
+                      />
+                    </>
+                  )}
                 </View>
-                {isDarkTheme ? 
-                <View style={{backgroundColor: 'white'}}>
-                  <CountryPicker
-                    //withFlag
-                    //withFilter
-                    withCountryNameButton
-                    countryCode={props.route.params.tutor.country}
-                    onSelect={country => {}
-                    }
-                  />
-                </View>
-                :<View>
-                  <CountryPicker
-                    //withFlag
-                    //withFilter
-                    withCountryNameButton
-                    countryCode={props.route.params.tutor.country}
-                    onSelect={country => {}
-                    }
-                  />
-                </View>}
+                {isDarkTheme ? (
+                  <View style={{backgroundColor: 'white'}}>
+                    <CountryPicker
+                      //withFlag
+                      //withFilter
+                      withCountryNameButton
+                      countryCode={props.route.params.tutor.country}
+                      onSelect={country => {}}
+                    />
+                  </View>
+                ) : (
+                  <View>
+                    <CountryPicker
+                      //withFlag
+                      //withFilter
+                      withCountryNameButton
+                      countryCode={props.route.params.tutor.country}
+                      onSelect={country => {}}
+                    />
+                  </View>
+                )}
               </View>
             </View>
           </View>
@@ -242,10 +266,12 @@ const TutorDetailNew = props => {
                 backgroundColor: MAIN_COLOR,
                 paddingVertical: 10,
               }}
-              onPress={()=>props.navigation.navigate("Booking", {
-                tutorId: props.route.params.tutor.userId,
-                name: props.route.params.tutor.name,
-              })}>
+              onPress={() =>
+                props.navigation.navigate('Booking', {
+                  tutorId: props.route.params.tutor.userId,
+                  name: props.route.params.tutor.name,
+                })
+              }>
               <Text
                 style={{
                   color: 'white',
@@ -332,7 +358,9 @@ const TutorDetailNew = props => {
               {langState[langState.currentLang].Languages}
             </Text>
             <View style={{marginLeft: 5}}>
-              <Text style={{color: isDarkTheme ? 'yellow' : MAIN_COLOR}}>{props.route.params.tutor.languages}</Text>
+              <Text style={{color: isDarkTheme ? 'yellow' : MAIN_COLOR}}>
+                {props.route.params.tutor.languages}
+              </Text>
             </View>
           </View>
           <View style={{marginTop: 25, marginHorizontal: 15}}>
@@ -347,7 +375,7 @@ const TutorDetailNew = props => {
             </Text>
             <Text
               style={{marginLeft: 5, color: isDarkTheme ? 'white' : 'black'}}>
-             {props.route.params.tutor.education}
+              {props.route.params.tutor.education}
             </Text>
           </View>
           <View style={{marginTop: 25, marginHorizontal: 15}}>
@@ -406,7 +434,9 @@ const TutorDetailNew = props => {
               {langState[langState.currentLang].Specialities}
             </Text>
             <View style={{marginLeft: 5}}>
-              <Text style={{color: isDarkTheme ? 'yellow' : MAIN_COLOR}}>{props.route.params.tutor.specialties}</Text>
+              <Text style={{color: isDarkTheme ? 'yellow' : MAIN_COLOR}}>
+                {props.route.params.tutor.specialties}
+              </Text>
             </View>
           </View>
 
@@ -430,7 +460,8 @@ const TutorDetailNew = props => {
                 fontWeight: 'bold',
                 marginBottom: 2,
               }}>
-              {langState[langState.currentLang].Rating_and_Comments} ({props.route.params.tutor.feedbacks.length})
+              {langState[langState.currentLang].Rating_and_Comments} (
+              {props.route.params.tutor.feedbacks.length})
             </Text>
           </View>
           <View
@@ -442,8 +473,11 @@ const TutorDetailNew = props => {
                 backgroundColor: '#e54594',
                 paddingVertical: 10,
               }}
-              onPress={()=>props.navigation.navigate("TutorDetailComment", {feedbacks: props.route.params.tutor.feedbacks})}
-              >
+              onPress={() =>
+                props.navigation.navigate('TutorDetailComment', {
+                  feedbacks: props.route.params.tutor.feedbacks,
+                })
+              }>
               <Text
                 style={{
                   color: 'white',
