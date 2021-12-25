@@ -1,15 +1,20 @@
 /* eslint-disable */
 import React, {useEffect} from 'react';
 import {MAIN_COLOR} from '../../../globals/constant';
-import {Text, View, Alert, StyleSheet, TouchableOpacity, Pressable} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity, Pressable} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
 import Input from '../../../components/_common/Input/Input';
 import Button from '../../../components/_common/Button/Button';
 import {SocialIcon} from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginAsync } from '../../../redux/slices/auth/loginSlice';
-import { init } from '../../../redux/slices/auth/loginSlice';
+import { init, initNew } from '../../../redux/slices/auth/loginSlice';
 import LinearGradient from 'react-native-linear-gradient';
+
+// import auth from '@react-native-firebase/auth';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { axiosInstance } from '../../../utils/utils';
+
 
 const Login = (props) => {
   const dispatch = useDispatch();
@@ -28,7 +33,6 @@ const Login = (props) => {
   // console.log(check);
 
   const onSubmit = function(data){
-    //dispatch()
     dispatch(loginAsync({
       email: data.email,
       password: data.password
@@ -36,18 +40,45 @@ const Login = (props) => {
   }
   
   useEffect(() => {
-    // console.log("dispatch nè");
     if(check == true){
       props.navigation.navigate("MainTabs");
     }
   }, [check])
 
-  useEffect(() => {
-      //  console.log("dispatch nè");
-       if(check == true){
-         props.navigation.navigate("MainTabs");
-       }
-  }, [dispatch, check])
+  
+  const signInGoogle = () => {
+    (
+      async () => {
+        try{
+          GoogleSignin.configure({
+            // scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+            hostedDomain: '', // specifies a hosted domain restriction
+            webClientId: "248659140633-ckjjk3t298j48vknacktgm9kr1gm52ld.apps.googleusercontent.com",
+            offlineAccess: true,
+          });
+
+          await GoogleSignin.hasPlayServices();
+
+          await GoogleSignin.signIn();
+          const tokens = await GoogleSignin.getTokens();
+          await GoogleSignin.signOut();
+          
+          axiosInstance
+      .post(`auth/google`, {
+        access_token: tokens.accessToken
+      })
+      .then(res => {
+        dispatch(initNew({current: res.data}))
+      }).catch(err => {
+         alert("Error: \n" + err.response.data.message);
+      });
+ 
+        }catch(err){
+          console.log("Error :\n" + err)
+        }
+      }
+    )()
+  }
 
   return (
     <View style={styles.container}>
@@ -119,18 +150,14 @@ const Login = (props) => {
             title="Facebook"
             button
             type="facebook"
-            onPress={() => {
-              alert('facebook');
-            }}
+            onPress={()=>alert("facebook")}
           />
           <SocialIcon
             style={{width: '30%'}}
             title="Google"
             button
             type="google"
-            onPress={() => {
-              alert('google');
-            }}
+            onPress={signInGoogle}
           />
         </View>
         <View

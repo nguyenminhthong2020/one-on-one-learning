@@ -151,10 +151,8 @@ const Home = props => {
           onPress={
             () =>
               props.navigation.navigate('TutorDetailNew', {
-                // uri: tutor.avatar,
-                // name: tutor.name,
                 tutor: tutor
-              }) /*onPressTutor(index)*/
+              }) 
           }
           tutor={tutor}
         />
@@ -172,7 +170,7 @@ const Home = props => {
               fontWeight: 'bold',
               color: isDarkTheme ? 'white' : 'black',
             }}>
-            {langState[langState.currentLang].Filter_Tutors}: {/* {' '} */}
+            {langState[langState.currentLang].Filter_Tutors}: 
           </Text>
           <Text style={{color: isDarkTheme ? 'yellow' : 'red'}}>{spec}</Text>
         </View>

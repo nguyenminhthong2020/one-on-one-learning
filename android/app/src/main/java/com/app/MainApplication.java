@@ -1,4 +1,4 @@
-package com.app;
+package com.lettutornguyenminhthong.app;
 
 //import com.horcrux.svg.SvgPackage;
 //import com.reactnativecommunity.webview.RNCWebViewPackage;

@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "248659140633",
+    "project_id": "lettutor-nguyenminhthong",
+    "storage_bucket": "lettutor-nguyenminhthong.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:248659140633:android:7711c3e823e0a805c8ca88",
+        "android_client_info": {
+          "package_name": "com.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "248659140633-ckjjk3t298j48vknacktgm9kr1gm52ld.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAu7X0H0UNhEVhK2FVKx13THcJ7pkJcAgQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "248659140633-ckjjk3t298j48vknacktgm9kr1gm52ld.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:248659140633:android:fc8806d61b0a9f3dc8ca88",
+        "android_client_info": {
+          "package_name": "com.lettutornguyenminhthong.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "248659140633-169586m8vp2um4c443m3cv2abstcos38.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lettutornguyenminhthong.app",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "248659140633-ckjjk3t298j48vknacktgm9kr1gm52ld.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAu7X0H0UNhEVhK2FVKx13THcJ7pkJcAgQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "248659140633-ckjjk3t298j48vknacktgm9kr1gm52ld.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

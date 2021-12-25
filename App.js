@@ -33,10 +33,6 @@ import {PersistGate} from 'redux-persist/lib/integration/react';
 import {store, persistor} from './src/redux/store';
 import {useSelector} from 'react-redux';
 
-// import {I18nextProvider} from 'react-i18next';
-// import { translate, Trans } from 'react-i18next';
-//import i18next from './src/utils/i18n';
-
 const SlashScreen = () => {
   return (
     <View

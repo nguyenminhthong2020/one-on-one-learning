@@ -36,23 +36,12 @@ import Register from '../components/Authentication/Register/Register';
 import FeedbackList from '../components/AccountManagement/Setting/FeedbackList';
 import { useSelector} from 'react-redux';
 
-// import i18n from "../utils/i18n";
-// const home = i18n.t("Home");
-// const message = i18n.t("Message");
-// const upcoming = i18n.t("Upcoming");
-// const tutors = i18n.t("Tutors");
-// const settings = i18n.t("Settings");
-// import { useTranslation } from 'react-i18next'
-
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function MainTabs(props) {
-  //const currentLang = useSelector(state => state.lang.currentLang);
-  //console.log(currentLang);
+ 
   const langState = useSelector(state => state.lang);
-  //console.log(langState[langState.currentLang].Home);
-  // const currentLang = useSelector(state => state.lang.currentLang);
 
 
   return (
