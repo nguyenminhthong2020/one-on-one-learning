@@ -131,7 +131,7 @@ const Register = (props) => {
           </View>
           <View>
             <TouchableOpacity onPress={() => props.navigation.navigate("Login")}>
-              <Text style={{color: MAIN_COLOR, fontSize: 18}}>Log in</Text>
+              <Text style={{color: MAIN_COLOR, fontSize: 18, fontWeight: 'bold'}}>Log in</Text>
             </TouchableOpacity>
           </View>
         </View>

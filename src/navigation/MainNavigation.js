@@ -40,9 +40,7 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function MainTabs(props) {
- 
   const langState = useSelector(state => state.lang);
-
 
   return (
     <Tab.Navigator

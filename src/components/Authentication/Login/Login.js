@@ -1,15 +1,15 @@
 /* eslint-disable */
 import React, {useEffect} from 'react';
 import {MAIN_COLOR} from '../../../globals/constant';
-import {Text, View, StyleSheet, TouchableOpacity, Pressable} from 'react-native';
+import {Text, View, StyleSheet, Pressable} from 'react-native';
 import {useForm, Controller} from 'react-hook-form';
-import Input from '../../../components/_common/Input/Input';
+import { Input } from 'react-native-elements';
 import Button from '../../../components/_common/Button/Button';
 import {SocialIcon} from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginAsync } from '../../../redux/slices/auth/loginSlice';
-import { init, initNew } from '../../../redux/slices/auth/loginSlice';
-import LinearGradient from 'react-native-linear-gradient';
+import { initNew } from '../../../redux/slices/auth/loginSlice';
+
 
 // import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
@@ -19,9 +19,12 @@ import { axiosInstance } from '../../../utils/utils';
 
 const Login = (props) => {
   const dispatch = useDispatch();
-  useEffect(() => {
-   dispatch(init());
-  }, [])
+  const check = useSelector(state => state.auth.isLoggin);
+  useEffect(()=>{
+    if(check == true){
+          props.navigation.navigate("MainTabs");
+        }
+  }, [check])
 
   const {
     control,
@@ -29,24 +32,13 @@ const Login = (props) => {
     formState: {errors},
   } = useForm({mode: 'onBlur'});
   
-
-  const check = useSelector(state => state.auth.isLoggin);
-  // console.log(check);
-
   const onSubmit = function(data){
     dispatch(loginAsync({
       email: data.email,
       password: data.password
     }))
   }
-  
-  useEffect(() => {
-    if(check == true){
-      props.navigation.navigate("MainTabs");
-    }
-  }, [check])
 
-  
   const signInGoogle = () => {
     (
       async () => {
@@ -59,7 +51,6 @@ const Login = (props) => {
           });
 
           await GoogleSignin.hasPlayServices();
-
           await GoogleSignin.signIn();
           const tokens = await GoogleSignin.getTokens();
           await GoogleSignin.signOut();
@@ -119,7 +110,6 @@ const Login = (props) => {
 
   return (
     <View style={styles.container}>
-      <LinearGradient colors={['white', 'white', 'green']}>
       <View style={{height: 8}}></View>
       <View style={{alignItems: 'center'}}>
         <Text style={styles.text}>LOGIN</Text>
@@ -128,17 +118,16 @@ const Login = (props) => {
         control={control}
         rules={{
           required: true,
-          //   message: 'please type gmail',
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
-            label={'Email'}
-            secureTextEntry={false}
-            placeholder={'example@gmail.com'}
-            value={value}
-            onBlur={onBlur}
-            onChange={onChange}
-          />
+        containerStyle={{width: '80%', marginLeft: '10%', marginTop: 20}}
+        inputContainerStyle={{}}
+        inputStyle={{marginLeft: 10, fontSize: 16}}
+        placeholder="Email"
+        leftIcon={{ type: 'font-awesome', name: 'envelope-o' }}
+        onChangeText={onChange}
+        />
         )}
         name="email"
       />
@@ -152,13 +141,14 @@ const Login = (props) => {
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
-            label={'Password'}
-            secureTextEntry={true}
-            placeholder={'********'}
-            value={value}
-            onBlur={onBlur}
-            onChange={onChange}
-          />
+          containerStyle={{width: '80%', marginLeft: '10%'}}
+        inputContainerStyle={{}}
+        inputStyle={{marginLeft: 10, fontSize: 16}}
+        placeholder="Password"
+        leftIcon={{ type: 'font-awesome', name: 'lock' }}
+        onChangeText={onChange}
+        secureTextEntry={true}
+        />
         )}
         name="password"
       />
@@ -171,7 +161,6 @@ const Login = (props) => {
         </Pressable>
       </View>
       <Button title="Log In" handleSubmit={handleSubmit} onSubmit={onSubmit} />
-      {/* <TouchableOpacity title="Submit" onPress={handleSubmit(onSubmit)} /> */}
       <View style={{marginTop: 18}}>
         <Text style={{textAlign: 'center', marginBottom: 0}}>
           Or continute with
@@ -199,7 +188,7 @@ const Login = (props) => {
         </View>
         <View
           style={{
-            marginTop: 15,
+            marginTop: 18,
             flexDirection: 'row',
             justifyContent: 'center',
           }}>
@@ -211,17 +200,15 @@ const Login = (props) => {
               <Text style={{color: MAIN_COLOR, fontSize: 18, fontWeight: 'bold'}}>Sign up</Text>
             </Pressable>
           </View>
-          <View style={{height: 450}}></View>
         </View>
       </View>
-      </LinearGradient>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 0,
+    marginTop: 10,
     paddingTop: 0,
     flex: 1,
     flexDirection: 'column',
@@ -233,98 +220,18 @@ const styles = StyleSheet.create({
   },
   forgotpw: {
     right: '10%',
-    marginTop: 15,
+    marginTop: 5,
     marginBottom: 15,
   },
   forgotpwText: {
     color: MAIN_COLOR,
     fontSize: 15,
     textAlign: 'right',
-    //fontWeight: 'bold'
   },
   error: {
     textAlign: 'center',
     color: 'red',
   },
-
-  // sectionContainer: {
-  //   marginTop: 32,
-  //   paddingHorizontal: 24,
-  // },
 });
 
 export default Login;
-
-// import React from 'react'
-// import { Alert, KeyboardAvoidingView, Text, TextInput, TouchableOpacity, View } from 'react-native'
-// import { theme } from '../../../globals/theme'
-// import {styles} from './styles'
-// import {Controller, useForm} from 'react-hook-form'
-
-// export default Login = () => {
-
-//   const {handleSubmit, control,
-//     formState: {errors, isValid},
-//   } = useForm({mode: 'onBlur'})
-
-//   const onSubmit = (data) => {
-//     Alert(data);
-//   }
-
-//   return (
-//     <KeyboardAvoidingView style={styles.container}>
-//       <Text style={styles.title}>Login</Text>
-//       <Controller
-//         control={control}
-//         name="email"
-//         render={({field: {onChange, value, onBlur}}) => (
-//           <TextInput
-//             style={styles.input}
-//             placeholder="Email"
-//             placeholderTextColor={theme.colors.primary}
-//             value={value}
-//             onBlur={onBlur}
-//             onChangeText={value => onChange(value)}
-//           />
-//         )}
-//         rules={{
-//           required: {
-//             value: true,
-//             message: 'Please write Email'
-//           },
-//         }}
-//       />
-//       <Text style={styles.error}>{errors.email?.message}</Text>
-//       <Controller
-//         control={control}
-//         name="password"
-//         render={({field: {onChange, value, onBlur}}) => (
-//           <TextInput
-//             secureTextEntry
-//             style={styles.input}
-//             placeholder="Password"
-//             placeholderTextColor={theme.colors.primary}
-//             value={value}
-//             onBlur={onBlur}
-//             onChangeText={value => onChange(value)}
-//           />
-//         )}
-//         rules={{
-//           required: {
-//             value: true,
-//             message: 'Please write Password'
-//           }
-//         }}
-//       />
-//       <Text style={styles.error}>{errors.password?.message}</Text>
-//       <TouchableOpacity
-//         disabled={!isValid}
-//         activeOpacity={0.7}
-//         style={styles.button}
-//         onPress={handleSubmit(onSubmit)}
-//       >
-//         <Text style={styles.buttonText}>Login</Text>
-//       </TouchableOpacity>
-//     </KeyboardAvoidingView>
-//   )
-// }

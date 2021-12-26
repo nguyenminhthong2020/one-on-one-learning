@@ -2,18 +2,13 @@
 import React, {Suspense, useState, useEffect} from 'react';
 import {
   MAIN_COLOR,
-  // SECOND_COLOR,
-  // NUM_OF_LINES,
 } from '../../../globals/constant';
 import {
   Text,
   View,
-  //Alert,
   ActivityIndicator,
   StyleSheet,
-  //TouchableOpacity,
   Pressable,
-  //FlatList,
   ScrollView,
 } from 'react-native';
 
@@ -107,20 +102,6 @@ const Home = props => {
   }, [arrayState]);
 
   const [state, setstate] = useState(true);
-
-  // const arrTitle = [
-  //   'EnglishforKids',
-  //   'BusinessEnglish',
-  //   'ConversationalEnglish',
-  //   'STARTERS',
-  //   'MOVERS',
-  //   'FLYERS',
-  //   'KET',
-  //   'PET',
-  //   'IELTS',
-  //   'TOEFL',
-  //   'TOEIC',
-  // ];
 
   const renderTestScrollView = () => {
     let arrayFav = [];
@@ -258,8 +239,6 @@ const Home = props => {
             }}
           />
         </View>
-        {/* <View style={{flexDirection: 'row'}}>
-           </View> */}
       </View>
     );
   };
@@ -269,8 +248,6 @@ const Home = props => {
       <Suspense fallback={<View></View>}>
         <Header navigation={props.navigation} />
       </Suspense>
-      {/* <Suspense fallback={<View></View>}><HeadContent state={state} setstate={setstate}></HeadContent></Suspense> */}
-
       {/* <View style={{marginHorizontal: 18, marginTop: 20, marginBottom: 3}}>
           {renderFilterTag()}
       </View> */}
@@ -359,7 +336,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   shadowProp: {
-    //borderWidth: 1,
     backgroundColor: 'white',
     marginHorizontal: 10,
     marginVertical: 4,
