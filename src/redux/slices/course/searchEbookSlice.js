@@ -124,28 +124,16 @@ export const _listCate = {
   "IELTS": "fb92cf24-1736-4cd7-a042-fa3c37921cf8"
 }
 
-const axiosInstance = axios.create({
-  baseURL: 'https://api.app.lettutor.com/',
-  timeout: 5000,
-  //'Content-Type': 'application/json'
-});
-
 export const searchEbookAsync = createAsyncThunk(
   'course/searchCourseAsync',
   async (payload, {rejectWithValue}) => {
     try {
-      const token = await axiosInstance.post('auth/login',{
-        "email": "phhai.fit@gmail.com",
-        "password": "123456"
-      });
-      //const accessToken = token.tokens.access.token;
-      //console.log("accToken: \n" +accessToken)
-
+  
       const axiosInstance1 = axios.create({
         baseURL: 'https://api.app.lettutor.com/',
         timeout: 5000,
         headers: {
-          Authorization: 'Bearer '+ token.data.tokens.access.token
+          Authorization: 'Bearer '+ payload.accessToken
         },
       });
       

@@ -62,7 +62,7 @@ const Menu = props => {
             type={'AntDesign'}
             name={'book'}
             title={'Ebooks'}
-            handleOnPress={() => props.navigation.navigate('ListEbook')}
+            handleOnPress={() => props.navigation.navigate('ListEbookNew')}
           />
            <ButtonIcon
             type={'FontAwesome5'}

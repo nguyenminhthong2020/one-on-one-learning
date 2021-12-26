@@ -317,7 +317,7 @@ const Home = props => {
             navigation={props.navigation}></HeadContent>
         </Suspense>
 
-        <View style={{marginHorizontal: 18, marginTop: 20, marginBottom: 3}}>
+        <View style={{marginHorizontal: 18, marginTop: 10, marginBottom: 3}}>
           {renderFilterTag()}
         </View>
         <View
@@ -326,7 +326,7 @@ const Home = props => {
             justifyContent: 'space-between',
             alignItems: 'center',
             marginHorizontal: 18,
-            marginTop: 30,
+            marginTop: 20,
             marginBottom: 3,
           }}>
           <Text

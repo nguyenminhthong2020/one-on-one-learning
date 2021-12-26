@@ -18,7 +18,7 @@ import Home from '../components/Main/Home/Home';
 import Menu from '../components/Main/Menu/Menu';
 import Profile from '../components/AccountManagement/Profile/Profile';
 import ListCourseNew from '../components/Main/Menu/Courses/ListCourse/ListCourseNew';
-import ListEbook from '../components/Main/Menu/Courses/ListCourse/ListEbook';
+import ListEbookNew from '../components/Main/Menu/Courses/ListCourse/ListEbookNew';
 import CourseDetail from '../components/Main/Menu/Courses/CourseDetail/CourseDetail';
 import Discover from '../components/Main/Menu/Courses/CourseDetail/Discover';
 import DiscoverDetail from '../components/Main/Menu/Courses/CourseDetail/DiscoverDetail';
@@ -176,8 +176,8 @@ function MainNavigation(props) {
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="ListEbook"
-        component={ListEbook}
+        name="ListEbookNew"
+        component={ListEbookNew}
         options={{headerShown: false}}
       />
       <Stack.Screen

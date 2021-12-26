@@ -65,7 +65,7 @@ const TutorItem = props => {
         <View style={{flexDirection: 'row', marginBottom: 5, marginTop: 8}}>
           <View>
             <FastImage
-              style={{width: 60, height: 60, borderRadius: 30}}
+              style={{width: 50, height: 50, borderRadius: 25}}
               resizeMode={FastImage.resizeMode.cover}
               source={{
                 uri: props.tutor.avatar,
