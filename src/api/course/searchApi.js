@@ -598,13 +598,6 @@ export const searchApi = {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (1 == 1) {
-          // let result = {
-          //     message: 'Success',
-          //     data: {
-          //         count: 0,
-          //         rows: []
-          //     }
-          // }
           let arrRows = response.data.rows.filter(function (i) {
             if (
               i.name.includes(payload.q) &&

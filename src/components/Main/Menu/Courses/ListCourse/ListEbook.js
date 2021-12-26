@@ -30,7 +30,6 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {ConvertLevel2} from '../../../../../redux/slices/course/searchEbookSlice';
 import {_listCate} from '../../../../../redux/slices/course/searchEbookSlice';
-import {current} from 'immer';
 
 // const arrayEbook = [
 //   {

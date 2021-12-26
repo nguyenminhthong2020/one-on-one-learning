@@ -528,7 +528,10 @@ const Profile = props => {
             </Text>
           </View>
           <SelectBox
+            containerStyle={{marginTop: -15}}
+            hideInputFilter
             label={false}
+            inputPlaceholder={langState[langState.currentLang].Subject}
             options={arrWhatToLearn}
             selectedValues={whatToLearn}
             onMultiSelect={onMultiChange()}
@@ -551,7 +554,10 @@ const Profile = props => {
             backgroundColor: isDarkTheme ? 'white' : SECOND_COLOR,
           }}>
           <SelectBox
+            containerStyle={{marginTop: -15}}
             label={false}
+            hideInputFilter
+            inputPlaceholder={langState[langState.currentLang].TestPreparation}
             options={arrWhatToLearn1}
             selectedValues={whatToLearn1}
             onMultiSelect={onMultiChange1()}

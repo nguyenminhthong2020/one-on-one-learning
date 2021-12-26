@@ -57,7 +57,7 @@ const Register = (props) => {
         control={control}
         rules={{
           required: "please type email",
-          validate: value => /^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/.test(value) || "The email is not a valid email address"
+          validate: value => /\S+@\S+\.\S+/.test(value) || "The email is not a valid email address"
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
@@ -120,34 +120,6 @@ const Register = (props) => {
       />
       </View>
       <View style={{marginTop: 15, marginBottom: 20}}>
-        <Text style={{textAlign: 'center', marginBottom: 5}}>
-          Or continute with
-        </Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            width: '100%',
-          }}>
-          <SocialIcon
-            style={{width: '30%'}}
-            title="Facebook"
-            button
-            type="facebook"
-            onPress={() => {
-              alert('facebook');
-            }}
-          />
-          <SocialIcon
-            style={{width: '30%'}}
-            title="Google"
-            button
-            type="google"
-            onPress={() => {
-              alert('google');
-            }}
-          />
-        </View>
         <View
           style={{
             marginTop: 18,

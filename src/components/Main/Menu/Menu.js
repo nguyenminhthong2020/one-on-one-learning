@@ -56,7 +56,7 @@ const Menu = props => {
             type={'FontAwesome5'}
             name={'graduation-cap'}
             title={langState[langState.currentLang].Courses}
-            handleOnPress={() => props.navigation.navigate('ListCourse')}
+            handleOnPress={() => props.navigation.navigate('ListCourseNew')}
           />
           <ButtonIcon
             type={'AntDesign'}

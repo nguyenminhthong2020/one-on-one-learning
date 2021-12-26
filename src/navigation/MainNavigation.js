@@ -17,7 +17,7 @@ import Setting from '../components/AccountManagement/Setting/Setting';
 import Home from '../components/Main/Home/Home';
 import Menu from '../components/Main/Menu/Menu';
 import Profile from '../components/AccountManagement/Profile/Profile';
-import ListCourse from '../components/Main/Menu/Courses/ListCourse/ListCourse';
+import ListCourseNew from '../components/Main/Menu/Courses/ListCourse/ListCourseNew';
 import ListEbook from '../components/Main/Menu/Courses/ListCourse/ListEbook';
 import CourseDetail from '../components/Main/Menu/Courses/CourseDetail/CourseDetail';
 import Discover from '../components/Main/Menu/Courses/CourseDetail/Discover';
@@ -171,8 +171,8 @@ function MainNavigation(props) {
         options={{headerShown: true, title: 'Rating and Comment'}}
       />
       <Stack.Screen
-        name="ListCourse"
-        component={ListCourse}
+        name="ListCourseNew"
+        component={ListCourseNew}
         options={{headerShown: false}}
       />
       <Stack.Screen
