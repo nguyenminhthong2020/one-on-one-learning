@@ -118,9 +118,9 @@ const Profile = props => {
       id: item.id,
     };
   });
-  const _level = current.user.level;
-  const _birthday = current.user.birthday.substring(0, 10);
-  const _country = current.user.country;
+  const _level = current.user.level != null ? current.user.level: "BEGINNER";
+  const _birthday = (current.user.birthday != null ? current.user.birthday: "1998-10-27").substring(0, 10);
+  const _country = current.user.country != null ? current.user.country : "VN";
   const _language =
     current.user.language == null ? 'English' : current.user.language;
 
@@ -133,7 +133,8 @@ const Profile = props => {
   //const [country, setCountry] = useState({name: 'Vietnam', cca2: 'VN'});
   const [country, setCountry] = useState({name: '', cca2: _country});
   const [name, setName] = useState(current.user.name);
-  const [phone, setPhone] = useState(current.user.phone);
+  const _phone  = current.user.phone != null ? current.user.phone : ""
+  const [phone, setPhone] = useState(_phone);
 
   // image Picker:
   const [file, setFile] = useState({

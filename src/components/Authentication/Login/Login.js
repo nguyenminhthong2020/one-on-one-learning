@@ -13,6 +13,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 // import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { LoginManager, AccessToken } from "react-native-fbsdk-next";
 import { axiosInstance } from '../../../utils/utils';
 
 
@@ -73,6 +74,42 @@ const Login = (props) => {
          alert("Error: \n" + err.response.data.message);
       });
  
+        }catch(err){
+          console.log("Error :\n" + err)
+        }
+      }
+    )()
+  }
+
+  const signInFacebook = () => {
+    (
+      async () => {
+        try{
+          const result = await LoginManager.logInWithPermissions([
+            "email",
+            "public_profile",
+            "user_friends"
+          ]);
+          if (result.isCancelled) {
+            console.log('User cancelled the login process');
+          }else{
+              // Once signed in, get the users AccesToken
+          const data = await AccessToken.getCurrentAccessToken();
+    
+          if (!data) {
+            alert('Something went wrong obtaining access token');
+          }else{
+            axiosInstance
+            .post(`auth/facebook`, {
+              access_token: data.accessToken
+            })
+            .then(res => {
+              dispatch(initNew({current: res.data}))
+            }).catch(err => {
+               alert("Error: \n" + err.response.data.message);
+            });
+          }
+          }
         }catch(err){
           console.log("Error :\n" + err)
         }
@@ -150,7 +187,7 @@ const Login = (props) => {
             title="Facebook"
             button
             type="facebook"
-            onPress={()=>alert("facebook")}
+            onPress={signInFacebook}
           />
           <SocialIcon
             style={{width: '30%'}}
