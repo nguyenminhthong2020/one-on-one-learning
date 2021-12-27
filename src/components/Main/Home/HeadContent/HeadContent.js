@@ -5,17 +5,11 @@ import {
   Text,
   View,
   StyleSheet,
-  TouchableOpacity,
   Pressable,
 } from 'react-native';
-// import {useForm, Controller} from 'react-hook-form';
-// import Input from '../../../components/_common/Input/Input';
-// import Button from '../../../components/_common/Button/Button';
-// import {SocialIcon} from 'react-native-elements';
+
 import {useSelector} from 'react-redux';
-// import {totalApi} from '../../../../api/home/totalApi';
 import axios from 'axios';
-import {nextApi} from '../../../../api/home/nextApi';
 
 const HeadContent = props => {
   const langState = useSelector(state => state.lang);
@@ -28,49 +22,51 @@ const HeadContent = props => {
     },
   });
 
-  // const [total, setTotal] = useState(0); //total: minute
-  // const [next, setNext] = useState({
-  //   date: '',
-  //   startTime: '',
-  //   endTime: '',
-  // });
   const [dataHeader, setDataHeader] = useState({
     total: 0,
-    //next
     date: '',
     startTime: '',
     endTime: '',
   })
 
+
   useEffect(() => {
-    axiosInstance1
+    const unsubscribe = props.navigation.addListener('focus', () => {
+      axiosInstance1
       .get(`call/total`)
       .then(res => {
-        // setTotal(res.data.total);
         (async () => {
-          const res1 = await nextApi.getNext({dateTime: 1});
-          if (res1.data.length > 0) {
-            //console.log(res1.data[0].scheduleDetailInfo.scheduleInfo)
-            //console.log(new Date(res1.data[0].scheduleDetailInfo.scheduleInfo.date).toUTCString().substring(0, 16))
-            //setNext(res1.data[0].scheduleDetailInfo.scheduleInfo);
+          try{
+          const dateTimeLte = new Date().getTime();
+          const res1 = await axiosInstance1.get(`booking/next?dateTime=${dateTimeLte}`);
+          if (res1.data.data.length > 0) {
+            const newArray = res1.data.data.sort((x, y) => (x.scheduleDetailInfo.scheduleInfo.date + x.scheduleDetailInfo.scheduleInfo.startTime).localeCompare((y.scheduleDetailInfo.scheduleInfo.date + y.scheduleDetailInfo.scheduleInfo.startTime)))
             setDataHeader({
               total: res.data.total,
-              date: res1.data[0].scheduleDetailInfo.scheduleInfo.date,
-              startTime: res1.data[0].scheduleDetailInfo.scheduleInfo.startTime,
-              endTime: res1.data[0].scheduleDetailInfo.scheduleInfo.endTime,
+              date: newArray[0].scheduleDetailInfo.scheduleInfo.date,
+              startTime: newArray[0].scheduleDetailInfo.scheduleInfo.startTime,
+              endTime: newArray[0].scheduleDetailInfo.scheduleInfo.endTime,
             })
           }else{
             setDataHeader({
               ...dataHeader,
-              total: res.data.total
+              total: res.data.total,
+              date: "",
+              startTime: "",
+              endTime: ""
             })
           }
+        }catch(err){
+          console.log('Error: \n' + err.response.data.message);
+        }
         })();
       })
       .catch(err => {
         alert('Error: \n' + err.response.data.message);
       });
-  }, []);
+    });
+    return unsubscribe;
+  }, [props.navigation]);
 
   return (
     <View style={styles.headContent}>

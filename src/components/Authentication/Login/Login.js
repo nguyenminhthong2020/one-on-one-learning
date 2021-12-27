@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginAsync } from '../../../redux/slices/auth/loginSlice';
 import { initNew } from '../../../redux/slices/auth/loginSlice';
 
-
 // import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { LoginManager, AccessToken } from "react-native-fbsdk-next";
@@ -76,6 +75,7 @@ const Login = (props) => {
     (
       async () => {
         try{
+          await LoginManager.logOut();
           const result = await LoginManager.logInWithPermissions([
             "email",
             "public_profile",
@@ -86,7 +86,6 @@ const Login = (props) => {
           }else{
               // Once signed in, get the users AccesToken
           const data = await AccessToken.getCurrentAccessToken();
-    
           if (!data) {
             alert('Something went wrong obtaining access token');
           }else{

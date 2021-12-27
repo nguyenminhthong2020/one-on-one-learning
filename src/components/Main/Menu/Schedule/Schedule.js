@@ -4,14 +4,10 @@ import {MAIN_COLOR} from '../../../../globals/constant';
 import {
   Text,
   View,
-  //TextInput,
   StyleSheet,
   Pressable,
-  //FlatList,
   ScrollView,
 } from 'react-native';
-
-// import {useForm, Controller} from 'react-hook-form';
 import FastImage from 'react-native-fast-image';
 import {useSelector} from 'react-redux';
 import {
@@ -21,7 +17,6 @@ import {
 
 
 const Schedule = () => {
-  // console.log("render");
   const [arrSchedulePagination, setArrSchedulePagination] = useState({
     arrSchedule: [],
     arrPagination: [],
@@ -50,7 +45,15 @@ const Schedule = () => {
           arrPagination: arrCount.slice(0, 5),
         });
       }
+      }else{
+        if(isMounted ){
+          setArrSchedulePagination({
+            currentPage: 1,
+            arrSchedule: [],
+            arrPagination: [0],
+          });
       }
+    }
     });
     return () => {
       isMounted = false;
@@ -75,6 +78,12 @@ const Schedule = () => {
               currentPage: 1,
               arrSchedule: data.rows,
               arrPagination: arrCount.slice(0, 5),
+            });
+          }else{
+            setArrSchedulePagination({
+              currentPage: 1,
+              arrSchedule: [],
+              arrPagination: [0],
             });
           }
         });
@@ -181,7 +190,7 @@ const Schedule = () => {
       ) : (
         <View style={{marginTop: 40}}>
           <Text style={{textAlign: 'center', color: MAIN_COLOR, fontSize: 25}}>
-            Loading...
+            No Data
           </Text>
         </View>
       )}

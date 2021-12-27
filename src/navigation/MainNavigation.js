@@ -51,6 +51,9 @@ function MainTabs(props) {
       <Tab.Screen
         name="Home"
         component={Home}
+      //   listeners={({ navigation }) => ({
+      //   blur: () => navigation.setParams({ screen: undefined }),
+      // })}
         options={{
           title: langState[langState.currentLang].Home,
           headerShown: false,
@@ -73,6 +76,9 @@ function MainTabs(props) {
       <Tab.Screen
         name="Upcoming"
         component={Upcoming}
+      //   listeners={({ navigation }) => ({
+      //   blur: () => navigation.setParams({ screen: undefined }),
+      // })}
         options={{
           title: langState[langState.currentLang].Upcoming,
           headerShown: true,
