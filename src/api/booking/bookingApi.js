@@ -8,8 +8,8 @@ const axiosInstance = axios.create({
   });
 export const getScheduleBooking = async (payload) => {
     const token = await axiosInstance.post('auth/login',{
-        "email": "phhai.fit@gmail.com",
-        "password": "123456"
+        "email": "songoku.minhthong@gmail.com",
+        "password": "thanhthongle"
         // "email": "songoku.minhthong@gmail.com",
         // "password": "thanhthongle"
       });

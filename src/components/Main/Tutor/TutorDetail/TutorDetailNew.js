@@ -112,18 +112,33 @@ const TutorDetailNew = props => {
     price: 0,
     avgRating: 0,
   });
+  const [priceBalance, setPriceBalance] = useState({price: 0, balance : 0});
 
   useEffect(() => {
     let isMounted = true;
     axiosInstance1
       .get(`tutor/${props.route.params.tutor.userId}`)
       .then(res => {
-        if (isMounted) {
-          setDetailTutor({
-            price: res.data.price,
-            avgRating: res.data.avgRating,
-          });
-        }
+        axiosInstance1.get('user/info').then(res => 
+          {
+            if(isMounted){
+              setDetailTutor({
+                price: res.data.price,
+                avgRating: res.data.avgRating,
+              });
+              setPriceBalance({
+                price: res.data.user.priceOfEachSession.price / 100000,
+                balance: res.data.user.walletInfo.amount / 100000
+              })
+            }
+            
+          }).catch(err => alert(err.response.data.message))
+        // if (isMounted) {
+        //   setDetailTutor({
+        //     price: res.data.price,
+        //     avgRating: res.data.avgRating,
+        //   });
+        // }
       })
       .catch(err => {
         alert('Error: \n' + err.response.data.message);
@@ -270,6 +285,7 @@ const TutorDetailNew = props => {
                 props.navigation.navigate('Booking', {
                   tutorId: props.route.params.tutor.userId,
                   name: props.route.params.tutor.name,
+                  priceBalance: priceBalance
                 })
               }>
               <Text

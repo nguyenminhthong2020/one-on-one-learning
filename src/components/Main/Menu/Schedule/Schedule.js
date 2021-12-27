@@ -17,6 +17,7 @@ import {
 
 
 const Schedule = () => {
+  const current = useSelector(state => state.auth.current);
   const [arrSchedulePagination, setArrSchedulePagination] = useState({
     arrSchedule: [],
     arrPagination: [],
@@ -29,7 +30,7 @@ const Schedule = () => {
     const dateTimeLte = new Date().getTime();
     const str = `booking/list/student?page=1&perPage=10&dateTimeGte=${dateTimeLte}&orderBy=meeting&sortBy=asc`;
 
-    getSchedule({str: str}).then(data => {
+    getSchedule({str: str, accessToken: current.tokens.access.token}).then(data => {
       if (data.count > 0) {
         const _countPage = ~~(data.count / 10) + 1;
         let arrCount = [];
@@ -67,7 +68,7 @@ const Schedule = () => {
         const dateTimeLte = new Date().getTime();
         const str = `booking/list/student?page=1&perPage=10&dateTimeGte=${dateTimeLte}&orderBy=meeting&sortBy=asc`;
 
-        getSchedule({str: str}).then(data => {
+        getSchedule({str: str, accessToken: current.tokens.access.token}).then(data => {
           if (data.count > 0) {
             const _countPage = ~~(data.count / 10) + 1;
             let arrCount = [];
@@ -226,7 +227,7 @@ const Schedule = () => {
                   const dateTimeLte = new Date().getTime();
                   const str = `booking/list/student?page=${index + 1}&perPage=10&dateTimeGte=${dateTimeLte}&orderBy=meeting&sortBy=asc`;
 
-                  getSchedule({str: str}).then(data => {
+                  getSchedule({str: str, accessToken: current.tokens.access.token}).then(data => {
                     if (data.count > 0) {
                       const _countPage = ~~(data.count / 10) + 1;
                       let arrCount = [];

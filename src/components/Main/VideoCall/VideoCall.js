@@ -2,29 +2,16 @@
 /* eslint-disable prettier/prettier */
 // /* eslint-disable */
 
-import React, {useEffect} from 'react';
-import {View, Dimensions, SafeAreaView} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Dimensions, Pressable, Text} from 'react-native';
 import JitsiMeet, {JitsiMeetView} from 'react-native-jitsi-meet';
 import CountdownTimer from '../common/CountdownTimer/CountDownTimer';
+// import {MAIN_COLOR} from '../../../globals/constant';
 
 let windowHeight = Dimensions.get('window').height;
 
-function VideoCall() {
+function VideoCall(props) {
   useEffect(() => {
-    // setTimeout(() => {
-    //   //const url = 'https://meet.jit.si/CompetentStoragesAdhereMagnificently'; //tulis url meeting disini
-    //   const url = 'https://meet.jit.si/songokuminhthong';
-    //   const userInfo = {
-    //     displayName: 'Thong9021',
-    //     email: 'testthu9021@gmail.com',
-    //     avatar: 'https:/gravatar.com/avatar/abc123',
-    //     //avatar: 'https://gamek.mediacdn.vn/zoom/220_160/133514250583805952/2021/6/26/avata-16246861354471549893846.jpg',
-    //   };
-    //   JitsiMeet.call(url, userInfo);
-    //   /* Você também pode usar o JitsiMeet.audioCall (url) para chamadas apenas de áudio */
-    //   /* Você pode terminar programaticamente a chamada com JitsiMeet.endCall () */
-    // }, 1000);
-
     const url = 'https://meet.jit.si/songokuminhthong';
     const userInfo = {
       displayName: 'Thong9021',
@@ -35,14 +22,14 @@ function VideoCall() {
       //avatar: 'https://gamek.mediacdn.vn/zoom/220_160/133514250583805952/2021/6/26/avata-16246861354471549893846.jpg',
     };
     JitsiMeet.call(url, userInfo);
-
-    return () => {
-      JitsiMeet.endCall();
-    };
+    // return () => {
+    //   JitsiMeet.endCall();
+    // };
   }, []);
 
   useEffect(() => {
     return () => {
+      console.log('end call nè');
       JitsiMeet.endCall();
     };
   });
@@ -78,9 +65,20 @@ function VideoCall() {
           alignSelf: 'center',
           elevation: 100,
         }}>
-        <CountdownTimer
+        {/* <CountdownTimer
           timeStart={new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)}
-        />
+        /> */}
+        {new Date().getTime() <
+          props.route.params.arrScheduleClass.scheduleDetailInfo.scheduleInfo
+            .startTimestamp && (
+          <CountdownTimer
+            timeStart={
+              new Date(
+                props.route.params.arrScheduleClass.scheduleDetailInfo.scheduleInfo.startTimestamp,
+              )
+            }
+          />
+        )}
       </View>
       <JitsiMeetView
         onConferenceTerminated={e => onConferenceTerminated(e)}

@@ -13,13 +13,15 @@ import {
 } from 'react-native';
 
 // import {useForm, Controller} from 'react-hook-form';
-import FastImage from 'react-native-fast-image';
+// import FastImage from 'react-native-fast-image';
 import {getHistory} from '../../../../api/history/historyApi';
 const HistoryItem = React.lazy(() =>
   import('../../common/HistoryItem/HistoryItem'),
 );
+import { useSelector } from 'react-redux';
 
 const History = () => {
+  const current = useSelector(state => state.auth.current);
   const [arrHistoryPagination, setArrHistoryPagination] = useState({
     arrHistory: [],
     arrPagination: [],
@@ -31,7 +33,7 @@ const History = () => {
 
     const dateTimeLte = new Date().getTime();
     const str = `booking/list/student?page=1&perPage=10&dateTimeLte=${dateTimeLte}&orderBy=meeting&sortBy=desc`;
-    getHistory({str: str}).then(data => {
+    getHistory({str: str, accessToken: current.tokens.access.token}).then(data => {
       if (data.count > 0) {
         const _countPage = ~~(data.count / 10) + 1;
         let arrCount = [];
@@ -114,7 +116,7 @@ const History = () => {
                   }&perPage=10&dateTimeLte=${dateTimeLte}&orderBy=meeting&sortBy=desc`;
                   // const data = getHistory({str: str});
 
-                  getHistory({str: str}).then(data => {
+                  getHistory({str: str, accessToken: current.tokens.access.token}).then(data => {
                     if (data.count > 0) {
                       setArrHistoryPagination({
                         arrHistory: data.rows,

@@ -1,18 +1,10 @@
 /* eslint-disable */
-import React, {Suspense, useState, useRef, useEffect, useMemo} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   ScrollView,
-  // StatusBar,
-  StyleSheet,
-  ActivityIndicator,
   Text,
   View,
-  //Dimensions,
-  TouchableOpacity,
   Pressable,
-  Image,
-  FlatList,
-  //TextInput,
   Alert,
 } from 'react-native';
 import {MAIN_COLOR} from '../../../../../globals/constant';
@@ -22,29 +14,11 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import {getScheduleBooking} from '../../../../../api/booking/bookingApi';
 
-const ReportAlert = tutorName =>
-  Alert.alert(
-    `Report ${tutorName} for some reasons:`,
-    `1) This tutor is annoying me. \n2) This profile is pretending be someone or is fake \n3) Inappropriate profile photo \n\n Please check he/she...`,
-    [
-      {
-        text: 'OK',
-        onPress: () => alert('Complete'),
-        style: 'default',
-      },
-      {
-        text: 'Cancel', //onPress: () => {alert("Cancel");console.log(123);},
-        style: 'destructive',
-      },
-    ],
-    {cancelable: true},
-  );
-
-const BookingDetailAlert = (student, tutor, date, time, price, balance) =>
+const BookingDetailAlert = (student, name, tutor, date, time, price, balance) =>
   price > balance
     ? Alert.alert(
         `BOOKING DETAILS: FAIL`,
-        `1) Student: ${student}, tutor: ${tutor}. \n2) ${date}, ${time} \n3) Balance: ${balance}, Price: ${price}`,
+        `1. Student: ${name}\n2. Tutor: ${tutor}\n3. ${date} (${time})\n4. Balance: You have ${balance} lessons left\n5. Price: ${price}`,
         [
           {
             text: 'Cancel', //onPress: () => {alert("Cancel");console.log(123);},
@@ -55,7 +29,7 @@ const BookingDetailAlert = (student, tutor, date, time, price, balance) =>
       )
     : Alert.alert(
         `BOOKING DETAILS: `,
-        `1) Student: ${student}, tutor: ${tutor}. \n2) ${date}, ${time} \n3) Balance: ${balance}, Price: ${price}`,
+        `1. Student: ${name}\n2. Tutor: ${tutor}\n3.. ${date} (${time})\n4. Balance: You have ${balance} lessons left\n5. Price: ${price}`,
         [
           {
             text: 'Book',
@@ -91,26 +65,19 @@ const BookingSuccess = () =>
   );
 
 const Booking = props => {
+  const current = useSelector(state => state.auth.current);
+
   const [arrayDateTime, setArrayDateTime] = useState([]);
 
-  const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [isModalVisibleBooking, setModalVisibleBooking] = useState(false);
-  const langState = useSelector(state => state.lang);
+  // const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
+  // const langState = useSelector(state => state.lang);
 
   useEffect(() => {
     let cancel = false;
     getScheduleBooking({tutorId: props.route.params.tutorId}).then(data => {
       const now = new Date().getTime();
-      // console.log(data[0]);
       const schedule = data.filter(function (item) {
         const start = item.scheduleDetails[0].startPeriodTimestamp;
-        //const end = item.scheduleDetails[0].endPeriodTimestamp;
-        //const now = new Date().getTime();
-        //const now7 = new Date(now + 7 * 24 * 60 * 60 * 1000);
-        // if (now <= start && end <= now7) {
-        //   return item;
-        // }
         if (now <= start) {
           return item;
         }
@@ -136,7 +103,6 @@ const Booking = props => {
         const day = new Date(now + i * 24 * 60 * 60 * 1000)
           .toISOString()
           .slice(0, 10);
-        // console.log(day)
         let arrTime = [];
         for (let j = 0; j < schedule.length; j++) {
           if (
@@ -144,7 +110,6 @@ const Booking = props => {
               .toISOString()
               .slice(0, 10) == day
           ) {
-            // console.log(schedule[j].scheduleDetails[0].bookingInfo)
             let check = false;
             if (schedule[j].scheduleDetails[0].bookingInfo.length > 0) {
               if (
@@ -154,8 +119,6 @@ const Booking = props => {
                 check = true;
               }
             }
-            //console.log((new Date(schedule[j].scheduleDetails[0].startPeriodTimestamp)).toLocaleTimeString());
-            //console.log((new Date(schedule[j].scheduleDetails[0].startPeriodTimestamp)).toISOString().slice(0, 10))
             arrTime.push({
               isBooked: schedule[j].scheduleDetails[0].isBooked,
               isBookedByMe: check,
@@ -179,17 +142,14 @@ const Booking = props => {
           // endPeriodTimestamp: schedule[j].scheduleDetails[0].endPeriodTimestamp,
         });
       }
-      // arrDate.forEach(function(item){
-      //   console.log(item.date)
-      //   item.time.forEach(time => console.log(time.startEnd))
-      // })
       if (cancel) return;
-      setArrayDateTime(arrDate);
+        setArrayDateTime(arrDate);
     });
     return () => {
       cancel = true;
     };
   }, []);
+
 
   // const arrayDateTime = [
   //   {
@@ -266,7 +226,6 @@ const Booking = props => {
   // ];
   const arrayIsClick = arrayDateTime.map((v, i) => false);
   const [isClick, setIsClick] = useState(arrayIsClick);
-  //console.log(isClick);
 
   const setIsClickHandler = value =>
     setIsClick(arrayIsClick.map((v, i) => (i === value ? false : v)));
@@ -275,36 +234,39 @@ const Booking = props => {
   const ModalTime = props => {
     //props: student, tutor, arrayDateTime, id, isVisible
     const [isModalVisibleTime, setModalVisibleTime] = useState(props.isVisible);
+    
+    // const [dataModalChild, setDataModalChild] = useState(
+    //   {
+    //     isVisible: false,
+    //   }
+    // )
+
     const toggleModalTime = () => {
       setModalVisibleTime(!isModalVisibleTime);
     };
-    onPressHandler = (student, tutor, arrayDateTime, id, time) => {
-      //alert("OK nè");
+    onPressHandler = (student, name, tutor, arrayDateTime, id, time) => {
       //alert(`Student ${student}, Tutor ${tutor}, Date ${props.arrayDateTime[props.id].date}, Time ${time}`)
       BookingDetailAlert(
         student,
+        name,
         tutor,
         props.arrayDateTime[props.id].date,
         time,
-        2,
-        2,
+        props.price,
+        props.balance,
       );
-      //toggleModalTime();
-      //props.setIsClick(false);
     };
+    
+
     return isModalVisibleTime ? (
       <View style={{backgroundColor: 'white'}}>
         <Modal isVisible={isModalVisibleTime}>
-          {/* <ScrollView> */}
           <View
             style={{backgroundColor: 'white', width: '100%', height: '100%'}}>
             <View
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                // borderBottomWidth: 1,
-                // marginBottom: 5
-                // marginHorizontal: 10,
               }}>
               <View></View>
               <Text
@@ -343,12 +305,12 @@ const Booking = props => {
                             : 'grey'
                           : MAIN_COLOR,
                       paddingVertical: 5,
-                      // paddingHorizontal: 18
                     }}
                     onPress={() => {
                       if (time.isBooked == false) {
                         onPressHandler(
                           props.student,
+                          props.name,
                           props.tutor,
                           props.arrayDateTime,
                           props.id,
@@ -366,7 +328,6 @@ const Booking = props => {
                       {time.isBooked == true && time.isBookedByMe == false
                         ? 'Reserved'
                         : time.startEnd}
-                      {/* {time.startEnd} */}
                     </Text>
                   </Pressable>
                 </View>
@@ -393,7 +354,6 @@ const Booking = props => {
                 </TouchableOpacity>
               </View> */}
           </View>
-          {/* </ScrollView> */}
         </Modal>
       </View>
     ) : (
@@ -450,6 +410,10 @@ const Booking = props => {
                   <ModalTime
                     setIsClick={setIsClickHandler}
                     student={'Nguyễn Minh Thông'}
+                    name={current.user.name}
+                    balance={current.user.walletInfo.amount / 100000}
+                    price={props.route.params.priceBalance.price}
+                    balance={props.route.params.priceBalance.balance}
                     tutor={props.route.params.name}
                     arrayDateTime={arrayDateTime}
                     id={index}
@@ -478,17 +442,5 @@ const Booking = props => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  video: {
-    width: '100%',
-    height: 200,
-    marginBottom: 30,
-  },
-  buttonControl: {
-    width: '40%',
-    left: '30%',
-  },
-});
 
 export default Booking;
