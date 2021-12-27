@@ -28,7 +28,44 @@ const HeadContent = props => {
     startTime: '',
     endTime: '',
   })
-
+  
+  useEffect(() => {
+      axiosInstance1
+      .get(`call/total`)
+      .then(res => {
+        (async () => {
+          try{
+          const dateTimeLte = new Date().getTime();
+          const res1 = await axiosInstance1.get(`booking/next?dateTime=${dateTimeLte}`);
+          if (res1.data.data.length > 0) {
+            const newArray = res1.data.data.sort((x, y) => (x.scheduleDetailInfo.scheduleInfo.startTimestamp - y.scheduleDetailInfo.scheduleInfo.startTimestamp))
+            setDataHeader({
+              total: res.data.total,
+              date: newArray[0].scheduleDetailInfo.scheduleInfo.date,
+              startTime: (new Date(newArray[0].scheduleDetailInfo.scheduleInfo
+                .startTimestamp)).toLocaleTimeString().substring(0, 5),
+              endTime: (new Date(newArray[0].scheduleDetailInfo.scheduleInfo
+                .endTimestamp)).toLocaleTimeString().substring(0, 5),
+            })
+          }else{
+            setDataHeader({
+              ...dataHeader,
+              total: res.data.total,
+              date: "",
+              startTime: "",
+              endTime: ""
+            })
+          }
+        }catch(err){
+          console.log('Error: \n' + err.response.data.message);
+        }
+        })();
+      })
+      .catch(err => {
+        alert('Error: \n' + err.response.data.message);
+      }
+    , []);
+  }, []);
 
   useEffect(() => {
     const unsubscribe = props.navigation.addListener('focus', () => {
@@ -40,12 +77,14 @@ const HeadContent = props => {
           const dateTimeLte = new Date().getTime();
           const res1 = await axiosInstance1.get(`booking/next?dateTime=${dateTimeLte}`);
           if (res1.data.data.length > 0) {
-            const newArray = res1.data.data.sort((x, y) => (x.scheduleDetailInfo.scheduleInfo.date + x.scheduleDetailInfo.scheduleInfo.startTime).localeCompare((y.scheduleDetailInfo.scheduleInfo.date + y.scheduleDetailInfo.scheduleInfo.startTime)))
+            const newArray = res1.data.data.sort((x, y) => (x.scheduleDetailInfo.scheduleInfo.startTimestamp - y.scheduleDetailInfo.scheduleInfo.startTimestamp))
             setDataHeader({
               total: res.data.total,
               date: newArray[0].scheduleDetailInfo.scheduleInfo.date,
-              startTime: newArray[0].scheduleDetailInfo.scheduleInfo.startTime,
-              endTime: newArray[0].scheduleDetailInfo.scheduleInfo.endTime,
+              startTime: (new Date(newArray[0].scheduleDetailInfo.scheduleInfo
+                .startTimestamp)).toLocaleTimeString().substring(0, 5),
+              endTime: (new Date(newArray[0].scheduleDetailInfo.scheduleInfo
+                .endTimestamp)).toLocaleTimeString().substring(0, 5),
             })
           }else{
             setDataHeader({

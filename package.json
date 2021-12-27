@@ -41,6 +41,7 @@
     "react-native-pager-view": "^5.4.7",
     "react-native-paper": "^4.9.2",
     "react-native-pdf": "^6.4.0",
+    "react-native-pure-jwt": "^3.0.0",
     "react-native-ratings": "^8.0.4",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.8.0",
