@@ -2,6 +2,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 // import { moreApi } from '../../../api/tutor/moreApi';
+import { BASE_URL } from '../../../globals/constant';
 
 /* 
    Lấy list favorite tutor
@@ -15,7 +16,7 @@ export const moreAsync = createAsyncThunk(
     async (payload, {rejectWithValue}) => {
       try{
         const axiosInstance1 = axios.create({
-            baseURL: 'https://api.app.lettutor.com/',
+            baseURL: BASE_URL,
             timeout: 5000,
             headers: {
               Authorization: 'Bearer ' + payload.accessToken,
@@ -46,7 +47,7 @@ export const addFavAsync = createAsyncThunk(
       async (payload, {rejectWithValue}) => {
         try{
           const axiosInstance1 = axios.create({
-              baseURL: 'https://api.app.lettutor.com/',
+              baseURL: BASE_URL,
               timeout: 5000,
               headers: {
                 Authorization: 'Bearer ' + payload.accessToken,
@@ -74,7 +75,7 @@ export const removeFavAsync = createAsyncThunk(
       async (payload, {rejectWithValue}) => {
         try{
           const axiosInstance1 = axios.create({
-              baseURL: 'https://api.app.lettutor.com/',
+              baseURL: BASE_URL,
               timeout: 5000,
               headers: {
                 Authorization: 'Bearer ' + payload.accessToken,

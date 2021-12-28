@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, {useState, useEffect, useCallback} from 'react';
-import {MAIN_COLOR, SECOND_COLOR} from '../../../globals/constant';
+import {MAIN_COLOR, SECOND_COLOR, BASE_URL} from '../../../globals/constant';
 import {
   Text,
   View,
@@ -51,7 +51,7 @@ const Profile = props => {
   const langState = useSelector(state => state.lang);
   
   const axiosInstance1 = axios.create({
-    baseURL: 'https://api.app.lettutor.com/',
+    baseURL: BASE_URL,
     timeout: 5000,
     headers: {
       Authorization: 'Bearer ' + current.tokens.access.token,
@@ -163,7 +163,7 @@ const Profile = props => {
         name: response.assets[0].fileName,
       });
       datas.append('avatar', JSON.stringify({size:response.assets[0].fileSize}));
-      axios.post('https://api.app.lettutor.com/user/uploadAvatar',datas, {
+      axios.post(`${BASE_URL}user/uploadAvatar`,datas, {
         headers: {
           Authorization: 'Bearer ' + current.tokens.access.token,
           'Content-Type': 'multipart/form-data'
@@ -218,7 +218,7 @@ const Profile = props => {
                 name: response.assets[0].fileName,
               });
               datas.append('avatar', JSON.stringify({size:response.assets[0].fileSize}));
-              axios.post('https://api.app.lettutor.com/user/uploadAvatar',datas, {
+              axios.post(`${BASE_URL}user/uploadAvatar`,datas, {
                 headers: {
                   Authorization: 'Bearer ' + current.tokens.access.token,
                   'Content-Type': 'multipart/form-data'

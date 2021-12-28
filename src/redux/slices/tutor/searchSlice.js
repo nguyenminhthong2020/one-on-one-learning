@@ -2,6 +2,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import { searchApi } from '../../../api/tutor/searchApi';
 import axios from 'axios';
+import { BASE_URL } from '../../../globals/constant';
 
 /* 
    Lấy list favorite tutor
@@ -17,7 +18,7 @@ export const searchSpecAsync = createAsyncThunk(
     async (payload, {rejectWithValue}) => {
       try{
         const axiosInstance1 = axios.create({
-            baseURL: 'https://api.app.lettutor.com/',
+            baseURL: BASE_URL,
             timeout: 5000,
             headers: {
               Authorization: 'Bearer ' + payload.accessToken,

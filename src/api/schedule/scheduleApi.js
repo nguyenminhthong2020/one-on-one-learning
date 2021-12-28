@@ -1,6 +1,6 @@
 /* eslint-disable */
 import axios from 'axios';
-
+import { BASE_URL } from '../../globals/constant';
 // const axiosInstance = axios.create({
 //     baseURL: 'https://api.app.lettutor.com/',
 //     timeout: 5000,
@@ -17,7 +17,7 @@ export const getSchedule = async (payload) => {
       //console.log("accToken: \n" +accessToken)
 
       const axiosInstance1 = axios.create({
-        baseURL: 'https://api.app.lettutor.com/',
+        baseURL: BASE_URL,
         timeout: 5000,
         headers: {
           Authorization: 'Bearer '+ payload.accessToken
@@ -40,7 +40,7 @@ export const cancelBookingSchedule = async (payload) => {
       //console.log("accToken: \n" +accessToken)
 
       const axiosInstance1 = axios.create({
-        baseURL: 'https://api.app.lettutor.com/',
+        baseURL: BASE_URL,
         timeout: 5000,
         headers: {
           Authorization: 'Bearer '+ payload.accessToken
@@ -48,7 +48,7 @@ export const cancelBookingSchedule = async (payload) => {
       });
 
       
-      const res = await axiosInstance1.delete(`https://api.app.lettutor.com/booking`, 
+      const res = await axiosInstance1.delete(`${BASE_URL}booking`, 
                                                 {
                                                   data: {
                                                     scheduleDetailIds: [payload.scheduleDetailId]

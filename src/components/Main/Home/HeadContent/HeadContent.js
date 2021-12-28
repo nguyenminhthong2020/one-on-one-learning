@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, {useState, useEffect} from 'react';
-import {MAIN_COLOR} from '../../../../globals/constant';
+import {MAIN_COLOR, BASE_URL} from '../../../../globals/constant';
 import {
   Text,
   View,
@@ -15,7 +15,7 @@ const HeadContent = props => {
   const langState = useSelector(state => state.lang);
   const current = useSelector(state => state.auth.current);
   const axiosInstance1 = axios.create({
-    baseURL: 'https://api.app.lettutor.com/',
+    baseURL: BASE_URL,
     timeout: 5000,
     headers: {
       Authorization: 'Bearer ' + current.tokens.access.token,

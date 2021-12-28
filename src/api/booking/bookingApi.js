@@ -1,31 +1,23 @@
 /* eslint-disable */
 import axios from 'axios';
+import { BASE_URL } from '../../globals/constant';
 
 const axiosInstance = axios.create({
-    baseURL: 'https://api.app.lettutor.com/',
+    baseURL: BASE_URL,
     timeout: 5000,
     //'Content-Type': 'application/json'
   });
 export const getScheduleBooking = async (payload) => {
-    const token = await axiosInstance.post('auth/login',{
-        "email": "songoku.minhthong@gmail.com",
-        "password": "thanhthongle"
-        // "email": "songoku.minhthong@gmail.com",
-        // "password": "thanhthongle"
-      });
-      //const accessToken = token.tokens.access.token;
-      //console.log("accToken: \n" +accessToken)
-
       const axiosInstance1 = axios.create({
-        baseURL: 'https://api.app.lettutor.com/',
+        baseURL: BASE_URL,
         timeout: 5000,
         headers: {
-          Authorization: 'Bearer '+ token.data.tokens.access.token
+          Authorization: 'Bearer '+ payload.accessToken
         },
       });
 
       
-      const res = await axiosInstance1.post(`https://api.app.lettutor.com/schedule`, 
+      const res = await axiosInstance1.post(`${BASE_URL}schedule`, 
       {
           tutorId: payload.tutorId,
       });

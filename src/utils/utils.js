@@ -1,8 +1,9 @@
 /* eslint-disable */
 import axios from 'axios';
+import { BASE_URL } from '../globals/constant';
 
 export const axiosInstance = axios.create({
-    baseURL: "https://api.app.lettutor.com/",
+    baseURL: BASE_URL,
     timeout: 5000,
     //'Content-Type': 'application/json'
   });

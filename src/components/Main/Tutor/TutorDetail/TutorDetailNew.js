@@ -10,7 +10,7 @@ import {
   Alert,
 } from 'react-native';
 
-import {MAIN_COLOR} from '../../../../globals/constant';
+import {MAIN_COLOR, BASE_URL} from '../../../../globals/constant';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FastImage from 'react-native-fast-image';
@@ -101,7 +101,7 @@ const TutorDetailNew = props => {
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
   const current = useSelector(state => state.auth.current);
   const axiosInstance1 = axios.create({
-    baseURL: 'https://api.app.lettutor.com/',
+    baseURL: BASE_URL,
     timeout: 5000,
     headers: {
       Authorization: 'Bearer ' + current.tokens.access.token,
@@ -119,7 +119,7 @@ const TutorDetailNew = props => {
     axiosInstance1
       .get(`tutor/${props.route.params.tutor.userId}`)
       .then(res => {
-        axiosInstance1.get('user/info').then(res => 
+        axiosInstance1.get('user/info').then(res1 => 
           {
             if(isMounted){
               setDetailTutor({
@@ -127,12 +127,12 @@ const TutorDetailNew = props => {
                 avgRating: res.data.avgRating,
               });
               setPriceBalance({
-                price: res.data.user.priceOfEachSession.price / 100000,
-                balance: res.data.user.walletInfo.amount / 100000
+                price: res1.data.user.priceOfEachSession.price / 100000,
+                balance: res1.data.user.walletInfo.amount / 100000
               })
             }
             
-          }).catch(err => alert(err.response.data.message))
+          }).catch(err1 => alert(err1.response.data.message))
         // if (isMounted) {
         //   setDetailTutor({
         //     price: res.data.price,
@@ -148,49 +148,21 @@ const TutorDetailNew = props => {
     };
   }, []);
 
-  //const video = React.useRef(null);
-  //const [status, setStatus] = React.useState({});
   const langState = useSelector(state => state.lang);
-
-  //const myUrl = `https://api.app.lettutor.com/video/cd0a440b-cd19-4c55-a2a2-612707b1c12cvideo1631029793846.mp4`;
-  //const _myUrl = Constants.linkingUri(myUrl);
 
   return (
     <View style={{marginTop: 0}}>
       <ScrollView>
         <View>
-          {/* <Video
-            ref={video}
-            style={styles.video}
-            source={{
-              uri: myUrl,
-            }}
-            useNativeControls
-            resizeMode="cover"
-            isLooping
-            onPlaybackStatusUpdate={status => setStatus(() => status)}
-          /> */}
-          {/* <View style={styles.buttonControl}>
-            <Button
-              title={status.isPlaying ? 'Pause' : 'Play'}
-              onPress={() =>
-                status.isPlaying
-                  ? video.current.pauseAsync()
-                  : video.current.playAsync()
-              }
-            />
-          </View> */}
           <View
             style={{
-              height: 200,
-              width: '100%',
               backgroundColor: 'gray',
               borderWidth: 1,
               borderColor: MAIN_COLOR,
             }}>
             <Suspense
               fallback={<ActivityIndicator size="large" color="#00ff00" />}>
-              <SectionVideo uri={props.route.params.tutor.video} />
+              <SectionVideo uri={props.route.params.tutor.video} navigation={props.navigation}/>
             </Suspense>
           </View>
 

@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react';
-import {MAIN_COLOR} from '../../../globals/constant';
+import {MAIN_COLOR, BASE_URL} from '../../../globals/constant';
 import {Text, View, ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
 import {useForm, Controller, useWatch} from 'react-hook-form';
 import Input from '../../../components/_common/Input/Input';
@@ -21,7 +21,7 @@ const Register = (props) => {
       .post(`auth/register`, {
         email: data.email,
         password: data.password,
-        source: "https://lettutor.com/"
+        source: BASE_URL
       })
       .then(res => {
         // console.log(res.data);

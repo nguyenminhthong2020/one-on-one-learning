@@ -7,7 +7,7 @@ import {
   Pressable,
   Alert,
 } from 'react-native';
-import {MAIN_COLOR} from '../../../../../globals/constant';
+import {BASE_URL, MAIN_COLOR} from '../../../../../globals/constant';
 import Modal from 'react-native-modal';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
@@ -74,7 +74,7 @@ const Booking = props => {
 
   useEffect(() => {
     let cancel = false;
-    getScheduleBooking({tutorId: props.route.params.tutorId}).then(data => {
+    getScheduleBooking({tutorId: props.route.params.tutorId, accessToken: current.tokens.access.token}).then(data => {
       const now = new Date().getTime();
       const schedule = data.filter(function (item) {
         const start = item.scheduleDetails[0].startPeriodTimestamp;
@@ -99,8 +99,9 @@ const Booking = props => {
       // })
 
       let arrDate = [];
-      for (let i = 0; i < 7; i++) {
-        const day = new Date(now + i * 24 * 60 * 60 * 1000)
+      for (let i = 1; i <= 7; i++) {
+        let day;
+          day = new Date(now + i * 24 * 60 * 60 * 1000)
           .toISOString()
           .slice(0, 10);
         let arrTime = [];
@@ -110,6 +111,9 @@ const Booking = props => {
               .toISOString()
               .slice(0, 10) == day
           ) {
+            // console.log(new Date(schedule[j].scheduleDetails[0].startPeriodTimestamp)
+            // .toISOString()
+            // .slice(0, 10))
             let check = false;
             if (schedule[j].scheduleDetails[0].bookingInfo.length > 0) {
               if (

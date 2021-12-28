@@ -3,8 +3,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 // import { userApi } from '../../../api/auth/userApi';
 import axios from 'axios';
 import { axiosInstance } from '../../../utils/utils';
-
-
+import { BASE_URL } from '../../../globals/constant';
 
 const initialState = {
     current: {  //current: user & tokens
@@ -46,7 +45,7 @@ export const changeInfoAsync = createAsyncThunk(
             const arr1 = [...payload.whatToLearn1].map(i => i.id);
           
             const axiosInstance1 = axios.create({
-                baseURL: 'https://api.app.lettutor.com/',
+                baseURL: BASE_URL,
                 timeout: 5000,
                 headers: {
                   Authorization: 'Bearer ' + payload.accessToken,

@@ -1,11 +1,12 @@
 /* eslint-disable */
 import axios from 'axios';
+import { BASE_URL } from '../../globals/constant';
 
-const axiosInstance = axios.create({
-    baseURL: 'https://api.app.lettutor.com/',
-    timeout: 5000,
-    //'Content-Type': 'application/json'
-  });
+// const axiosInstance = axios.create({
+//     baseURL: 'https://api.app.lettutor.com/',
+//     timeout: 5000,
+//     //'Content-Type': 'application/json'
+//   });
 export const getHistory = async (payload) => {
     // const token = await axiosInstance.post('auth/login',{
     //     "email": "phhai.fit@gmail.com",
@@ -17,7 +18,7 @@ export const getHistory = async (payload) => {
       //console.log("accToken: \n" +accessToken)
 
       const axiosInstance1 = axios.create({
-        baseURL: 'https://api.app.lettutor.com/',
+        baseURL: BASE_URL,
         timeout: 5000,
         headers: {
           Authorization: 'Bearer '+ payload.accessToken
