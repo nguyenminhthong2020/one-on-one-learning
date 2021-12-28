@@ -21,3 +21,35 @@ export const handleAverage = arrayFeedbacks => {
   }
   return rate;
 };
+
+export const convertSubject = (id) => {
+  switch (id) {
+    case 3:
+      return 'english-for-kids';
+    case 4:
+      return "business-english";
+    default:
+      return "conversational-english";
+  }
+}
+
+export const convertTestPre = (id) => {
+  switch (id) {
+    case 1:
+      return "starters";
+    case 2:
+      return "movers";
+    case 3:
+      return "flyers";
+    case 4:
+      return "ket";
+    case 5:
+      return "pet";
+    case 6:
+      return "ielts";
+    case 7:
+      return "toefl";
+    default:
+      return "toeic";
+  }
+}

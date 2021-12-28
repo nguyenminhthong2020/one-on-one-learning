@@ -154,35 +154,38 @@ const Profile = props => {
       includeBase64: false,
     };
     ImagePicker.launchImageLibrary(options, response => {
+      if(response.hasOwnProperty('assets'))
+      {
+        const datas = new FormData();
+        datas.append('avatar', 
+        { 
+          uri: response.assets[0].uri, 
+          type: response.assets[0].type, 
+          name: response.assets[0].fileName,
+        });
+        datas.append('avatar', JSON.stringify({size:response.assets[0].fileSize}));
+        axios.post(`${BASE_URL}user/uploadAvatar`,datas, {
+          headers: {
+            Authorization: 'Bearer ' + current.tokens.access.token,
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(res => {
+          dispatch(initNewAvatar({
+             newAvatar: res.data.avatar
+          }))
+        })
+        .catch(err => console.log(err))
         
-      const datas = new FormData();
-      datas.append('avatar', 
-      { 
-        uri: response.assets[0].uri, 
-        type: response.assets[0].type, 
-        name: response.assets[0].fileName,
-      });
-      datas.append('avatar', JSON.stringify({size:response.assets[0].fileSize}));
-      axios.post(`${BASE_URL}user/uploadAvatar`,datas, {
-        headers: {
-          Authorization: 'Bearer ' + current.tokens.access.token,
-          'Content-Type': 'multipart/form-data'
-        }
-      }).then(res => {
-        dispatch(initNewAvatar({
-           newAvatar: res.data.avatar
-        }))
-      })
-      .catch(err => console.log(err))
+        // setState
+        setFile({
+          uri: response.assets[0].uri,
+          name: response.assets[0].fileName,
+          type: response.assets[0].type,
+          size: response.assets[0].fileSize,
+          fileName: response.assets[0].fileName,
+        });
+      }
       
-      // setState
-      setFile({
-        uri: response.assets[0].uri,
-        name: response.assets[0].fileName,
-        type: response.assets[0].type,
-        size: response.assets[0].fileSize,
-        fileName: response.assets[0].fileName,
-      });
     })
   }, []);
 
@@ -209,7 +212,8 @@ const Profile = props => {
             };
             
             ImagePicker.launchCamera(options, response => {
-              // upload avatar
+              if(response.hasOwnProperty('assets')){
+                  // upload avatar
               const datas = new FormData();
               datas.append('avatar', 
               { 
@@ -238,6 +242,7 @@ const Profile = props => {
                 size: response.assets[0].fileSize,
                 fileName: response.assets[0].fileName,
               });
+              }
             });
           } else {
             console.log("Camera permission denied");
@@ -326,7 +331,7 @@ const Profile = props => {
           </View>
           <View style={{marginLeft: 18, backgroundColor: 'white'}}>
             <TextInput
-              style={{borderWidth: 1, width: 200, height: 40, fontSize: 15}}
+              style={{borderWidth: 1, width: 220, height: 40, fontSize: 15}}
               value={name}
               defaultValue={current.user.name}
               //keyboardType={'numeric'}
@@ -353,7 +358,7 @@ const Profile = props => {
               <View style={{marginLeft: 40, backgroundColor: 'white'}}>
                 <TextInput
                   // editable = {false}
-                  style={{borderWidth: 1, width: 200, height: 40, fontSize: 15}}
+                  style={{borderWidth: 1, width: 220, height: 40, fontSize: 15}}
                   value={phone}
                   defaultValue={phone}
                   keyboardType={'numeric'}

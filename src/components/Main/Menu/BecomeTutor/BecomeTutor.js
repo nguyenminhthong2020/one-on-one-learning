@@ -1,19 +1,17 @@
 /* eslint-disable */
 import React, {useState, useEffect, useCallback} from 'react';
-import {MAIN_COLOR} from '../../../../globals/constant';
-import {arrLanguage} from '../../../../globals/arr-language';
-
+import {MAIN_COLOR, SECOND_COLOR, BASE_URL} from '../../../../globals/constant';
 import {
   Text,
   View,
   TextInput,
   StyleSheet,
-  TouchableOpacity,
+  Pressable,
   ScrollView,
-  Modal,
-  FlatList,
+  PermissionsAndroid,
+  LogBox,
 } from 'react-native';
-//import {TextInput as SpecialTextInput} from 'react-native-paper';
+
 import {useForm, Controller, set} from 'react-hook-form';
 import Button from '../../../_common/Button/Button';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -26,79 +24,239 @@ import {xorBy} from 'lodash';
 import {Picker} from '@react-native-picker/picker';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import CountryPicker from 'react-native-country-picker-modal';
-//import moment from 'moment';
-//import AvatarAccessory from '../../_common/AvatarAccessory/AvatarAccessory';
+import axios from 'axios';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  logout,
+  initNew,
+} from '../../../../redux/slices/auth/loginSlice';
+import { convertSubject, convertTestPre } from '../../../../utils/utils';
 
 // Phần Image Picker cho Avatar
-import { useSelector, useDispatch } from 'react-redux';
 import * as ImagePicker from 'react-native-image-picker';
 import {ImagePickerAvatar} from '../../../_common/ImagePicker/image-picker-avatar';
 import {ImagePickerModal} from '../../../_common/ImagePicker/image-picker-modal';
 
-const BecomeTutor = (props) => {
+const Profile = props => {
+  useEffect(() => {
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+  }, []);
+  const dispatch = useDispatch();
+
+  const current = useSelector(state => state.auth.current);
+  const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
+  const langState = useSelector(state => state.lang);
+
+  const axiosInstance1 = axios.create({
+    baseURL: BASE_URL,
+    timeout: 5000,
+    headers: {
+      Authorization: 'Bearer ' + current.tokens.access.token,
+    },
+  });
+  useEffect(() => {
+    if (
+      new Date(current.tokens.access.expires).getTime() <= new Date().getTime()
+    ) {
+      if (
+        new Date(current.tokens.refresh.expires).getTime() <=
+        new Date().getTime()
+      ) {
+        dispatch(logout());
+        props.navigation.navigate('Login');
+      } else {
+        (async () => {
+          const resRefresh = await axiosInstance1.post('auth/refresh-token', {
+            refreshToken: current.tokens.refresh.token,
+            timezone: 7,
+          });
+          dispatch(
+            initNew({
+              current: resRefresh.data,
+            }),
+          );
+        })();
+      }
+    }
+  }, []);
+
   const {
     control,
     handleSubmit,
     formState: {errors},
   } = useForm({mode: 'onBlur'});
-  
-  const current = useSelector(state => state.auth.current);
-  const [pickerValue, setPickerValue] = useState('English');
-  const [whatToLearn, setWhatToLearn] = useState([]);
-  const [levelValue, setLevelValue] = useState('Beginner');
+
+  const arrWhatToLearn = [
+    {item: 'English for Kids', id: 3},
+    {item: 'Business English', id: 4},
+    {item: 'Conversational English', id: 5},
+  ];
+  const arrWhatToLearn1 = [
+    {item: 'STARTERS', id: 1},
+    {item: 'MOVERS', id: 2},
+    {item: 'FLYERS', id: 3},
+    {item: 'KET', id: 4},
+    {item: 'PET', id: 5},
+    {item: 'IELTS', id: 6},
+    {item: 'TOEFL', id: 7},
+    {item: 'TOEIC', id: 8},
+  ];
+
+  const newwhatToLearn = [...current.user.learnTopics].map(function (item) {
+    return {
+      item: item.name,
+      id: item.id,
+    };
+  });
+  const newwhatToLearn1 = [...current.user.testPreparations].map(function (
+    item,
+  ) {
+    return {
+      item: item.name,
+      id: item.id,
+    };
+  });
+  const _birthday = (
+    current.user.birthday != null ? current.user.birthday : '1998-10-27'
+  ).substring(0, 10);
+  const _country = current.user.country != null ? current.user.country : 'VN';
+
+  const [whatToLearn, setWhatToLearn] = useState(newwhatToLearn);
+  const [whatToLearn1, setWhatToLearn1] = useState(newwhatToLearn1);
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [birthday, setBirthday] = useState('1998-10-27');
-  const [country, setCountry] = useState({name: 'Vietnam', cca2: 'VN'});
+  const [birthday, setBirthday] = useState(_birthday);
+  const [interests, setInterests] = useState('');
+  const [education, setEducation] =useState('');
+  const [experience, setExperience] = useState('');
+  const [profession, setProfession] = useState('');
+  const [bio, setBio] = useState('');
+  const [targetStudent, setTargetStudent] = useState("");
+  //const [country, setCountry] = useState({name: 'Vietnam', cca2: 'VN'});
+  const [country, setCountry] = useState({name: '', cca2: _country});
+  const [name, setName] = useState(current.user.name);
 
   // image Picker:
-  const [pickerResponse, setPickerResponse] = useState(null);
+  const [file, setFile] = useState({
+    uri: current.user.avatar,
+    name: ``,
+    type: ``,
+    size: 0,
+    fileName: '',
+  });
+
+  //const [pickerResponse, setPickerResponse] = useState(null);
   const [visible, setVisible] = useState(false);
-
-  // modal ̣language
-  const [modalVisible, setModalVisible] = useState(false);
-  const [arrLan, setArrLan] = useState([]);
-  // skills (modal)
-  const [modalVisible1, setModalVisible1] = useState(false);
-  const [arrSkill, setArrSkill] = useState([]);
-  const arrWhatToLearn = [
-    // skills
-    {item: 'EnglishforKids', id: 0},
-    {item: 'BusinessEnglish', id: 1},
-    {item: 'ConversationalEnglish', id: 2},
-    {item: 'STARTERS', id: 3},
-    {item: 'MOVERS', id: 4},
-    {item: 'FLYERS', id: 5},
-    {item: 'KET', id: 5},
-    {item: 'PET', id: 6},
-    {item: 'IELTS', id: 7},
-    {item: 'TOEFL', id: 8},
-    {item: 'TOEIC', id: 9},
-  ];
-  let arrWhatToLearn1 = arrWhatToLearn.map(i => i.item);
-
   const onImageLibraryPress = useCallback(() => {
-    const options = {
-      selectionLimit: 1,
-      mediaType: 'photo',
-      includeBase64: false,
-    };
-    ImagePicker.launchImageLibrary(options, setPickerResponse);
-  }, []);
-
-  const onCameraPress = React.useCallback(() => {
     const options = {
       saveToPhotos: true,
       mediaType: 'photo',
       includeBase64: false,
     };
-    ImagePicker.launchCamera(options, setPickerResponse);
+    ImagePicker.launchImageLibrary(options, response => {
+      // const datas = new FormData();
+      // datas.append('avatar',
+      // {
+      //   uri: response.assets[0].uri,
+      //   type: response.assets[0].type,
+      //   name: response.assets[0].fileName,
+      // });
+      // datas.append('avatar', JSON.stringify({size:response.assets[0].fileSize}));
+      // axios.post(`${BASE_URL}user/uploadAvatar`,datas, {
+      //   headers: {
+      //     Authorization: 'Bearer ' + current.tokens.access.token,
+      //     'Content-Type': 'multipart/form-data'
+      //   }
+      // }).then(res => {
+      //   dispatch(initNewAvatar({
+      //      newAvatar: res.data.avatar
+      //   }))
+      // })
+      // .catch(err => console.log(err))
+       
+      // setState
+      if (
+        response.hasOwnProperty('assets')
+      ) {
+        setFile({
+          uri: response.assets[0].uri,
+          name: response.assets[0].fileName,
+          type: response.assets[0].type,
+          size: response.assets[0].fileSize,
+          fileName: response.assets[0].fileName,
+        });
+      }
+    });
   }, []);
-  const uri = pickerResponse?.assets && pickerResponse.assets[0].uri;
+
+  const onCameraPress = React.useCallback(() => {
+    (async () => {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          {
+            title: 'App Camera Permission',
+            message: 'App needs access to your camera ',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          //console.log("Camera permission given");
+          const options = {
+            selectionLimit: 1,
+            mediaType: 'photo',
+            includeBase64: false,
+          };
+
+          ImagePicker.launchCamera(options, response => {
+            // upload avatar
+            // const datas = new FormData();
+            // datas.append('avatar',
+            // {
+            //   uri: response.assets[0].uri,
+            //   type: response.assets[0].type,
+            //   name: response.assets[0].fileName,
+            // });
+            // datas.append('avatar', JSON.stringify({size:response.assets[0].fileSize}));
+            // axios.post(`${BASE_URL}user/uploadAvatar`,datas, {
+            //   headers: {
+            //     Authorization: 'Bearer ' + current.tokens.access.token,
+            //     'Content-Type': 'multipart/form-data'
+            //   }
+            // }).then(res => {
+            //   dispatch(initNewAvatar({
+            //      newAvatar: res.data.avatar
+            //   }))
+            // })
+            // .catch(err => console.log(err))
+
+            // setState
+            if (
+              response.hasOwnProperty('assets')
+            ) {
+              setFile({
+                uri: response.assets[0].uri,
+                name: response.assets[0].fileName,
+                type: response.assets[0].type,
+                size: response.assets[0].fileSize,
+                fileName: response.assets[0].fileName,
+              });
+            }
+          });
+        } else {
+          console.log('Camera permission denied');
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    })();
+  }, []);
+  //const uri = pickerResponse?.assets && pickerResponse.assets[0].uri;
 
   const onChangeBirthday = e => {
     setShowDatePicker(false);
-    if(e.nativeEvent.timestamp === undefined)
-    {
+    if (e.nativeEvent.timestamp === undefined) {
       return;
     }
     const str = JSON.stringify(e.nativeEvent.timestamp);
@@ -106,83 +264,144 @@ const BecomeTutor = (props) => {
     setBirthday(_birthday);
   };
 
-  const onSubmit = data =>
-    {
-      alert(
-      JSON.stringify({
-        ...data,
-        birthday: birthday,
-        country: country.name,
-        language: pickerValue,
-        whatToLearn: whatToLearn,
-      }),
-    );
-    props.navigation.navigate('VideoIntroduction')
+  const onSubmit = data => {
+    props.navigation.navigate('VideoIntroduction');
+    let specialties;
+    for(let i = 0; i < whatToLearn.length; i++){
+       specialties = specialties + convertSubject(whatToLearn[i].id) + ",";
     }
+    for(let j = 0; j < whatToLearn1.length; j++){
+      specialties = specialties + convertTestPre(whatToLearn1[j].id) + ",";
+   }
+   if(specialties.length > 0){
+     specialties = specialties.substring(0, specialties.length - 1);
+   }
+
+    // console.log(
+    //   {
+    //         ...data,
+    //       accessToken: current.tokens.access.token,
+    //       whatToLearn: whatToLearn,
+    //       whatToLearn1: whatToLearn1,
+    //       name: name,
+    //       country: country.cca2,
+    //       birthday: birthday,
+    //       interests: interests,
+    //       education: education,
+    //       experience: experience,
+    //       profession: profession,
+    //       //languages: en,vi,
+    //       bio: bio,
+    //       targetStudent: targetStudent,
+    //       specialties: specialties,
+    //       // avatar: (binary),
+    //       // video: (binary),
+    //       price: 50000,
+    //       }
+    // )
+    // dispatch(
+    //   changeInfoAsync({
+    //     ...data,
+    //   accessToken: current.tokens.access.token,
+    //   birthday: birthday,
+    //   name: name,
+    //   phone: phone,
+    //   country: country.cca2,
+    //   level: levelValue,
+    //   language: pickerValue,
+    //   whatToLearn: whatToLearn,
+    //   whatToLearn1: whatToLearn1,
+    //   }),
+    // );
+  };
 
   function onMultiChange() {
     return item => setWhatToLearn(xorBy(whatToLearn, [item], 'id'));
   }
+  function onMultiChange1() {
+    return item => setWhatToLearn1(xorBy(whatToLearn1, [item], 'id'));
+  }
 
   return (
-    <ScrollView nestedScrollEnabled = {true}>
-      <View style={styles.container}>
+    <ScrollView style={styles.container} nestedScrollEnabled={true}>
+      <View>
+        <Text
+          style={{
+            marginLeft: 15,
+            fontSize: 20,
+            color: MAIN_COLOR,
+            fontWeight: 'bold',
+            marginBottom: 12,
+          }}>
+          Basic Info
+        </Text>
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'center',
           }}>
-          <ImagePickerAvatar uri={uri} onPress={() => setVisible(true)} />
+          <ImagePickerAvatar uri={file.uri} onPress={() => setVisible(true)} />
+          <View
+            style={{
+              flexDirection: 'column',
+              justifyContent: 'center',
+              marginLeft: 5,
+            }}></View>
         </View>
-        <Text
+
+        <View
           style={{
-            fontWeight: 'bold',
-            fontSize: 20,
-            margin: 10,
-            color: MAIN_COLOR,
-            marginTop: 35,
+            justifyContent: 'center',
+            flexDirection: 'row',
+            marginTop: 20,
           }}>
-          Basic Info
-        </Text>
-        <Text style={{marginLeft: 25}}>Tutoring Name</Text>
-        <Controller
-          control={control}
-          // rules={{required: true}}
-          name="name"
-          render={({field: {onChange, onBlur, value}}) => (
-            <View style={[styles.container1, {width: '80%'}]}>
-              <View style={{marginLeft: 0}}>
-                <TextInput
-                  style={{
-                    borderWidth: 1,
-                    width: '150%',
-                    height: 40,
-                    fontSize: 15,
-                  }}
-                  value={current.user.name}
-                  //keyboardType={'numeric'}
-                  //placeholder={'Phone number'}
-                  onBlur={onBlur}
-                  onChangeText={value => onChange(value)}
-                />
-              </View>
-            </View>
-          )}
-        />
-        <Text style={{marginLeft: 25, marginTop: 35}}>I'm from</Text>
+          <View style={{paddingLeft: 0, justifyContent: 'center'}}>
+            <Text
+              style={{fontSize: 17, color: isDarkTheme ? 'white' : MAIN_COLOR}}>
+              {langState[langState.currentLang].Name}:
+            </Text>
+          </View>
+          <View style={{marginLeft: 18, backgroundColor: 'white'}}>
+            <TextInput
+              style={{borderWidth: 1, width: 220, height: 40, fontSize: 15}}
+              value={name}
+              defaultValue={current.user.name}
+              //keyboardType={'numeric'}
+              placeholder={'Name'}
+              // onBlur={onBlur}
+              onChangeText={value => setName(value)}
+            />
+          </View>
+        </View>
         <Controller
           control={control}
           //rules={{required: true}}
-          name="location"
+          name="country"
           render={({field: {onChange, onBlur, value}}) => (
             <View style={styles.container1}>
-              <View style={{marginLeft: 0}}>
+              <View>
+                <Ionicons
+                  name={'location'}
+                  size={25}
+                  color={MAIN_COLOR}
+                  style={{paddingLeft: 12}}
+                />
+              </View>
+              <View style={{marginLeft: 35}}>
+                {/* <CountryPicker translation="eng" withFlag={true} countryCode={true} onSelect={(country) => setCountry(country)}/>
+              <CountryPicker
+                withCallingCode
+                withModal={true}
+                withFlagButton={true}
+                withFilter={true}
+              /> */}
                 <CountryPicker
                   withFlag
                   withFilter
                   withCountryNameButton
                   countryCode={country.cca2}
                   onSelect={country =>
+                    //console.log("\nĐây nữa nè: " + JSON.stringify(country))
                     setCountry({cca2: country.cca2, name: country.name})
                   }
                 />
@@ -190,9 +409,17 @@ const BecomeTutor = (props) => {
             </View>
           )}
         />
-        <Text style={{marginLeft: 25, marginTop: 35}}>Date of Birth</Text>
-        <View style={[styles.container1, {marginBottom: 25}]}>
-          <View style={{marginLeft: 0}}>
+
+        <View style={[styles.container1, {marginBottom: 20}]}>
+          <View>
+            <FontAwesome
+              name={'birthday-cake'}
+              size={25}
+              color={MAIN_COLOR}
+              style={{paddingLeft: 12}}
+            />
+          </View>
+          <View style={{marginLeft: 35}}>
             <View
               style={{
                 flexDirection: 'row',
@@ -211,11 +438,11 @@ const BecomeTutor = (props) => {
                 value={birthday}
                 onChangeText={str => setBirthday(str)}
               />
-              <TouchableOpacity
+              <Pressable
                 style={{marginRight: 5}}
                 onPress={() => setShowDatePicker(true)}>
                 <FontAwesome name="calendar" color="black" size={20} />
-              </TouchableOpacity>
+              </Pressable>
             </View>
             {showDatePicker && (
               <RNDateTimePicker
@@ -227,380 +454,269 @@ const BecomeTutor = (props) => {
                 is24Hour={true}
               />
             )}
+            {/* <DateTimePicker
+                styles={{width: '37%', backgroundColor: "white", color:'#009387'}}
+                testID="dateTimePicker"
+                value={date.date}
+                mode="date"
+                is24Hour={true}
+                display="default"
+                onChange={date => setDate({date: date})}
+              /> */}
           </View>
         </View>
-        <View
-          style={{
-            borderBottomColor: 'black',
-            borderBottomWidth: 1,
-          }}
-        />
         <Text
           style={{
-            fontWeight: 'bold',
+            marginLeft: 15,
             fontSize: 20,
-            margin: 10,
             color: MAIN_COLOR,
-            marginTop: 25,
+            fontWeight: 'bold',
+            marginBottom: 12,
           }}>
           CV
         </Text>
-        <Text style={{marginLeft: 25}}>Interests</Text>
-        <Controller
-          control={control}
-          // rules={{required: true}}
-          name="name"
-          render={({field: {onChange, onBlur, value}}) => (
-            <View style={[styles.container1, {width: '100%'}]}>
-              <View style={{marginLeft: 0}}>
-                <TextInput
-                  style={{
-                    borderWidth: 1,
-                    width: 270,
-                    fontSize: 15,
-                    backgroundColor: 'white',
-                  }}
-                  //value={'Nguyễn Minh Thông'}
-                  //keyboardType={'numeric'}
-                  placeholder={'Interests, hobbies,...'}
-                  numberOfLines={3}
-                  multiline
-                  onBlur={onBlur}
-                  onChangeText={value => onChange(value)}
-                />
-              </View>
-            </View>
-          )}
-        />
-        <Text style={{marginLeft: 25, marginTop: 35}}>Education</Text>
-        <Controller
-          control={control}
-          // rules={{required: true}}
-          name="name"
-          render={({field: {onChange, onBlur, value}}) => (
-            <View style={[styles.container1, {width: '100%'}]}>
-              <View style={{marginLeft: 0}}>
-                <TextInput
-                  style={{
-                    borderWidth: 1,
-                    width: 270,
-                    fontSize: 15,
-                    backgroundColor: 'white',
-                  }}
-                  //value={'Nguyễn Minh Thông'}
-                  //keyboardType={'numeric'}
-                  placeholder={'School...'}
-                  numberOfLines={3}
-                  multiline
-                  onBlur={onBlur}
-                  onChangeText={value => onChange(value)}
-                />
-              </View>
-            </View>
-          )}
-        />
-        <Text style={{marginLeft: 25, marginTop: 35}}>Experience</Text>
-        <Controller
-          control={control}
-          // rules={{required: true}}
-          name="name"
-          render={({field: {onChange, onBlur, value}}) => (
-            <View style={[styles.container1, {width: '100%'}]}>
-              <View style={{marginLeft: 0}}>
-                <TextInput
-                  style={{
-                    borderWidth: 1,
-                    width: 270,
-                    fontSize: 15,
-                    backgroundColor: 'white',
-                  }}
-                  //value={'Nguyễn Minh Thông'}
-                  //keyboardType={'numeric'}
-                  placeholder={''}
-                  numberOfLines={3}
-                  multiline
-                  onBlur={onBlur}
-                  onChangeText={value => onChange(value)}
-                />
-              </View>
-            </View>
-          )}
-        />
-        <Text style={{marginLeft: 25, marginTop: 35}}>
-          Current or Previous Profession
+        <Text style={{marginHorizontal: 12, fontSize: 15, marginBottom: 10}}>
+          In order to protect your privacy, please do not share your personal
+          information (email, phone number, social email, skype, etc) in your
+          profile.
         </Text>
-        <Controller
-          control={control}
-          // rules={{required: true}}
-          name="name"
-          render={({field: {onChange, onBlur, value}}) => (
-            <View style={[styles.container1, {width: '100%'}]}>
-              <View style={{marginLeft: 0}}>
-                <TextInput
-                  style={{
-                    borderWidth: 1,
-                    width: 270,
-                    fontSize: 15,
-                    backgroundColor: 'white',
-                  }}
-                  //value={'Nguyễn Minh Thông'}
-                  //keyboardType={'numeric'}
-                  placeholder={''}
-                  numberOfLines={3}
-                  multiline
-                  onBlur={onBlur}
-                  onChangeText={value => onChange(value)}
-                />
-              </View>
-            </View>
-          )}
-        />
-        <View
+        <Text
           style={{
-            borderBottomColor: 'black',
-            borderBottomWidth: 1,
-            marginTop: 15,
+            marginLeft: 15,
+            fontSize: 16,
+            marginBottom: 5,
+            fontWeight: 'bold',
+          }}>
+          Interests
+        </Text>
+        <TextInput
+          style={{
+            borderWidth: 1,
+            fontSize: 15,
+            marginHorizontal: 12,
+            backgroundColor: 'white',
+            marginBottom: 5,
           }}
+          numberOfLines={3}
+          multiline
+          onChangeText={value => setInterests(value)}
         />
         <Text
           style={{
+            marginLeft: 15,
+            fontSize: 16,
+            marginBottom: 5,
             fontWeight: 'bold',
+          }}>
+          Education
+        </Text>
+        <TextInput
+          style={{
+            borderWidth: 1,
+            fontSize: 15,
+            marginHorizontal: 12,
+            backgroundColor: 'white',
+            marginBottom: 5,
+          }}
+          numberOfLines={3}
+          multiline
+          onChangeText={value => setEducation(value)}
+        />
+        <Text
+          style={{
+            marginLeft: 15,
+            fontSize: 16,
+            marginBottom: 5,
+            fontWeight: 'bold',
+          }}>
+          Experience
+        </Text>
+        <TextInput
+          style={{
+            borderWidth: 1,
+            fontSize: 15,
+            marginHorizontal: 12,
+            backgroundColor: 'white',
+          }}
+          numberOfLines={3}
+          multiline
+          onChangeText={value => setExperience(value)}
+        />
+        <Text
+          style={{
+            marginLeft: 15,
+            fontSize: 16,
+            marginBottom: 5,
+            fontWeight: 'bold',
+          }}>
+          Current or Previous Profession
+        </Text>
+        <TextInput
+          style={{
+            borderWidth: 1,
+            fontSize: 15,
+            marginHorizontal: 12,
+            backgroundColor: 'white',
+          }}
+          numberOfLines={3}
+          multiline
+          onChangeText={value => setProfession(value)}
+        />
+        <Text
+          style={{
+            marginLeft: 15,
             fontSize: 20,
-            margin: 10,
             color: MAIN_COLOR,
-            marginTop: 45,
+            fontWeight: 'bold',
+            marginBottom: 12,
+            marginTop: 15,
           }}>
           Languages I speak
         </Text>
-        <Text style={{marginLeft: 25, marginBottom: 15}}>Languages: </Text>
-        <Text
-          style={{
-            color: 'red',
-            fontSize: 15,
-            marginLeft: 25,
-            marginBottom: 15,
-          }}>
-          {[...new Set(arrLan)].join(', ')}
-        </Text>
         <View
           style={{
-            alignItems: 'center',
-            borderWidth: 0,
-            borderRadius: 30,
-            backgroundColor: '#35bb9b', 
-            width: '40%',
-            left: '30%',
+            paddingLeft: '10%',
+            marginBottom: 25,
+            backgroundColor: isDarkTheme ? 'white' : SECOND_COLOR,
           }}>
-          <TouchableOpacity onPress={() => setModalVisible(true)}>
-            <Text style={{color: 'white', paddingVertical: 15, fontSize: 15}}>
-              Choose Language
-            </Text>
-          </TouchableOpacity>
+          {/* <SelectBox
+            containerStyle={{marginTop: -15}}
+            label={false}
+            hideInputFilter
+            inputPlaceholder={'language'}
+            options={arrWhatToLearn1}
+            selectedValues={whatToLearn1}
+            onMultiSelect={onMultiChange1()}
+            onTapClose={onMultiChange1()}
+            isMulti
+            width={'90%'}
+            listOptionProps={{nestedScrollEnabled: true}}
+          /> */}
         </View>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            //alert("Modal has been closed.");
-            setModalVisible(!modalVisible);
-          }}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text /*style={styles.modalText}*/>
-                Select Languages (Scroll)
-              </Text>
-              <Text style={{marginTop: 0}}>*You can select one or more</Text>
-              <FlatList
-                style={{marginBottom: 10, marginTop: 10, borderWidth: 2}}
-                showsVerticalScrollIndicator={true}
-                initialNumToRender={10}
-                data={arrLanguage}
-                renderItem={i => (
-                  <View>
-                    <TouchableOpacity
-                      onPress={
-                        () =>
-                          setArrLan([
-                            ...arrLan,
-                            i.item.English,
-                          ]) /*alert(i.index)*/
-                      }>
-                      <Text style={{fontSize: 18, marginBottom: 6}}>
-                        {`       ${i.item.English}`}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              />
-              <View
-                style={{
-                  alignItems: 'center',
-                  borderWidth: 1,
-                  borderRadius: 25,
-                  backgroundColor: '#35bb9b',
-                  width: '40%',
-                  left: '0%',
-                  marginBottom: 0,
-                }}>
-                <TouchableOpacity
-                  onPress={() => setModalVisible(!modalVisible)}>
-                  <Text
-                    style={{color: 'white', paddingVertical: 10, fontSize: 20}}>
-                    Close
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </Modal>
-        <View
-          style={{
-            borderBottomColor: 'black',
-            borderBottomWidth: 1,
-            marginTop: 15,
-          }}
-        />
         <Text
           style={{
-            fontWeight: 'bold',
+            marginLeft: 15,
             fontSize: 20,
-            margin: 10,
             color: MAIN_COLOR,
-            marginTop: 45,
+            fontWeight: 'bold',
+            marginBottom: 12,
           }}>
           Who I teach
         </Text>
-        <Text style={{marginLeft: 25}}>Introduction</Text>
-        <Controller
-          control={control}
-          // rules={{required: true}}
-          name="introduction"
-          render={({field: {onChange, onBlur, value}}) => (
-            <View style={[styles.container1, {width: '100%'}]}>
-              <View style={{marginLeft: 0}}>
-                <TextInput
-                  style={{
-                    borderWidth: 1,
-                    width: 270,
-                    fontSize: 15,
-                    backgroundColor: 'white',
-                  }}
-                  //value={'Nguyễn Minh Thông'}
-                  //keyboardType={'numeric'}
-                  placeholder={''}
-                  numberOfLines={2}
-                  multiline
-                  onBlur={onBlur}
-                  onChangeText={value => onChange(value)}
-                />
-              </View>
-            </View>
-          )}
-        />
-
-        <Text style={{marginLeft: 25, marginTop: 35}}>
-          I am best at teaching students who are
+        <Text style={{marginHorizontal: 12, fontSize: 15, marginBottom: 10}}>
+          This is the first thing students will see when looking for tutors.
         </Text>
-        <View style={styles.container1}>
-          <View style={[styles.containerPicker, {marginLeft: 0}]}>
-            <Picker
-              style={styles.picker}
-              selectedValue={levelValue}
-              onValueChange={levelValue => setLevelValue(levelValue)}>
-              <Picker.Item label="Beginner" value="Beginner" />
-              <Picker.Item label="Intermediate" value="Intermediate" />
-              <Picker.Item label="Advanced" value="Advanced" />
-            </Picker>
-          </View>
-        </View>
-
-        <Text style={{marginLeft: 25, marginTop: 35, marginBottom: 15}}>
-          My specialties are:
-        </Text>
-        {/* <Text style={{marginLeft: 25}}>Skills: </Text> */}
         <Text
           style={{
-            color: 'red',
-            fontSize: 15,
-            marginLeft: 25,
-            marginBottom: 15,
+            marginLeft: 15,
+            fontSize: 16,
+            marginBottom: 5,
+            fontWeight: 'bold',
           }}>
-          {[...new Set(arrSkill)].join(', ')}
+          Introduction
+        </Text>
+        <TextInput
+          style={{
+            borderWidth: 1,
+            fontSize: 15,
+            marginHorizontal: 12,
+            backgroundColor: 'white',
+          }}
+          numberOfLines={3}
+          multiline
+          onChangeText={value => setBio(value)}
+        />
+        <Text
+          style={{
+            marginLeft: 15,
+            fontSize: 16,
+            marginBottom: 5,
+            fontWeight: 'bold',
+            marginTop: 5,
+          }}>
+          I am best at teaching students who are
+        </Text>
+        <Picker
+          style={{
+            width: 170,
+            height: 35,
+            borderColor: '#ddd',
+            borderWidth: 1,
+            color: 'black',
+            marginLeft: 90,
+            backgroundColor: 'white'
+          }}
+          selectedValue={targetStudent}
+          onValueChange={itemValue => setTargetStudent(itemValue)}>
+          <Picker.Item label="Beginner" value="Beginner" />
+          <Picker.Item label="Inermediate" value="Inermediate" />
+          <Picker.Item label="Advanced" value="Advanced" />
+        </Picker>
+        <Text
+          style={{
+            marginLeft: 15,
+            fontSize: 16,
+            marginBottom: 5,
+            fontWeight: 'bold',
+          }}>
+          My specialties are:{' '}
         </Text>
         <View
           style={{
-            alignItems: 'center',
-            //borderWidth: 1,
-            borderRadius: 30,
-            backgroundColor: '#35bb9b',
-            width: '40%',
-            left: '30%',
-            marginBottom: 50,
+            paddingLeft: '10%',
+            marginBottom: 15,
+            backgroundColor: isDarkTheme ? 'white' : SECOND_COLOR,
           }}>
-          <TouchableOpacity onPress={() => setModalVisible1(true)}>
-            <Text style={{color: 'white', paddingVertical: 15}}>
-              Choose Skill
+          <View>
+            <Text
+              style={{fontSize: 17, color: isDarkTheme ? 'white' : MAIN_COLOR}}>
+              {langState[langState.currentLang].Subject}:
             </Text>
-          </TouchableOpacity>
-        </View>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible1}
-          onRequestClose={() => {
-            //alert("Modal has been closed.");
-            setModalVisible1(!modalVisible1);
-          }}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text /*style={styles.modalText}*/>Select Skills (Scroll)</Text>
-              <Text style={{marginTop: 5}}>*You can select one or more</Text>
-              <FlatList
-                style={{marginBottom: 10, marginTop: 0, borderWidth: 2}}
-                showsVerticalScrollIndicator={true}
-                initialNumToRender={5}
-                data={arrWhatToLearn1}
-                renderItem={i => (
-                  <View>
-                    <TouchableOpacity
-                      onPress={
-                        () =>
-                          setArrSkill([...arrSkill, i.item]) /*alert(i.index)*/
-                      }>
-                      <Text style={{fontSize: 18, marginBottom: 8}}>
-                        {`       ${i.item}`}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              />
-              <View
-                style={{
-                  alignItems: 'center',
-                  backgroundColor: '#35bb9b',
-                  borderWidth: 1,
-                  borderRadius: 15,
-                  width: '40%',
-                  left: '0%',
-                  marginBottom: 0,
-                }}>
-                <TouchableOpacity
-                  onPress={() => setModalVisible1(!modalVisible1)}>
-                  <Text
-                    style={{color: 'white', paddingVertical: 8, fontSize: 20}}>
-                    Close
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
           </View>
-        </Modal>
-
+          <SelectBox
+            containerStyle={{marginTop: -15}}
+            hideInputFilter
+            label={false}
+            inputPlaceholder={langState[langState.currentLang].Subject}
+            options={arrWhatToLearn}
+            selectedValues={whatToLearn}
+            onMultiSelect={onMultiChange()}
+            onTapClose={onMultiChange()}
+            isMulti
+            width={'90%'}
+            listOptionProps={{nestedScrollEnabled: true}}
+          />
+        </View>
+        <View style={{paddingLeft: '10%'}}>
+          <Text
+            style={{fontSize: 17, color: isDarkTheme ? 'white' : MAIN_COLOR}}>
+            {langState[langState.currentLang].TestPreparation}:
+          </Text>
+        </View>
+        <View
+          style={{
+            paddingLeft: '10%',
+            marginBottom: 25,
+            backgroundColor: isDarkTheme ? 'white' : SECOND_COLOR,
+          }}>
+          <SelectBox
+            containerStyle={{marginTop: -15}}
+            label={false}
+            hideInputFilter
+            inputPlaceholder={langState[langState.currentLang].TestPreparation}
+            options={arrWhatToLearn1}
+            selectedValues={whatToLearn1}
+            onMultiSelect={onMultiChange1()}
+            onTapClose={onMultiChange1()}
+            isMulti
+            width={'90%'}
+            listOptionProps={{nestedScrollEnabled: true}}
+          />
+        </View>
         {/* {errors.email && <Text style={styles.error}>{'please type gmail'}</Text>} */}
-        <View style={{marginBottom: 25}}>
+        <View style={{marginBottom: 70, marginTop: 5}}>
           <Button
-            title="Next"
+            title={langState.currentLang == 'en' ? 'Next' : 'Tiếp theo'}
             handleSubmit={handleSubmit}
             onSubmit={onSubmit}
           />
@@ -623,13 +739,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   container1: {
-    // left: '3%',
     justifyContent: 'center',
-    width: '100%',
     flexDirection: 'row',
     marginTop: 20,
   },
-  container2: {},
   text: {
     color: MAIN_COLOR,
     fontWeight: 'bold',
@@ -660,27 +773,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     color: 'black',
   },
-  modalView: {
-    margin: 10, // 20
-    backgroundColor: 'white',
-    borderRadius: 20,
-    height: '100%',
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
 });
 
-export default BecomeTutor;
+export default Profile;
