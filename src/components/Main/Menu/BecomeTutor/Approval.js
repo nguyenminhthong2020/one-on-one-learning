@@ -8,7 +8,6 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  Pressable
 } from 'react-native';
 
 
@@ -42,7 +41,6 @@ const Approval = (props) => {
           </Text>
         </TouchableOpacity>
       </View>
-      {/* {errors.email && <Text style={styles.error}>{'please type gmail'}</Text>} */}
     </View>
   );
 };

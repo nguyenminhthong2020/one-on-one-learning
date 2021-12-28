@@ -279,10 +279,8 @@ const Profile = props => {
 
     // console.log(
     //   {
-    //         ...data,
+    //         ...data,  
     //       accessToken: current.tokens.access.token,
-    //       whatToLearn: whatToLearn,
-    //       whatToLearn1: whatToLearn1,
     //       name: name,
     //       country: country.cca2,
     //       birthday: birthday,
@@ -757,7 +755,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingVertical: 3,
     paddingHorizontal: 3,
-    // width: 50,
     borderWidth: 2,
   },
   containerPicker: {

@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import {MAIN_COLOR} from '../../../../globals/constant';
 import * as ImagePicker from 'react-native-image-picker';
-// import { ImagePickerAvatar } from '../../../_common/ImagePicker/image-picker-avatar';
 import {ImagePickerModal} from '../../../_common/ImagePicker/image-picker-modal';
 import SectionVideo from '../../Tutor/TutorDetail/SectionVideo';
 
