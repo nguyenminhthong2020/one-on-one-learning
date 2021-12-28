@@ -14,11 +14,11 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import {getScheduleBooking} from '../../../../../api/booking/bookingApi';
 
-const BookingDetailAlert = (student, name, tutor, date, time, price, balance) =>
+const BookingDetailAlert = (student, name, tutor, date, time, price, balance, timeId) =>
   price > balance
     ? Alert.alert(
         `BOOKING DETAILS: FAIL`,
-        `1. Student: ${name}\n2. Tutor: ${tutor}\n3. ${date} (${time})\n4. Balance: You have ${balance} lessons left\n5. Price: ${price}`,
+        `1. Student: ${name}\n2. Tutor: ${tutor}\n3. ${date} (${time})\n4. Balance: You have ${balance} lessons left\n5. Price: ${price}\n6.scheduleDetailIds: ${timeId}`,
         [
           {
             text: 'Cancel', //onPress: () => {alert("Cancel");console.log(123);},
@@ -29,7 +29,7 @@ const BookingDetailAlert = (student, name, tutor, date, time, price, balance) =>
       )
     : Alert.alert(
         `BOOKING DETAILS: `,
-        `1. Student: ${name}\n2. Tutor: ${tutor}\n3.. ${date} (${time})\n4. Balance: You have ${balance} lessons left\n5. Price: ${price}`,
+        `1. Student: ${name}\n2. Tutor: ${tutor}\n3.. ${date} (${time})\n4. Balance: You have ${balance} lessons left\n5. Price: ${price}\n6.scheduleDetailIds: ${timeId}`,
         [
           {
             text: 'Book',
@@ -66,40 +66,34 @@ const BookingSuccess = () =>
 
 const Booking = props => {
   const current = useSelector(state => state.auth.current);
-
   const [arrayDateTime, setArrayDateTime] = useState([]);
-
-  // const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
-  // const langState = useSelector(state => state.lang);
+  // const [scheduleDetailId, setScheduleDetailId] = useState('');
 
   useEffect(() => {
     let cancel = false;
     getScheduleBooking({tutorId: props.route.params.tutorId, accessToken: current.tokens.access.token}).then(data => {
       const now = new Date().getTime();
       const schedule = data.filter(function (item) {
-        const start = item.scheduleDetails[0].startPeriodTimestamp;
-        if (now <= start) {
+        if (now <= item.scheduleDetails[0].startPeriodTimestamp && item.scheduleDetails[0].startPeriodTimestamp <= now + 6*24 * 60 * 60 * 1000) {
           return item;
         }
-      });
+      })
+      let t;
+      for (let i = 0; i < schedule.length - 1; i++)
+        for (let j = i + 1; j < schedule.length; j++)
+	        if(schedule[i].scheduleDetails[0].startPeriodTimestamp > schedule[j].scheduleDetails[0].startPeriodTimestamp)  
+		        {
+              t = schedule[i];
+              schedule[i] = schedule[j];
+              schedule[j] = t;
+            }
 
-      //   let tg;
-      // for(let i = 0; i < schedule.length - 1; i++){
-      //     for(let j = i + 1; j < schedule.length; j++){
-      //         if((schedule[i].scheduleDetails[0].startPeriodTimestamp/100000) > (schedule[j].scheduleDetails[0].endPeriodTimestamp/100000)){
-      //             // Hoan vi 2 so a[i] va a[j]
-      //             tg = schedule[i];
-      //             schedule[i] = schedule[j];
-      //             schedule[j] = tg;
-      //         }
-      //     }
-      // }
       // schedule.forEach(item => {
-      //   console.log((new Date(item.scheduleDetails[0].startPeriodTimestamp)).toLocaleDateString().slice(0, 5))
+      //   console.log(new Date(item.scheduleDetails[0].startPeriodTimestamp).toISOString().slice(0, 10)+", "+new Date(item.scheduleDetails[0].startPeriodTimestamp).toLocaleTimeString())
       // })
 
       let arrDate = [];
-      for (let i = 1; i <= 7; i++) {
+      for (let i = 0; i <= 6; i++) {
         let day;
           day = new Date(now + i * 24 * 60 * 60 * 1000)
           .toISOString()
@@ -111,14 +105,11 @@ const Booking = props => {
               .toISOString()
               .slice(0, 10) == day
           ) {
-            // console.log(new Date(schedule[j].scheduleDetails[0].startPeriodTimestamp)
-            // .toISOString()
-            // .slice(0, 10))
             let check = false;
             if (schedule[j].scheduleDetails[0].bookingInfo.length > 0) {
               if (
                 schedule[j].scheduleDetails[0].bookingInfo[0].userId ==
-                '37264873-797b-473d-bf4c-fb017fec076f'
+                current.user.id
               ) {
                 check = true;
               }
@@ -126,8 +117,7 @@ const Booking = props => {
             arrTime.push({
               isBooked: schedule[j].scheduleDetails[0].isBooked,
               isBookedByMe: check,
-              // startPeriodTimestamp: schedule[j].scheduleDetails[0].startPeriodTimestamp,
-              // endPeriodTimestamp: schedule[j].scheduleDetails[0].endPeriodTimestamp,
+              id: schedule[j].scheduleDetails[0].id,
               startEnd:
                 new Date(schedule[j].scheduleDetails[0].startPeriodTimestamp)
                   .toLocaleTimeString()
@@ -155,79 +145,7 @@ const Booking = props => {
   }, []);
 
 
-  // const arrayDateTime = [
-  //   {
-  //     id: 0,
-  //     date: '2021-10-16',
-  //     time: [
-  //       '19:30 - 19:55',
-  //       '20:00 - 20:25',
-  //       '20:30 - 20:55',
-  //       '21:00 - 21:25',
-  //     ],
-  //   },
-  //   {
-  //     id: 1,
-  //     date: '2021-10-17',
-  //     time: [
-  //       '19:30 - 19:55',
-  //       '20:00 - 20:25',
-  //       '20:30 - 20:55',
-  //       '21:00 - 21:25',
-  //     ],
-  //   },
-  //   {
-  //     id: 2,
-  //     date: '2021-10-18',
-  //     time: [
-  //       '19:30 - 19:55',
-  //       '20:00 - 20:25',
-  //       '20:30 - 20:55',
-  //       '21:00 - 21:25',
-  //       '21:30 - 21:55',
-  //     ],
-  //   },
-  //   {
-  //     id: 3,
-  //     date: '2021-10-20',
-  //     time: [
-  //       '19:30 - 19:55',
-  //       '20:00 - 20:25',
-  //       '20:30 - 20:55',
-  //       '21:00 - 21:25',
-  //     ],
-  //   },
-  //   {
-  //     id: 4,
-  //     date: '2021-10-23',
-  //     time: [
-  //       '19:30 - 19:55',
-  //       '20:00 - 20:25',
-  //       '20:30 - 20:55',
-  //       '21:00 - 21:25',
-  //     ],
-  //   },
-  //   {
-  //     id: 5,
-  //     date: '2021-10-24',
-  //     time: [
-  //       '19:30 - 19:55',
-  //       '20:00 - 20:25',
-  //       '20:30 - 20:55',
-  //       '21:00 - 21:25',
-  //     ],
-  //   },
-  //   {
-  //     id: 6,
-  //     date: '2021-10-25',
-  //     time: [
-  //       '19:30 - 19:55',
-  //       '20:00 - 20:25',
-  //       '20:30 - 20:55',
-  //       '21:00 - 21:25',
-  //     ],
-  //   },
-  // ];
+  
   const arrayIsClick = arrayDateTime.map((v, i) => false);
   const [isClick, setIsClick] = useState(arrayIsClick);
 
@@ -248,8 +166,7 @@ const Booking = props => {
     const toggleModalTime = () => {
       setModalVisibleTime(!isModalVisibleTime);
     };
-    onPressHandler = (student, name, tutor, arrayDateTime, id, time) => {
-      //alert(`Student ${student}, Tutor ${tutor}, Date ${props.arrayDateTime[props.id].date}, Time ${time}`)
+    onPressHandler = (student, name, tutor, arrayDateTime, id, time, timeId) => {
       BookingDetailAlert(
         student,
         name,
@@ -258,6 +175,7 @@ const Booking = props => {
         time,
         props.price,
         props.balance,
+        timeId
       );
     };
     
@@ -319,6 +237,7 @@ const Booking = props => {
                           props.arrayDateTime,
                           props.id,
                           time.startEnd,
+                          time.id,
                         );
                       } else {
                       }
@@ -337,26 +256,6 @@ const Booking = props => {
                 </View>
               ))}
             </ScrollView>
-            {/* <View style={{alignItems: 'center', marginTop: 25}}>
-                <TouchableOpacity
-                  style={{
-                    width: '50%',
-                    borderRadius: 40,
-                    backgroundColor: '#e54594',
-                    paddingVertical: 10,
-                    marginBottom: 5,
-                  }}
-                  onPress={toggleModalTime}>
-                  <Text
-                    style={{
-                      color: 'white',
-                      textAlign: 'center',
-                      fontSize: 18,
-                    }}>
-                    Close
-                  </Text>
-                </TouchableOpacity>
-              </View> */}
           </View>
         </Modal>
       </View>

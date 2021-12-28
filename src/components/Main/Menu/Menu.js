@@ -40,12 +40,12 @@ const Menu = props => {
             title={'Tutor'}
             handleOnPress={() => alert('tutor')}
           /> */}
-          <ButtonIcon
+          {/* <ButtonIcon
             type={'FontAwesome5'}
             name={'calendar-check'}
             title={langState[langState.currentLang].Schedule}
             handleOnPress={() => props.navigation.navigate("Schedule")}
-          />
+          /> */}
           <ButtonIcon
             type={'FontAwesome5'}
             name={'history'}

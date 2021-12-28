@@ -120,6 +120,8 @@ const Login = (props) => {
         }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
+        autoCompleteType="email"
+        keyboardType="email-address"
         containerStyle={{width: '80%', marginLeft: '10%', marginTop: 20}}
         inputContainerStyle={{}}
         inputStyle={{marginLeft: 10, fontSize: 16}}

@@ -62,7 +62,7 @@ function MainTabs(props) {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Message"
         component={ListMessage}
         options={{
@@ -72,7 +72,7 @@ function MainTabs(props) {
             <Ionicons name="chatbubbles" color={color} size={size} />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Upcoming"
         component={Upcoming}
@@ -80,7 +80,7 @@ function MainTabs(props) {
       //   blur: () => navigation.setParams({ screen: undefined }),
       // })}
         options={{
-          title: langState[langState.currentLang].Upcoming,
+          title: langState[langState.currentLang].Schedule,
           headerShown: true,
           tabBarIcon: ({color, size}) => (
             <Ionicons name="time-outline" color={color} size={size} />
