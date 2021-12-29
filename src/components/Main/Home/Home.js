@@ -10,7 +10,10 @@ import {
   StyleSheet,
   Pressable,
   ScrollView,
+  BackHandler,
+  Alert
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Header = React.lazy(() => import('../../_common/Header/Header'));
 const HeadContent = React.lazy(() => import('./HeadContent/HeadContent'));
@@ -27,6 +30,18 @@ import { logout, initNew } from '../../../redux/slices/auth/loginSlice';
 //import {Rating} from 'react-native-ratings';
 //import { Rating } from 'react-native-elements';  // = cái ở dưới
 
+const backAction = () => {
+  Alert.alert("Hold on!", "Do you want to exit app?", [
+    {
+      text: "Cancel",
+      onPress: () => null,
+      style: "cancel"
+    },
+    { text: "YES", onPress: () => BackHandler.exitApp() }
+  ]);
+  return true;
+};
+
 const Home = props => {
   // console.log("render Home");
   const dispatch = useDispatch(); 
@@ -38,6 +53,8 @@ const Home = props => {
   const [spec, setSpec] = useState(['']);
   const [array, setArray] = useState([]);
   const [listFav, setListFav] = useState([]);
+
+  let backHandler = null;
   
   const axiosInstance1 = axios.create({
     baseURL: BASE_URL,
@@ -46,6 +63,7 @@ const Home = props => {
       Authorization: 'Bearer ' + current.tokens.access.token,
     },
   });
+  
   useEffect(() => {
     if (
       new Date(current.tokens.access.expires).getTime() <= new Date().getTime()
@@ -78,6 +96,18 @@ const Home = props => {
       );
     }
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (backHandler)
+          backHandler.remove();
+    backHandler = BackHandler.addEventListener('backPress', backAction);
+      return () => {
+        if (backHandler)
+            backHandler.remove();
+      }
+    }, [])
+  );
 
   const listFavorite = useSelector(state => state.moretutor.rows);
   useEffect(() => {
