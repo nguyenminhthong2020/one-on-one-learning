@@ -13,6 +13,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 import {useDispatch, useSelector} from 'react-redux';
 import {getScheduleBooking} from '../../../../../api/booking/bookingApi';
+import moment from 'moment';
 
 const BookingDetailAlert = (student, name, tutor, date, time, price, balance, timeId) =>
   price > balance
@@ -74,19 +75,19 @@ const Booking = props => {
     getScheduleBooking({tutorId: props.route.params.tutorId, accessToken: current.tokens.access.token}).then(data => {
       const now = new Date().getTime();
       const schedule = data.filter(function (item) {
-        if (now <= item.scheduleDetails[0].startPeriodTimestamp && item.scheduleDetails[0].startPeriodTimestamp <= now + 6*24 * 60 * 60 * 1000) {
+        if (now - 24 * 60 * 60 * 1000 <= item.scheduleDetails[0].startPeriodTimestamp && item.scheduleDetails[0].startPeriodTimestamp <= now + 7*24 * 60 * 60 * 1000) {
           return item;
         }
       })
-      let t;
-      for (let i = 0; i < schedule.length - 1; i++)
-        for (let j = i + 1; j < schedule.length; j++)
-	        if(schedule[i].scheduleDetails[0].startPeriodTimestamp > schedule[j].scheduleDetails[0].startPeriodTimestamp)  
-		        {
-              t = schedule[i];
-              schedule[i] = schedule[j];
-              schedule[j] = t;
-            }
+      // let t;
+      // for (let i = 0; i < schedule.length - 1; i++)
+      //   for (let j = i + 1; j < schedule.length; j++)
+	    //     if(schedule[i].scheduleDetails[0].startPeriodTimestamp > schedule[j].scheduleDetails[0].startPeriodTimestamp)  
+		  //       {
+      //         t = schedule[i];
+      //         schedule[i] = schedule[j];
+      //         schedule[j] = t;
+      //       }
 
       // schedule.forEach(item => {
       //   console.log(new Date(item.scheduleDetails[0].startPeriodTimestamp).toISOString().slice(0, 10)+", "+new Date(item.scheduleDetails[0].startPeriodTimestamp).toLocaleTimeString())
@@ -95,15 +96,12 @@ const Booking = props => {
       let arrDate = [];
       for (let i = 0; i <= 6; i++) {
         let day;
-          day = new Date(now + i * 24 * 60 * 60 * 1000)
-          .toISOString()
-          .slice(0, 10);
+          day = (new Date(now + i * 24 * 60 * 60 * 1000) + '').substring(0, 10);
         let arrTime = [];
         for (let j = 0; j < schedule.length; j++) {
           if (
-            new Date(schedule[j].scheduleDetails[0].startPeriodTimestamp)
-              .toISOString()
-              .slice(0, 10) == day
+            (new Date(schedule[j].scheduleDetails[0].startPeriodTimestamp)+'')
+              .substring(0, 10) == day
           ) {
             let check = false;
             if (schedule[j].scheduleDetails[0].bookingInfo.length > 0) {
@@ -130,7 +128,7 @@ const Booking = props => {
           }
         }
         arrDate.push({
-          date: day,
+          date: moment(now + i * 24 * 60 * 60 * 1000).format("YYYY-MM-DD"),
           time: arrTime,
           // startPeriodTimestamp: schedule[j].scheduleDetails[0].startPeriodTimestamp,
           // endPeriodTimestamp: schedule[j].scheduleDetails[0].endPeriodTimestamp,
@@ -314,7 +312,6 @@ const Booking = props => {
                     setIsClick={setIsClickHandler}
                     student={'Nguyễn Minh Thông'}
                     name={current.user.name}
-                    balance={current.user.walletInfo.amount / 100000}
                     price={props.route.params.priceBalance.price}
                     balance={props.route.params.priceBalance.balance}
                     tutor={props.route.params.name}

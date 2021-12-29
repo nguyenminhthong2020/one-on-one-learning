@@ -166,7 +166,7 @@ const HeadContent = props => {
           </Pressable>
         </View>
       )}
-      <View
+      {/* <View
           style={{
             paddingHorizontal: 10,
             paddingVertical: 8,
@@ -242,7 +242,7 @@ const HeadContent = props => {
               Test Enter Lesson room
             </Text>
           </Pressable>
-        </View>
+        </View> */}
     </View>
   );
 };

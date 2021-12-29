@@ -128,7 +128,7 @@ const TutorDetailNew = props => {
               });
               setPriceBalance({
                 price: res1.data.user.priceOfEachSession.price / 100000,
-                balance: res1.data.user.walletInfo.amount / 100000
+                balance: Math.floor(res1.data.user.walletInfo.amount / 100000)
               })
             }
             

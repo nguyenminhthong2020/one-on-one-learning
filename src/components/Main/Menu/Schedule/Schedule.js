@@ -62,7 +62,7 @@ const Schedule = () => {
   }, []);
 
   const handleCancel = Id => {
-    cancelBookingSchedule({scheduleDetailId: Id}).then(res => {
+    cancelBookingSchedule({scheduleDetailId: Id, accessToken: current.tokens.access.token}).then(res => {
       if (res.data.message == 'Cancel booking successful') {
         alert("Deleted successfully")
         const dateTimeLte = new Date().getTime();
@@ -122,7 +122,8 @@ const Schedule = () => {
                 <View style={{flexDirection: 'row'}}>
                   <View style={{marginHorizontal: 5}}>
                     <Text>
-                      {arrScheduleClass.scheduleDetailInfo.scheduleInfo.date}
+                      {(new Date(arrScheduleClass.scheduleDetailInfo.scheduleInfo
+                          .startTimestamp))}
                     </Text>
                   </View>
                   <View style={{marginLeft: 4}}>

@@ -18,7 +18,7 @@ import {
   getSchedule,
   cancelBookingSchedule,
 } from '../../../api/schedule/scheduleApi';
-
+import moment from 'moment';
 // import { sign, decode } from "react-native-pure-jwt";
 
 const Upcoming = props => {
@@ -268,7 +268,7 @@ const Upcoming = props => {
   }, [props.navigation]);
 
   const handleCancel = Id => {
-    cancelBookingSchedule({scheduleDetailId: Id}).then(res => {
+    cancelBookingSchedule({scheduleDetailId: Id, accessToken: current.tokens.access.token}).then(res => {
       if (res.data.message == 'Cancel booking successful') {
         alert('Deleted successfully');
         const dateTimeLte = new Date().getTime();
@@ -295,7 +295,7 @@ const Upcoming = props => {
           }
         });
       }
-    });
+    }).catch(err => console.log(err.response.data.message));
   };
 
   const handleGotoMeeting = arrScheduleClass => {
@@ -344,7 +344,7 @@ const Upcoming = props => {
                 <View style={{flexDirection: 'row'}}>
                   <View style={{marginHorizontal: 5}}>
                     <Text>
-                      {arrScheduleClass.scheduleDetailInfo.scheduleInfo.date}
+                      {moment(arrScheduleClass.scheduleDetailInfo.scheduleInfo.startTimestamp).format("YYYY-MM-DD")}
                     </Text>
                   </View>
                   <View style={{marginLeft: 4}}>
@@ -375,7 +375,7 @@ const Upcoming = props => {
               style={{
                 flexDirection: 'row',
                 marginTop: 5,
-                justifyContent: 'center',
+                // justifyContent: 'center',
               }}>
               <Pressable
                 style={{width: 75}}
@@ -387,6 +387,7 @@ const Upcoming = props => {
                     paddingVertical: 4,
                     borderWidth: 1,
                     borderRadius: 5,
+                    marginLeft: 5
                   }}>
                   <Text
                     style={{color: 'white', textAlign: 'center', fontSize: 16}}>
@@ -395,7 +396,7 @@ const Upcoming = props => {
                 </View>
               </Pressable>
               <Pressable
-                style={{width: 130, marginLeft: 8}}
+                style={{width: 130, marginLeft: 15}}
                 onPress={() => handleGotoMeeting(arrScheduleClass)}>
                 <View
                   style={{
