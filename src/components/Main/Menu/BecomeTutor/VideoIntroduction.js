@@ -12,8 +12,14 @@ import {MAIN_COLOR} from '../../../../globals/constant';
 import * as ImagePicker from 'react-native-image-picker';
 import {ImagePickerModal} from '../../../_common/ImagePicker/image-picker-modal';
 import SectionVideo from '../../Tutor/TutorDetail/SectionVideo';
+import axios from 'axios';
+import {BASE_URL} from '../../../../globals/constant';
+import {useDispatch, useSelector} from 'react-redux';
+import { initNew } from '../../../../redux/slices/auth/loginSlice';
 
 const VideoIntroduction = props => {
+  const dispatch = useDispatch();
+  const current = useSelector(state => state.auth.current);
   const [file, setFile] = useState({
     uri: ``,
     name: ``,
@@ -30,16 +36,15 @@ const VideoIntroduction = props => {
       includeBase64: false,
     };
     ImagePicker.launchImageLibrary(options, response => {
-        if(response.hasOwnProperty('assets'))
-        {
-            setFile({
-                uri: response.assets[0].uri,
-                name: response.assets[0].fileName,
-                type: response.assets[0].type,
-                size: response.assets[0].fileSize,
-                fileName: response.assets[0].fileName,
-              });
-        }
+      if (response.hasOwnProperty('assets')) {
+        setFile({
+          uri: response.assets[0].uri,
+          name: response.assets[0].fileName,
+          type: response.assets[0].type,
+          size: response.assets[0].fileSize,
+          fileName: response.assets[0].fileName,
+        });
+      }
     });
   }, []);
 
@@ -64,15 +69,14 @@ const VideoIntroduction = props => {
           };
 
           ImagePicker.launchCamera(options, response => {
-            if(response.hasOwnProperty('assets'))
-            {
-                setFile({
-                    uri: response.assets[0].uri,
-                    name: response.assets[0].fileName,
-                    type: response.assets[0].type,
-                    size: response.assets[0].fileSize,
-                    fileName: response.assets[0].fileName,
-                  });
+            if (response.hasOwnProperty('assets')) {
+              setFile({
+                uri: response.assets[0].uri,
+                name: response.assets[0].fileName,
+                type: response.assets[0].type,
+                size: response.assets[0].fileSize,
+                fileName: response.assets[0].fileName,
+              });
             }
           });
         } else {
@@ -83,6 +87,83 @@ const VideoIntroduction = props => {
       }
     })();
   }, []);
+
+  const onDone = async () => {
+    if (file.uri == '') {
+      alert('Please upload video !');
+    } else {
+      const datas = new FormData();
+      datas.append('name', props.route.params.name);
+      datas.append('country', props.route.params.country);
+      datas.append('birthday', props.route.params.birthday);
+      datas.append('interests', props.route.params.interests);
+      datas.append('education', props.route.params.education);
+      datas.append('experience', props.route.params.experience);
+      datas.append('profession', props.route.params.profession);
+      datas.append('languages', props.route.params.languages);
+      datas.append('bio', props.route.params.bio);
+      datas.append('targetStudent', props.route.params.targetStudent);
+      datas.append('specialties', props.route.params.specialties);
+      datas.append('avatar', {
+        uri: props.route.params.avatar.uri,
+        type: props.route.params.avatar.type,
+        name: props.route.params.avatar.name,
+      });
+      datas.append(
+        'avatar',
+        JSON.stringify({size: props.route.params.avatar.size}),
+      );
+      datas.append('video', {
+        uri: file.uri,
+        type: file.type,
+        name: file.name,
+      });
+      datas.append('video', JSON.stringify({size: file.size}));
+      datas.append('price', props.route.params.price);
+      // console.log(datas);
+      // const axiosInstance = axios.create({
+      //   baseURL: BASE_URL,
+      //   headers: {
+      //     Authorization: 'Bearer ' + current.tokens.access.token,
+      //     'Content-Type': 'multipart/form-data'
+      //   },
+      // });
+      axios
+          .post(`${BASE_URL}tutor/register`, datas, {
+            headers: {
+              Authorization: 'Bearer ' + current.tokens.access.token,
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+        .then(res => {
+          //console.log("post nè:" + res.data)
+          const axiosInstance1 = axios.create({
+            baseURL: BASE_URL,
+            headers: {
+              Authorization: 'Bearer ' + current.tokens.access.token,
+            },
+          });
+          axiosInstance1
+            .get(`user/info`)
+            .then(res1 => {
+              //console.log("info : "+res1.data.user)
+              const newCurrent = {
+                tokens: current.tokens,
+                user: res1.data.user
+              }
+              dispatch(
+                initNew({
+                  current: newCurrent,
+                }),
+              );
+              props.navigation.navigate('Approval');
+            })
+            .catch(err1 => console.log(err1));
+        })
+        .catch(err => alert(err.response.data.message));
+    }
+  };
+
   return (
     <ScrollView>
       <View>
@@ -147,7 +228,7 @@ const VideoIntroduction = props => {
             }}>
             <Text
               style={{textAlign: 'center', fontSize: 16, color: 'white'}}
-              onPress={() => props.navigation.navigate('Approval')}>
+              onPress={onDone}>
               Done
             </Text>
           </Pressable>

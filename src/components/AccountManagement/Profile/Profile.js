@@ -1,4 +1,5 @@
 /* eslint-disable */
+// undefined is not an object (evaluating 'iter[Symbol.iterator]')
 import React, {useState, useEffect, useCallback} from 'react';
 import {MAIN_COLOR, SECOND_COLOR, BASE_URL} from '../../../globals/constant';
 import {
@@ -47,6 +48,7 @@ const Profile = props => {
   const dispatch = useDispatch();
 
   const current = useSelector(state => state.auth.current);
+  /*{"user":{"id":"94966909-73e4-4d3b-8b4f-cfd2469f8d07","email":"songoku.minhthong4@gmail.com","name":"Minh Nguyễn","avatar":"https://lh3.googleusercontent.com/a/AATXAJzeqKSwcNY2NHGvadnWCcXHGNujggeUBSVsVWaY=s96-c","country":null,"phone":null,"language":null,"birthday":null,"isActivated":true,"requireNote":null,"level":null,"isPhoneActivated":false,"timezone":null},"tokens":{"access":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5NDk2NjkwOS03M2U0LTRkM2ItOGI0Zi1jZmQyNDY5ZjhkMDciLCJpYXQiOjE2NDA3Nzg0NTMsImV4cCI6MTY0MDg2NDg1MywidHlwZSI6ImFjY2VzcyJ9.OsPLog2MkI6nwXNjlwmrtZmy3O8Ziw7Op6LNhH9JqVg","expires":"2021-12-30T11:47:33.130Z"},"refresh":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5NDk2NjkwOS03M2U0LTRkM2ItOGI0Zi1jZmQyNDY5ZjhkMDciLCJpYXQiOjE2NDA3Nzg0NTMsImV4cCI6MTY0MzM3MDQ1MywidHlwZSI6InJlZnJlc2gifQ.6XELLf5LyHgIJ000f3oKOyYjKi4dlkABl6-rj7mEMn8","expires":"2022-01-28T11:47:33.130Z"}}}*/
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
   const langState = useSelector(state => state.lang);
 
@@ -104,21 +106,41 @@ const Profile = props => {
     {item: 'TOEFL', id: 7},
     {item: 'TOEIC', id: 8},
   ];
+  
 
-  const newwhatToLearn = [...current.user.learnTopics].map(function (item) {
-    return {
-      item: item.name,
-      id: item.id,
-    };
-  });
-  const newwhatToLearn1 = [...current.user.testPreparations].map(function (
-    item,
-  ) {
-    return {
-      item: item.name,
-      id: item.id,
-    };
-  });
+  let newwhatToLearn;
+  if(current.user.hasOwnProperty('learnTopics'))
+  {
+    newwhatToLearn = [...current.user.learnTopics].map(function (item) {
+      return {
+        item: item.name,
+        id: item.id,
+      };
+    });
+  }else{
+    newwhatToLearn = [];
+  }
+  
+  let newwhatToLearn1;
+  if(current.user.hasOwnProperty('learnTopics'))
+  {
+    newwhatToLearn1 = [...current.user.testPreparations].map(function (item) {
+      return {
+        item: item.name,
+        id: item.id,
+      };
+    });
+  }else{
+    newwhatToLearn1 = [];
+  }
+  // const newwhatToLearn1 = [...current.user.testPreparations].map(function (
+  //   item,
+  // ) {
+  //   return {
+  //     item: item.name,
+  //     id: item.id,
+  //   };
+  // });
   const _level = current.user.level != null ? current.user.level : 'BEGINNER';
   const _birthday = (
     current.user.birthday != null ? current.user.birthday : '1998-10-27'
@@ -138,7 +160,7 @@ const Profile = props => {
   const [name, setName] = useState(current.user.name);
   const _phone = current.user.phone != null ? current.user.phone : '';
   const [phone, setPhone] = useState(_phone);
-
+ 
   // image Picker:
   const [file, setFile] = useState({
     uri: current.user.avatar,
@@ -147,7 +169,7 @@ const Profile = props => {
     size: 0,
     fileName: '',
   });
-
+  
   //const [pickerResponse, setPickerResponse] = useState(null);
   const [visible, setVisible] = useState(false);
   const onImageLibraryPress = useCallback(() => {

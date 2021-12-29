@@ -101,20 +101,30 @@ const Profile = props => {
     {item: 'TOEIC', id: 8},
   ];
 
-  const newwhatToLearn = [...current.user.learnTopics].map(function (item) {
-    return {
-      item: item.name,
-      id: item.id,
-    };
-  });
-  const newwhatToLearn1 = [...current.user.testPreparations].map(function (
-    item,
-  ) {
-    return {
-      item: item.name,
-      id: item.id,
-    };
-  });
+  let newwhatToLearn;
+  if(current.user.hasOwnProperty('learnTopics'))
+  {
+    newwhatToLearn = [...current.user.learnTopics].map(function (item) {
+      return {
+        item: item.name,
+        id: item.id,
+      };
+    });
+  }else{
+    newwhatToLearn = [];
+  }
+  let newwhatToLearn1;
+  if(current.user.hasOwnProperty('learnTopics'))
+  {
+    newwhatToLearn1 = [...current.user.testPreparations].map(function (item) {
+      return {
+        item: item.name,
+        id: item.id,
+      };
+    });
+  }else{
+    newwhatToLearn1 = [];
+  }
 
   const _birthday = (
     current.user.birthday != null ? current.user.birthday : '1998-10-27'
@@ -267,7 +277,6 @@ const Profile = props => {
   };
 
   const onSubmit = data => {
-    props.navigation.navigate('VideoIntroduction');
     let specialties;
     for(let i = 0; i < whatToLearn.length; i++){
        specialties = specialties + convertSubject(whatToLearn[i].id) + ",";
@@ -293,26 +302,45 @@ const Profile = props => {
      languages = targetStudent1 + ',' + targetStudent2;
    }
    
-    console.log(
-      {
-            ...data,  
-          accessToken: current.tokens.access.token,
-          name: name,
-          country: country.cca2,
-          birthday: birthday,
-          interests: interests,
-          education: education,
-          experience: experience,
-          profession: profession,
-          languages: languages,
-          bio: bio,
-          targetStudent: targetStudent,
-          specialties: specialties,
-          // avatar: (binary),
-          // video: (binary),
-          price: 50000,
-          }
-    )
+    // console.log(
+    //   {
+    //       accessToken: current.tokens.access.token,
+    //       name: name,
+    //       country: country.cca2,
+    //       birthday: birthday,
+    //       interests: interests,
+    //       education: education,
+    //       experience: experience,
+    //       profession: profession,
+    //       languages: languages,
+    //       bio: bio,
+    //       targetStudent: targetStudent,
+    //       specialties: specialties,
+    //       // avatar: (binary),
+    //       // video: (binary),
+    //       price: 50000,
+    //       }
+    // )
+    props.navigation.navigate('VideoIntroduction', {
+      avatar: {
+        uri: file.uri,
+        type: file.type,
+        name: file.name,
+        size: file.size
+      },
+      name: name,
+      country: country.cca2,
+      birthday: birthday,
+      interests: interests,
+      education: education,
+      experience: experience,
+      profession: profession,
+      languages: languages,
+      bio: bio,
+      targetStudent: targetStudent,
+      specialties: specialties,
+      price: 50000,
+    });
     // dispatch(
     //   changeInfoAsync({
     //     ...data,
