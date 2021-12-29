@@ -44,6 +44,7 @@ const arrLevel = [
     {item: 'IELTS', id: 10},
     {item: 'TOEFL', id: 11},
     {item: 'TOEIC', id: 12},
+    {item: "For studying abroad", id: 13},
   ];
 
 function ConvertLevel(str) {
@@ -62,8 +63,10 @@ function ConvertLevel(str) {
       return 'Pre-advanced';
     case '7':
       return 'Advanced';
-    default:
+    case '8': 
       return 'Very advanced';
+    default :
+      return 'Any Level';
   }
 }
 const Item = props => (
@@ -223,7 +226,7 @@ const ListEbookNew = props => {
       />
       <View style={{marginHorizontal: 20}}>
         <SelectBox
-          containerStyle={{marginTop: -10}}
+          containerStyle={{marginTop: -12}}
           hideInputFilter
           label={false}
           inputPlaceholder="Level"
@@ -238,7 +241,7 @@ const ListEbookNew = props => {
       
       <View style={{marginHorizontal: 20}}>
         <SelectBox
-          containerStyle={{marginTop: -10}}
+          containerStyle={{marginTop: -12}}
           hideInputFilter
           label={false}
           inputPlaceholder="Category"
@@ -259,7 +262,7 @@ const ListEbookNew = props => {
             left: '30%',
             borderWidth: 1,
             marginBottom: 1,
-            marginTop: 2
+            marginTop: 5
           }}>
           <Pressable onPress={onSearch} style={{width: '100%'}}>
             <Text
