@@ -32,7 +32,7 @@ import {
   changeInfoAsync,
   logout,
   initNew,
-  initNewAvatar
+  initNewAvatar,
 } from '../../../redux/slices/auth/loginSlice';
 
 // Phần Image Picker cho Avatar
@@ -49,7 +49,7 @@ const Profile = props => {
   const current = useSelector(state => state.auth.current);
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
   const langState = useSelector(state => state.lang);
-  
+
   const axiosInstance1 = axios.create({
     baseURL: BASE_URL,
     timeout: 5000,
@@ -62,7 +62,8 @@ const Profile = props => {
       new Date(current.tokens.access.expires).getTime() <= new Date().getTime()
     ) {
       if (
-        new Date(current.tokens.refresh.expires).getTime() <= new Date().getTime()
+        new Date(current.tokens.refresh.expires).getTime() <=
+        new Date().getTime()
       ) {
         dispatch(logout());
         props.navigation.navigate('Login');
@@ -80,7 +81,7 @@ const Profile = props => {
         })();
       }
     }
-  }, [])
+  }, []);
 
   const {
     control,
@@ -118,12 +119,14 @@ const Profile = props => {
       id: item.id,
     };
   });
-  const _level = current.user.level != null ? current.user.level: "BEGINNER";
-  const _birthday = (current.user.birthday != null ? current.user.birthday: "1998-10-27").substring(0, 10);
-  const _country = current.user.country != null ? current.user.country : "VN";
+  const _level = current.user.level != null ? current.user.level : 'BEGINNER';
+  const _birthday = (
+    current.user.birthday != null ? current.user.birthday : '1998-10-27'
+  ).substring(0, 10);
+  const _country = current.user.country != null ? current.user.country : 'VN';
   const _language =
     current.user.language == null ? 'English' : current.user.language;
-
+  
   const [whatToLearn, setWhatToLearn] = useState(newwhatToLearn);
   const [whatToLearn1, setWhatToLearn1] = useState(newwhatToLearn1);
   const [levelValue, setLevelValue] = useState(_level);
@@ -133,7 +136,7 @@ const Profile = props => {
   //const [country, setCountry] = useState({name: 'Vietnam', cca2: 'VN'});
   const [country, setCountry] = useState({name: '', cca2: _country});
   const [name, setName] = useState(current.user.name);
-  const _phone  = current.user.phone != null ? current.user.phone : ""
+  const _phone = current.user.phone != null ? current.user.phone : '';
   const [phone, setPhone] = useState(_phone);
 
   // image Picker:
@@ -154,28 +157,33 @@ const Profile = props => {
       includeBase64: false,
     };
     ImagePicker.launchImageLibrary(options, response => {
-      if(response.hasOwnProperty('assets'))
-      {
+      if (response.hasOwnProperty('assets')) {
         const datas = new FormData();
-        datas.append('avatar', 
-        { 
-          uri: response.assets[0].uri, 
-          type: response.assets[0].type, 
+        datas.append('avatar', {
+          uri: response.assets[0].uri,
+          type: response.assets[0].type,
           name: response.assets[0].fileName,
         });
-        datas.append('avatar', JSON.stringify({size:response.assets[0].fileSize}));
-        axios.post(`${BASE_URL}user/uploadAvatar`,datas, {
-          headers: {
-            Authorization: 'Bearer ' + current.tokens.access.token,
-            'Content-Type': 'multipart/form-data'
-          }
-        }).then(res => {
-          dispatch(initNewAvatar({
-             newAvatar: res.data.avatar
-          }))
-        })
-        .catch(err => console.log(err))
-        
+        datas.append(
+          'avatar',
+          JSON.stringify({size: response.assets[0].fileSize}),
+        );
+        axios
+          .post(`${BASE_URL}user/uploadAvatar`, datas, {
+            headers: {
+              Authorization: 'Bearer ' + current.tokens.access.token,
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+          .then(res => {
+            dispatch(
+              initNewAvatar({
+                newAvatar: res.data.avatar,
+              }),
+            );
+          })
+          .catch(err => console.log(err));
+
         // setState
         setFile({
           uri: response.assets[0].uri,
@@ -185,55 +193,59 @@ const Profile = props => {
           fileName: response.assets[0].fileName,
         });
       }
-      
-    })
+    });
   }, []);
 
   const onCameraPress = React.useCallback(() => {
-    (
-      async () => {
-        try {
-          const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.CAMERA,
-            {
-              title: "App Camera Permission",
-              message:"App needs access to your camera ",
-              buttonNeutral: "Ask Me Later",
-              buttonNegative: "Cancel",
-              buttonPositive: "OK"
-            }
-          );
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            //console.log("Camera permission given");
-            const options = {
-              selectionLimit: 1,
-              mediaType: 'photo',
-              includeBase64: false,
-            };
-            
-            ImagePicker.launchCamera(options, response => {
-              if(response.hasOwnProperty('assets')){
-                  // upload avatar
+    (async () => {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          {
+            title: 'App Camera Permission',
+            message: 'App needs access to your camera ',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          //console.log("Camera permission given");
+          const options = {
+            selectionLimit: 1,
+            mediaType: 'photo',
+            includeBase64: false,
+          };
+
+          ImagePicker.launchCamera(options, response => {
+            if (response.hasOwnProperty('assets')) {
+              // upload avatar
               const datas = new FormData();
-              datas.append('avatar', 
-              { 
-                uri: response.assets[0].uri, 
-                type: response.assets[0].type, 
+              datas.append('avatar', {
+                uri: response.assets[0].uri,
+                type: response.assets[0].type,
                 name: response.assets[0].fileName,
               });
-              datas.append('avatar', JSON.stringify({size:response.assets[0].fileSize}));
-              axios.post(`${BASE_URL}user/uploadAvatar`,datas, {
-                headers: {
-                  Authorization: 'Bearer ' + current.tokens.access.token,
-                  'Content-Type': 'multipart/form-data'
-                }
-              }).then(res => {
-                dispatch(initNewAvatar({
-                   newAvatar: res.data.avatar
-                }))
-              })
-              .catch(err => console.log(err))
-              
+              datas.append(
+                'avatar',
+                JSON.stringify({size: response.assets[0].fileSize}),
+              );
+              axios
+                .post(`${BASE_URL}user/uploadAvatar`, datas, {
+                  headers: {
+                    Authorization: 'Bearer ' + current.tokens.access.token,
+                    'Content-Type': 'multipart/form-data',
+                  },
+                })
+                .then(res => {
+                  dispatch(
+                    initNewAvatar({
+                      newAvatar: res.data.avatar,
+                    }),
+                  );
+                })
+                .catch(err => console.log(err));
+
               // setState
               setFile({
                 uri: response.assets[0].uri,
@@ -242,16 +254,15 @@ const Profile = props => {
                 size: response.assets[0].fileSize,
                 fileName: response.assets[0].fileName,
               });
-              }
-            });
-          } else {
-            console.log("Camera permission denied");
-          }
-        } catch (err) {
-          console.warn(err);
+            }
+          });
+        } else {
+          console.log('Camera permission denied');
         }
+      } catch (err) {
+        console.warn(err);
       }
-    )()
+    })();
   }, []);
   //const uri = pickerResponse?.assets && pickerResponse.assets[0].uri;
 
@@ -267,19 +278,19 @@ const Profile = props => {
 
   const onSubmit = data => {
     alert('Update successfull');
-    
+
     dispatch(
       changeInfoAsync({
         ...data,
-      accessToken: current.tokens.access.token,
-      birthday: birthday,
-      name: name,
-      phone: phone,
-      country: country.cca2,
-      level: levelValue,
-      language: pickerValue,
-      whatToLearn: whatToLearn,
-      whatToLearn1: whatToLearn1,
+        accessToken: current.tokens.access.token,
+        birthday: birthday,
+        name: name,
+        phone: phone,
+        country: country.cca2,
+        level: levelValue,
+        language: pickerValue,
+        whatToLearn: whatToLearn,
+        whatToLearn1: whatToLearn1,
       }),
     );
   };
@@ -385,7 +396,23 @@ const Profile = props => {
                   style={styles.picker}
                   selectedValue={pickerValue}
                   onValueChange={itemValue => setPickerValue(itemValue)}>
+                  <Picker.Item label='(None)' value="" />
+                  <Picker.Item label="Arabic" value="Arabic" />
+                  <Picker.Item label="Bengali" value="Bengali" />
                   <Picker.Item label="English" value="English" />
+                  <Picker.Item label="Filipino" value="Filipino" />
+                  <Picker.Item label="French" value="French" />
+                  <Picker.Item label="German" value="German" />
+                  <Picker.Item label="Hindi" value="Hindi" />
+                  <Picker.Item label="Indonesian" value="Indonesian" />
+                  <Picker.Item label="Italian" value="Italian" />
+                  <Picker.Item label="Japanese" value="Japanese" />
+                  <Picker.Item label="Korean" value="Korean" />
+                  <Picker.Item label="Mandarin" value="Mandarin" />
+                  <Picker.Item label="Portuguese" value="Portuguese" />
+                  <Picker.Item label="Russian" value="Russian" />
+                  <Picker.Item label="Spanish" value="Spanish" />
+                  <Picker.Item label="Tagalog" value="Tagalog" />
                   <Picker.Item label="Vietnamese" value="Vietnamese" />
                 </Picker>
               </View>
@@ -419,8 +446,12 @@ const Profile = props => {
                   selectedValue={levelValue}
                   onValueChange={levelValue => setLevelValue(levelValue)}>
                   <Picker.Item label="BEGINNER" value="BEGINNER" />
-                  <Picker.Item label="INTERMEDIATE" value="INTERMEDIATE" />
-                  <Picker.Item label="ADVANCED" value="ADVANCED" />
+                  <Picker.Item label="HIGHER_BEGINNER" value="HIGHER_BEGINNER" /> 
+                  <Picker.Item label="PRE_INTERMEDIATE" value="PRE_INTERMEDIATE" />
+                  <Picker.Item label="INTERMEDIATE" value="INTERMEDIATE" /> 
+                  <Picker.Item label="UPPER_INTERMEDIATE" value="UPPER_INTERMEDIATE" />
+                  <Picker.Item label="ADVANCED" value="ADVANCED" /> 
+                  <Picker.Item label="PROFICIENCY" value="PROFICIENCY" />
                 </Picker>
               </View>
             </View>

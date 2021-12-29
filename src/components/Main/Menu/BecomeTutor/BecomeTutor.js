@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, {useState, useEffect, useCallback} from 'react';
-import {MAIN_COLOR, SECOND_COLOR, BASE_URL} from '../../../../globals/constant';
+import {MAIN_COLOR, SECOND_COLOR, THIRD_COLOR, BASE_URL} from '../../../../globals/constant';
 import {
   Text,
   View,
@@ -12,11 +12,10 @@ import {
   LogBox,
 } from 'react-native';
 
-import {useForm, Controller, set} from 'react-hook-form';
+import {useForm, Controller} from 'react-hook-form';
 import Button from '../../../_common/Button/Button';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 //import DatePicker from 'react-native-datepicker';
 // thay vì dùng DateTimePicker, có thể dùng RNDatetimePicker
 import SelectBox from 'react-native-multi-selectbox';
@@ -116,6 +115,7 @@ const Profile = props => {
       id: item.id,
     };
   });
+
   const _birthday = (
     current.user.birthday != null ? current.user.birthday : '1998-10-27'
   ).substring(0, 10);
@@ -131,6 +131,8 @@ const Profile = props => {
   const [profession, setProfession] = useState('');
   const [bio, setBio] = useState('');
   const [targetStudent, setTargetStudent] = useState("");
+  const [targetStudent1, setTargetStudent1] = useState("");
+  const [targetStudent2, setTargetStudent2] = useState(""); 
   //const [country, setCountry] = useState({name: 'Vietnam', cca2: 'VN'});
   const [country, setCountry] = useState({name: '', cca2: _country});
   const [name, setName] = useState(current.user.name);
@@ -277,26 +279,40 @@ const Profile = props => {
      specialties = specialties.substring(0, specialties.length - 1);
    }
 
-    // console.log(
-    //   {
-    //         ...data,  
-    //       accessToken: current.tokens.access.token,
-    //       name: name,
-    //       country: country.cca2,
-    //       birthday: birthday,
-    //       interests: interests,
-    //       education: education,
-    //       experience: experience,
-    //       profession: profession,
-    //       //languages: en,vi,
-    //       bio: bio,
-    //       targetStudent: targetStudent,
-    //       specialties: specialties,
-    //       // avatar: (binary),
-    //       // video: (binary),
-    //       price: 50000,
-    //       }
-    // )
+   let languages = '';
+   if(targetStudent1 == '' && targetStudent2 != '')
+   {
+     languages = targetStudent2;
+   }
+   if(targetStudent1 != '' && targetStudent2 == '')
+   {
+     languages = targetStudent1;
+   }
+   if(targetStudent1 != '' && targetStudent2 != '')
+   {
+     languages = targetStudent1 + ',' + targetStudent2;
+   }
+   
+    console.log(
+      {
+            ...data,  
+          accessToken: current.tokens.access.token,
+          name: name,
+          country: country.cca2,
+          birthday: birthday,
+          interests: interests,
+          education: education,
+          experience: experience,
+          profession: profession,
+          languages: languages,
+          bio: bio,
+          targetStudent: targetStudent,
+          specialties: specialties,
+          // avatar: (binary),
+          // video: (binary),
+          price: 50000,
+          }
+    )
     // dispatch(
     //   changeInfoAsync({
     //     ...data,
@@ -320,6 +336,7 @@ const Profile = props => {
     return item => setWhatToLearn1(xorBy(whatToLearn1, [item], 'id'));
   }
 
+
   return (
     <ScrollView style={styles.container} nestedScrollEnabled={true}>
       <View>
@@ -327,7 +344,7 @@ const Profile = props => {
           style={{
             marginLeft: 15,
             fontSize: 20,
-            color: MAIN_COLOR,
+            color: THIRD_COLOR,
             fontWeight: 'bold',
             marginBottom: 12,
           }}>
@@ -467,9 +484,10 @@ const Profile = props => {
           style={{
             marginLeft: 15,
             fontSize: 20,
-            color: MAIN_COLOR,
+            color: THIRD_COLOR,
             fontWeight: 'bold',
             marginBottom: 12,
+            marginTop: 3,
           }}>
           CV
         </Text>
@@ -560,17 +578,6 @@ const Profile = props => {
           multiline
           onChangeText={value => setProfession(value)}
         />
-        <Text
-          style={{
-            marginLeft: 15,
-            fontSize: 20,
-            color: MAIN_COLOR,
-            fontWeight: 'bold',
-            marginBottom: 12,
-            marginTop: 15,
-          }}>
-          Languages I speak
-        </Text>
         <View
           style={{
             paddingLeft: '10%',
@@ -595,9 +602,102 @@ const Profile = props => {
           style={{
             marginLeft: 15,
             fontSize: 20,
-            color: MAIN_COLOR,
+            color: THIRD_COLOR,
             fontWeight: 'bold',
             marginBottom: 12,
+            marginTop: 10,
+          }}>
+          Languages I speak
+        </Text>
+        <Text
+          style={{
+            marginLeft: 15,
+            fontSize: 16,
+            marginBottom: 5,
+            fontWeight: 'bold',
+          }}>
+          Language 1:
+        </Text>
+        <Picker
+          style={{
+            width: 170,
+            height: 35,
+            borderColor: '#ddd',
+            borderWidth: 1,
+            color: 'black',
+            marginLeft: 90,
+            backgroundColor: 'white'
+          }}
+          selectedValue={targetStudent1}
+          onValueChange={itemValue => setTargetStudent1(itemValue)}>
+          <Picker.Item label="(None)" value=""/>
+          <Picker.Item label="Arabic" value="Arabic"/>
+          <Picker.Item label="Bengali" value="Bengali"/>
+          <Picker.Item label="English" value="English" />
+          <Picker.Item label="Filipino" value="Filipino" />
+          <Picker.Item label="French" value="French" />
+          <Picker.Item label="German" value="German" />
+          <Picker.Item label="Hindi" value="Hindi" />
+          <Picker.Item label="Indonesian" value="Indonesian"/>
+          <Picker.Item label="Italian" value="Italian" />
+          <Picker.Item label="Japanese" value="Japanese" />
+          <Picker.Item label="Korean" value="Korean" />
+          <Picker.Item label="Mandarin" value="Mandarin" />
+          <Picker.Item label="Portuguese" value="Portuguese"/>
+          <Picker.Item label="Russian" value="Russian"/>
+          <Picker.Item label="Spanish" value="Spanish" />
+          <Picker.Item label="Tagalog" value="Tagalog" />
+          <Picker.Item label="Vietnamese" value="Vietnamese" />
+        </Picker>
+        <Text
+          style={{
+            marginLeft: 15,
+            fontSize: 16,
+            marginBottom: 5,
+            fontWeight: 'bold',
+            marginTop: 8,
+          }}>
+          Language 2:
+        </Text>
+        <Picker
+          style={{
+            width: 170,
+            height: 35,
+            borderColor: '#ddd',
+            borderWidth: 1,
+            color: 'black',
+            marginLeft: 90,
+            backgroundColor: 'white'
+          }}
+          selectedValue={targetStudent2}
+          onValueChange={itemValue => setTargetStudent2(itemValue)}>
+          <Picker.Item label="(None)" value=""/>
+          <Picker.Item label="Arabic" value="Arabic"/>
+          <Picker.Item label="Bengali" value="Bengali"/>
+          <Picker.Item label="English" value="English" />
+          <Picker.Item label="Filipino" value="Filipino" />
+          <Picker.Item label="French" value="French" />
+          <Picker.Item label="German" value="German" />
+          <Picker.Item label="Hindi" value="Hindi" />
+          <Picker.Item label="Indonesian" value="Indonesian"/>
+          <Picker.Item label="Italian" value="Italian" />
+          <Picker.Item label="Japanese" value="Japanese" />
+          <Picker.Item label="Korean" value="Korean" />
+          <Picker.Item label="Mandarin" value="Mandarin" />
+          <Picker.Item label="Portuguese" value="Portuguese"/>
+          <Picker.Item label="Russian" value="Russian"/>
+          <Picker.Item label="Spanish" value="Spanish" />
+          <Picker.Item label="Tagalog" value="Tagalog" />
+          <Picker.Item label="Vietnamese" value="Vietnamese" />
+        </Picker>
+        <Text
+          style={{
+            marginLeft: 15,
+            fontSize: 20,
+            color: THIRD_COLOR,
+            fontWeight: 'bold',
+            marginBottom: 12,
+            marginTop: 20,
           }}>
           Who I teach
         </Text>
@@ -647,7 +747,7 @@ const Profile = props => {
           selectedValue={targetStudent}
           onValueChange={itemValue => setTargetStudent(itemValue)}>
           <Picker.Item label="Beginner" value="Beginner" />
-          <Picker.Item label="Inermediate" value="Inermediate" />
+          <Picker.Item label="Intermediate" value="Intermediate" />
           <Picker.Item label="Advanced" value="Advanced" />
         </Picker>
         <Text
@@ -656,6 +756,7 @@ const Profile = props => {
             fontSize: 16,
             marginBottom: 5,
             fontWeight: 'bold',
+            marginTop: 5,
           }}>
           My specialties are:{' '}
         </Text>
@@ -710,8 +811,7 @@ const Profile = props => {
             width={'90%'}
             listOptionProps={{nestedScrollEnabled: true}}
           />
-        </View>
-        {/* {errors.email && <Text style={styles.error}>{'please type gmail'}</Text>} */}
+        </View> 
         <View style={{marginBottom: 70, marginTop: 5}}>
           <Button
             title={langState.currentLang == 'en' ? 'Next' : 'Tiếp theo'}
