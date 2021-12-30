@@ -183,9 +183,81 @@ const Home = props => {
             }}>
             {langState[langState.currentLang].Filter_Tutors}: 
           </Text>
-          <Text style={{color: isDarkTheme ? 'yellow' : 'red'}}>{spec}</Text>
+          <Text style={{color: isDarkTheme ? 'yellow' : 'red', fontSize: 16}}>{' '}{spec != '' ? spec: "All"}</Text>
         </View>
-        <View style={{flexDirection: 'row', marginTop: 5}}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{ marginBottom: 5}}>
+          <MyTag
+            title={'All'}
+            onPress={() => {
+              setSpec(['']);
+            }}
+          />
+          <MyTag
+            title={'Conversational English'}
+            onPress={() => {
+              setSpec(['conversational-english']);
+            }}
+          />
+          <MyTag
+            title={'Business English'}
+            onPress={() => {
+              setSpec(['business-english']);
+            }}
+          />
+          <MyTag
+            title={'English for Kids'}
+            onPress={() => {
+              setSpec(['english-for-kids']);
+            }}
+          />
+          <MyTag
+            title={'STARTERS'}
+            onPress={() => {
+              setSpec(['starters']);
+            }}
+          />
+          <MyTag
+            title={'FLYERS'}
+            onPress={() => {
+              setSpec(['flyers']);
+            }}
+          />
+          <MyTag
+            title={'KET'}
+            onPress={() => {
+              setSpec(['ket']);
+            }}
+          />
+          <MyTag
+            title={'MOVERS'}
+            onPress={() => {
+              setSpec(['movers']);
+            }}
+          />
+          <MyTag title={'PET'} onPress={() => setSpec(['pet'])} />
+          <MyTag
+            title={'IELTS'}
+            onPress={() => {
+              setSpec(['ielts']);
+            }}
+          />
+          <MyTag
+            title={'TOEFL'}
+            onPress={() => {
+              setSpec(['toefl']);
+            }}
+          />
+          <MyTag
+            title={'TOEIC'}
+            onPress={() => {
+              setSpec(['toeic']);
+            }}
+          />
+        </ScrollView>
+        {/* <View style={{flexDirection: 'row', marginTop: 5}}>
           <MyTag
             title={'All'}
             onPress={() => {
@@ -268,13 +340,13 @@ const Home = props => {
               setSpec(['toeic']);
             }}
           />
-        </View>
+        </View> */}
       </View>
     );
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: isDarkTheme ? 'black' : 'white'}]}>
       <Suspense fallback={<View></View>}>
         <Header navigation={props.navigation} />
       </Suspense>

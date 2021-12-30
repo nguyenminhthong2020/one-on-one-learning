@@ -76,6 +76,14 @@ const Profile = props => {
           );
         })();
       }
+    }else{
+      axiosInstance1.get('user/info').then(res => {
+        if(JSON.stringify(res.data.user).includes("tutorInfo")){
+          if(res.data.user.tutorInfo != null){
+            props.navigation.navigate("Approval")
+          }
+        }
+      }).catch(err => console.log(err))
     }
   }, []);
 

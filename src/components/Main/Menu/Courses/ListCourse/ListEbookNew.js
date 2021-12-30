@@ -341,13 +341,13 @@ const ListEbookNew = props => {
                       setCurrentPage(index + 1);
                     }}
                     style={{
-                      marginHorizontal: 3,
+                      marginHorizontal: 1,
                       borderColor: 'black',
-                      backgroundColor: 'white',
+                      backgroundColor: 'yellow',
                       borderWidth: 1,
                       borderColor: 'black',
                       width: 30,
-                      paddingVertical: 5,
+                      paddingVertical: 6,
                       borderRadius: 5,
                     }}>
                     <Text style={{textAlign: 'center'}}>{index + 1}</Text>

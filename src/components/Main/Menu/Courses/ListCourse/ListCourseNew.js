@@ -339,7 +339,7 @@ const ListCourseNew = props => {
                     style={{
                       marginHorizontal: 3,
                       borderColor: 'black',
-                      backgroundColor: 'white',
+                      backgroundColor: 'yellow',
                       borderWidth: 1,
                       borderColor: 'black',
                       width: 30,
