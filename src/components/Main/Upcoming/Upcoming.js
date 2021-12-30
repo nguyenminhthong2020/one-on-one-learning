@@ -113,7 +113,7 @@ const Upcoming = props => {
       const str = `booking/list/student?page=1&perPage=10&dateTimeGte=${dateTimeLte}&orderBy=meeting&sortBy=asc`;
       getSchedule({str: str, accessToken: current.tokens.access.token}).then(data => {
         if (data.count > 0) {
-          const _countPage = ~~(data.count / 10) + 1;
+          const _countPage = Math.ceil(data.count / 10)
           let arrCount = [];
           for (let i = 0; i < _countPage; i++) {
             arrCount.push(i);
@@ -124,7 +124,7 @@ const Upcoming = props => {
             setArrSchedulePagination({
               currentPage: 1,
               arrSchedule: data.rows,
-              arrPagination: arrCount.slice(0, 5),
+              arrPagination: arrCount.slice(0, 6),
             });
           }
         } else {
@@ -236,7 +236,7 @@ const Upcoming = props => {
       const str = `booking/list/student?page=1&perPage=10&dateTimeGte=${dateTimeLte}&orderBy=meeting&sortBy=asc`;
       getSchedule({str: str, accessToken: current.tokens.access.token}).then(data => {
         if (data.count > 0) {
-          const _countPage = ~~(data.count / 10) + 1;
+          const _countPage = Math.ceil(data.count / 10);
           let arrCount = [];
           for (let i = 0; i < _countPage; i++) {
             arrCount.push(i);
@@ -247,7 +247,7 @@ const Upcoming = props => {
             setArrSchedulePagination({
               currentPage: 1,
               arrSchedule: data.rows,
-              arrPagination: arrCount.slice(0, 5),
+              arrPagination: arrCount.slice(0, 6),
             });
           }
         } else {
@@ -276,7 +276,7 @@ const Upcoming = props => {
 
         getSchedule({str: str, accessToken: current.tokens.access.token}).then(data => {
           if (data.count > 0) {
-            const _countPage = ~~(data.count / 10) + 1;
+            const _countPage = Math.ceil(data.count / 10)
             let arrCount = [];
             for (let i = 0; i < _countPage; i++) {
               arrCount.push(i);
@@ -284,7 +284,7 @@ const Upcoming = props => {
             setArrSchedulePagination({
               currentPage: 1,
               arrSchedule: data.rows,
-              arrPagination: arrCount.slice(0, 5),
+              arrPagination: arrCount.slice(0, 6),
             });
           } else {
             setArrSchedulePagination({
@@ -295,7 +295,13 @@ const Upcoming = props => {
           }
         });
       }
-    }).catch(err => console.log(err.response.data.message));
+    }).catch(err => {
+      if (JSON.stringify(err).includes('message')) {
+        alert('FAIL:\n' + err.response.data.message);
+      } else {
+        alert('FAIL:\n' + err);
+      }
+    });
   };
 
   const handleGotoMeeting = arrScheduleClass => {
@@ -375,19 +381,20 @@ const Upcoming = props => {
               style={{
                 flexDirection: 'row',
                 marginTop: 5,
-                // justifyContent: 'center',
+                justifyContent: 'center',
               }}>
               <Pressable
-                style={{width: 75}}
+                // style={{width: 75}}
+                style={{width: '50%'}}
                 onPress={() => handleCancel(arrScheduleClass.scheduleDetailId)}>
                 <View
                   style={{
-                    width: '100%',
+                    // width: '100%',
                     backgroundColor: 'orange',
                     paddingVertical: 4,
                     borderWidth: 1,
                     borderRadius: 5,
-                    marginLeft: 5
+                    //marginLeft: 5
                   }}>
                   <Text
                     style={{color: 'white', textAlign: 'center', fontSize: 16}}>
@@ -396,11 +403,12 @@ const Upcoming = props => {
                 </View>
               </Pressable>
               <Pressable
-                style={{width: 130, marginLeft: 15}}
+                style={{width: '50%'}}
+                //style={{width: 130, marginLeft: 15}}
                 onPress={() => handleGotoMeeting(arrScheduleClass)}>
                 <View
                   style={{
-                    width: '100%',
+                    // width: '100%',
                     backgroundColor:
                       new Date().toDateString() ==
                       new Date(
@@ -464,7 +472,7 @@ const Upcoming = props => {
 
                   getSchedule({str: str, accessToken: current.tokens.access.token}).then(data => {
                     if (data.count > 0) {
-                      const _countPage = ~~(data.count / 10) + 1;
+                      const _countPage = Math.ceil(data.count / 10);
                       let arrCount = [];
                       for (let i = 0; i < _countPage; i++) {
                         arrCount.push(i);
@@ -473,7 +481,7 @@ const Upcoming = props => {
                       setArrSchedulePagination({
                         currentPage: index + 1,
                         arrSchedule: data.rows,
-                        arrPagination: arrCount.slice(0, 5),
+                        arrPagination: arrCount.slice(0, 6),
                       });
                     }
                   });
@@ -481,7 +489,7 @@ const Upcoming = props => {
                 style={{
                   marginHorizontal: 3,
                   borderColor: 'black',
-                  backgroundColor: 'white',
+                  backgroundColor: 'yellow',
                   borderWidth: 1,
                   borderColor: 'black',
                   width: 30,
@@ -504,7 +512,8 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: '12%',
     marginTop: 8,
-    borderWidth: 1,
+    // borderWidth: 1,
+    borderRadius: 5,
     backgroundColor: 'white',
     paddingHorizontal: 5,
     paddingBottom: 1,

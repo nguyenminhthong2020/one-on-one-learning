@@ -27,10 +27,17 @@ export const loginAsync = createAsyncThunk(
             current: res.data
         }
       }catch(err){
-        alert(err.response.data.message)
-        return {
-            message: err.response.data.message,
-        }
+        if (JSON.stringify(err).includes('message')) {
+            alert('FAIL:\n' + err.response.data.message);
+            return {
+                message: err.response.data.message
+            }
+          } else {
+            alert('FAIL:\n' + err);
+            return{
+                message: err+''
+            }
+          }
       }
    }
 );
@@ -87,10 +94,17 @@ export const changeAvatar = createAsyncThunk(
              current: res.data
          }
        }catch(err){
-         alert(err.response.data.message)
-         return {
-             message: err.response.data.message,
-         }
+        if (JSON.stringify(err).includes('message')) {
+            alert('FAIL:\n' + err.response.data.message);
+            return {
+                message: err.response.data.message
+            }
+          } else {
+            alert('FAIL:\n' + err);
+            return {
+                message: err + ''
+            }
+          }
        }
     }
 )

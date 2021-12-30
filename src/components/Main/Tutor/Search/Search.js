@@ -84,7 +84,13 @@ const Search = props => {
             });
           }
         }
-      }).catch(err => console.log(err.response.data.message));
+      }).catch(err => {
+        if (JSON.stringify(err).includes('message')) {
+          alert('FAIL:\n' + err.response.data.message);
+        } else {
+          alert('FAIL:\n' + err);
+        }
+      });
   };
 
   useEffect(() => {

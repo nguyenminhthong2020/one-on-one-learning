@@ -27,7 +27,11 @@ const Register = (props) => {
         // console.log(res.data);
         alert("Your registration successfully.\n\nCheck email:\n"+data.email);
       }).catch(err => {
-         alert("Error: \n" + err.response.data.message);
+        if (JSON.stringify(err).includes('message')) {
+          alert('FAIL:\n' + err.response.data.message);
+        } else {
+          alert('FAIL:\n' + err);
+        }
       });
   }
 

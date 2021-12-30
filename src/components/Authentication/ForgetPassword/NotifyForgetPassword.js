@@ -20,7 +20,11 @@ const NotifyForgetPassword = (props) => {
     .then(res => {
       alert("An email has send successfully");
     }).catch(err => {
-       alert("Error: \n" + err.response.data.message);
+      if (JSON.stringify(err).includes('message')) {
+        alert('FAIL:\n' + err.response.data.message);
+      } else {
+        alert('FAIL:\n' + err);
+      }
     });
   }
 

@@ -61,7 +61,11 @@ const Login = (props) => {
       .then(res => {
         dispatch(initNew({current: res.data}))
       }).catch(err => {
-         alert("Error: \n" + err.response.data.message);
+        if (JSON.stringify(err).includes('message')) {
+          alert('FAIL:\n' + err.response.data.message);
+        } else {
+          alert('FAIL:\n' + err);
+        }
       });
  
         }catch(err){
@@ -96,7 +100,11 @@ const Login = (props) => {
             .then(res => {
               dispatch(initNew({current: res.data}))
             }).catch(err => {
-               alert("Error: \n" + err.response.data.message);
+              if (JSON.stringify(err).includes('message')) {
+                alert('FAIL:\n' + err.response.data.message);
+              } else {
+                alert('FAIL:\n' + err);
+              }
             });
           }
           }

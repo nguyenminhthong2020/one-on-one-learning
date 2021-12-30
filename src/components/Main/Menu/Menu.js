@@ -34,6 +34,12 @@ const Menu = props => {
             title={langState[langState.currentLang].Profile}
             handleOnPress={() => props.navigation.navigate('Profile')}
           />
+          <ButtonIcon
+            type={'FontAwesome5'}
+            name={'heart'}
+            title={langState[langState.currentLang].Favorite}
+            handleOnPress={() => props.navigation.navigate('Favorites')}
+          />
           {/* <ButtonIcon
             type={'FontAwesome5'}
             name={'chalkboard-teacher'}
@@ -63,12 +69,6 @@ const Menu = props => {
             name={'book'}
             title={'Ebooks'}
             handleOnPress={() => props.navigation.navigate('ListEbookNew')}
-          />
-           <ButtonIcon
-            type={'FontAwesome5'}
-            name={'heart'}
-            title={langState[langState.currentLang].Favorite}
-            handleOnPress={() => props.navigation.navigate('Favorites')}
           />
           <ButtonIcon
             type={'FontAwesome5'}

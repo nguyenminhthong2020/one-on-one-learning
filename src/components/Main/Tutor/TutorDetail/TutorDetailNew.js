@@ -127,7 +127,13 @@ const TutorDetailNew = props => {
               });
             }
             
-          }).catch(err1 => alert(err1.response.data.message))
+          }).catch(err1 => {
+            if (JSON.stringify(err1).includes('message')) {
+              alert('FAIL:\n' + err1.response.data.message);
+            } else {
+              alert('FAIL:\n' + err1);
+            }
+          })
         // if (isMounted) {
         //   setDetailTutor({
         //     price: res.data.price,
@@ -148,7 +154,7 @@ const TutorDetailNew = props => {
   return (
     <View style={{marginTop: 0}}>
       <ScrollView>
-        <View>
+        <View style={{backgroundColor: isDarkTheme? 'black': 'white'}}>
           <View
             style={{
               backgroundColor: 'gray',
@@ -210,9 +216,14 @@ const TutorDetailNew = props => {
                       <Text style={{color: 'orange'}}>
                         {detailTutor.avgRating}/5{' '}
                       </Text>
-                      <Image
+                      <MaterialIcons
+                      name={'star'}
+                      size={20}
+                      color="orange"
+                    />
+                      {/* <Image
                         source={require('../../../../../assets/rating.png')}
-                      />
+                      /> */}
                     </>
                   )}
                 </View>

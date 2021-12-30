@@ -60,12 +60,20 @@ const HeadContent = props => {
             })
           }
         }catch(err){
-          console.log('Error: \n' + err.response.data.message);
+          if (JSON.stringify(err).includes('message')) {
+            alert('FAIL:\n' + err.response.data.message);
+          } else {
+            alert('FAIL:\n' + err);
+          }
         }
         })();
       })
       .catch(err => {
-        alert('Error: \n' + err.response.data.message);
+        if (JSON.stringify(err).includes('message')) {
+          alert('FAIL:\n' + err.response.data.message);
+        } else {
+          alert('FAIL:\n' + err);
+        }
       }
     , []);
   }, []);
@@ -101,12 +109,20 @@ const HeadContent = props => {
             })
           }
         }catch(err){
-          console.log('Error: \n' + err.response.data.message);
+          if (JSON.stringify(err).includes('message')) {
+            alert('FAIL:\n' + err.response.data.message);
+          } else {
+            alert('FAIL:\n' + err);
+          }
         }
         })();
       })
       .catch(err => {
-        alert('Error: \n' + err.response.data.message);
+        if (JSON.stringify(err).includes('message')) {
+          alert('FAIL:\n' + err.response.data.message);
+        } else {
+          alert('FAIL:\n' + err);
+        }
       });
     });
     return unsubscribe;

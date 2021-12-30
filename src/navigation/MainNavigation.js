@@ -1,5 +1,5 @@
 /* eslint-disable */
-import * as React from 'react';
+import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -10,8 +10,8 @@ import TutorMessage from '../components/Main/Message/TutorMessage';
 import TutorDetailNew from '../components/Main/Tutor/TutorDetail/TutorDetailNew';
 import Booking from '../components/Main/Tutor/TutorDetail/Booking/Booking';
 import TutorDetailComment from '../components/Main/Tutor/TutorDetail/TutorDetailComment';
-import ListMessage from '../components/Main/Message/ListMessage';
-import Upcoming from '../components/Main/Upcoming/Upcoming';
+// import ListMessage from '../components/Main/Message/ListMessage';
+import UpcomingNew from '../components/Main/Upcoming/UpcomingNew';
 import Search from '../components/Main/Tutor/Search/Search';
 import Setting from '../components/AccountManagement/Setting/Setting';
 import Home from '../components/Main/Home/Home';
@@ -34,7 +34,7 @@ import ForgetPassword from '../components/Authentication/ForgetPassword/ForgetPa
 import NotifyForgetPassword from '../components/Authentication/ForgetPassword/NotifyForgetPassword';
 import Register from '../components/Authentication/Register/Register';
 import FeedbackList from '../components/AccountManagement/Setting/FeedbackList';
-import { useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -51,9 +51,9 @@ function MainTabs(props) {
       <Tab.Screen
         name="Home"
         component={Home}
-      //   listeners={({ navigation }) => ({
-      //   blur: () => navigation.setParams({ screen: undefined }),
-      // })}
+        //   listeners={({ navigation }) => ({
+        //   blur: () => navigation.setParams({ screen: undefined }),
+        // })}
         options={{
           title: langState[langState.currentLang].Home,
           headerShown: false,
@@ -74,11 +74,11 @@ function MainTabs(props) {
         }}
       /> */}
       <Tab.Screen
-        name="Upcoming"
-        component={Upcoming}
-      //   listeners={({ navigation }) => ({
-      //   blur: () => navigation.setParams({ screen: undefined }),
-      // })}
+        name="UpcomingNew"
+        component={UpcomingNew}
+        //   listeners={({ navigation }) => ({
+        //   blur: () => navigation.setParams({ screen: undefined }),
+        // })}
         options={{
           title: langState[langState.currentLang].Schedule,
           headerShown: true,
@@ -117,24 +117,19 @@ function MainNavigation(props) {
   const langState = useSelector(state => state.lang);
   const check = useSelector(state => state.auth.isLoggin);
   return (
-    <Stack.Navigator
-       initialRouteName={check == true ? "MainTabs": "Login"}
-    >
-      <Stack.Screen 
+    <Stack.Navigator initialRouteName={check == true ? 'MainTabs' : 'Login'}>
+      <Stack.Screen
         name="Login"
         component={Login}
         options={{headerShown: false}}
       />
-      <Stack.Screen 
-        name="Register"
-        component={Register}
-      />
-      <Stack.Screen 
+      <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen
         name="ForgetPassword"
         component={ForgetPassword}
         options={{headerShown: true, title: 'Forgot password'}}
       />
-      <Stack.Screen 
+      <Stack.Screen
         name="NotifyForgetPassword"
         component={NotifyForgetPassword}
         options={{headerShown: true, title: 'Forgot password'}}
@@ -152,7 +147,7 @@ function MainNavigation(props) {
       <Stack.Screen
         name="VideoCall"
         component={VideoCall}
-        options={{headerShown: true, title :'Lesson Room'}}
+        options={{headerShown: true, title: 'Lesson Room'}}
       />
       <Stack.Screen
         name="Profile"
@@ -169,7 +164,7 @@ function MainNavigation(props) {
         component={Booking}
         options={{headerShown: true, title: 'Schedule & Booking'}}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="TutorDetailComment"
         component={TutorDetailComment}
         options={{headerShown: true, title: 'Rating and Comment'}}
@@ -202,19 +197,26 @@ function MainNavigation(props) {
       <Stack.Screen
         name="Schedule"
         component={Schedule}
-        options={{headerShown: true,
-         title: langState[langState.currentLang].Schedule
+        options={{
+          headerShown: true,
+          title: langState[langState.currentLang].Schedule,
         }}
       />
       <Stack.Screen
         name="Favorites"
         component={Favorites}
-        options={{headerShown: true, title: langState[langState.currentLang].Favorite}}
+        options={{
+          headerShown: true,
+          title: langState[langState.currentLang].Favorite,
+        }}
       />
       <Stack.Screen
         name="BecomeTutor"
         component={BecomeTutor}
-        options={{headerShown: true, title: langState[langState.currentLang].Become_a_tutor}}
+        options={{
+          headerShown: true,
+          title: langState[langState.currentLang].Become_a_tutor,
+        }}
       />
       <Stack.Screen
         name="VideoIntroduction"
@@ -229,12 +231,18 @@ function MainNavigation(props) {
       <Stack.Screen
         name="History"
         component={History}
-        options={{headerShown: true, title: langState[langState.currentLang].History}}
+        options={{
+          headerShown: true,
+          title: langState[langState.currentLang].History,
+        }}
       />
       <Stack.Screen
         name="FeedbackList"
         component={FeedbackList}
-        options={{headerShown: true, title: langState[langState.currentLang].FeedbackList}}
+        options={{
+          headerShown: true,
+          title: langState[langState.currentLang].FeedbackList,
+        }}
       />
       <Stack.Screen
         name="TutorMessage"

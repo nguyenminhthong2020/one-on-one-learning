@@ -53,6 +53,7 @@ const Home = props => {
   const [spec, setSpec] = useState(['']);
   const [array, setArray] = useState([]);
   const [listFav, setListFav] = useState([]);
+  
 
   let backHandler = null;
   
@@ -396,7 +397,7 @@ const Home = props => {
             navigation={props.navigation}></HeadContent>
         </Suspense>
 
-        <View style={{marginHorizontal: 18, marginTop: 10, marginBottom: 3}}>
+        <View style={{marginHorizontal: 18, marginTop: 15, marginBottom: 3}}>
           {renderFilterTag()}
         </View>
         <View

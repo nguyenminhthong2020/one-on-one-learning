@@ -209,7 +209,13 @@ const VideoIntroduction = props => {
             })
             .catch(err1 => console.log(err1));
         })
-        .catch(err => alert(err.response.data.message));
+        .catch(err => {
+          if (JSON.stringify(err).includes('message')) {
+            alert('FAIL:\n' + err.response.data.message);
+          } else {
+            alert('FAIL:\n' + err);
+          }
+        });
     }
   };
 

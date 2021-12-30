@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, {useState, useEffect} from 'react';
-import {ScrollView, Text, View, Pressable, Alert} from 'react-native';
+import {ScrollView, Text, View, Pressable, Alert, ActivityIndicator} from 'react-native';
 import {BASE_URL, MAIN_COLOR} from '../../../../../globals/constant';
 import Modal from 'react-native-modal';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -152,76 +152,160 @@ const Booking = props => {
           Authorization: 'Bearer ' + accessToken,
         },
       });
-      axiosInstance1.get('user/info').then(res1 => 
-        {
-              let price = res1.data.user.priceOfEachSession.price / 100000;
-              let balance = Math.floor(res1.data.user.walletInfo.amount / 100000);
-              price > balance
-        ? Alert.alert(
-            `BOOKING DETAILS: FAIL`,
-            `1. Student: ${name}\n2. Tutor: ${tutor}\n3. ${date} (${time})\n4. Balance: You have ${balance} lessons left\n5. Price: ${price}\n`,
-            [
-              {
-                text: 'Cancel', //onPress: () => {alert("Cancel");console.log(123);},
-                style: 'Cancel',
-              },
-            ],
-            {cancelable: true},
-          )
-        : Alert.alert(
-            `BOOKING DETAILS: `,
-            `1. Student: ${name}\n2. Tutor: ${tutor}\n3.. ${date} (${time})\n4. Balance: You have ${balance} lessons left\n5. Price: ${price}\n`,
-            [
-              {
-                text: 'Book',
-                onPress: () => {
-                  axiosInstance1
-                    .post(`booking`, {
-                      note: '',
-                      scheduleDetailIds: [timeId],
-                    })
-                    .then(res => {
-                      toggleModalTime();
-                      BookingSuccess(tutor, date, time);
-                    })
-                    .catch(err => {
-                      console.log("fail trong post booking")
-                      alert('FAIL:\n' + err.response.data.message);
-                    });
-                },
-                style: 'Cancel',
-              },
-              {
-                text: 'Cancel', //onPress: () => {alert("Cancel");console.log(123);},
-                style: 'Cancel',
-              },
-            ],
-            {cancelable: true},
-          );
-        }).catch(err1 => {
-          console.log("fail trong get")
-          alert(err1.response.data.message)
+      axiosInstance1
+        .get('user/info')
+        .then(res1 => {
+          let price = res1.data.user.priceOfEachSession.price / 100000;
+          let balance = Math.floor(res1.data.user.walletInfo.amount / 100000);
+          price > balance
+            ? Alert.alert(
+                `BOOKING DETAILS: FAIL`,
+                `Tutor: ${tutor}\n\n${date}   ${time}\n\nBalance: ${balance} lessons left\nPrice: ${price} lesson`,
+                [
+                  {
+                    text: 'Cancel', //onPress: () => {alert("Cancel");console.log(123);},
+                    style: 'Cancel',
+                  },
+                ],
+                {cancelable: true},
+              )
+            : Alert.alert(
+                `BOOKING DETAILS: `,
+                `Tutor: ${tutor}\n\n${date}   ${time}\n\nBalance: ${balance} lessons left\nPrice: ${price} lesson`,
+                [
+                  {
+                    text: 'Book',
+                    onPress: () => {
+                      axiosInstance1
+                        .post(`booking`, {
+                          note: '',
+                          scheduleDetailIds: [timeId],
+                        })
+                        .then(res => {
+                          // toggleModalTime();
+                          // BookingSuccess(tutor, date, time);
+                          getScheduleBooking({
+                            tutorId: props.tutorId,
+                            accessToken: props.accessToken,
+                          }).then(data => {
+                            const now = new Date().getTime();
+                            const schedule = data.filter(function (item) {
+                              if (
+                                now - 24 * 60 * 60 * 1000 <=
+                                  item.scheduleDetails[0]
+                                    .startPeriodTimestamp &&
+                                item.scheduleDetails[0].startPeriodTimestamp <=
+                                  now + 7 * 24 * 60 * 60 * 1000
+                              ) {
+                                return item;
+                              }
+                            });
+
+                            let arrDate = [];
+                            for (let i = 0; i <= 6; i++) {
+                              let day;
+                              day = (
+                                new Date(now + i * 24 * 60 * 60 * 1000) + ''
+                              ).substring(0, 10);
+                              let arrTime = [];
+                              for (let j = 0; j < schedule.length; j++) {
+                                if (
+                                  (
+                                    new Date(
+                                      schedule[
+                                        j
+                                      ].scheduleDetails[0].startPeriodTimestamp,
+                                    ) + ''
+                                  ).substring(0, 10) == day
+                                ) {
+                                  let check = false;
+                                  if (
+                                    schedule[j].scheduleDetails[0].bookingInfo
+                                      .length > 0
+                                  ) {
+                                    if (
+                                      schedule[j].scheduleDetails[0]
+                                        .bookingInfo[0].userId ==
+                                      current.user.id
+                                    ) {
+                                      check = true;
+                                    }
+                                  }
+                                  arrTime.push({
+                                    isBooked:
+                                      schedule[j].scheduleDetails[0].isBooked,
+                                    isBookedByMe: check,
+                                    id: schedule[j].scheduleDetails[0].id,
+                                    startEnd:
+                                      new Date(
+                                        schedule[
+                                          j
+                                        ].scheduleDetails[0].startPeriodTimestamp,
+                                      )
+                                        .toLocaleTimeString()
+                                        .slice(0, 5) +
+                                      '-' +
+                                      new Date(
+                                        schedule[
+                                          j
+                                        ].scheduleDetails[0].endPeriodTimestamp,
+                                      )
+                                        .toLocaleTimeString()
+                                        .slice(0, 5),
+                                  });
+                                }
+                              }
+                              arrDate.push({
+                                date: moment(
+                                  now + i * 24 * 60 * 60 * 1000,
+                                ).format('YYYY-MM-DD'),
+                                time: arrTime,
+                              });
+                            }
+                            setArrayDateTime(arrDate);
+                          });
+                        })
+                        .catch(err => {
+                          if (JSON.stringify(err).includes('message')) {
+                            //'Booking has already exists'
+                            alert('FAIL:\n' + err.response.data.message);
+                          } else {
+                            alert('FAIL:\n' + err);
+                          }
+                        });
+                    },
+                    style: 'Cancel',
+                  },
+                  {
+                    text: 'Cancel', //onPress: () => {alert("Cancel");console.log(123);},
+                    style: 'Cancel',
+                  },
+                ],
+                {cancelable: true},
+              );
         })
+        .catch(err1 => {
+          alert('Fail: \n' + err1);
+        });
     };
 
-
-    const BookingSuccess = (tutor, date, time) =>
-      Alert.alert(
-        `BOOKING SUCCESS`,
-        `Booking details: \n${tutor}\n${date}, ${time}`,
-        [
-          {
-            text: 'Done',
-            //onPress: () => alert('Complete'),
-            style: 'default',
-          },
-          // {
-          //   text: 'Cancel', //onPress: () => {alert("Cancel");console.log(123);},
-          //   style: 'destructive',
-          // },
-        ],
-        {cancelable: true},
-      );
+    // const BookingSuccess = (tutor, date, time) =>
+    //   Alert.alert(
+    //     `BOOKING SUCCESS`,
+    //     `Booking details: \n${tutor}\n${date}, ${time}`,
+    //     [
+    //       {
+    //         text: 'Done',
+    //         //onPress: () => alert('Complete'),
+    //         style: 'default',
+    //       },
+    //       // {
+    //       //   text: 'Cancel', //onPress: () => {alert("Cancel");console.log(123);},
+    //       //   style: 'destructive',
+    //       // },
+    //     ],
+    //     {cancelable: true},
+    //   );
 
     return isModalVisibleTime ? (
       <View style={{backgroundColor: 'white'}}>
@@ -254,54 +338,67 @@ const Booking = props => {
                 onPress={toggleModalTime}
               />
             </View>
-
-            <ScrollView showsHorizontalScrollIndicator={true}>
-              {props.arrayDateTime[props.id].time
-                .sort((x, y) => x.startEnd.localeCompare(y.startEnd))
-                .map((time, index) => (
-                  <View
-                    style={{marginBottom: 7, marginHorizontal: 100}}
-                    key={index}>
-                    <Pressable
-                      style={{
-                        borderRadius: 40,
-                        backgroundColor:
-                          time.isBooked == true
-                            ? time.isBookedByMe
-                              ? 'rgb(46, 204, 113)'
-                              : 'grey'
-                            : MAIN_COLOR,
-                        paddingVertical: 5,
-                      }}
-                      onPress={() => {
-                        if (time.isBooked == false) {
-                          onPressHandler(
-                            props.student,
-                            props.name,
-                            props.tutor,
-                            props.arrayDateTime,
-                            props.id,
-                            time.startEnd,
-                            time.id,
-                            props.accessToken,
-                          );
-                        } else {
-                        }
-                      }}>
-                      <Text
+            {(props != null) & (props != undefined) ? (
+              <ScrollView showsHorizontalScrollIndicator={true}>
+                {props.arrayDateTime[props.id].time
+                  .sort((x, y) => x.startEnd.localeCompare(y.startEnd))
+                  .map((time, index) => (
+                    <View
+                      style={{marginBottom: 7, marginHorizontal: 100}}
+                      key={index}>
+                      <Pressable
                         style={{
-                          color: 'white',
-                          textAlign: 'center',
-                          fontSize: 16,
+                          borderRadius: 40,
+                          backgroundColor:
+                            time.isBooked == true
+                              ? time.isBookedByMe
+                                ? 'rgb(46, 204, 113)'
+                                : 'grey'
+                              : MAIN_COLOR,
+                          paddingVertical: 5,
+                        }}
+                        onPress={() => {
+                          if (time.isBooked == false) {
+                            onPressHandler(
+                              props.student,
+                              props.name,
+                              props.tutor,
+                              props.arrayDateTime,
+                              props.id,
+                              time.startEnd,
+                              time.id,
+                              props.accessToken,
+                            );
+                          } else {
+                          }
                         }}>
-                        {time.isBooked == true && time.isBookedByMe == false
-                          ? 'Reserved'
-                          : time.startEnd}
-                      </Text>
-                    </Pressable>
-                  </View>
-                ))}
-            </ScrollView>
+                        <Text
+                          style={{
+                            color: 'white',
+                            textAlign: 'center',
+                            fontSize: 16,
+                          }}>
+                          {time.isBooked == true && time.isBookedByMe == false
+                            ? 'Reserved'
+                            : time.startEnd}
+                        </Text>
+                      </Pressable>
+                    </View>
+                  ))}
+              </ScrollView>
+            ) : (
+              <View>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    marginTop: 30,
+                    fontSize: 25,
+                    color: MAIN_COLOR,
+                  }}>
+                  Loading...
+                </Text>
+              </View>
+            )}
           </View>
         </Modal>
       </View>
@@ -362,6 +459,7 @@ const Booking = props => {
                     name={current.user.name}
                     accessToken={current.tokens.access.token}
                     tutor={props.route.params.name}
+                    tutorId={props.route.params.tutorId}
                     arrayDateTime={arrayDateTime}
                     id={index}
                     isVisible={true}
@@ -373,16 +471,16 @@ const Booking = props => {
             ))
           ) : (
             <View>
-              <Text
-                style={{
-                  textAlign: 'center',
-                  marginTop: 30,
-                  fontSize: 25,
-                  color: MAIN_COLOR,
-                }}>
-                Loading...
-              </Text>
-            </View>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    marginTop: 35,
+                    fontSize: 25,
+                    color: MAIN_COLOR,
+                  }}>
+                  Loading...
+                </Text>
+              </View>
           )}
         </View>
       </ScrollView>
