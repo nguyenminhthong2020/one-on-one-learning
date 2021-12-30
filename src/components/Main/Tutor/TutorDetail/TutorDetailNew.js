@@ -112,7 +112,6 @@ const TutorDetailNew = props => {
     price: 0,
     avgRating: 0,
   });
-  const [priceBalance, setPriceBalance] = useState({price: 0, balance : 0});
 
   useEffect(() => {
     let isMounted = true;
@@ -126,10 +125,6 @@ const TutorDetailNew = props => {
                 price: res.data.price,
                 avgRating: res.data.avgRating,
               });
-              setPriceBalance({
-                price: res1.data.user.priceOfEachSession.price / 100000,
-                balance: Math.floor(res1.data.user.walletInfo.amount / 100000)
-              })
             }
             
           }).catch(err1 => alert(err1.response.data.message))
@@ -257,7 +252,6 @@ const TutorDetailNew = props => {
                 props.navigation.navigate('Booking', {
                   tutorId: props.route.params.tutor.userId,
                   name: props.route.params.tutor.name,
-                  priceBalance: priceBalance
                 })
               }>
               <Text

@@ -222,10 +222,10 @@ const ListCourseNew = props => {
       />
       <View style={{marginHorizontal: 20}}>
         <SelectBox
-          containerStyle={{marginTop: -12}}
+          containerStyle={{marginTop: -16}}
           hideInputFilter
           label={false}
-          inputPlaceholder="Level"
+          inputPlaceholder="  Level"
           options={arrLevel}
           selectedValues={arrLevelSelected}
           onMultiSelect={onMultiChange()}
@@ -237,10 +237,10 @@ const ListCourseNew = props => {
       
       <View style={{marginHorizontal: 20}}>
         <SelectBox
-          containerStyle={{marginTop: -12}}
+          containerStyle={{marginTop: -16}}
           hideInputFilter
           label={false}
-          inputPlaceholder="Category"
+          inputPlaceholder="  Category"
           options={arrCategory}
           selectedValues={arrCategorySelected}
           onMultiSelect={onMultiChange1()}
@@ -258,7 +258,7 @@ const ListCourseNew = props => {
             left: '30%',
             borderWidth: 1,
             marginBottom: 1,
-            marginTop: 5
+            marginTop: 6
           }}>
           <Pressable onPress={onSearch} style={{width: '100%'}}>
             <Text

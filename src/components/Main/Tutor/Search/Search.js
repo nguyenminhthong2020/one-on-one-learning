@@ -181,13 +181,13 @@ const Search = props => {
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <SearchBar
           round={true}
-          containerStyle={{backgroundColor: 'black', width: '80%'}}
+          containerStyle={{backgroundColor: 'black', width: '78%'}}
           inputContainerStyle={{
             backgroundColor: 'white',
-            height: 28,
+            height: 40,
             borderRadius: 5,
           }}
-          inputStyle={{backgroundColor: 'white', height: 18, fontSize: 16}}
+          inputStyle={{backgroundColor: 'white', height: 26, fontSize: 16, color: 'black'}}
           placeholder={
             langState.currentLang == 'en'
               ? 'search tutors...'
@@ -196,10 +196,11 @@ const Search = props => {
           onChangeText={value => setNameQuery(value)}
           value={nameQuery}
         />
+        <View style={{width: '22%', backgroundColor: 'black', paddingVertical: 8}}>
         <Pressable
           style={[
             styles.button1,
-            {borderRadius: 0, width: '20%', paddingVertical: 11.5},
+            { paddingVertical: 9, borderRadius: 20},
           ]}
           onPress={() => {
             if (nameQuery.length > 0) {
@@ -210,6 +211,7 @@ const Search = props => {
             {langState[langState.currentLang].Search}
           </Text>
         </Pressable>
+        </View>
       </View>
       <View
         style={{
