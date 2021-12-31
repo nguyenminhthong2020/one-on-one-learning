@@ -24,30 +24,7 @@ const TutorItemSearch = props => {
   return (
     <Pressable onPress={props.onPress} style={{marginBottom: 10}}>
       <View style={styles.shadowProp}>
-        <View>
-          {/* {like === false ? (
-            <AntDesign
-              name={'heart'}
-              size={22}
-              color={'gray'}
-              style={{textAlign: 'right', marginBottom: -15, marginRight: 10}}
-              onPress={() => {
-                setLike(!like);
-              }}
-            />
-          ) : (
-            <AntDesign
-              name={'heart'}
-              size={22}
-              color={'rgb(240, 72, 72)'}
-              style={{textAlign: 'right', marginBottom: -15, marginRight: 10}}
-              onPress={() => {
-                setLike(!like);
-              }}
-            />
-          )} */}
-        </View>
-        <View style={{flexDirection: 'row', marginBottom: 5, marginTop: 0}}>
+        <View style={{flexDirection: 'row', marginBottom: 5}}>
           <View>
             <FastImage
               style={{width: 50, height: 50, borderRadius: 25}}
@@ -79,7 +56,7 @@ const TutorItemSearch = props => {
                 startingValue={props.tutor.startingValue}
                 isDisabled={true}
               /> */}
-            <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 1, marginLeft: 20}}>
+            <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 1, marginLeft: 10}}>
             <Text style={{color: 'orange'}}>{_rating} </Text>
             {
               _rating != 'No reviews yet' && <Image 

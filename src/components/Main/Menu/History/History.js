@@ -1,19 +1,13 @@
 /* eslint-disable */
 import React, {useState, Suspense, useEffect} from 'react';
-import {MAIN_COLOR} from '../../../../globals/constant';
+import {MAIN_COLOR, THIRD_COLOR} from '../../../../globals/constant';
 import {
   Text,
   View,
-  //TextInput,
-  StyleSheet,
   Pressable,
-  //FlatList,
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
-
-// import {useForm, Controller} from 'react-hook-form';
-// import FastImage from 'react-native-fast-image';
 import {getHistory} from '../../../../api/history/historyApi';
 const HistoryItem = React.lazy(() =>
   import('../../common/HistoryItem/HistoryItem'),
@@ -23,7 +17,6 @@ import moment from 'moment';
 
 const History = () => {
   const current = useSelector(state => state.auth.current);
-  const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
   const [arrHistoryPagination, setArrHistoryPagination] = useState({
     arrDate: [],
     arrHistory: [],
@@ -77,37 +70,43 @@ const History = () => {
           return (
             <View key={index1} style={{paddingBottom: 20}}>
               <View style={{marginLeft: '12%'}}>
-                <Text style={{color: isDarkTheme ? 'white': 'black', fontSize: 20, fontWeight: 'bold'}}>{date}</Text>
+                <Text
+                  style={{
+                    color: THIRD_COLOR,
+                    fontSize: 17,
+                    fontWeight: 'bold',
+                  }}>
+                  {date}
+                </Text>
               </View>
-              {arrHistoryPagination.arrHistory.filter(
+              {arrHistoryPagination.arrHistory
+                .filter(
                   item =>
                     moment(
                       item.scheduleDetailInfo.scheduleInfo.startTimestamp,
                     ).format('YYYY-MM-DD') == date,
-                ).map((arrHistoryClass, index) => (
-          <Suspense
-            fallback={
-              <View style={{alignItems: 'center'}}>
-                <ActivityIndicator size="large" color="#00ff00" />
-              </View>
-            }
-            key={index}>
-            <HistoryItem arrHistoryClass={arrHistoryClass} />
-          </Suspense>
-                ))
-          }
-          
-              </View>
-          )
+                )
+                .map((arrHistoryClass, index) => (
+                  <Suspense
+                    fallback={
+                      <View style={{alignItems: 'center'}}>
+                        <ActivityIndicator size="large" color="#00ff00" />
+                      </View>
+                    }
+                    key={index}>
+                    <HistoryItem arrHistoryClass={arrHistoryClass} />
+                  </Suspense>
+                ))}
+            </View>
+          );
         })
-        ) : (
+      ) : (
         <View style={{marginTop: 40}}>
           <Text style={{textAlign: 'center', color: MAIN_COLOR, fontSize: 25}}>
             Loading...
           </Text>
         </View>
-      )
-      }
+      )}
       {arrHistoryPagination.arrHistory.length > 0 ? (
         <View
           style={{
@@ -192,18 +191,17 @@ const History = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    margin: 15,
-    marginHorizontal: 20,
-    marginTop: 5,
-    borderWidth: 1,
-    backgroundColor: 'white',
-    paddingHorizontal: 5,
-    paddingBottom: 1,
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     marginHorizontal: '12%',
+//     // borderRadius: ,
+//     backgroundColor: 'white',
+//     paddingHorizontal: 5,
+//     paddingBottom: 0,
+//     // borderColor: 'grey',
+//     // borderWidth: 0.5,
+//     marginBottom: 5,
+//   },
+// });
 
 export default History;
-
- 

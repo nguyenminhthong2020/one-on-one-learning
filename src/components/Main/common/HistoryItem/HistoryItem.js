@@ -12,10 +12,13 @@ import {
 // import {useForm, Controller} from 'react-hook-form';
 import FastImage from 'react-native-fast-image';
 import moment from 'moment';
+import { useSelector } from 'react-redux';
 
 const HistoryItem = props => {
   const arrHistoryClass = props.arrHistoryClass;
+  const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
   return (
+    <View>
     <View style={styles.container}>
       <View>
         <FastImage
@@ -66,6 +69,8 @@ const HistoryItem = props => {
         </View>
       </View>
     </View>
+    <Text style={{marginHorizontal: '12%', color: isDarkTheme?'white':'black'}} numberOfLines={3}>{arrHistoryClass.tutorReview}</Text>
+    </View>
   );
 };
 
@@ -73,13 +78,19 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    margin: 2,
     marginHorizontal: '12%',
     marginTop: 5,
-    borderRadius: 5,
+    borderTopLeftRadius:5,
+    borderTopRightRadius:5,
     backgroundColor: 'white',
     paddingHorizontal: 5,
     paddingBottom: 1,
+
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
 });
 

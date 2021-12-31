@@ -34,7 +34,7 @@ export default function ChangeSetting(props) {
               style={{paddingLeft: 15}}
             />
           )}
-          <Text style={[styles.text,{color: isDarkTheme?'white':'gray'}]}>{props.title}</Text>
+          <Text style={[styles.text,{color: isDarkTheme?'white':'black'}]}>{props.title}</Text>
           <View style={styles.switch}>
             <Switch 
   //             style={{transform: [{ scaleX:  moderateScale(1.5, 0.2) }, { scaleY:  

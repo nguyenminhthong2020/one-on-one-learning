@@ -3,13 +3,7 @@ import React, {useState, useEffect} from 'react';
 import {
   Text,
   View,
-  TextInput,
-  StyleSheet,
-  //TouchableOpacity,
-  Pressable,
   ScrollView,
-  FlatList,
-  //SafeAreaView,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import TutorItem from '../../common/TutorItem/TutorItem';

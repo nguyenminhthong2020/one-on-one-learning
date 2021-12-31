@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, {useState, Suspense, useEffect} from 'react';
-import {MAIN_COLOR} from '../../../globals/constant';
+import {MAIN_COLOR, THIRD_COLOR} from '../../../globals/constant';
 import {
   Text,
   View,
@@ -366,13 +366,20 @@ const UpcomingNew = props => {
 
   const langState = useSelector(state => state.lang);
   return (
-    <ScrollView>
+    <ScrollView style={{backgroundColor: isDarkTheme? 'black':'white'}}>
       {arrSchedulePagination.arrSchedule.length > 0 ? (
         arrSchedulePagination.arrDate.map(function (date, index1) {
           return (
-            <View key={index1} style={{paddingBottom: 20}}>
+            <View key={index1} style={{paddingBottom: 18}}>
               <View style={{marginLeft: '12%'}}>
-                <Text style={{color: isDarkTheme ? 'white': 'black', fontSize: 20, fontWeight: 'bold'}}>{date}</Text>
+                <Text
+                  style={{
+                    color: THIRD_COLOR,
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                  }}>
+                  {date}
+                </Text>
               </View>
               {arrSchedulePagination.arrSchedule
                 .filter(
@@ -382,7 +389,15 @@ const UpcomingNew = props => {
                     ).format('YYYY-MM-DD') == date,
                 )
                 .map((arrScheduleClass, index) => (
-                  <View style={styles.container} key={index}>
+                  <View
+                    style={[
+                      styles.container,
+                      {
+                        borderTopLeftRadius: 8,
+                        borderTopRightRadius: 8,
+                      },
+                    ]}
+                    key={index}>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
                       <View>
                         <FastImage
@@ -454,9 +469,6 @@ const UpcomingNew = props => {
                             // width: '100%',
                             backgroundColor: 'orange',
                             paddingVertical: 4,
-                            borderWidth: 1,
-                            borderRadius: 5,
-                            //marginLeft: 5
                           }}>
                           <Text
                             style={{
@@ -483,8 +495,6 @@ const UpcomingNew = props => {
                                 ? MAIN_COLOR
                                 : 'grey',
                             paddingVertical: 4,
-                            borderWidth: 1,
-                            borderRadius: 5,
                           }}>
                           <Text
                             style={{
@@ -582,7 +592,7 @@ const UpcomingNew = props => {
                   width: 30,
                   paddingVertical: 5,
                   borderRadius: 5,
-                  marginBottom: 15
+                  marginBottom: 15,
                 }}>
                 <Text style={{textAlign: 'center'}}>{index + 1}</Text>
               </Pressable>
@@ -599,12 +609,19 @@ const UpcomingNew = props => {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: '12%',
-    marginTop: 8,
-    // borderWidth: 1,
-    borderRadius: 5,
+    // borderRadius: ,
     backgroundColor: 'white',
     paddingHorizontal: 5,
-    paddingBottom: 1,
+    paddingBottom: 0,
+    // borderColor: 'grey',
+    // borderWidth: 0.5,
+    marginBottom: 5,
+
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
   },
 });
 
