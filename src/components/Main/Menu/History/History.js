@@ -18,11 +18,14 @@ import {getHistory} from '../../../../api/history/historyApi';
 const HistoryItem = React.lazy(() =>
   import('../../common/HistoryItem/HistoryItem'),
 );
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
+import moment from 'moment';
 
 const History = () => {
   const current = useSelector(state => state.auth.current);
+  const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
   const [arrHistoryPagination, setArrHistoryPagination] = useState({
+    arrDate: [],
     arrHistory: [],
     arrPagination: [],
     currentPage: 1,
@@ -33,34 +36,55 @@ const History = () => {
 
     const dateTimeLte = new Date().getTime();
     const str = `booking/list/student?page=1&perPage=10&dateTimeLte=${dateTimeLte}&orderBy=meeting&sortBy=desc`;
-    getHistory({str: str, accessToken: current.tokens.access.token}).then(data => {
-      if (data.count > 0) {
-        const _countPage = ~~(data.count / 10) + 1;
-        let arrCount = [];
-        for (let i = 0; i < _countPage; i++) {
-          arrCount.push(i);
+    getHistory({str: str, accessToken: current.tokens.access.token}).then(
+      data => {
+        if (data.count > 0) {
+          const _countPage = ~~(data.count / 10) + 1;
+          let arrCount = [];
+          for (let i = 0; i < _countPage; i++) {
+            arrCount.push(i);
+          }
+
+          if (isMounted) {
+            setArrHistoryPagination({
+              arrDate: [
+                ...new Set(
+                  data.rows.map(item =>
+                    moment(
+                      item.scheduleDetailInfo.scheduleInfo.startTimestamp,
+                    ).format('YYYY-MM-DD'),
+                  ),
+                ),
+              ],
+              currentPage: 1,
+              arrHistory: data.rows,
+              arrPagination: arrCount.slice(0, 5),
+            });
+          }
         }
-        // setArrPagination(arrCount);
-        // setArrHistory(data.rows);
-        if(isMounted)
-        {setArrHistoryPagination({
-          currentPage: 1,
-          arrHistory: data.rows,
-          arrPagination: arrCount.slice(0, 5),
-        });}
-      }
-    });
+      },
+    );
     return () => {
       isMounted = false;
-      };
+    };
   }, []);
 
   return (
     <ScrollView>
-      <View style={{marginHorizontal: 10}}>
-      </View>
+      <View style={{marginHorizontal: 10}}></View>
       {arrHistoryPagination.arrHistory.length > 0 ? (
-        arrHistoryPagination.arrHistory.map((arrHistoryClass, index) => (
+        arrHistoryPagination.arrDate.map(function (date, index1) {
+          return (
+            <View key={index1} style={{paddingBottom: 20}}>
+              <View style={{marginLeft: '12%'}}>
+                <Text style={{color: isDarkTheme ? 'white': 'black', fontSize: 20, fontWeight: 'bold'}}>{date}</Text>
+              </View>
+              {arrHistoryPagination.arrHistory.filter(
+                  item =>
+                    moment(
+                      item.scheduleDetailInfo.scheduleInfo.startTimestamp,
+                    ).format('YYYY-MM-DD') == date,
+                ).map((arrHistoryClass, index) => (
           <Suspense
             fallback={
               <View style={{alignItems: 'center'}}>
@@ -68,16 +92,22 @@ const History = () => {
               </View>
             }
             key={index}>
-            <HistoryItem arrHistoryClass={arrHistoryClass}/>
+            <HistoryItem arrHistoryClass={arrHistoryClass} />
           </Suspense>
-        ))
-      ) : (
+                ))
+          }
+          
+              </View>
+          )
+        })
+        ) : (
         <View style={{marginTop: 40}}>
           <Text style={{textAlign: 'center', color: MAIN_COLOR, fontSize: 25}}>
             Loading...
           </Text>
         </View>
-      )}
+      )
+      }
       {arrHistoryPagination.arrHistory.length > 0 ? (
         <View
           style={{
@@ -116,9 +146,22 @@ const History = () => {
                   }&perPage=10&dateTimeLte=${dateTimeLte}&orderBy=meeting&sortBy=desc`;
                   // const data = getHistory({str: str});
 
-                  getHistory({str: str, accessToken: current.tokens.access.token}).then(data => {
+                  getHistory({
+                    str: str,
+                    accessToken: current.tokens.access.token,
+                  }).then(data => {
                     if (data.count > 0) {
                       setArrHistoryPagination({
+                        arrDate: [
+                          ...new Set(
+                            data.rows.map(item =>
+                              moment(
+                                item.scheduleDetailInfo.scheduleInfo
+                                  .startTimestamp,
+                              ).format('YYYY-MM-DD'),
+                            ),
+                          ),
+                        ],
                         arrHistory: data.rows,
                         arrPagination: arrHistoryPagination.arrPagination,
                         currentPage: index + 1,
@@ -130,7 +173,7 @@ const History = () => {
                 style={{
                   marginHorizontal: 3,
                   borderColor: 'black',
-                  backgroundColor: 'white',
+                  backgroundColor: 'yellow',
                   borderWidth: 1,
                   borderColor: 'black',
                   width: 30,
@@ -162,3 +205,5 @@ const styles = StyleSheet.create({
 });
 
 export default History;
+
+ 
