@@ -6,7 +6,8 @@ import {
   Text,
   View,
   Pressable,
-  Image,
+  Modal,
+  TouchableWithoutFeedback,
   Alert,
 } from 'react-native';
 
@@ -19,6 +20,7 @@ const SectionVideo = React.lazy(() => import('./SectionVideo'));
 import {useDispatch, useSelector} from 'react-redux';
 import CountryPicker from 'react-native-country-picker-modal';
 // import { detailApi } from '../../../../api/tutor/detailApi';
+
 import axios from 'axios';
 import {
   addFavAsync,
@@ -79,24 +81,6 @@ const FavoriteComponent = props => {
   );
 };
 
-const ReportAlert = tutorName =>
-  Alert.alert(
-    `Report ${tutorName} for some reasons:`,
-    `1) This tutor is annoying me. \n2) This profile is pretending be someone or is fake \n3) Inappropriate profile photo \n\n Please check he/she...`,
-    [
-      {
-        text: 'OK',
-        onPress: () => alert('Complete'),
-        style: 'default',
-      },
-      {
-        text: 'Cancel', //onPress: () => {alert("Cancel");console.log(123);},
-        style: 'destructive',
-      },
-    ],
-    {cancelable: true},
-  );
-
 const TutorDetailNew = props => {
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
   const current = useSelector(state => state.auth.current);
@@ -108,6 +92,7 @@ const TutorDetailNew = props => {
     },
   });
 
+  const [isVisible, setIsVisible] = useState(false);
   const [detailTutor, setDetailTutor] = useState({
     price: 0,
     avgRating: 0,
@@ -118,22 +103,23 @@ const TutorDetailNew = props => {
     axiosInstance1
       .get(`tutor/${props.route.params.tutor.userId}`)
       .then(res => {
-        axiosInstance1.get('user/info').then(res1 => 
-          {
-            if(isMounted){
+        axiosInstance1
+          .get('user/info')
+          .then(res1 => {
+            if (isMounted) {
               setDetailTutor({
                 price: res.data.price,
                 avgRating: res.data.avgRating,
               });
             }
-            
-          }).catch(err1 => {
+          })
+          .catch(err1 => {
             if (JSON.stringify(err1).includes('message')) {
               alert('FAIL:\n' + err1.response.data.message);
             } else {
               alert('FAIL:\n' + err1);
             }
-          })
+          });
         // if (isMounted) {
         //   setDetailTutor({
         //     price: res.data.price,
@@ -151,10 +137,28 @@ const TutorDetailNew = props => {
 
   const langState = useSelector(state => state.lang);
 
+  // const ReportAlert = tutorName =>
+  //   Alert.alert(
+  //     `Report ${tutorName} for some reasons:`,
+  //     `1) This tutor is annoying me. \n2) This profile is pretending be someone or is fake \n3) Inappropriate profile photo \n\n Please check he/she...`,
+  //     [
+  //       {
+  //         text: 'OK',
+  //         onPress: () => alert('Complete'),
+  //         style: 'default',
+  //       },
+  //       {
+  //         text: 'Cancel', //onPress: () => {alert("Cancel");console.log(123);},
+  //         style: 'destructive',
+  //       },
+  //     ],
+  //     {cancelable: true},
+  //   );
+
   return (
     <View style={{marginTop: 0}}>
       <ScrollView>
-        <View style={{backgroundColor: isDarkTheme? 'black': 'white'}}>
+        <View style={{backgroundColor: isDarkTheme ? 'black' : 'white'}}>
           <View
             style={{
               backgroundColor: 'gray',
@@ -163,7 +167,10 @@ const TutorDetailNew = props => {
             }}>
             <Suspense
               fallback={<ActivityIndicator size="large" color="#00ff00" />}>
-              <SectionVideo uri={props.route.params.tutor.video} navigation={props.navigation}/>
+              <SectionVideo
+                uri={props.route.params.tutor.video}
+                navigation={props.navigation}
+              />
             </Suspense>
           </View>
 
@@ -216,11 +223,7 @@ const TutorDetailNew = props => {
                       <Text style={{color: 'orange'}}>
                         {detailTutor.avgRating}/5{' '}
                       </Text>
-                      <MaterialIcons
-                      name={'star'}
-                      size={20}
-                      color="orange"
-                    />
+                      <MaterialIcons name={'star'} size={20} color="orange" />
                       {/* <Image
                         source={require('../../../../../assets/rating.png')}
                       /> */}
@@ -283,12 +286,12 @@ const TutorDetailNew = props => {
             }}>
             <View>
               <Pressable
-                // onPress={() =>
-                //   props.navigation.navigate('TutorMessage', {
-                //     uri: props.route.params.tutor.avatar,
-                //     name: props.route.params.tutor.name,
-                //   })
-                // }>
+              // onPress={() =>
+              //   props.navigation.navigate('TutorMessage', {
+              //     uri: props.route.params.tutor.avatar,
+              //     name: props.route.params.tutor.name,
+              //   })
+              // }>
               >
                 <View style={{alignItems: 'center'}}>
                   <View style={{marginBottom: 3}}>
@@ -312,7 +315,7 @@ const TutorDetailNew = props => {
               </Pressable>
             </View>
             <View>
-              <Pressable onPress={() => ReportAlert('April Corpuz')}>
+              <Pressable onPress={() => setIsVisible(!isVisible)}>
                 <View style={{alignItems: 'center'}}>
                   <View style={{marginBottom: 3}}>
                     <MaterialIcons
@@ -483,6 +486,53 @@ const TutorDetailNew = props => {
             </Pressable>
           </View>
         </View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={isVisible}
+          onRequestClose={() => {
+            setIsVisible(!isVisible);
+          }}>
+          <View
+            style={{
+              backgroundColor: 'white',
+              width: '50%',
+              height: '50%',
+              marginTop: 50,
+              marginHorizontal: '25%',
+              position: 'absolute',
+              elevation: 100,
+              //opacity: 1,
+            }}>
+            <Text>Huhu</Text>
+            <Text>1</Text>
+            <Text>2</Text>
+            <Text>1</Text>
+            <Text>2</Text>
+            <Text>1</Text>
+            <Text>2</Text>
+            <Pressable
+              style={{
+                backgroundColor: MAIN_COLOR,
+                marginHorizontal: 20,
+                paddingVertical: 7,
+                borderRadius: 5,
+              }}
+              onPress={() => setIsVisible(!isVisible)}>
+              <Text style={{textAlign: 'center', fontSize: 18, color: 'white'}}>
+                Close
+              </Text>
+            </Pressable>
+          </View>
+          <Pressable
+            onPress={() => setIsVisible(!isVisible)}
+            style={{
+              backgroundColor: 'grey',
+              opacity: 0,
+              width: '100%',
+              height: '100%',
+            }}></Pressable>
+        </Modal>
       </ScrollView>
     </View>
   );
