@@ -6,12 +6,11 @@ import {
   Text,
   View,
   Pressable,
+  TextInput,
   Modal,
-  TouchableWithoutFeedback,
-  Alert,
 } from 'react-native';
 
-import {MAIN_COLOR, BASE_URL} from '../../../../globals/constant';
+import {MAIN_COLOR, BASE_URL, SECOND_COLOR} from '../../../../globals/constant';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FastImage from 'react-native-fast-image';
@@ -93,6 +92,7 @@ const TutorDetailNew = props => {
   });
 
   const [isVisible, setIsVisible] = useState(false);
+  const [report, setReport] = useState('');
   const [detailTutor, setDetailTutor] = useState({
     price: 0,
     avgRating: 0,
@@ -486,54 +486,100 @@ const TutorDetailNew = props => {
             </Pressable>
           </View>
         </View>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={isVisible}
-          onRequestClose={() => {
-            setIsVisible(!isVisible);
+      </ScrollView>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isVisible}
+        onRequestClose={() => {
+          setIsVisible(!isVisible);
+        }}>
+        <View
+          style={{
+            backgroundColor: 'white',
+            width: '70%',
+            marginTop: 220,
+            marginHorizontal: '15%',
+            borderRadius: 5,
+            borderWidth: 1,
+            borderColor: 'black',
+            //opacity: 1,
           }}>
+          <Text
+            style={{
+              textAlign: 'center',
+              fontSize: 16,
+              fontWeight: 'bold',
+              color: MAIN_COLOR,
+              marginBottom: 20,
+            }}>
+            Help us understand what's happening
+          </Text>
+          <TextInput
+            style={{
+              borderWidth: 1,
+              borderColor: SECOND_COLOR,
+              fontSize: 15,
+              marginHorizontal: 12,
+              backgroundColor: 'white',
+              marginBottom: 12,
+            }}
+            numberOfLines={4}
+            multiline
+            onChangeText={value => setReport(value)}
+          />
           <View
             style={{
-              backgroundColor: 'white',
-              width: '50%',
-              height: '50%',
-              marginTop: 50,
-              marginHorizontal: '25%',
-              position: 'absolute',
-              elevation: 100,
-              //opacity: 1,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginHorizontal: 5,
             }}>
-            <Text>Huhu</Text>
-            <Text>1</Text>
-            <Text>2</Text>
-            <Text>1</Text>
-            <Text>2</Text>
-            <Text>1</Text>
-            <Text>2</Text>
             <Pressable
               style={{
                 backgroundColor: MAIN_COLOR,
-                marginHorizontal: 20,
+                width: '48%',
                 paddingVertical: 7,
                 borderRadius: 5,
+                marginBottom: 5,
+              }}
+              onPress={() => {
+                axiosInstance1
+                  .post(`report`, {
+                    content: report,
+                    tutorId: props.route.params.tutor.userId
+                  })
+                  .then(res => {
+                    alert("Report successfully");
+                    setIsVisible(!isVisible)
+                  })
+                  .catch(err => {
+                        if (JSON.stringify(err).includes('message')) {
+                          alert('FAIL:\n' + err.response.data.message);
+                        } else {
+                          alert('FAIL:\n' + err);
+                        }
+                  });
+              }}>
+              <Text style={{textAlign: 'center', fontSize: 18, color: 'white'}}>
+                Submit
+              </Text>
+            </Pressable>
+            <Pressable
+              style={{
+                backgroundColor: 'orange',
+                width: '48%',
+                paddingVertical: 7,
+                borderRadius: 5,
+                marginBottom: 5,
               }}
               onPress={() => setIsVisible(!isVisible)}>
               <Text style={{textAlign: 'center', fontSize: 18, color: 'white'}}>
-                Close
+                Cancel
               </Text>
             </Pressable>
           </View>
-          <Pressable
-            onPress={() => setIsVisible(!isVisible)}
-            style={{
-              backgroundColor: 'grey',
-              opacity: 0,
-              width: '100%',
-              height: '100%',
-            }}></Pressable>
-        </Modal>
-      </ScrollView>
+        </View>
+      </Modal>
     </View>
   );
 };

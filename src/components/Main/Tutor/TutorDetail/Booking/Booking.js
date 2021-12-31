@@ -1,8 +1,17 @@
 /* eslint-disable */
 import React, {useState, useEffect} from 'react';
-import {ScrollView, Text, View, Pressable, Alert, ActivityIndicator} from 'react-native';
+import {
+  ScrollView,
+  Text,
+  View,
+  Pressable,
+  Alert,
+  ActivityIndicator,
+  Modal,
+  Dimensions,
+} from 'react-native';
 import {BASE_URL, MAIN_COLOR} from '../../../../../globals/constant';
-import Modal from 'react-native-modal';
+// import Modal from 'react-native-modal';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 import {useSelector} from 'react-redux';
@@ -10,9 +19,11 @@ import {getScheduleBooking} from '../../../../../api/booking/bookingApi';
 import moment from 'moment';
 import axios from 'axios';
 
+const _height = Dimensions.get('window').height;
 const Booking = props => {
   const current = useSelector(state => state.auth.current);
   const [arrayDateTime, setArrayDateTime] = useState([]);
+  const [isModalLoading, setModalIsLoading] = useState(false);
 
   useEffect(() => {
     let cancel = false;
@@ -184,6 +195,7 @@ const Booking = props => {
                         .then(res => {
                           // toggleModalTime();
                           // BookingSuccess(tutor, date, time);
+                          setModalIsLoading(true);
                           getScheduleBooking({
                             tutorId: props.tutorId,
                             accessToken: props.accessToken,
@@ -263,6 +275,7 @@ const Booking = props => {
                               });
                             }
                             setArrayDateTime(arrDate);
+                            setModalIsLoading(false);
                           });
                         })
                         .catch(err => {
@@ -306,13 +319,17 @@ const Booking = props => {
     //     ],
     //     {cancelable: true},
     //   );
-
     return isModalVisibleTime ? (
-      <View style={{backgroundColor: 'white'}}>
-        <Modal isVisible={isModalVisibleTime}>
+      <View>
+        <Modal
+          isVisible={isModalVisibleTime}
+          animationType="slide"
+          transparent={true}>
+          <Pressable onPress={()=>setModalVisibleTime(!isModalVisibleTime)} style={{height: 250}}></Pressable>
           <View
-            style={{backgroundColor: 'white', width: '100%', height: '100%'}}>
-            <View
+            style={{backgroundColor: 'white', width: '100%'}}>
+            {/* {(props != null) & (props != undefined) ? ( */}
+              <View
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -321,7 +338,7 @@ const Booking = props => {
               <Text
                 style={{
                   color: 'black',
-                  marginLeft: 5,
+                  marginLeft: 25,
                   marginBottom: 10,
                   fontWeight: 'bold',
                   marginTop: 5,
@@ -334,12 +351,12 @@ const Booking = props => {
                 name={'close'}
                 size={32}
                 color={'gray'}
-                style={{marginTop: 5, marginRight: 5}}
+                style={{marginTop: 5, marginRight: 5, marginRight: 15}}
                 onPress={toggleModalTime}
               />
             </View>
-            {(props != null) & (props != undefined) ? (
-              <ScrollView showsHorizontalScrollIndicator={true}>
+            {isModalLoading != true ? (
+              <ScrollView showsHorizontalScrollIndicator={true} height={_height - 320}>
                 {props.arrayDateTime[props.id].time
                   .sort((x, y) => x.startEnd.localeCompare(y.startEnd))
                   .map((time, index) => (
@@ -387,16 +404,14 @@ const Booking = props => {
                   ))}
               </ScrollView>
             ) : (
-              <View>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    marginTop: 30,
-                    fontSize: 25,
-                    color: MAIN_COLOR,
-                  }}>
-                  Loading...
-                </Text>
+              <View style={{height: '100%'}}>
+                <View style={{alignItems: 'center'}}>
+                  <ActivityIndicator
+                    size="large"
+                    color="#00ff00"
+                    style={{marginTop: 30}}
+                  />
+                </View>
               </View>
             )}
           </View>
@@ -471,16 +486,16 @@ const Booking = props => {
             ))
           ) : (
             <View>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    marginTop: 35,
-                    fontSize: 25,
-                    color: MAIN_COLOR,
-                  }}>
-                  Loading...
-                </Text>
-              </View>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  marginTop: 35,
+                  fontSize: 25,
+                  color: MAIN_COLOR,
+                }}>
+                Loading...
+              </Text>
+            </View>
           )}
         </View>
       </ScrollView>
