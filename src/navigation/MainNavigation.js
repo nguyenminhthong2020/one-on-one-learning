@@ -147,7 +147,7 @@ function MainNavigation(props) {
       <Stack.Screen
         name="VideoCall"
         component={VideoCall}
-        options={{headerShown: true, title: 'Lesson Room'}}
+        options={{headerShown: true, title: langState.currentLang=='en'?'Lesson Room':'Phòng học'}}
       />
       <Stack.Screen
         name="Profile"
