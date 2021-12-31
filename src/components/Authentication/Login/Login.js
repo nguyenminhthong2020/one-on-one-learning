@@ -221,6 +221,7 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     flex: 1,
     flexDirection: 'column',
+    backgroundColor: 'white'
   },
   text: {
     color: MAIN_COLOR,

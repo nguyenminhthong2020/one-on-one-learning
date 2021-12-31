@@ -1,6 +1,6 @@
 /* eslint-disable */
-import React, {Suspense} from 'react';
-import {MAIN_COLOR} from '../../../globals/constant';
+import React from 'react';
+import {MAIN_COLOR, THIRD_COLOR} from '../../../globals/constant';
 import {
   Text,
   View,

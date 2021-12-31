@@ -133,14 +133,6 @@ const Profile = props => {
   }else{
     newwhatToLearn1 = [];
   }
-  // const newwhatToLearn1 = [...current.user.testPreparations].map(function (
-  //   item,
-  // ) {
-  //   return {
-  //     item: item.name,
-  //     id: item.id,
-  //   };
-  // });
   const _level = current.user.level != null ? current.user.level : 'BEGINNER';
   const _birthday = (
     current.user.birthday != null ? current.user.birthday : '1998-10-27'

@@ -1,9 +1,16 @@
 /* eslint-disable */
 import React from 'react';
-import { SafeAreaView, Text, Image, Pressable, StyleSheet, View} from 'react-native';
+import {
+  SafeAreaView,
+  Text,
+  Image,
+  Pressable,
+  StyleSheet,
+  View,
+} from 'react-native';
 import Modal from 'react-native-modal';
-
-import { images } from './assets';
+// import { images } from './assets';
+import FastImage from 'react-native-fast-image';
 
 export function ImagePickerModal({
   isVisible,
@@ -19,14 +26,28 @@ export function ImagePickerModal({
       style={styles.modal}>
       <SafeAreaView style={styles.buttons}>
         <Pressable style={styles.button} onPress={onImageLibraryPress}>
-          <Image style={styles.buttonIcon} source={require('./assets/image.jpg')} />
+          {/* <Image style={styles.buttonIcon} source={require('./assets/image.jpg')} /> */}
+          <FastImage
+            style={styles.buttonIcon}
+            resizeMode={FastImage.resizeMode.cover}
+            source={require('./assets/image.jpg')}
+            height={40}
+            width={40}
+          />
           <Text style={styles.buttonText}>Library</Text>
-          <View style={{height: 40}}/>
+          <View style={{height: 40}} />
         </Pressable>
         <Pressable style={styles.button} onPress={onCameraPress}>
-          <Image style={styles.buttonIcon} source={require('./assets/camera.png')} />
+          {/* <Image style={styles.buttonIcon} source={require('./assets/camera.png')} /> */}
+          <FastImage
+            style={styles.buttonIcon}
+            resizeMode={FastImage.resizeMode.cover}
+            source={require('./assets/camera.png')}
+            height={40}
+            width={40}
+          />
           <Text style={styles.buttonText}>Camera</Text>
-          <View style={{height: 40}}/>
+          <View style={{height: 40}} />
         </Pressable>
       </SafeAreaView>
     </Modal>
