@@ -334,7 +334,7 @@ const Search = props => {
             color: isDarkTheme ? 'white' : 'black',
             marginLeft: 10,
           }}>
-          Results:{' '}
+          {langState.currentLang=='en'?'Results':'Kết quả'}:{' '}
         </Text>
         <FontAwesome
           name="refresh"

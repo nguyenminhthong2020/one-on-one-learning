@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
-//import {MAIN_COLOR} from '../../../globals/constant';
+import {useSelector} from 'react-redux';
 
 const CountdownTimer = props => {
   let countDownDate = new Date(props.timeStart).getTime(); // thay string = props.timeStart;
@@ -15,8 +15,7 @@ const CountdownTimer = props => {
 
   const [time, setTime] = useState({hours, minutes, seconds, days});
   const [isShow, setIsShow] = useState(true);
-
-  
+  const langState = useSelector(state => state.lang);
 
   useEffect(() => {
     let startTimer = setInterval(function () {
@@ -40,7 +39,7 @@ const CountdownTimer = props => {
 
   return isShow ? (
     <View style={{height: '100%', padding: 0, backgroundColor: 'gray', marginHorizontal: 0, /*marginTop: '50%'*/}}>
-      <Text style={{color: 'white', fontSize: 17, textAlign: 'center'}}>Lessons will be started after</Text>
+      <Text style={{color: 'white', fontSize: 17, textAlign: 'center'}}>{langState.currentLang=='en'?'Lessons will be started after':'Buổi học sẽ bắt đầu sau'}</Text>
       <Text style={{marginTop: 4, color: 'white', fontSize: 19, fontWeight: 'bold', textAlign: 'center'}}>{time.days < 10 && '0'}{time.days} : {time.hours < 10 && '0'}{time.hours} : {time.minutes < 10 && '0'}{time.minutes} : {time.seconds < 10 && '0'}{time.seconds}</Text>
     </View>
   ) : (

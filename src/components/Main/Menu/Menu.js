@@ -22,11 +22,12 @@ import { logout } from '../../../redux/slices/auth/loginSlice';
 const Menu = props => {
   const dispatch = useDispatch();
   const langState = useSelector(state => state.lang);
+  const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
 
   return (
     <ScrollView>
       <View style={styles.container}>
-        <View style={styles.content}>
+        <View style={[styles.content, {backgroundColor: isDarkTheme?'black':null}]}>
           {/* <ButtonIcon type={'FontAwesome5'} name={'home'} title={'Home'} handleOnPress={() => alert('home')}/> */}
           <ButtonIcon
             type={'AntDesign'}

@@ -69,6 +69,7 @@ import { initNew } from '../../../../redux/slices/auth/loginSlice';
 const VideoIntroduction = props => {
   const dispatch = useDispatch();
   const current = useSelector(state => state.auth.current);
+  const langState = useSelector(state => state.lang);
   const [file, setFile] = useState({
     uri: ``,
     name: ``,
@@ -245,7 +246,7 @@ const VideoIntroduction = props => {
           }}
           onPress={() => setVisible(true)}>
           <Text style={{textAlign: 'center', fontSize: 16, color: MAIN_COLOR}}>
-            Choose video
+            {langState.currentLang=='en'?'Choose video':'Chọn video'}
           </Text>
         </TouchableOpacity>
         <View
@@ -268,7 +269,7 @@ const VideoIntroduction = props => {
             onPress={() => props.navigation.navigate('BecomeTutor')}>
             <Text
               style={{textAlign: 'center', fontSize: 16, color: MAIN_COLOR}}>
-              Previous
+              {langState.currentLang=='en'?'Previous':'Quay lại'}
             </Text>
           </Pressable>
           <Pressable
@@ -284,7 +285,7 @@ const VideoIntroduction = props => {
             <Text
               style={{textAlign: 'center', fontSize: 16, color: 'white'}}
               onPress={onDone}>
-              Done
+              {langState.currentLang=='en'?'Done':'Hoàn tất'}
             </Text>
           </Pressable>
         </View>

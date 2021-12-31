@@ -393,7 +393,7 @@ const TutorDetailNew = props => {
           <View style={{marginTop: 25, marginHorizontal: 15}}>
             <Text
               style={{
-                color: 'black',
+                color: isDarkTheme? 'white': 'black',
                 fontSize: 16,
                 fontWeight: 'bold',
                 marginBottom: 2,
@@ -513,7 +513,7 @@ const TutorDetailNew = props => {
               color: MAIN_COLOR,
               marginBottom: 20,
             }}>
-            Help us understand what's happening
+            {langState.currentLang=='en'? `Help us understand\nwhat's happening`:`Giúp chúng tôi hiểu\nxảy ra chuyện gì`}
           </Text>
           <TextInput
             style={{
@@ -561,7 +561,7 @@ const TutorDetailNew = props => {
                   });
               }}>
               <Text style={{textAlign: 'center', fontSize: 18, color: 'white'}}>
-                Submit
+                {langState.currentLang=='en'?'Submit':'Gửi'}
               </Text>
             </Pressable>
             <Pressable
@@ -574,7 +574,7 @@ const TutorDetailNew = props => {
               }}
               onPress={() => setIsVisible(!isVisible)}>
               <Text style={{textAlign: 'center', fontSize: 18, color: 'white'}}>
-                Cancel
+              {langState.currentLang=='en'?'Cancel':'Hủy'}
               </Text>
             </Pressable>
           </View>

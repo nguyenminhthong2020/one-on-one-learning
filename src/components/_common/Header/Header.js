@@ -9,12 +9,14 @@ import {
   // ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useSelector } from 'react-redux';
 //const Icon = React.lazy(() => import('react-native-vector-icons/Ionicons'));
 
 const Header = (props) => {
+  const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
   return (
     <View style={styles.container}>
-      <View style={styles.shadow}>
+      <View style={[styles.shadow, {backgroundColor: isDarkTheme?'black': 'white'}]}>
         <View>
           <Text style={styles.leftHeader}>LetTutor</Text>
         </View>

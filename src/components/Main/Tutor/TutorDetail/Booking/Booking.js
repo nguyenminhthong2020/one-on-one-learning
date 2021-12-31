@@ -22,6 +22,7 @@ import axios from 'axios';
 const _height = Dimensions.get('window').height;
 const Booking = props => {
   const current = useSelector(state => state.auth.current);
+  const langState = useSelector(state => state.lang);
   const [arrayDateTime, setArrayDateTime] = useState([]);
   const [isModalLoading, setModalIsLoading] = useState(false);
 
@@ -345,7 +346,7 @@ const Booking = props => {
                   fontSize: 18,
                   textAlign: 'center',
                 }}>
-                {`Picking your time\n(${props.arrayDateTime[props.id].date})`}
+                {langState.currentLang=='en'?`Picking your time\n(${props.arrayDateTime[props.id].date})`:`Chọn giờ học\n(${props.arrayDateTime[props.id].date})`}
               </Text>
               <EvilIcons
                 name={'close'}

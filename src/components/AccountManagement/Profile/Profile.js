@@ -532,6 +532,7 @@ const Profile = props => {
                 flexDirection: 'row',
                 borderWidth: 1,
                 alignItems: 'center',
+                backgroundColor: 'white'
               }}>
               <TextInput
                 style={{
@@ -546,7 +547,7 @@ const Profile = props => {
                 onChangeText={str => setBirthday(str)}
               />
               <Pressable
-                style={{marginRight: 5}}
+                style={{marginRight: 5, }}
                 onPress={() => setShowDatePicker(true)}>
                 <FontAwesome name="calendar" color="black" size={20} />
               </Pressable>
@@ -577,7 +578,7 @@ const Profile = props => {
           style={{
             paddingLeft: '10%',
             marginBottom: 15,
-            backgroundColor: isDarkTheme ? 'white' : SECOND_COLOR,
+            backgroundColor: isDarkTheme ? 'black' : SECOND_COLOR,
           }}>
           <View>
             <Text
@@ -587,6 +588,7 @@ const Profile = props => {
           </View>
           <SelectBox
             containerStyle={{marginTop: -15}}
+            optionContainerStyle={{backgroundColor:isDarkTheme?'white':null}}
             hideInputFilter
             label={false}
             inputPlaceholder={langState[langState.currentLang].Subject}
@@ -609,10 +611,11 @@ const Profile = props => {
           style={{
             paddingLeft: '10%',
             marginBottom: 25,
-            backgroundColor: isDarkTheme ? 'white' : SECOND_COLOR,
+            backgroundColor: isDarkTheme ? 'black' : SECOND_COLOR,
           }}>
           <SelectBox
             containerStyle={{marginTop: -15}}
+            optionContainerStyle={{backgroundColor:isDarkTheme?'white':null}}
             label={false}
             hideInputFilter
             inputPlaceholder={langState[langState.currentLang].TestPreparation}

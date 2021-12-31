@@ -162,12 +162,12 @@ function MainNavigation(props) {
       <Stack.Screen
         name="Booking"
         component={Booking}
-        options={{headerShown: true, title: 'Schedule & Booking'}}
+        options={{headerShown: true, title: langState.currentLang=='en'?'Schedule & Booking':'Thời khóa biểu & Đặt lịch'}}
       />
       <Stack.Screen
         name="TutorDetailComment"
         component={TutorDetailComment}
-        options={{headerShown: true, title: 'Rating and Comment'}}
+        options={{headerShown: true, title: langState.currentLang=='en'? 'Rating and Comment':'Bình luận & Đánh giá'}}
       />
       <Stack.Screen
         name="ListCourseNew"
@@ -187,7 +187,8 @@ function MainNavigation(props) {
       <Stack.Screen
         name="Discover"
         component={Discover}
-        options={{headerShown: true}}
+        options={{headerShown: true, title: langState.currentLang=='en'?"Discover":"Khám phá"
+        }}
       />
       <Stack.Screen
         name="DiscoverDetail"
@@ -221,7 +222,7 @@ function MainNavigation(props) {
       <Stack.Screen
         name="VideoIntroduction"
         component={VideoIntroduction}
-        options={{headerShown: true, title: 'Video Introduction'}}
+        options={{headerShown: true, title: langState.currentLang=='en'?'Video Introduction':'Video giới thiệu'}}
       />
       <Stack.Screen
         name="Approval"

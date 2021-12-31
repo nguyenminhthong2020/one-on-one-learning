@@ -1,12 +1,10 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 // /* eslint-disable */
-
 import React, {useEffect, useState} from 'react';
 import {View, Dimensions, Pressable, Text} from 'react-native';
 import JitsiMeet, {JitsiMeetView} from 'react-native-jitsi-meet';
 import CountdownTimer from '../common/CountdownTimer/CountDownTimer';
-// import {MAIN_COLOR} from '../../../globals/constant';
 
 let windowHeight = Dimensions.get('window').height;
 

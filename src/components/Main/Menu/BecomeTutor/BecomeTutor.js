@@ -1,6 +1,11 @@
 /* eslint-disable */
 import React, {useState, useEffect, useCallback} from 'react';
-import {MAIN_COLOR, SECOND_COLOR, THIRD_COLOR, BASE_URL} from '../../../../globals/constant';
+import {
+  MAIN_COLOR,
+  SECOND_COLOR,
+  THIRD_COLOR,
+  BASE_URL,
+} from '../../../../globals/constant';
 import {
   Text,
   View,
@@ -25,11 +30,8 @@ import RNDateTimePicker from '@react-native-community/datetimepicker';
 import CountryPicker from 'react-native-country-picker-modal';
 import axios from 'axios';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  logout,
-  initNew,
-} from '../../../../redux/slices/auth/loginSlice';
-import { convertSubject, convertTestPre } from '../../../../utils/utils';
+import {logout, initNew} from '../../../../redux/slices/auth/loginSlice';
+import {convertSubject, convertTestPre} from '../../../../utils/utils';
 
 // Phần Image Picker cho Avatar
 import * as ImagePicker from 'react-native-image-picker';
@@ -76,14 +78,17 @@ const Profile = props => {
           );
         })();
       }
-    }else{
-      axiosInstance1.get('user/info').then(res => {
-        if(JSON.stringify(res.data.user).includes("tutorInfo")){
-          if(res.data.user.tutorInfo != null){
-            props.navigation.navigate("Approval")
+    } else {
+      axiosInstance1
+        .get('user/info')
+        .then(res => {
+          if (JSON.stringify(res.data.user).includes('tutorInfo')) {
+            if(res.data.user.tutorInfo != null){
+              props.navigation.navigate("Approval")
+            }
           }
-        }
-      }).catch(err => console.log(err))
+        })
+        .catch(err => console.log(err));
     }
   }, []);
 
@@ -110,27 +115,25 @@ const Profile = props => {
   ];
 
   let newwhatToLearn;
-  if(current.user.hasOwnProperty('learnTopics'))
-  {
+  if (current.user.hasOwnProperty('learnTopics')) {
     newwhatToLearn = [...current.user.learnTopics].map(function (item) {
       return {
         item: item.name,
         id: item.id,
       };
     });
-  }else{
+  } else {
     newwhatToLearn = [];
   }
   let newwhatToLearn1;
-  if(current.user.hasOwnProperty('learnTopics'))
-  {
+  if (current.user.hasOwnProperty('learnTopics')) {
     newwhatToLearn1 = [...current.user.testPreparations].map(function (item) {
       return {
         item: item.name,
         id: item.id,
       };
     });
-  }else{
+  } else {
     newwhatToLearn1 = [];
   }
 
@@ -144,13 +147,13 @@ const Profile = props => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [birthday, setBirthday] = useState(_birthday);
   const [interests, setInterests] = useState('');
-  const [education, setEducation] =useState('');
+  const [education, setEducation] = useState('');
   const [experience, setExperience] = useState('');
   const [profession, setProfession] = useState('');
   const [bio, setBio] = useState('');
-  const [targetStudent, setTargetStudent] = useState("");
-  const [targetStudent1, setTargetStudent1] = useState("");
-  const [targetStudent2, setTargetStudent2] = useState(""); 
+  const [targetStudent, setTargetStudent] = useState('');
+  const [targetStudent1, setTargetStudent1] = useState('');
+  const [targetStudent2, setTargetStudent2] = useState('');
   //const [country, setCountry] = useState({name: 'Vietnam', cca2: 'VN'});
   const [country, setCountry] = useState({name: '', cca2: _country});
   const [name, setName] = useState(current.user.name);
@@ -192,11 +195,9 @@ const Profile = props => {
       //   }))
       // })
       // .catch(err => console.log(err))
-       
+
       // setState
-      if (
-        response.hasOwnProperty('assets')
-      ) {
+      if (response.hasOwnProperty('assets')) {
         setFile({
           uri: response.assets[0].uri,
           name: response.assets[0].fileName,
@@ -252,9 +253,7 @@ const Profile = props => {
             // .catch(err => console.log(err))
 
             // setState
-            if (
-              response.hasOwnProperty('assets')
-            ) {
+            if (response.hasOwnProperty('assets')) {
               setFile({
                 uri: response.assets[0].uri,
                 name: response.assets[0].fileName,
@@ -286,30 +285,27 @@ const Profile = props => {
 
   const onSubmit = data => {
     let specialties;
-    for(let i = 0; i < whatToLearn.length; i++){
-       specialties = specialties + convertSubject(whatToLearn[i].id) + ",";
+    for (let i = 0; i < whatToLearn.length; i++) {
+      specialties = specialties + convertSubject(whatToLearn[i].id) + ',';
     }
-    for(let j = 0; j < whatToLearn1.length; j++){
-      specialties = specialties + convertTestPre(whatToLearn1[j].id) + ",";
-   }
-   if(specialties.length > 0){
-     specialties = specialties.substring(0, specialties.length - 1);
-   }
+    for (let j = 0; j < whatToLearn1.length; j++) {
+      specialties = specialties + convertTestPre(whatToLearn1[j].id) + ',';
+    }
+    if (specialties.length > 0) {
+      specialties = specialties.substring(0, specialties.length - 1);
+    }
 
-   let languages = '';
-   if(targetStudent1 == '' && targetStudent2 != '')
-   {
-     languages = targetStudent2;
-   }
-   if(targetStudent1 != '' && targetStudent2 == '')
-   {
-     languages = targetStudent1;
-   }
-   if(targetStudent1 != '' && targetStudent2 != '')
-   {
-     languages = targetStudent1 + ',' + targetStudent2;
-   }
-   
+    let languages = '';
+    if (targetStudent1 == '' && targetStudent2 != '') {
+      languages = targetStudent2;
+    }
+    if (targetStudent1 != '' && targetStudent2 == '') {
+      languages = targetStudent1;
+    }
+    if (targetStudent1 != '' && targetStudent2 != '') {
+      languages = targetStudent1 + ',' + targetStudent2;
+    }
+
     // console.log(
     //   {
     //       accessToken: current.tokens.access.token,
@@ -334,7 +330,7 @@ const Profile = props => {
         uri: file.uri,
         type: file.type,
         name: file.name,
-        size: file.size
+        size: file.size,
       },
       name: name,
       country: country.cca2,
@@ -372,7 +368,6 @@ const Profile = props => {
     return item => setWhatToLearn1(xorBy(whatToLearn1, [item], 'id'));
   }
 
-
   return (
     <ScrollView style={styles.container} nestedScrollEnabled={true}>
       <View>
@@ -384,7 +379,7 @@ const Profile = props => {
             fontWeight: 'bold',
             marginBottom: 12,
           }}>
-          Basic Info
+          {langState.currentLang=='en'?'Basic Info':'Thông tin cơ bản'}
         </Text>
         <View
           style={{
@@ -470,7 +465,7 @@ const Profile = props => {
               style={{paddingLeft: 12}}
             />
           </View>
-          <View style={{marginLeft: 35}}>
+          <View style={{marginLeft: 35, backgroundColor: 'white'}}>
             <View
               style={{
                 flexDirection: 'row',
@@ -527,10 +522,16 @@ const Profile = props => {
           }}>
           CV
         </Text>
-        <Text style={{marginHorizontal: 12, fontSize: 15, marginBottom: 10}}>
-          In order to protect your privacy, please do not share your personal
+        <Text
+          style={{
+            marginHorizontal: 12,
+            fontSize: 15,
+            marginBottom: 10,
+            color: isDarkTheme ? 'white' : 'black',
+          }}>
+          {langState.currentLang=='en'?`In order to protect your privacy, please do not share your personal
           information (email, phone number, social email, skype, etc) in your
-          profile.
+          profile.`:`Để bảo vệ quyền riêng tự, xin đừng chia sẻ thông tin cá nhân của bạn (email, điện thoại,...) trong profile`}
         </Text>
         <Text
           style={{
@@ -538,8 +539,9 @@ const Profile = props => {
             fontSize: 16,
             marginBottom: 5,
             fontWeight: 'bold',
+            color: isDarkTheme ? 'yellow' : MAIN_COLOR,
           }}>
-          Interests
+          {langState.currentLang=='en'?'Interests':'Điều quan tâm'}
         </Text>
         <TextInput
           style={{
@@ -559,8 +561,9 @@ const Profile = props => {
             fontSize: 16,
             marginBottom: 5,
             fontWeight: 'bold',
+            color: isDarkTheme ? 'yellow' : MAIN_COLOR,
           }}>
-          Education
+          {langState.currentLang=='en'?'Education':'Học vấn'}
         </Text>
         <TextInput
           style={{
@@ -580,8 +583,9 @@ const Profile = props => {
             fontSize: 16,
             marginBottom: 5,
             fontWeight: 'bold',
+            color: isDarkTheme ? 'yellow' : MAIN_COLOR,
           }}>
-          Experience
+          {langState.currentLang=='en'?'Experience':'Kinh nghiệm'}
         </Text>
         <TextInput
           style={{
@@ -600,8 +604,9 @@ const Profile = props => {
             fontSize: 16,
             marginBottom: 5,
             fontWeight: 'bold',
+            color: isDarkTheme ? 'yellow' : MAIN_COLOR,
           }}>
-          Current or Previous Profession
+          {langState.currentLang=='en'?'Current or Previous Profession':'Nghề nghiệp gần nhất'}
         </Text>
         <TextInput
           style={{
@@ -643,7 +648,7 @@ const Profile = props => {
             marginBottom: 12,
             marginTop: 10,
           }}>
-          Languages I speak
+          {langState.currentLang=='en'?'Languages I speak':'Ngôn ngữ sử dụng'}
         </Text>
         <Text
           style={{
@@ -651,8 +656,9 @@ const Profile = props => {
             fontSize: 16,
             marginBottom: 5,
             fontWeight: 'bold',
+            color: isDarkTheme ? 'yellow' : MAIN_COLOR,
           }}>
-          Language 1:
+          {langState.currentLang=='en'?'Language 1:':'Ngôn ngữ 1'}
         </Text>
         <Picker
           style={{
@@ -662,25 +668,25 @@ const Profile = props => {
             borderWidth: 1,
             color: 'black',
             marginLeft: 90,
-            backgroundColor: 'white'
+            backgroundColor: 'white',
           }}
           selectedValue={targetStudent1}
           onValueChange={itemValue => setTargetStudent1(itemValue)}>
-          <Picker.Item label="(None)" value=""/>
-          <Picker.Item label="Arabic" value="Arabic"/>
-          <Picker.Item label="Bengali" value="Bengali"/>
+          <Picker.Item label="(None)" value="" />
+          <Picker.Item label="Arabic" value="Arabic" />
+          <Picker.Item label="Bengali" value="Bengali" />
           <Picker.Item label="English" value="English" />
           <Picker.Item label="Filipino" value="Filipino" />
           <Picker.Item label="French" value="French" />
           <Picker.Item label="German" value="German" />
           <Picker.Item label="Hindi" value="Hindi" />
-          <Picker.Item label="Indonesian" value="Indonesian"/>
+          <Picker.Item label="Indonesian" value="Indonesian" />
           <Picker.Item label="Italian" value="Italian" />
           <Picker.Item label="Japanese" value="Japanese" />
           <Picker.Item label="Korean" value="Korean" />
           <Picker.Item label="Mandarin" value="Mandarin" />
-          <Picker.Item label="Portuguese" value="Portuguese"/>
-          <Picker.Item label="Russian" value="Russian"/>
+          <Picker.Item label="Portuguese" value="Portuguese" />
+          <Picker.Item label="Russian" value="Russian" />
           <Picker.Item label="Spanish" value="Spanish" />
           <Picker.Item label="Tagalog" value="Tagalog" />
           <Picker.Item label="Vietnamese" value="Vietnamese" />
@@ -692,8 +698,9 @@ const Profile = props => {
             marginBottom: 5,
             fontWeight: 'bold',
             marginTop: 8,
+            color: isDarkTheme ? 'yellow' : MAIN_COLOR,
           }}>
-          Language 2:
+          {langState.currentLang=='en'?'Language 2:':'Ngôn ngữ 2'}
         </Text>
         <Picker
           style={{
@@ -703,25 +710,25 @@ const Profile = props => {
             borderWidth: 1,
             color: 'black',
             marginLeft: 90,
-            backgroundColor: 'white'
+            backgroundColor: 'white',
           }}
           selectedValue={targetStudent2}
           onValueChange={itemValue => setTargetStudent2(itemValue)}>
-          <Picker.Item label="(None)" value=""/>
-          <Picker.Item label="Arabic" value="Arabic"/>
-          <Picker.Item label="Bengali" value="Bengali"/>
+          <Picker.Item label="(None)" value="" />
+          <Picker.Item label="Arabic" value="Arabic" />
+          <Picker.Item label="Bengali" value="Bengali" />
           <Picker.Item label="English" value="English" />
           <Picker.Item label="Filipino" value="Filipino" />
           <Picker.Item label="French" value="French" />
           <Picker.Item label="German" value="German" />
           <Picker.Item label="Hindi" value="Hindi" />
-          <Picker.Item label="Indonesian" value="Indonesian"/>
+          <Picker.Item label="Indonesian" value="Indonesian" />
           <Picker.Item label="Italian" value="Italian" />
           <Picker.Item label="Japanese" value="Japanese" />
           <Picker.Item label="Korean" value="Korean" />
           <Picker.Item label="Mandarin" value="Mandarin" />
-          <Picker.Item label="Portuguese" value="Portuguese"/>
-          <Picker.Item label="Russian" value="Russian"/>
+          <Picker.Item label="Portuguese" value="Portuguese" />
+          <Picker.Item label="Russian" value="Russian" />
           <Picker.Item label="Spanish" value="Spanish" />
           <Picker.Item label="Tagalog" value="Tagalog" />
           <Picker.Item label="Vietnamese" value="Vietnamese" />
@@ -735,10 +742,16 @@ const Profile = props => {
             marginBottom: 12,
             marginTop: 20,
           }}>
-          Who I teach
+          {langState.currentLang=='en'?'Who I teach':'Người tôi học'}
         </Text>
-        <Text style={{marginHorizontal: 12, fontSize: 15, marginBottom: 10}}>
-          This is the first thing students will see when looking for tutors.
+        <Text
+          style={{
+            marginHorizontal: 12,
+            fontSize: 15,
+            marginBottom: 10,
+            color: isDarkTheme ? 'white' : 'black',
+          }}>
+          {langState.currentLang=='en'?`This is the first thing students will see when looking for tutors.`:`Đây là thông tin học viên sẽ thấy đầu tiên khi vào xem` }
         </Text>
         <Text
           style={{
@@ -746,8 +759,9 @@ const Profile = props => {
             fontSize: 16,
             marginBottom: 5,
             fontWeight: 'bold',
+            color: isDarkTheme?'yellow':MAIN_COLOR
           }}>
-          Introduction
+          {langState.currentLang=='en'?'Introduction':'Giới thiệu'}
         </Text>
         <TextInput
           style={{
@@ -766,9 +780,10 @@ const Profile = props => {
             fontSize: 16,
             marginBottom: 5,
             fontWeight: 'bold',
-            marginTop: 5,
+            marginTop: 5,            
+            color: isDarkTheme?'yellow':MAIN_COLOR
           }}>
-          I am best at teaching students who are
+          {langState.currentLang=='en'?`I am best at teaching students who are`:'Tôi giỏi nhất là dạy cho học viên'}
         </Text>
         <Picker
           style={{
@@ -778,7 +793,7 @@ const Profile = props => {
             borderWidth: 1,
             color: 'black',
             marginLeft: 90,
-            backgroundColor: 'white'
+            backgroundColor: 'white',
           }}
           selectedValue={targetStudent}
           onValueChange={itemValue => setTargetStudent(itemValue)}>
@@ -793,14 +808,15 @@ const Profile = props => {
             marginBottom: 5,
             fontWeight: 'bold',
             marginTop: 5,
+            color: isDarkTheme?'yellow':MAIN_COLOR
           }}>
-          My specialties are:{' '}
+          {langState.currentLang=='en'?'My specialties are':'Các kỹ năng của tôi'}:{' '}
         </Text>
         <View
           style={{
             paddingLeft: '10%',
             marginBottom: 15,
-            backgroundColor: isDarkTheme ? 'white' : SECOND_COLOR,
+            backgroundColor: isDarkTheme ? 'black' : SECOND_COLOR,
           }}>
           <View>
             <Text
@@ -810,6 +826,7 @@ const Profile = props => {
           </View>
           <SelectBox
             containerStyle={{marginTop: -15}}
+            optionContainerStyle={{backgroundColor:isDarkTheme?'white':null}}
             hideInputFilter
             label={false}
             inputPlaceholder={langState[langState.currentLang].Subject}
@@ -832,10 +849,11 @@ const Profile = props => {
           style={{
             paddingLeft: '10%',
             marginBottom: 25,
-            backgroundColor: isDarkTheme ? 'white' : SECOND_COLOR,
+            backgroundColor: isDarkTheme ? 'black' : SECOND_COLOR,
           }}>
           <SelectBox
             containerStyle={{marginTop: -15}}
+            optionContainerStyle={{backgroundColor:isDarkTheme?'white':null}}
             label={false}
             hideInputFilter
             inputPlaceholder={langState[langState.currentLang].TestPreparation}
@@ -847,7 +865,7 @@ const Profile = props => {
             width={'90%'}
             listOptionProps={{nestedScrollEnabled: true}}
           />
-        </View> 
+        </View>
         <View style={{marginBottom: 70, marginTop: 5}}>
           <Button
             title={langState.currentLang == 'en' ? 'Next' : 'Tiếp theo'}

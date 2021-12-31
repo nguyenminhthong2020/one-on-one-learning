@@ -146,6 +146,7 @@ const ListCourseNew = props => {
   const dispatch = useDispatch();
   const current = useSelector(state => state.auth.current);
   const langState = useSelector(state => state.lang);
+  const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
 
   const [query, setQuery] = useState('');
   const [arrLevelSelected, setArrayLevelSelected] = useState([]);
@@ -222,10 +223,11 @@ const ListCourseNew = props => {
       />
       <View style={{marginHorizontal: 20}}>
         <SelectBox
-          containerStyle={{marginTop: -16}}
+          containerStyle={{marginTop: -16, backgroundColor: isDarkTheme?'white':null}}
+          optionContainerStyle={{backgroundColor:isDarkTheme?'white':null}}
           hideInputFilter
           label={false}
-          inputPlaceholder="  Level"
+          inputPlaceholder={langState.currentLang=='en'?"  Level":" Cấp độ"}
           options={arrLevel}
           selectedValues={arrLevelSelected}
           onMultiSelect={onMultiChange()}
@@ -237,10 +239,11 @@ const ListCourseNew = props => {
       
       <View style={{marginHorizontal: 20}}>
         <SelectBox
-          containerStyle={{marginTop: -16}}
+          containerStyle={{marginTop: -16, backgroundColor: isDarkTheme?'white':null}}
+          optionContainerStyle={{backgroundColor:isDarkTheme?'white':null}}
           hideInputFilter
           label={false}
-          inputPlaceholder="  Category"
+          inputPlaceholder={langState.currentLang=='en'?"  Category":"  Thể Loại"}
           options={arrCategory}
           selectedValues={arrCategorySelected}
           onMultiSelect={onMultiChange1()}
@@ -268,7 +271,7 @@ const ListCourseNew = props => {
                 fontWeight: 'bold',
                 textAlign: 'center',
               }}>
-              Search
+              {langState.currentLang=='en'?'Search':'Tìm kiếm'}
             </Text>
           </Pressable>
         </View>

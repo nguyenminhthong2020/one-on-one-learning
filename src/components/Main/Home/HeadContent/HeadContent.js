@@ -10,6 +10,7 @@ import {
 
 import {useSelector} from 'react-redux';
 import axios from 'axios';
+import moment from 'moment';
 
 const HeadContent = props => {
   const langState = useSelector(state => state.lang);
@@ -24,7 +25,7 @@ const HeadContent = props => {
 
   const [dataHeader, setDataHeader] = useState({
     total: 0,
-    date: '',
+    date: 0,
     startTime: '',
     endTime: '',
     arrScheduleClass: {}
@@ -43,7 +44,8 @@ const HeadContent = props => {
             setDataHeader({
               total: res.data.total,
               arrScheduleClass: newArray[0],
-              date: newArray[0].scheduleDetailInfo.scheduleInfo.date,
+              date: newArray[0].scheduleDetailInfo.scheduleInfo
+              .startTimestamp,
               startTime: (new Date(newArray[0].scheduleDetailInfo.scheduleInfo
                 .startTimestamp)).toLocaleTimeString().substring(0, 5),
               endTime: (new Date(newArray[0].scheduleDetailInfo.scheduleInfo
@@ -54,7 +56,7 @@ const HeadContent = props => {
               ...dataHeader,
               total: res.data.total,
               arrScheduleClass: {},
-              date: "",
+              date: 0,
               startTime: "",
               endTime: ""
             })
@@ -92,7 +94,8 @@ const HeadContent = props => {
             setDataHeader({
               total: res.data.total,
               arrScheduleClass: newArray[0],
-              date: newArray[0].scheduleDetailInfo.scheduleInfo.date,
+              date: newArray[0].scheduleDetailInfo.scheduleInfo
+              .startTimestamp,
               startTime: (new Date(newArray[0].scheduleDetailInfo.scheduleInfo
                 .startTimestamp)).toLocaleTimeString().substring(0, 5),
               endTime: (new Date(newArray[0].scheduleDetailInfo.scheduleInfo
@@ -103,7 +106,7 @@ const HeadContent = props => {
               ...dataHeader,
               arrScheduleClass: {},
               total: res.data.total,
-              date: "",
+              date: 0,
               startTime: "",
               endTime: ""
             })
@@ -142,7 +145,7 @@ const HeadContent = props => {
           </Text>
         )}
       </View>
-      {dataHeader.date != '' ? (
+      {dataHeader.date != 0 ? (
         <>
           <View style={{marginBottom: 10}}>
             <Text style={{fontSize: 17, color: 'white'}}>
@@ -151,7 +154,7 @@ const HeadContent = props => {
           </View>
           <View style={{marginBottom: 10}}>
             <Text style={{fontSize: 17, color: 'white'}}>
-              {new Date(dataHeader.date).toUTCString().substring(0, 16)}{' '}
+              {moment(dataHeader.date).format("YYYY-MM-DD")}{',  '}
               {dataHeader.startTime} - {dataHeader.endTime}
             </Text>
           </View>
