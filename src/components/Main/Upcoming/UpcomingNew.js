@@ -111,7 +111,7 @@ const UpcomingNew = props => {
     //   .then(res => console.log(res)) // token as the only argument
     //   .catch(error => console.log(error)); // possible errors
 
-    const dateTimeLte = new Date().getTime();
+    const dateTimeLte = new Date().getTime()- 30 * 60 * 1000;;
     const str = `booking/list/student?page=1&perPage=10&dateTimeGte=${dateTimeLte}&orderBy=meeting&sortBy=asc`;
     getSchedule({str: str, accessToken: current.tokens.access.token}).then(
       data => {
@@ -246,7 +246,7 @@ const UpcomingNew = props => {
       //   .then(res => console.log(res)) // already an object. read below, exp key note
       //   .catch(error => console.log(error));
 
-      const dateTimeLte = new Date().getTime();
+      const dateTimeLte = new Date().getTime() - 30 * 60 * 1000;
       const str = `booking/list/student?page=1&perPage=10&dateTimeGte=${dateTimeLte}&orderBy=meeting&sortBy=asc`;
       getSchedule({str: str, accessToken: current.tokens.access.token}).then(
         data => {
@@ -301,7 +301,8 @@ const UpcomingNew = props => {
       .then(res => {
         if (res.data.message == 'Cancel booking successful') {
           alert('Deleted successfully');
-          const dateTimeLte = new Date().getTime();
+          // const dateTimeLte = new Date().getTime();
+          const dateTimeLte = new Date().getTime() - 30 * 60 * 1000;
           const str = `booking/list/student?page=1&perPage=10&dateTimeGte=${dateTimeLte}&orderBy=meeting&sortBy=asc`;
 
           getSchedule({
@@ -549,7 +550,8 @@ const UpcomingNew = props => {
               <Pressable
                 key={index}
                 onPress={() => {
-                  const dateTimeLte = new Date().getTime();
+                  //const dateTimeLte = new Date().getTime();
+                  const dateTimeLte = new Date().getTime() - 30 * 60 * 1000;
                   const str = `booking/list/student?page=${
                     index + 1
                   }&perPage=10&dateTimeGte=${dateTimeLte}&orderBy=meeting&sortBy=asc`;
