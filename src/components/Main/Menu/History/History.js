@@ -103,7 +103,7 @@ const History = () => {
       ) : (
         <View style={{marginTop: 40}}>
           <Text style={{textAlign: 'center', color: MAIN_COLOR, fontSize: 25}}>
-            Loading...
+            No Data
           </Text>
         </View>
       )}

@@ -140,7 +140,13 @@ const Profile = props => {
   const _birthday = (
     current.user.birthday != null ? current.user.birthday : '1998-10-27'
   ).substring(0, 10);
-  const _country = current.user.country != null ? current.user.country : 'VN';
+  let _country;
+  if(current.user.hasOwnProperty('country'))
+  {
+    _country =  current.user.country != null ? current.user.country : 'VN';
+  }else{
+    _country = 'VN';
+  }
 
   const [whatToLearn, setWhatToLearn] = useState(newwhatToLearn);
   const [whatToLearn1, setWhatToLearn1] = useState(newwhatToLearn1);

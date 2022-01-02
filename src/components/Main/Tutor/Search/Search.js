@@ -236,10 +236,16 @@ const Search = props => {
             marginLeft: 10,
             fontWeight: 'bold',
             color: isDarkTheme ? 'white' : 'black',
+            marginBottom: 3
           }}>
-          {langState[langState.currentLang].Filter_Tutors}:
+          {langState[langState.currentLang].Filter_Tutors}:{' '}
         </Text>
-        <Text style={{color: isDarkTheme ? 'yellow' : 'red', fontSize: 15}}>{' '}{spec != '' ? spec : 'All'}</Text>
+        <MyTag
+            isActive
+            title={spec != '' ? spec: "All"}
+            onPress={() => {
+            }}
+          />
       </View>
       <View style={{backgroundColor: isDarkTheme ? 'black' : 'white'}}>
         <ScrollView

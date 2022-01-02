@@ -175,16 +175,21 @@ const Home = props => {
   const renderFilterTag = () => {
     return (
       <View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 3}}>
           <Text
             style={{
               fontSize: 18,
               fontWeight: 'bold',
               color: isDarkTheme ? 'white' : 'black',
             }}>
-            {langState[langState.currentLang].Filter_Tutors}: 
+            {langState[langState.currentLang].Filter_Tutors}:{' '} 
           </Text>
-          <Text style={{color: isDarkTheme ? 'yellow' : 'red', fontSize: 16}}>{' '}{spec != '' ? spec: "All"}</Text>
+          <MyTag
+            isActive
+            title={spec != '' ? spec: "All"}
+            onPress={() => {
+            }}
+          />
         </View>
         <ScrollView
           horizontal

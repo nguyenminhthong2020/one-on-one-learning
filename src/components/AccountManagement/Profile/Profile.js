@@ -137,7 +137,14 @@ const Profile = props => {
   const _birthday = (
     current.user.birthday != null ? current.user.birthday : '1998-10-27'
   ).substring(0, 10);
-  const _country = current.user.country != null ? current.user.country : 'VN';
+  
+  let _country;
+  if(current.user.hasOwnProperty('country'))
+  {
+    _country =  current.user.country != null ? current.user.country : 'VN';
+  }else{
+    _country = 'VN';
+  }
   const _language =
     current.user.language == null ? 'English' : current.user.language;
   
@@ -317,7 +324,7 @@ const Profile = props => {
   }
 
   return (
-    <ScrollView style={styles.container} nestedScrollEnabled={true}>
+    <ScrollView style={[styles.container, {backgroundColor: isDarkTheme? 'black':'white'}]} nestedScrollEnabled={true}>
       <View>
         <View
           style={{
@@ -354,9 +361,9 @@ const Profile = props => {
               {langState[langState.currentLang].Name}:
             </Text>
           </View>
-          <View style={{marginLeft: 18, backgroundColor: 'white'}}>
+          <View style={{marginLeft: 18, backgroundColor: 'white', borderRadius: 5}}>
             <TextInput
-              style={{borderWidth: 1, width: 220, height: 40, fontSize: 15}}
+              style={{borderWidth: 1, width: 220, height: 40, fontSize: 15, borderRadius: 5}}
               value={name}
               defaultValue={current.user.name}
               //keyboardType={'numeric'}
@@ -380,10 +387,10 @@ const Profile = props => {
                   style={{paddingLeft: 12}}
                 />
               </View>
-              <View style={{marginLeft: 40, backgroundColor: 'white'}}>
+              <View style={{marginLeft: 40, backgroundColor: 'white', borderRadius: 5}}>
                 <TextInput
                   // editable = {false}
-                  style={{borderWidth: 1, width: 220, height: 40, fontSize: 15}}
+                  style={{borderWidth: 1, width: 220, height: 40, fontSize: 15, borderRadius: 5}}
                   value={phone}
                   defaultValue={phone}
                   keyboardType={'numeric'}
@@ -405,7 +412,7 @@ const Profile = props => {
               <View>
                 <MaterialIcons name={'language'} size={25} color={MAIN_COLOR} />
               </View>
-              <View style={[styles.containerPicker, {marginLeft: 35}]}>
+              <View style={[styles.containerPicker, {marginLeft: 35, borderRadius: 5}]}>
                 <Picker
                   style={styles.picker}
                   selectedValue={pickerValue}
@@ -454,7 +461,7 @@ const Profile = props => {
                   Level:
                 </Text>
               </View>
-              <View style={[styles.containerPicker, {marginLeft: 12}]}>
+              <View style={[styles.containerPicker, {marginLeft: 12, borderRadius: 5}]}>
                 <Picker
                   style={styles.picker}
                   selectedValue={levelValue}
@@ -498,6 +505,7 @@ const Profile = props => {
                   withFlag
                   withFilter
                   withCountryNameButton
+                  withCallingCode
                   countryCode={country.cca2}
                   onSelect={country =>
                     //console.log("\nĐây nữa nè: " + JSON.stringify(country))
@@ -524,7 +532,8 @@ const Profile = props => {
                 flexDirection: 'row',
                 borderWidth: 1,
                 alignItems: 'center',
-                backgroundColor: 'white'
+                backgroundColor: 'white',
+                borderRadius: 5
               }}>
               <TextInput
                 style={{
@@ -570,7 +579,7 @@ const Profile = props => {
           style={{
             paddingLeft: '10%',
             marginBottom: 15,
-            backgroundColor: isDarkTheme ? 'black' : SECOND_COLOR,
+            backgroundColor: isDarkTheme ? 'black' : 'white',
           }}>
           <View>
             <Text
@@ -578,12 +587,15 @@ const Profile = props => {
               {langState[langState.currentLang].Subject}:
             </Text>
           </View>
-          <SelectBox
-            containerStyle={{marginTop: -15}}
-            optionContainerStyle={{backgroundColor:isDarkTheme?'white':null}}
+          <SelectBox 
+            containerStyle={{marginTop: -15, backgroundColor: 'white'}}
+          optionContainerStyle={{backgroundColor:'white'}}
+
+            // containerStyle={{marginTop: -15}}
+            // optionContainerStyle={{backgroundColor:isDarkTheme?'white':null}}
             hideInputFilter
             label={false}
-            inputPlaceholder={langState[langState.currentLang].Subject}
+            inputPlaceholder={`  ${langState[langState.currentLang].Subject}`}
             options={arrWhatToLearn}
             selectedValues={whatToLearn}
             onMultiSelect={onMultiChange()}
@@ -603,14 +615,14 @@ const Profile = props => {
           style={{
             paddingLeft: '10%',
             marginBottom: 25,
-            backgroundColor: isDarkTheme ? 'black' : SECOND_COLOR,
+            backgroundColor: isDarkTheme ? 'black' : 'white',
           }}>
           <SelectBox
-            containerStyle={{marginTop: -15}}
+            containerStyle={{marginTop: -15, backgroundColor:'white'}}
             optionContainerStyle={{backgroundColor:isDarkTheme?'white':null}}
             label={false}
             hideInputFilter
-            inputPlaceholder={langState[langState.currentLang].TestPreparation}
+            inputPlaceholder={`  ${langState[langState.currentLang].TestPreparation}`}
             options={arrWhatToLearn1}
             selectedValues={whatToLearn1}
             onMultiSelect={onMultiChange1()}
