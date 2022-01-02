@@ -32,7 +32,7 @@ const HeadContent = props => {
       .then(res => {
         (async () => {
           try {
-            const dateTimeLte = new Date().getTime() - 5*60*1000;
+            const dateTimeLte = new Date().getTime();// - 5*60*1000;
             const res1 = await axiosInstance1.get(
               `booking/list/student?page=1&perPage=5&dateTimeGte=${dateTimeLte}&orderBy=meeting&sortBy=asc`,
             );
@@ -163,7 +163,7 @@ const HeadContent = props => {
         .then(res => {
           (async () => {
             try {
-              const dateTimeLte = new Date().getTime() - 25*60*1000;
+              const dateTimeLte = new Date().getTime();// - 5*60*1000;
             const res1 = await axiosInstance1.get(
               `booking/list/student?page=1&perPage=5&dateTimeGte=${dateTimeLte}&orderBy=meeting&sortBy=asc`,
             );
@@ -338,7 +338,7 @@ const HeadContent = props => {
           }}>
           <Pressable
             onPress={() =>
-              props.navigation.navigate('VideoCall', {
+              props.navigation.navigate('VideoCallNew', {
                 arrScheduleClass: dataHeader.arrScheduleClass,
               })
             }>

@@ -41,6 +41,9 @@ const CountdownTimer = props => {
     <View style={{height: '100%', padding: 0, backgroundColor: 'gray', marginHorizontal: 0, /*marginTop: '50%'*/}}>
       <Text style={{color: 'white', fontSize: 17, textAlign: 'center'}}>{langState.currentLang=='en'?'Lessons will be started after':'Buổi học sẽ bắt đầu sau'}</Text>
       <Text style={{marginTop: 4, color: 'white', fontSize: 19, fontWeight: 'bold', textAlign: 'center'}}>{time.days < 10 && '0'}{time.days} : {time.hours < 10 && '0'}{time.hours} : {time.minutes < 10 && '0'}{time.minutes} : {time.seconds < 10 && '0'}{time.seconds}</Text>
+      <Text style={{marginTop: 4, color: 'white', 
+      fontSize: 19, fontWeight: 'bold', 
+      textAlign: 'center'}}>(d : h : m : s)</Text>
     </View>
   ) : (
     <></>

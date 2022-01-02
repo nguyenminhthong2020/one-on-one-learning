@@ -356,10 +356,10 @@ const UpcomingNew = props => {
         arrScheduleClass.scheduleDetailInfo.scheduleInfo.startTimestamp,
       ).toDateString()
     ) {
-      //alert('blue');
-      props.navigation.navigate('VideoCall', {
+        props.navigation.navigate('VideoCallNew', {
         arrScheduleClass: arrScheduleClass,
       });
+    
     } else {
       //alert("grey")
     }
@@ -491,8 +491,9 @@ const UpcomingNew = props => {
                             backgroundColor:
                               new Date().toDateString() ==
                               new Date(
-                                arrScheduleClass.scheduleDetailInfo.scheduleInfo.startTimestamp,
+                                arrScheduleClass.scheduleDetailInfo.scheduleInfo.startTimestamp
                               ).toDateString()
+                              && new Date() <= arrScheduleClass.scheduleDetailInfo.scheduleInfo.endTimestamp
                                 ? MAIN_COLOR
                                 : 'grey',
                             paddingVertical: 4,

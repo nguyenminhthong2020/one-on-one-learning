@@ -28,7 +28,8 @@ import Approval from '../components/Main/Menu/BecomeTutor/Approval';
 import Schedule from '../components/Main/Menu/Schedule/Schedule';
 import Favorites from '../components/Main/Menu/Favorites/Favorites';
 import History from '../components/Main/Menu/History/History';
-import VideoCall from '../components/Main/VideoCall/VideoCall';
+// import VideoCall from '../components/Main/VideoCall/VideoCall';
+import VideoCallNew from '../components/Main/VideoCall/VideoCallNew';
 import Login from '../components/Authentication/Login/Login';
 import ForgetPassword from '../components/Authentication/ForgetPassword/ForgetPassword';
 import NotifyForgetPassword from '../components/Authentication/ForgetPassword/NotifyForgetPassword';
@@ -144,9 +145,14 @@ function MainNavigation(props) {
         component={Menu}
         options={{headerShown: true}}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="VideoCall"
         component={VideoCall}
+        options={{headerShown: true, title: langState.currentLang=='en'?'Lesson Room':'Phòng học'}}
+      /> */}
+      <Stack.Screen
+        name="VideoCallNew"
+        component={VideoCallNew}
         options={{headerShown: true, title: langState.currentLang=='en'?'Lesson Room':'Phòng học'}}
       />
       <Stack.Screen

@@ -529,9 +529,7 @@ const Profile = props => {
             marginBottom: 10,
             color: isDarkTheme ? 'white' : 'black',
           }}>
-          {langState.currentLang=='en'?`In order to protect your privacy, please do not share your personal
-          information (email, phone number, social email, skype, etc) in your
-          profile.`:`Để bảo vệ quyền riêng tự, xin đừng chia sẻ thông tin cá nhân của bạn (email, điện thoại,...) trong profile`}
+          {langState.currentLang=='en'?'In order to protect your privacy, please do not share your personal information (email, phone number, social email, skype, etc) in your profile.':`Để bảo vệ quyền riêng tự, xin đừng chia sẻ thông tin cá nhân của bạn (email, điện thoại,...) trong profile`}
         </Text>
         <Text
           style={{
