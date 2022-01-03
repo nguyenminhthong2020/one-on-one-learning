@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React from 'react';
+import React, {useEffect} from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -35,13 +35,28 @@ import ForgetPassword from '../components/Authentication/ForgetPassword/ForgetPa
 import NotifyForgetPassword from '../components/Authentication/ForgetPassword/NotifyForgetPassword';
 import Register from '../components/Authentication/Register/Register';
 import FeedbackList from '../components/AccountManagement/Setting/FeedbackList';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import { useNetInfo } from '@react-native-community/netinfo';
+import { logout } from '../redux/slices/auth/loginSlice';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function MainTabs(props) {
   const langState = useSelector(state => state.lang);
+  const netInfo = useNetInfo();
+  const dispatch = useDispatch();
+  
+  useEffect(
+    ()=>{
+      if(netInfo.isConnected == false)
+      {
+        dispatch(logout());
+        props.navigation.navigate("Login");
+        alert("No Internet !");
+      }
+    }
+  , [netInfo.isConnected])
 
   return (
     <Tab.Navigator
