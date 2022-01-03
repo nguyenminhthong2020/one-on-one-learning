@@ -27,7 +27,7 @@ import VideoIntroduction from '../components/Main/Menu/BecomeTutor/VideoIntroduc
 import Approval from '../components/Main/Menu/BecomeTutor/Approval';
 import Schedule from '../components/Main/Menu/Schedule/Schedule';
 import Favorites from '../components/Main/Menu/Favorites/Favorites';
-import History from '../components/Main/Menu/History/History';
+// import History from '../components/Main/Menu/History/History';
 // import VideoCall from '../components/Main/VideoCall/VideoCall';
 import VideoCallNew from '../components/Main/VideoCall/VideoCallNew';
 import Login from '../components/Authentication/Login/Login';
@@ -35,6 +35,7 @@ import ForgetPassword from '../components/Authentication/ForgetPassword/ForgetPa
 import NotifyForgetPassword from '../components/Authentication/ForgetPassword/NotifyForgetPassword';
 import Register from '../components/Authentication/Register/Register';
 import FeedbackList from '../components/AccountManagement/Setting/FeedbackList';
+import WriteReview from '../components/AccountManagement/Setting/WriteReview';
 import {useSelector, useDispatch} from 'react-redux';
 import { useNetInfo } from '@react-native-community/netinfo';
 import { logout } from '../redux/slices/auth/loginSlice';
@@ -250,20 +251,28 @@ function MainNavigation(props) {
         component={Approval}
         options={{headerShown: false}}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="History"
         component={History}
         options={{
           headerShown: true,
           title: langState[langState.currentLang].History,
         }}
-      />
+      /> */}
       <Stack.Screen
         name="FeedbackList"
         component={FeedbackList}
         options={{
           headerShown: true,
-          title: langState[langState.currentLang].FeedbackList,
+          title: langState.currentLang=='en'?'History & Feedback':'Xem lịch sử & Phản hồi'//langState[langState.currentLang].FeedbackList,
+        }}
+      />
+      <Stack.Screen
+        name="WriteReview"
+        component={WriteReview}
+        options={{
+          headerShown: true,
+          title: langState.currentLang=='en'?'Feedback Tutor':'Phản hồi giáo viên'//langState[langState.currentLang].FeedbackList,
         }}
       />
       <Stack.Screen

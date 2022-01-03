@@ -56,8 +56,8 @@ const Menu = props => {
           <ButtonIcon
             type={'FontAwesome5'}
             name={'history'}
-            title={langState[langState.currentLang].History}
-            handleOnPress={() => props.navigation.navigate("History")}
+            title={langState.currentLang=='en'?'History & Feedbacks':'Lịch sử & Phản hồi'}
+            handleOnPress={() => props.navigation.navigate("FeedbackList")}
           />
           <ButtonIcon
             type={'FontAwesome5'}

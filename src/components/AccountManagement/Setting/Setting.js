@@ -41,7 +41,7 @@ const Setting = (props) => {
     <View style={styles.container}>
        {/* <Header></Header> */}
        <View style={styles.content}>
-           <ButtonIcon type={'AntDesign'} name={'user'} title={langState[langState.currentLang].viewFeedbacks} handleOnPress={() => props.navigation.navigate("FeedbackList")}/>
+           {/* <ButtonIcon type={'AntDesign'} name={'user'} title={langState.currentLang=='en'?'Feedback Tutor':'Phản hồi Giáo viên'} handleOnPress={() => props.navigation.navigate("FeedbackList")}/> */}
            {/* <ButtonIcon type={'FontAwesome5'} name={'list'} title={'Booking History'} handleOnPress={() => alert('booking history')}/>
            <ButtonIcon type={'FontAwesome5'} name={'history'} title={'Session History'} handleOnPress={() => alert('session history')}/>           */}
            {/* <ButtonIcon type={'FontAwesome5'} name={'calendar-check'} title={'Schedule'} handleOnPress={() => alert('schedule')}/>

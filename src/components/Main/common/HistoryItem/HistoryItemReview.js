@@ -7,6 +7,7 @@ import {
   //TextInput,
   StyleSheet,
   //FlatList,
+  Pressable
 } from 'react-native';
 
 // import {useForm, Controller} from 'react-hook-form';
@@ -14,11 +15,18 @@ import FastImage from 'react-native-fast-image';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
 
-const HistoryItem = props => {
+const HistoryItemReview = props => {
   const arrHistoryClass = props.arrHistoryClass;
+  const langState = useSelector(state => state.lang);
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
   return (
-    <View>
+    <View style={{marginBottom: 10, backgroundColor: 'white', marginHorizontal: '8%',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    borderRadius:6}}>
     <View style={styles.container}>
       <View>
         <FastImage
@@ -32,7 +40,7 @@ const HistoryItem = props => {
         />
       </View>
       <View>
-        <View style={{margin: 5}}>
+        <View style={{marginLeft: 5, marginBottom: 5}}>
           <Text style={{fontSize: 16, color: 'black'}}>
             {arrHistoryClass.scheduleDetailInfo.scheduleInfo.tutorInfo.name}
           </Text>
@@ -69,7 +77,16 @@ const HistoryItem = props => {
         </View>
       </View>
     </View>
-    <Text style={{marginHorizontal: '12%', color: isDarkTheme?'white':'black'}} numberOfLines={3}>{arrHistoryClass.tutorReview}</Text>
+    <Text style={{color: isDarkTheme?'white':'black', fontWeight: 'bold'}}>{langState.currentLang=='en'?" Tutor's review: ":' Giáo viên phản hồi: '}</Text>
+    <Text style={{color: isDarkTheme?'white':'black', marginLeft: 4}} numberOfLines={3}>{arrHistoryClass.tutorReview}</Text>
+    <View style={{flexDirection: 'row', justifyContent:'flex-end', marginRight: 4, marginBottom: 1}}>
+        <Pressable style={{backgroundColor: MAIN_COLOR, width: 120, borderRadius: 5, paddingVertical: 3}}
+        onPress={()=>props.navigation.navigate("WriteReview",{
+          arrHistoryClass: arrHistoryClass,
+        })}>
+           <Text style={{textAlign: 'center', color:'white'}}>{langState.currentLang=='en'?'Send feedback':'Gửi phản hồi'}</Text>
+        </Pressable>
+    </View>
     </View>
   );
 };
@@ -78,20 +95,20 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: '12%',
-    marginTop: 5,
-    borderTopLeftRadius:5,
-    borderTopRightRadius:5,
-    backgroundColor: 'white',
+    // marginHorizontal: '12%',
+    //marginTop: 5,
+    // borderTopLeftRadius:5,
+    // borderTopRightRadius:5,
+    // backgroundColor: 'white',
     paddingHorizontal: 5,
     paddingBottom: 1,
 
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    // shadowColor: '#000',
+    // shadowOffset: {width: 0, height: 2},
+    // shadowOpacity: 0.25,
+    // shadowRadius: 3.84,
+    // elevation: 5,
   },
 });
 
-export default HistoryItem;
+export default HistoryItemReview;

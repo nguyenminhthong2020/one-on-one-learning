@@ -1,179 +1,209 @@
 /* eslint-disable */
-import React, {useEffect, useState} from 'react';
+import React, {useState, Suspense, useEffect} from 'react';
+import { MAIN_COLOR, THIRD_COLOR } from '../../../globals/constant';
 import {
   Text,
   View,
-  StyleSheet,
+  Pressable,
+  ActivityIndicator,
   ScrollView,
-  FlatList,
-  Image,
 } from 'react-native';
+import { getHistory } from '../../../api/history/historyApi';
+const HistoryItemReview = React.lazy(() =>
+  import('../../Main/common/HistoryItem/HistoryItemReview'),
+);
 import {useSelector} from 'react-redux';
-import axios from 'axios';
-import {BASE_URL, NUM_OF_LINES, THIRD_COLOR} from '../../../globals/constant';
-import FastImage from 'react-native-fast-image';
+import moment from 'moment';
+import { baseProps } from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
 
-const FeedbackList = props => {
-  const langState = useSelector(state => state.lang);
-  const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
+const History = (props) => {
   const current = useSelector(state => state.auth.current);
-  const [data, setData] = useState({
-    avgRating: 0,
-    feedbacks: [],
-  });
-  const axiosInstance1 = axios.create({
-    baseURL: BASE_URL,
-    timeout: 5000,
-    headers: {
-      Authorization: 'Bearer ' + current.tokens.access.token,
-    },
+  const [arrHistoryPagination, setArrHistoryPagination] = useState({
+    arrDate: [],
+    arrHistory: [],
+    arrPagination: [],
+    currentPage: 1,
   });
 
   useEffect(() => {
     let isMounted = true;
-    const unsubscribe = props.navigation.addListener('focus', () => {
-      axiosInstance1
-        .get('user/info')
-        .then(res => {
+
+    const dateTimeLte = new Date().getTime();
+    const str = `booking/list/student?page=1&perPage=8&dateTimeLte=${dateTimeLte}&orderBy=meeting&sortBy=desc`;
+    getHistory({str: str, accessToken: current.tokens.access.token}).then(
+      data => {
+        if (data.count > 0) {
+          const _countPage = ~~(data.count / 8) + 1;
+          let arrCount = [];
+          for (let i = 0; i < _countPage; i++) {
+            arrCount.push(i);
+          }
+
           if (isMounted) {
-            setData({
-              avgRating: res.data.user.avgRating,
-              feedbacks: res.data.user.feedbacks,
+            setArrHistoryPagination({
+              arrDate: [
+                ...new Set(
+                  data.rows.map(item =>
+                    moment(
+                      item.scheduleDetailInfo.scheduleInfo.startTimestamp,
+                    ).format('YYYY-MM-DD'),
+                  ),
+                ),
+              ],
+              currentPage: 1,
+              arrHistory: data.rows,
+              arrPagination: arrCount.slice(0, 6),
             });
           }
-        })
-        .catch(err => {
-          if (JSON.stringify(err).includes('message')) {
-            alert('Error: ' + err.response.data.message);
-          } else {
-            alert('Error: ' + err);
-          }
-        });
-    });
+        }
+      },
+    );
     return () => {
       isMounted = false;
-      return unsubscribe;
     };
-  }, [props.navigation]);
+  }, []);
 
   return (
-    <>
-      {data.feedbacks.length == 0 ? (
-        <View
-          style={{
-            flexDirection: 'column',
-            alignItems: 'center',
-            marginTop: 25,
-          }}>
-          <Text
-            style={{
-              fontSize: 20,
-              color: isDarkTheme ? 'yellow' : 'black',
-              fontWeight: 'bold',
-            }}>
-            {langState[langState.currentLang].noData}
+    <ScrollView>
+    <View style={{height: 10}}></View>
+      <View style={{marginHorizontal: 10}}></View>
+      {arrHistoryPagination.arrHistory.length > 0 ? (
+        arrHistoryPagination.arrDate.map(function (date, index1) {
+          return (
+            <View key={index1} style={{marginBottom: 20}}>
+              <View style={{marginLeft: '10%', marginBottom: 3}}>
+                <Text
+                  style={{
+                    color: THIRD_COLOR,
+                    fontSize: 17,
+                    fontWeight: 'bold',
+                  }}>
+                  {date}
+                </Text>
+              </View>
+              {arrHistoryPagination.arrHistory
+                .filter(
+                  item =>
+                    moment(
+                      item.scheduleDetailInfo.scheduleInfo.startTimestamp,
+                    ).format('YYYY-MM-DD') == date,
+                )
+                .map((arrHistoryClass, index) => (
+                  <Suspense
+                    fallback={
+                      <View style={{alignItems: 'center'}}>
+                        <ActivityIndicator size="large" color="#00ff00" />
+                      </View>
+                    }
+                    key={index}>
+                    <HistoryItemReview arrHistoryClass={arrHistoryClass} navigation={props.navigation}/>
+                  </Suspense>
+                ))}
+            </View>
+          );
+        })
+      ) : (
+        <View style={{marginTop: 40}}>
+          <Text style={{textAlign: 'center', color: MAIN_COLOR, fontSize: 25}}>
+            No Data
           </Text>
         </View>
-      ) : (
-        <View style={{marginBottom: 0}}>
-          <FlatList
-            getItemLayout={(_, index) => ({
-              length: 200,
-              offset: 200 * index,
-              index,
-            })}
-            removeClippedSubviews={true}
-            windowSize={7}
-            style={{marginBottom: 0, margin: 5}}
-            showsVerticalScrollIndicator={true}
-            initialNumToRender={4}
-            data={data.feedbacks}
-            extraData={data.feedbacks}
-            renderItem={({item, index}) => (
-              <View style={{marginBottom: 5}}>
-                <View style={styles.shadowProp}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      marginBottom: 5,
-                      marginTop: 8,
-                    }}>
-                    <View>
-                      <FastImage
-                        style={{width: 40, height: 40, borderRadius: 20}}
-                        resizeMode={FastImage.resizeMode.cover}
-                        source={{
-                          uri: item.firstInfo.avatar,
-                          priority: FastImage.priority.normal,
-                        }}
-                      />
-                    </View>
-                    <View style={{justifyContent: 'center'}}>
-                      <Text
-                        style={{
-                          fontSize: 18,
-                          color: 'black',
-                          marginLeft: 6,
-                          fontWeight: 'bold',
-                        }}>
-                        {item.firstInfo.name}
-                      </Text>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          marginTop: 1,
-                          marginLeft: 5,
-                        }}>
-                        <Text style={{color: THIRD_COLOR}}>{(new Date(item.createdAt)).toLocaleString()}</Text>
-                      </View>
-                    </View>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        position: 'absolute',
-                        right: 0
-                      }}>
-                      <Text style={{color: 'orange'}}>{item.rating} </Text>
-                      <Image
-                          source={require('../../../../assets/rating.png')}
-                        />
-                    </View>
-                  </View>
-                  <Text
-                    numberOfLines={NUM_OF_LINES}
-                    style={{fontSize: 15, color: 'black', marginTop: 5}}>
-                    {item.content}
-                  </Text>
-                </View>
-              </View>
-            )}
-            disableVirtualization={false}
-          />
-        </View>
       )}
-    </>
+      {arrHistoryPagination.arrHistory.length > 0 ? (
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            paddingTop: 20,
+          }}>
+          {arrHistoryPagination.arrPagination.map((item, index) =>
+            index + 1 == arrHistoryPagination.currentPage ? (
+              <View
+                key={index}
+                // onPress={onSetCurrentPage(index)}
+                style={{
+                  marginHorizontal: 5,
+                  borderColor: MAIN_COLOR,
+                  backgroundColor: MAIN_COLOR,
+                  borderWidth: 1,
+                  borderColor: MAIN_COLOR,
+                  width: 30,
+                  paddingVertical: 5,
+                  borderRadius: 5,
+                }}>
+                <Text style={{color: 'white', textAlign: 'center'}}>
+                  {index + 1}
+                </Text>
+              </View>
+            ) : (
+              <Pressable
+                key={index}
+                onPress={() => {
+                  //console.log("đổi page"+(index+1));
+                  const dateTimeLte = new Date().getTime();
+
+                  const str = `booking/list/student?page=${
+                    index + 1
+                  }&perPage=8&dateTimeLte=${dateTimeLte}&orderBy=meeting&sortBy=desc`;
+                  // const data = getHistory({str: str});
+
+                  getHistory({
+                    str: str,
+                    accessToken: current.tokens.access.token,
+                  }).then(data => {
+                    if (data.count > 0) {
+                      setArrHistoryPagination({
+                        arrDate: [
+                          ...new Set(
+                            data.rows.map(item =>
+                              moment(
+                                item.scheduleDetailInfo.scheduleInfo
+                                  .startTimestamp,
+                              ).format('YYYY-MM-DD'),
+                            ),
+                          ),
+                        ],
+                        arrHistory: data.rows,
+                        arrPagination: arrHistoryPagination.arrPagination,
+                        currentPage: index + 1,
+                      });
+                      // setCurrentPage(index + 1);
+                    }
+                  });
+                }}
+                style={{
+                  marginHorizontal: 3,
+                  borderColor: 'black',
+                  backgroundColor: 'yellow',
+                  borderWidth: 1,
+                  borderColor: 'black',
+                  width: 30,
+                  paddingVertical: 5,
+                  borderRadius: 5,
+                }}>
+                <Text style={{textAlign: 'center'}}>{index + 1}</Text>
+              </Pressable>
+            ),
+          )}
+        </View>
+      ) : (
+        <></>
+      )}
+    </ScrollView>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-  },
-  shadowProp: {
-    backgroundColor: 'white',
-    marginHorizontal: 10,
-    marginVertical: 4,
-    padding: 14,
-    borderRadius: 8,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5, // 5: càng lớn càng nhạt
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     marginHorizontal: '12%',
+//     // borderRadius: ,
+//     backgroundColor: 'white',
+//     paddingHorizontal: 5,
+//     paddingBottom: 0,
+//     // borderColor: 'grey',
+//     // borderWidth: 0.5,
+//     marginBottom: 5,
+//   },
+// });
 
-export default FeedbackList;
+export default History;

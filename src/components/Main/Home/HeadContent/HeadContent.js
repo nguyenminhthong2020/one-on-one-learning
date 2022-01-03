@@ -34,7 +34,7 @@ const HeadContent = props => {
           try {
             const dateTimeLte = new Date().getTime();// - 5*60*1000;
             const res1 = await axiosInstance1.get(
-              `booking/list/student?page=1&perPage=5&dateTimeGte=${dateTimeLte}&orderBy=meeting&sortBy=asc`,
+              `booking/list/student?page=1&perPage=1&dateTimeGte=${dateTimeLte}&orderBy=meeting&sortBy=asc`,
             );
 
             // const dateTimeLte = new Date().getTime();
@@ -128,15 +128,15 @@ const HeadContent = props => {
                       .substring(0, 5),
                   });
                 //}
-            // } else {
-            //   setDataHeader({
-            //     ...dataHeader,
-            //     arrScheduleClass: {},
-            //     total: res.data.total,
-            //     date: 0,
-            //     startTime: '',
-            //     endTime: '',
-            //   });
+            } else {
+              setDataHeader({
+                ...dataHeader,
+                arrScheduleClass: {},
+                total: res.data.total,
+                date: 0,
+                startTime: '',
+                endTime: '',
+              });
             }
           } catch (err) {
             if (JSON.stringify(err).includes('message')) {
@@ -165,7 +165,7 @@ const HeadContent = props => {
             try {
               const dateTimeLte = new Date().getTime();// - 5*60*1000;
             const res1 = await axiosInstance1.get(
-              `booking/list/student?page=1&perPage=5&dateTimeGte=${dateTimeLte}&orderBy=meeting&sortBy=asc`,
+              `booking/list/student?page=1&perPage=1&dateTimeGte=${dateTimeLte}&orderBy=meeting&sortBy=asc`,
             );
               // const dateTimeLte = new Date().getTime();
               // const res1 = await axiosInstance1.get(
@@ -221,6 +221,12 @@ const HeadContent = props => {
               //     });
               //   }else{
                 let vitri = 0;
+                console.log(new Date(
+                  res1.data.data.rows[
+                    vitri
+                  ].scheduleDetailInfo.scheduleInfo.startTimestamp,
+                )
+                  .toLocaleTimeString())
                   setDataHeader({
                     total: res.data.total,
                     // arrScheduleClass: res1.data.data[vitri],
@@ -259,16 +265,16 @@ const HeadContent = props => {
                       .substring(0, 5),
                   });
                 }
-              // } else {
-              //   setDataHeader({
-              //     ...dataHeader,
-              //     arrScheduleClass: {},
-              //     total: res.data.total,
-              //     date: 0,
-              //     startTime: '',
-              //     endTime: '',
-              //   });
-              // }
+              else {
+                setDataHeader({
+                  ...dataHeader,
+                  arrScheduleClass: {},
+                  total: res.data.total,
+                  date: 0,
+                  startTime: '',
+                  endTime: '',
+                });
+              }
             } catch (err) {
               if (JSON.stringify(err).includes('message')) {
                 alert('FAIL:\n' + err.response.data.message);

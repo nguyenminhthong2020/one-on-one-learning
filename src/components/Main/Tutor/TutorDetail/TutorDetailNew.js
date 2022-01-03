@@ -18,6 +18,7 @@ import FastImage from 'react-native-fast-image';
 const SectionVideo = React.lazy(() => import('./SectionVideo'));
 import {useDispatch, useSelector} from 'react-redux';
 import CountryPicker from 'react-native-country-picker-modal';
+import {handleAverage} from '../../../../utils/utils';
 // import { detailApi } from '../../../../api/tutor/detailApi';
 
 import axios from 'axios';
@@ -137,24 +138,6 @@ const TutorDetailNew = props => {
 
   const langState = useSelector(state => state.lang);
 
-  // const ReportAlert = tutorName =>
-  //   Alert.alert(
-  //     `Report ${tutorName} for some reasons:`,
-  //     `1) This tutor is annoying me. \n2) This profile is pretending be someone or is fake \n3) Inappropriate profile photo \n\n Please check he/she...`,
-  //     [
-  //       {
-  //         text: 'OK',
-  //         onPress: () => alert('Complete'),
-  //         style: 'default',
-  //       },
-  //       {
-  //         text: 'Cancel', //onPress: () => {alert("Cancel");console.log(123);},
-  //         style: 'destructive',
-  //       },
-  //     ],
-  //     {cancelable: true},
-  //   );
-
   return (
     <View style={{marginTop: 0}}>
       <ScrollView>
@@ -198,17 +181,6 @@ const TutorDetailNew = props => {
                   }}>
                   {props.route.params.tutor.name}
                 </Text>
-                {/* <Rating 
-                style={{marginLeft: 6}}
-                ratingCount={5}
-                imageSize={15}
-                readonly={true}
-                jumpValue={0.5}
-                showRating={false}
-                fractions={10}
-                startingValue={props.tutor.startingValue}
-                isDisabled={true}
-              /> */}
                 <View
                   style={{
                     flexDirection: 'row',
@@ -221,7 +193,7 @@ const TutorDetailNew = props => {
                   ) : (
                     <>
                       <Text style={{color: 'orange'}}>
-                        {detailTutor.avgRating}/5{' '}
+                        {(Math.round((detailTutor.avgRating)*2)/2)}/5{' '}
                       </Text>
                       <MaterialIcons name={'star'} size={20} color="orange" />
                       {/* <Image
@@ -457,8 +429,8 @@ const TutorDetailNew = props => {
                 fontWeight: 'bold',
                 marginBottom: 2,
               }}>
-              {langState[langState.currentLang].Rating_and_Comments} (
-              {props.route.params.tutor.feedbacks.length})
+              {langState[langState.currentLang].Rating_and_Comments} 
+              {/* ({props.route.params.tutor.feedbacks.length}) */}
             </Text>
           </View>
           <View
@@ -472,7 +444,8 @@ const TutorDetailNew = props => {
               }}
               onPress={() =>
                 props.navigation.navigate('TutorDetailComment', {
-                  feedbacks: props.route.params.tutor.feedbacks,
+                  // feedbacks: props.route.params.tutor.feedbacks,
+                  userId: props.route.params.tutor.userId
                 })
               }>
               <Text
