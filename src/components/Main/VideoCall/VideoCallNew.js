@@ -3,16 +3,17 @@ import React, {useEffect, useState} from 'react';
 import {View, Dimensions, StatusBar} from 'react-native';
 import JitsiMeet, {JitsiMeetView} from 'react-native-jitsi-meet';
 import CountdownTimer from '../common/CountdownTimer/CountDownTimer';
+import CountUpTimer from '../common/CountdownTimer/CountUpTimer';
 import {useSelector} from 'react-redux';
-let windowHeight = Dimensions.get('window').height;
-// import {BASE_URL} from '../../../globals/constant';
+// let windowHeight = Dimensions.get('window').height;
 
 const VideoCallNew = props => {
+
   const current = useSelector(state => state.auth.current);
   const [showJitsi,setShowJitsi] = useState(true)
 
   useEffect(() => {
-    const url = `https://meet.jit.si/songokuvegeta9021`;
+    //const url = `https://meet.jit.si/songokuvegeta9021`;
     const userInfo = {
       displayName: current.user.name,
       email: current.user.email,
@@ -22,18 +23,22 @@ const VideoCallNew = props => {
       13,
       props.route.params.arrScheduleClass.studentMeetingLink.length,
     );
-    const room =
-      'f569c202-7bbf-4620-af77-ecc1419a6b28-4d54d3d7-d2a9-42e5-97a2-5ed38af5789a';
-    //const url = `${BASE_URL}call/?token=${_token}`
-    // const url = `https://my.jitsi.server/${roomName}?jwt=${token}`;
-    const url1 = `https://meet.lettutor.com/http-bind?room=${room}&token=${_token}`;
+
+    //const _serverUrl = "https://meet.tutoring.letstudy.io/";
+    const _serverUrl = "https://meet.lettutor.com/";
+    //const room = "f569c202-7bbf-4620-af77-ecc1419a6b28-f64bca88-80fb-479d-a9d1-66fd326cfa45";
+    let _room = current.user.id + "-"+props.route.params.arrScheduleClass.scheduleDetailInfo.scheduleInfo.tutorId;
+    const _url = _serverUrl + _room;
     const meetOptions = {
       audioMuted: false,
       audioOnly: false,
       videoMuted: false,
       subject: '',
-      // token: _token,
+      token: _token,
+      // room: _room
     };
+    // let _url = 'https://sandbox.app.lettutor.com' + props.route.params.arrScheduleClass.studentMeetingLink;
+    
     const meetFeatureFlags = {
       addPeopleEnabled: true,
       calendarEnabled: true,
@@ -59,11 +64,8 @@ const VideoCallNew = props => {
     };
     console.log('vegeta nè');
 
-    JitsiMeet.call(url, userInfo, meetOptions, meetFeatureFlags);
+    JitsiMeet.call(_url, userInfo, meetOptions, meetFeatureFlags);
   }, []);
-
-
-  
 
   useEffect(() => {
     return () => {
@@ -99,11 +101,11 @@ const VideoCallNew = props => {
         style={{
           height: 100,
           position: 'absolute',
-          marginTop: 120,
+          marginTop: 90,
           alignSelf: 'center',
           elevation: 100,
         }}>
-        {new Date().getTime() <
+        {new Date().getTime()<
           props.route.params.arrScheduleClass.scheduleDetailInfo.scheduleInfo
             .startTimestamp && (
           <CountdownTimer
@@ -114,6 +116,20 @@ const VideoCallNew = props => {
             }
           />
         )}
+      </View>
+      <View
+        style={{
+          height: 55,
+          position: 'absolute',
+          marginTop: 40,
+          alignSelf: 'center',
+          elevation: 20,
+        }}>
+        <CountUpTimer
+            timeStart={
+                props.route.params.arrScheduleClass.scheduleDetailInfo.scheduleInfo.startTimestamp
+            }
+          />
       </View>
       {showJitsi && <JitsiMeetView
         onConferenceTerminated={e => onConferenceTerminated(e)}

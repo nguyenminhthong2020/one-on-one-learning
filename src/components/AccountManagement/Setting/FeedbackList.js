@@ -14,7 +14,6 @@ const HistoryItemReview = React.lazy(() =>
 );
 import {useSelector} from 'react-redux';
 import moment from 'moment';
-import { baseProps } from 'react-native-gesture-handler/lib/typescript/handlers/gestureHandlers';
 
 const History = (props) => {
   const current = useSelector(state => state.auth.current);
@@ -120,7 +119,6 @@ const History = (props) => {
             index + 1 == arrHistoryPagination.currentPage ? (
               <View
                 key={index}
-                // onPress={onSetCurrentPage(index)}
                 style={{
                   marginHorizontal: 5,
                   borderColor: MAIN_COLOR,
@@ -139,14 +137,10 @@ const History = (props) => {
               <Pressable
                 key={index}
                 onPress={() => {
-                  //console.log("đổi page"+(index+1));
                   const dateTimeLte = new Date().getTime();
-
                   const str = `booking/list/student?page=${
                     index + 1
                   }&perPage=8&dateTimeLte=${dateTimeLte}&orderBy=meeting&sortBy=desc`;
-                  // const data = getHistory({str: str});
-
                   getHistory({
                     str: str,
                     accessToken: current.tokens.access.token,
@@ -167,7 +161,6 @@ const History = (props) => {
                         arrPagination: arrHistoryPagination.arrPagination,
                         currentPage: index + 1,
                       });
-                      // setCurrentPage(index + 1);
                     }
                   });
                 }}
@@ -192,18 +185,5 @@ const History = (props) => {
     </ScrollView>
   );
 };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     marginHorizontal: '12%',
-//     // borderRadius: ,
-//     backgroundColor: 'white',
-//     paddingHorizontal: 5,
-//     paddingBottom: 0,
-//     // borderColor: 'grey',
-//     // borderWidth: 0.5,
-//     marginBottom: 5,
-//   },
-// });
 
 export default History;

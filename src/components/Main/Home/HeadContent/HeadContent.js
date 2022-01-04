@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { MAIN_COLOR, BASE_URL } from '../../../../globals/constant';
 import { Text, View, StyleSheet, Pressable } from 'react-native';
-
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import moment from 'moment';
@@ -36,7 +35,6 @@ const HeadContent = props => {
             const res1 = await axiosInstance1.get(
               `booking/list/student?page=1&perPage=1&dateTimeGte=${dateTimeLte}&orderBy=meeting&sortBy=asc`,
             );
-
             // const dateTimeLte = new Date().getTime();
             // const res1 = await axiosInstance1.get(
             //   `booking/next?dateTime=${dateTimeLte}`,
@@ -221,12 +219,6 @@ const HeadContent = props => {
               //     });
               //   }else{
                 let vitri = 0;
-                console.log(new Date(
-                  res1.data.data.rows[
-                    vitri
-                  ].scheduleDetailInfo.scheduleInfo.startTimestamp,
-                )
-                  .toLocaleTimeString())
                   setDataHeader({
                     total: res.data.total,
                     // arrScheduleClass: res1.data.data[vitri],
@@ -344,8 +336,11 @@ const HeadContent = props => {
           }}>
           <Pressable
             onPress={() =>
+              // props.navigation.navigate('VideoCallNew', {
+              //   arrScheduleClass: dataHeader.arrScheduleClass,
+              // })
               props.navigation.navigate('VideoCallNew', {
-                arrScheduleClass: dataHeader.arrScheduleClass,
+                arrScheduleClass: dataHeader.arrScheduleClass
               })
             }>
             <Text style={{ fontSize: 16, color: MAIN_COLOR }}>

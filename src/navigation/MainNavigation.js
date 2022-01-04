@@ -2,15 +2,12 @@
 import React, {useEffect} from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
 import TutorMessage from '../components/Main/Message/TutorMessage';
 import TutorDetailNew from '../components/Main/Tutor/TutorDetail/TutorDetailNew';
 import Booking from '../components/Main/Tutor/TutorDetail/Booking/Booking';
 import TutorDetailComment from '../components/Main/Tutor/TutorDetail/TutorDetailComment';
-// import ListMessage from '../components/Main/Message/ListMessage';
 import UpcomingNew from '../components/Main/Upcoming/UpcomingNew';
 import Search from '../components/Main/Tutor/Search/Search';
 import Setting from '../components/AccountManagement/Setting/Setting';
@@ -27,37 +24,34 @@ import VideoIntroduction from '../components/Main/Menu/BecomeTutor/VideoIntroduc
 import Approval from '../components/Main/Menu/BecomeTutor/Approval';
 import Schedule from '../components/Main/Menu/Schedule/Schedule';
 import Favorites from '../components/Main/Menu/Favorites/Favorites';
-// import History from '../components/Main/Menu/History/History';
-// import VideoCall from '../components/Main/VideoCall/VideoCall';
 import VideoCallNew from '../components/Main/VideoCall/VideoCallNew';
 import Login from '../components/Authentication/Login/Login';
 import ForgetPassword from '../components/Authentication/ForgetPassword/ForgetPassword';
 import NotifyForgetPassword from '../components/Authentication/ForgetPassword/NotifyForgetPassword';
 import Register from '../components/Authentication/Register/Register';
-import FeedbackList from '../components/AccountManagement/Setting/FeedbackList';
+import FeedbackList from '../components/AccountManagement/Setting/FeedbackList'; // History & Feedback
 import WriteReview from '../components/AccountManagement/Setting/WriteReview';
 import {useSelector, useDispatch} from 'react-redux';
-import { useNetInfo } from '@react-native-community/netinfo';
-import { logout } from '../redux/slices/auth/loginSlice';
+// import { useNetInfo } from '@react-native-community/netinfo';
+// import { logout } from '../redux/slices/auth/loginSlice';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function MainTabs(props) {
   const langState = useSelector(state => state.lang);
-  const netInfo = useNetInfo();
   const dispatch = useDispatch();
-  
-  useEffect(
-    ()=>{
-      if(netInfo.isConnected == false)
-      {
-        dispatch(logout());
-        props.navigation.navigate("Login");
-        alert("No Internet !");
-      }
-    }
-  , [netInfo.isConnected])
+  //const netInfo = useNetInfo();
+  // useEffect(
+  //   ()=>{
+  //     if(netInfo.isConnected == false)
+  //     {
+  //       dispatch(logout());
+  //       props.navigation.navigate("Login");
+  //       alert("No Internet !");
+  //     }
+  //   }
+  // , [netInfo.isConnected])
 
   return (
     <Tab.Navigator
@@ -79,23 +73,9 @@ function MainTabs(props) {
           ),
         }}
       />
-      {/* <Tab.Screen
-        name="Message"
-        component={ListMessage}
-        options={{
-          title: langState[langState.currentLang].Message,
-          headerShown: false,
-          tabBarIcon: ({color, size}) => (
-            <Ionicons name="chatbubbles" color={color} size={size} />
-          ),
-        }}
-      /> */}
       <Tab.Screen
         name="UpcomingNew"
         component={UpcomingNew}
-        //   listeners={({ navigation }) => ({
-        //   blur: () => navigation.setParams({ screen: undefined }),
-        // })}
         options={{
           title: langState[langState.currentLang].Schedule,
           headerShown: true,
@@ -161,11 +141,6 @@ function MainNavigation(props) {
         component={Menu}
         options={{headerShown: true}}
       />
-      {/* <Stack.Screen
-        name="VideoCall"
-        component={VideoCall}
-        options={{headerShown: true, title: langState.currentLang=='en'?'Lesson Room':'Phòng học'}}
-      /> */}
       <Stack.Screen
         name="VideoCallNew"
         component={VideoCallNew}
@@ -251,14 +226,6 @@ function MainNavigation(props) {
         component={Approval}
         options={{headerShown: false}}
       />
-      {/* <Stack.Screen
-        name="History"
-        component={History}
-        options={{
-          headerShown: true,
-          title: langState[langState.currentLang].History,
-        }}
-      /> */}
       <Stack.Screen
         name="FeedbackList"
         component={FeedbackList}
