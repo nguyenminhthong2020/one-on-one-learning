@@ -4,58 +4,54 @@ import {View, StyleSheet, Text} from 'react-native';
 import {useSelector} from 'react-redux';
 
 const CountUpTimer = props => {
-  const [isShow, setIsShow] = useState(false);
-  let now = new Date().getTime();
+  const [dem, setDem] = useState(0);
+  
+  // let now = new Date().getTime() + 1000*60*60*4+1000*60*39;
+  // console.log(new Date(now).toLocaleString())
+
   let distance = now - props.timeStart;
   let hours1 = Math.floor(
     (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
   );
   let minutes1 = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
   let seconds1 = Math.floor((distance % (1000 * 60)) / 1000);
-  
-  if(hours1 < 0){
-    hours1 = 0;
-  }
-  if(minutes1 < 0){
-    minutes1 = 0;
-  }
-  if(seconds1 < 0){
-    seconds1 = 0;
-  }
+
   const [time, setTime] = useState({
-    hours: hours1,
-    minutes: minutes1,
-    seconds: seconds1,
+    hours: distance >= 0 ? hours1 : 0,
+    minutes: distance >= 0 ? minutes1 : 0,
+    seconds: distance >= 0 ? seconds1 : 0,
+    isShow: false,
   });
   const langState = useSelector(state => state.lang);
 
   useEffect(() => {
     let startTimer = setInterval(function () {
-        if(distance >= 0)
-        {
-            setIsShow(true);
+      if (distance >= 0) {
+        let _hours = time.hours;
+        let _minutes = time.minutes;
+        let _seconds = time.seconds + 1;
+        if (_seconds == 60) {
+          _minutes = _minutes + 1;
+          _seconds = 0;
         }
-      let _hours = time.hours;
-      let _minutes = time.minutes;
-      let _seconds = time.seconds + 1;
-      if (_seconds == 60) {
-        _minutes = _minutes + 1;
-        _seconds = 0;
+        if (_minutes == 60) {
+          _hours = _hours + 1;
+          _minutes = 0;
+        }
+        setTime({hours: _hours, minutes: _minutes, seconds: _seconds, isShow: true});
+        //setIsShow(true);
       }
-      if (_minutes == 60) {
-        _hours = _hours + 1;
-        _minutes = 0;
-      }
-      setTime({hours: _hours, minutes: _minutes, seconds: _seconds});
+      setDem(dem + 1);
     }, 1000);
 
     return () => clearInterval(startTimer);
   });
 
-  return (<View
+  return (
+    <View
       style={{
         // opacity: 0.5,
-        opacity: isShow == true ? 0.5 : 0,
+        opacity: time.isShow == true ? 0.5 : 0,
         height: '100%',
         paddingVertical: 0,
         paddingHorizontal: 5,
@@ -80,7 +76,8 @@ const CountUpTimer = props => {
         {time.minutes} : {time.seconds < 10 && '0'}
         {time.seconds}
       </Text>
-    </View>)
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({});
