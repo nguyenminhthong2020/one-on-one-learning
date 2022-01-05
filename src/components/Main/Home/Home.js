@@ -140,8 +140,8 @@ const Home = props => {
 
     array.forEach(item => 
       listFav.includes(item.userId) ? 
-      arrayFav.push({...item}) : 
-      arrayNoFav.push({...item}));
+      arrayFav.unshift({...item}) : 
+      arrayNoFav.unshift({...item}));
     
     const array1 = [...arrayFav, ...arrayNoFav];
 

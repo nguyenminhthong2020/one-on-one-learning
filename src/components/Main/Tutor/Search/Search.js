@@ -79,7 +79,7 @@ const Search = props => {
               arrTutor: newArrTutor.slice(
                 _index * PER_PAGE_VALUE,
                 _index * PER_PAGE_VALUE + PER_PAGE_VALUE,
-              ),
+              ).reverse(),
               arrPagination: arrCount.slice(0, MAX_NUMBER_PAGE),
             });
           }

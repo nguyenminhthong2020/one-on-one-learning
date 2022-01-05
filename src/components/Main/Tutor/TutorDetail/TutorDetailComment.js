@@ -1,24 +1,16 @@
 /* eslint-disable */
-import React, {Suspense, useState, useRef, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
-  //ScrollView,
-  // StatusBar,
   StyleSheet,
-  //ActivityIndicator,
   Text,
   View,
-  //Dimensions,
-  //TouchableOpacity,
-  //Pressable,
   Image,
   FlatList,
-  //TextInput,
-
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { THIRD_COLOR, BASE_URL, NUM_OF_LINES } from '../../../../globals/constant';
+import { MAIN_COLOR, THIRD_COLOR, BASE_URL, NUM_OF_LINES } from '../../../../globals/constant';
 
 const TutorDetailComment = (props) => {   
     const current = useSelector(state => state.auth.current);
@@ -69,84 +61,89 @@ const TutorDetailComment = (props) => {
         isMounted = false;
       };
     }, [])
-    return (
-    <View style={{marginBottom: 0}}>
-    <FlatList
-      getItemLayout={(_, index) => ({
-        length: 200,
-        offset: 200 * index,
-        index,
-      })}
-      removeClippedSubviews={true}
-      windowSize={7}
-      style={{marginBottom: 0, margin: 5}}
-      showsVerticalScrollIndicator={true}
-      initialNumToRender={4}
-      data={arraySort}
-      extraData={arraySort}
-      renderItem={({item, index}) => (
-        <View style={{marginBottom: 4}}>
-          <View style={styles.shadowProp}>
-            <View
-              style={{
-                flexDirection: 'row',
-                marginBottom: 0,
-                marginTop: 8,
-              }}>
-              <View>
-                <FastImage
-                  style={{width: 30, height: 30, borderRadius: 15}}
-                  resizeMode={FastImage.resizeMode.cover}
-                  source={{
-                    uri: item.firstInfo.avatar,
-                    priority: FastImage.priority.normal,
-                  }}
-                />
-              </View>
-              <View style={{justifyContent: 'center'}}>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    color: 'black',
-                    marginLeft: 6,
-                    fontWeight: 'bold',
-                  }}>
-                  {item.firstInfo.name}
-                </Text>
+    return arraySort.length > 0 ? (<View style={{marginBottom: 0}}>
+      <FlatList
+        getItemLayout={(_, index) => ({
+          length: 200,
+          offset: 200 * index,
+          index,
+        })}
+        removeClippedSubviews={true}
+        windowSize={7}
+        style={{marginBottom: 0, margin: 5}}
+        showsVerticalScrollIndicator={true}
+        initialNumToRender={4}
+        data={arraySort}
+        extraData={arraySort}
+        renderItem={({item, index}) => (
+          <View style={{marginBottom: 4}}>
+            <View style={styles.shadowProp}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginBottom: 0,
+                  marginTop: 8,
+                }}>
+                <View>
+                  <FastImage
+                    style={{width: 30, height: 30, borderRadius: 15}}
+                    resizeMode={FastImage.resizeMode.cover}
+                    source={{
+                      uri: item.firstInfo.avatar,
+                      priority: FastImage.priority.normal,
+                    }}
+                  />
+                </View>
+                <View style={{justifyContent: 'center'}}>
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      color: 'black',
+                      marginLeft: 6,
+                      fontWeight: 'bold',
+                    }}>
+                    {item.firstInfo.name}
+                  </Text>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      marginTop: 1,
+                      marginLeft: 5,
+                    }}>
+                    <Text style={{color: THIRD_COLOR}}>{(new Date(item.createdAt)).toLocaleString()}</Text>
+                  </View>
+                </View>
                 <View
                   style={{
                     flexDirection: 'row',
                     alignItems: 'center',
-                    marginTop: 1,
-                    marginLeft: 5,
+                    position: 'absolute',
+                    right: 0
                   }}>
-                  <Text style={{color: THIRD_COLOR}}>{(new Date(item.createdAt)).toLocaleString()}</Text>
+                  <Text style={{color: 'orange'}}>{item.rating} </Text>
+                  <Image
+                      source={require('../../../../../assets/rating.png')}
+                    />
                 </View>
               </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  position: 'absolute',
-                  right: 0
-                }}>
-                <Text style={{color: 'orange'}}>{item.rating} </Text>
-                <Image
-                    source={require('../../../../../assets/rating.png')}
-                  />
-              </View>
+              <Text
+                numberOfLines={NUM_OF_LINES}
+                style={{fontSize: 15, color: 'black', marginTop: 5}}>
+                {item.content}
+              </Text>
             </View>
-            <Text
-              numberOfLines={NUM_OF_LINES}
-              style={{fontSize: 15, color: 'black', marginTop: 5}}>
-              {item.content}
-            </Text>
           </View>
-        </View>
-      )}
-      disableVirtualization={false}
-    />
-  </View>
+        )}
+        disableVirtualization={false}
+      />
+    </View>
+  ):(
+    <View>
+      <View style={{marginTop: 40}}>
+      <Text style={{color: MAIN_COLOR, textAlign: 'center', fontSize: 25}}>No Data</Text>
+    </View>
+    </View>
   )
 }
 

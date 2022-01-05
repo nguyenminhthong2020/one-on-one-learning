@@ -13,13 +13,13 @@ const CountUpTimer = props => {
   let minutes1 = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
   let seconds1 = Math.floor((distance % (1000 * 60)) / 1000);
   
-  if(hours1 == - 1){
+  if(hours1 < 0){
     hours1 = 0;
   }
-  if(minutes1 == - 1){
+  if(minutes1 < 0){
     minutes1 = 0;
   }
-  if(seconds1 == - 1){
+  if(seconds1 < 0){
     seconds1 = 0;
   }
   const [time, setTime] = useState({
