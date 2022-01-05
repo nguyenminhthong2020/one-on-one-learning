@@ -21,7 +21,7 @@ const Login = (props) => {
   const check = useSelector(state => state.auth.isLoggin);
   useEffect(()=>{
     if(check == true){
-          props.navigation.navigate("MainTabs");
+          props.navigation.push("MainTabs");
         }
   }, [check])
 

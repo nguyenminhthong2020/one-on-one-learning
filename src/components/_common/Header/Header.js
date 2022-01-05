@@ -29,7 +29,7 @@ const Header = (props) => {
             backgroundColor: 'red',
             borderColor: 'red',
           }}>
-          <Pressable onPress={() => props.navigation.navigate("Menu")}>
+          <Pressable onPress={() => props.navigation.push("Menu")}>
             {/* <Suspense
               fallback={<ActivityIndicator size="small" color="#0000ff" />}> */}
               <Icon name="menu" size={30} color="white" />

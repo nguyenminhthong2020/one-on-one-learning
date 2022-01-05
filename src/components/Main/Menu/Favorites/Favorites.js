@@ -5,6 +5,7 @@ import {
   View,
   ScrollView,
 } from 'react-native';
+import { MAIN_COLOR } from '../../../../globals/constant';
 import {useSelector, useDispatch} from 'react-redux';
 import TutorItem from '../../common/TutorItem/TutorItem';
 import { searchSpecAsync } from '../../../../redux/slices/tutor/searchSlice';
@@ -40,8 +41,8 @@ export default function Favorites(props) {
   });
 
   return listFavorite.length == 0 ? (
-    <View>
-      <Text>No Favorite !</Text>
+    <View style={{marginTop: 40}}>
+      <Text style={{color: MAIN_COLOR, textAlign: 'center', fontSize: 25}}>No Favorite</Text>
     </View>
   ) : (
     <ScrollView showsVerticalScrollIndicator={false}>
