@@ -8,7 +8,7 @@ const CountUpTimer = props => {
   
   // let now = new Date().getTime() + 1000*60*60*4+1000*60*39;
   // console.log(new Date(now).toLocaleString())
-
+  let now = new Date().getTime();
   let distance = now - props.timeStart;
   let hours1 = Math.floor(
     (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
