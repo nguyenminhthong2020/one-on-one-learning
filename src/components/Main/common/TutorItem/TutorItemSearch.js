@@ -1,8 +1,8 @@
 /* eslint-disable */
-import React, {useState} from 'react';
+import React from 'react';
 import {
-  MAIN_COLOR,
-  SECOND_COLOR,
+  // MAIN_COLOR,
+  // SECOND_COLOR,
   NUM_OF_LINES,
 } from '../../../../globals/constant';
 import {
@@ -13,7 +13,7 @@ import {
   Pressable,
 } from 'react-native';
 import ListTags from '../../../_common/ListTags/ListTags';
-
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 //import {Rating} from 'react-native-ratings';
 import FastImage from 'react-native-fast-image';
 import { handleAverage } from '../../../../utils/utils';
@@ -59,11 +59,8 @@ const TutorItemSearch = props => {
             <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 1, marginLeft: 10}}>
             <Text style={{color: 'orange'}}>{_rating} </Text>
             {
-              _rating != 'No reviews yet' && <Image 
-              //style={{marginLeft: 30}}
-              //resizeMode={FastImage.resizeMode.cover}
-              source={require('../../../../../assets/rating.png')}
-            />
+              _rating != 'No reviews yet' && 
+              <MaterialIcons name={'star'} size={16} color="orange" />
             }
             </View>
           </View>

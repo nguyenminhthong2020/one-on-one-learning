@@ -142,6 +142,10 @@ const Profile = props => {
   if(current.user.hasOwnProperty('country'))
   {
     _country =  current.user.country != null ? current.user.country : 'VN';
+    if(_country.length != 2 || _country[0] == '+' || _country[0] == '0')
+    {
+      _country = 'VN';
+    }
   }else{
     _country = 'VN';
   }
@@ -507,6 +511,7 @@ const Profile = props => {
                   withCountryNameButton
                   withCallingCode
                   countryCode={country.cca2}
+                  // name={country.cca2}
                   onSelect={country =>
                     //console.log("\nĐây nữa nè: " + JSON.stringify(country))
                     setCountry({cca2: country.cca2, name: country.name})

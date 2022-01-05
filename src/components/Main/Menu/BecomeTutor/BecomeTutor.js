@@ -144,6 +144,10 @@ const Profile = props => {
   if(current.user.hasOwnProperty('country'))
   {
     _country =  current.user.country != null ? current.user.country : 'VN';
+    if(_country.length != 2 || _country[0] == '+' || _country[0] == '0')
+    {
+      _country = 'VN';
+    }
   }else{
     _country = 'VN';
   }
@@ -290,7 +294,7 @@ const Profile = props => {
   };
 
   const onSubmit = data => {
-    let specialties;
+    let specialties = '';
     for (let i = 0; i < whatToLearn.length; i++) {
       specialties = specialties + convertSubject(whatToLearn[i].id) + ',';
     }

@@ -1,8 +1,8 @@
 /* eslint-disable */
-import React, {useState} from 'react';
+import React from 'react';
 import {NUM_OF_LINES} from '../../../../globals/constant';
-import {Text, View, Image, StyleSheet, Pressable} from 'react-native';
-
+import {Text, View, StyleSheet, Pressable} from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import ListTags from '../../../_common/ListTags/ListTags';
 //import {Rating} from 'react-native-ratings';
@@ -72,11 +72,7 @@ const TutorItem = props => {
               }}>
               <Text style={{color: 'orange'}}>{_rating} </Text>
               {_rating != 'No reviews yet' && (
-                <Image
-                  //style={{marginLeft: 30}}
-                  //resizeMode={FastImage.resizeMode.cover}
-                  source={require('../../../../../assets/rating.png')}
-                />
+                <MaterialIcons name={'star'} size={16} color="orange"/>
               )}
             </View>
           </View>

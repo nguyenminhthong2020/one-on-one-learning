@@ -4,11 +4,11 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   FlatList,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import axios from 'axios';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useSelector } from 'react-redux';
 import { MAIN_COLOR, THIRD_COLOR, BASE_URL, NUM_OF_LINES } from '../../../../globals/constant';
 
@@ -122,9 +122,7 @@ const TutorDetailComment = (props) => {
                     right: 0
                   }}>
                   <Text style={{color: 'orange'}}>{item.rating} </Text>
-                  <Image
-                      source={require('../../../../../assets/rating.png')}
-                    />
+                  <MaterialIcons name={'star'} size={16} color="orange"/>
                 </View>
               </View>
               <Text

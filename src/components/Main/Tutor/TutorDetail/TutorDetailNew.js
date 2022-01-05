@@ -18,7 +18,7 @@ import FastImage from 'react-native-fast-image';
 const SectionVideo = React.lazy(() => import('./SectionVideo'));
 import {useDispatch, useSelector} from 'react-redux';
 import CountryPicker from 'react-native-country-picker-modal';
-import {handleAverage} from '../../../../utils/utils';
+//import {handleAverage} from '../../../../utils/utils';
 // import { detailApi } from '../../../../api/tutor/detailApi';
 
 import axios from 'axios';
@@ -195,10 +195,7 @@ const TutorDetailNew = props => {
                       <Text style={{color: 'orange'}}>
                         {(Math.round((detailTutor.avgRating)*2)/2)}/5{' '}
                       </Text>
-                      <MaterialIcons name={'star'} size={20} color="orange" />
-                      {/* <Image
-                        source={require('../../../../../assets/rating.png')}
-                      /> */}
+                      <MaterialIcons name={'star'} size={16} color="orange" />
                     </>
                   )}
                 </View>

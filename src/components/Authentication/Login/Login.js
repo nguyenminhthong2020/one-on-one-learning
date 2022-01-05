@@ -12,7 +12,7 @@ import { initNew } from '../../../redux/slices/auth/loginSlice';
 
 // import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { LoginManager, AccessToken } from "react-native-fbsdk-next";
+import { LoginManager, AccessToken, Profile} from "react-native-fbsdk-next";
 import { axiosInstance } from '../../../utils/utils';
 
 
@@ -88,6 +88,8 @@ const Login = (props) => {
           if (result.isCancelled) {
             console.log('User cancelled the login process');
           }else{
+          const currentProfile = await Profile.getCurrentProfile();
+          console.log(currentProfile);
               // Once signed in, get the users AccesToken
           const data = await AccessToken.getCurrentAccessToken();
           if (!data) {
@@ -98,6 +100,7 @@ const Login = (props) => {
               access_token: data.accessToken
             })
             .then(res => {
+              // console.log(res.data);
               dispatch(initNew({current: res.data}))
             }).catch(err => {
               if (JSON.stringify(err).includes('message')) {
