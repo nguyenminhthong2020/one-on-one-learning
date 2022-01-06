@@ -13,6 +13,7 @@ import {
 import {SearchBar} from 'react-native-elements';
 // import CountryPicker from 'react-native-country-picker-modal';
 // import {useForm, Controller} from 'react-hook-form';
+import {handleAverage1} from '../../../../utils/utils';
 const TutorItemSearch = React.lazy(() =>
   import('../../common/TutorItem/TutorItemSearch.js'),
 );
@@ -50,7 +51,7 @@ const Search = props => {
     axiosInstance1
       .post(`tutor/search`, {
         filters: {
-          specialties: spec, 
+          specialties: spec,
           date: new Date().toISOString(),
         },
         page: 1,
@@ -67,24 +68,46 @@ const Search = props => {
           } else {
             newArrTutor = res.data.rows;
           }
-         
+
           let arrCount = [];
-          for (let i = 0; i < Math.ceil(newArrTutor.length / PER_PAGE_VALUE); i++) {
+          for (
+            let i = 0;
+            i < Math.ceil(newArrTutor.length / PER_PAGE_VALUE);
+            i++
+          ) {
             arrCount.push(i);
           }
+
+          let _array = [...newArrTutor];
+          let t;
+          for (let i = 0; i < _array.length - 1; i++)
+            for (let j = i + 1; j < _array.length; j++) {
+              let mi = handleAverage1(_array[i].feedbacks);
+              let mj = handleAverage1(_array[j].feedbacks);
+              if (mi < mj) {
+                t = _array[i];
+                _array[i] = _array[j];
+                _array[j] = t;
+              }
+            }
 
           if (_isMounted) {
             setArrTutorPagination({
               currentPage: _index + 1,
-              arrTutor: newArrTutor.slice(
+              // arrTutor: newArrTutor.slice(
+              //   _index * PER_PAGE_VALUE,
+              //   _index * PER_PAGE_VALUE + PER_PAGE_VALUE,
+              // ),
+              arrTutor: _array.slice(
                 _index * PER_PAGE_VALUE,
                 _index * PER_PAGE_VALUE + PER_PAGE_VALUE,
-              ).reverse(),
+              ),
               arrPagination: arrCount.slice(0, MAX_NUMBER_PAGE),
             });
           }
         }
-      }).catch(err => {
+      })
+      .catch(err => {
         if (JSON.stringify(err).includes('message')) {
           alert('FAIL:\n' + err.response.data.message);
         } else {
@@ -158,7 +181,7 @@ const Search = props => {
                 <TouchableOpacity
                   key={index}
                   onPress={() => {
-                    handleSearchAndPaginate(index, true)
+                    handleSearchAndPaginate(index, true);
                   }}
                   style={{
                     marginHorizontal: 1,
@@ -171,7 +194,9 @@ const Search = props => {
                     borderRadius: 5,
                     marginBottom: 20,
                   }}>
-                  <Text style={{textAlign: 'center', color: 'black'}}>{index + 1}</Text>
+                  <Text style={{textAlign: 'center', color: 'black'}}>
+                    {index + 1}
+                  </Text>
                 </TouchableOpacity>
               ),
             )}
@@ -193,7 +218,12 @@ const Search = props => {
             height: 40,
             borderRadius: 5,
           }}
-          inputStyle={{backgroundColor: 'white', height: 26, fontSize: 16, color: 'black'}}
+          inputStyle={{
+            backgroundColor: 'white',
+            height: 26,
+            fontSize: 16,
+            color: 'black',
+          }}
           placeholder={
             langState.currentLang == 'en'
               ? 'search tutors...'
@@ -202,21 +232,19 @@ const Search = props => {
           onChangeText={value => setNameQuery(value)}
           value={nameQuery}
         />
-        <View style={{width: '22%', backgroundColor: 'black', paddingVertical: 8}}>
-        <Pressable
-          style={[
-            styles.button1,
-            { paddingVertical: 9, borderRadius: 20},
-          ]}
-          onPress={() => {
-            if (nameQuery.length > 0) {
-              handleSearchAndPaginate(0, true);
-            } 
-          }}>
-          <Text style={[styles.text1, {textAlign: 'center'}]}>
-            {langState[langState.currentLang].Search}
-          </Text>
-        </Pressable>
+        <View
+          style={{width: '22%', backgroundColor: 'black', paddingVertical: 8}}>
+          <Pressable
+            style={[styles.button1, {paddingVertical: 9, borderRadius: 20}]}
+            onPress={() => {
+              if (nameQuery.length > 0) {
+                handleSearchAndPaginate(0, true);
+              }
+            }}>
+            <Text style={[styles.text1, {textAlign: 'center'}]}>
+              {langState[langState.currentLang].Search}
+            </Text>
+          </Pressable>
         </View>
       </View>
       <View
@@ -236,16 +264,11 @@ const Search = props => {
             marginLeft: 10,
             fontWeight: 'bold',
             color: isDarkTheme ? 'white' : 'black',
-            marginBottom: 3
+            marginBottom: 3,
           }}>
           {langState[langState.currentLang].Filter_Tutors}:{' '}
         </Text>
-        <MyTag
-            isActive
-            title={spec != '' ? spec: "All"}
-            onPress={() => {
-            }}
-          />
+        <MyTag isActive title={spec != '' ? spec : 'All'} onPress={() => {}} />
       </View>
       <View style={{backgroundColor: isDarkTheme ? 'black' : 'white'}}>
         <ScrollView
@@ -340,7 +363,7 @@ const Search = props => {
             color: isDarkTheme ? 'white' : 'black',
             marginLeft: 10,
           }}>
-          {langState.currentLang=='en'?'Results':'Kết quả'}:{' '}
+          {langState.currentLang == 'en' ? 'Results' : 'Kết quả'}:{' '}
         </Text>
         <FontAwesome
           name="refresh"
