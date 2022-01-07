@@ -1,10 +1,11 @@
 /* eslint-disable */
 import React, {useEffect, useState} from 'react';
-import {View, Dimensions, StatusBar} from 'react-native';
+import {View, Image, Text} from 'react-native';
 import JitsiMeet, {JitsiMeetView} from 'react-native-jitsi-meet';
 import CountdownTimer from '../common/CountdownTimer/CountDownTimer';
 import CountUpTimer from '../common/CountdownTimer/CountUpTimer';
 import {useSelector} from 'react-redux';
+import { MAIN_COLOR } from '../../../globals/constant';
 // let windowHeight = Dimensions.get('window').height;
 
 const VideoCallNew = props => {
@@ -97,6 +98,20 @@ const VideoCallNew = props => {
     //   backgroundColor: 'black',
     // }}
     >
+      <View
+        style={{
+          height: 40,
+          width: 60,
+          position: 'absolute',
+          marginTop: 30,
+          marginLeft: 5,
+          alignSelf: 'flex-start',
+          elevation: 100,
+        }}>
+        <Image source={require('./logoblack.png')} style={{height: 40,
+          width: 40,}}/>
+          <Text style={{color: MAIN_COLOR, fontWeight: 'bold'}}>LetTutor</Text>
+      </View>
       <View
         style={{
           height: 100,

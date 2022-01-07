@@ -11,6 +11,7 @@ import React from 'react';
 import {
   Text,
   View,
+  Image
 } from 'react-native';
 import {MAIN_COLOR} from './src/globals/constant';
 import MainNavigation from './src/navigation/MainNavigation';
@@ -30,7 +31,9 @@ const SlashScreen = () => {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: 'white'
       }}>
+      <Image source={require('./assets/logo.png')}/>
       <Text style={{fontSize: 45, color: MAIN_COLOR, fontWeight: 'bold'}}>
         LetTutor
       </Text>

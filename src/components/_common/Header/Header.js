@@ -6,7 +6,7 @@ import {
   View,
   StyleSheet,
   Pressable,
-  // ActivityIndicator,
+  Image,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useSelector } from 'react-redux';
@@ -17,7 +17,8 @@ const Header = (props) => {
   return (
     <View style={styles.container}>
       <View style={[styles.shadow, {backgroundColor: isDarkTheme?'black': 'white'}]}>
-        <View>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Image source={require('../../../../assets/logo.png')} style={{width: 30, height: 30}}/>
           <Text style={styles.leftHeader}>LetTutor</Text>
         </View>
         <View
@@ -65,6 +66,7 @@ const styles = StyleSheet.create({
     color: MAIN_COLOR,
     fontSize: 28,
     fontWeight: 'bold',
+    marginLeft: 2,
   },
   rightHeader: {
     fontSize: 22,
