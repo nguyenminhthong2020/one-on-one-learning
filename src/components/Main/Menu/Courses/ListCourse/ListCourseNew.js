@@ -5,7 +5,6 @@ import {
   View,
   FlatList,
   Pressable,
-  Linking,
 } from 'react-native';
 
 import FastImage from 'react-native-fast-image';
@@ -193,7 +192,6 @@ const ListCourseNew = props => {
         str = str + `&categoryId[]=${_listCate[arrCategorySelected[i].item]}`;
       }
     }
-    // console.log(str);
     dispatch(
       searchCourseAsync({
         str: str,
@@ -355,7 +353,6 @@ const ListCourseNew = props => {
               )}
             </View>
           </View>
-
     </>
   );
 };

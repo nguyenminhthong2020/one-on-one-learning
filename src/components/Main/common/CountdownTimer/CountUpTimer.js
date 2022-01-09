@@ -1,13 +1,10 @@
 /* eslint-disable */
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, Text} from 'react-native';
 import {useSelector} from 'react-redux';
 
 const CountUpTimer = props => {
   const [dem, setDem] = useState(0);
-  
-  // let now = new Date().getTime() + 1000*60*60*4+1000*60*39;
-  // console.log(new Date(now).toLocaleString())
   let now = new Date().getTime();
   let distance = now - props.timeStart;
   let hours1 = Math.floor(
@@ -39,7 +36,6 @@ const CountUpTimer = props => {
           _minutes = 0;
         }
         setTime({hours: _hours, minutes: _minutes, seconds: _seconds, isShow: true});
-        //setIsShow(true);
       }
       setDem(dem + 1);
     }, 1000);
@@ -50,13 +46,12 @@ const CountUpTimer = props => {
   return (
     <View
       style={{
-        // opacity: 0.5,
         opacity: time.isShow == true ? 0.5 : 0,
         height: '100%',
         paddingVertical: 0,
         paddingHorizontal: 5,
         backgroundColor: 'gray',
-        marginHorizontal: 0 /*marginTop: '50%'*/,
+        marginHorizontal: 0,
       }}>
       <Text style={{color: 'yellow', fontSize: 16, textAlign: 'center'}}>
         {langState.currentLang == 'en'
@@ -80,5 +75,4 @@ const CountUpTimer = props => {
   );
 };
 
-const styles = StyleSheet.create({});
 export default CountUpTimer;

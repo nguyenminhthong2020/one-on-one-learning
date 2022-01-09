@@ -21,14 +21,10 @@ const TutorItem = props => {
   const current = useSelector(state => state.auth.current);
   const _rating = handleAverage(props.tutor.feedbacks);
 
-  //const [isHover, setIsHover] = useState(false);
-
   return (
     <Pressable
       onPress={props.onPress}
       style={{marginBottom: 10}}
-      // onPressIn={()=>setIsHover(true)}
-      // onPressOut={()=>setIsHover(false)}  // {opacity: isHover?0.7:1}
     >
       <View style={styles.shadowProp}>
         <View style={{flexDirection: 'row', marginBottom: 5}}>
@@ -52,17 +48,6 @@ const TutorItem = props => {
               }}>
               {props.tutor.name}
             </Text>
-            {/* <Rating 
-                style={{marginLeft: 6}}
-                ratingCount={5}
-                imageSize={15}
-                readonly={true}
-                jumpValue={0.5}
-                showRating={false}
-                fractions={10}
-                startingValue={props.tutor.startingValue}
-                isDisabled={true}
-              /> */}
             <View
               style={{
                 flexDirection: 'row',
@@ -82,7 +67,6 @@ const TutorItem = props => {
                 name={'heart'}
                 size={22}
                 color={'gray'}
-                // style={{textAlign: 'right', marginBottom: -15, marginRight: 10}}
                 onPress={() => {
                   dispatch(
                     addFavAsync({
@@ -97,7 +81,6 @@ const TutorItem = props => {
                 name={'heart'}
                 size={22}
                 color={'rgb(240, 72, 72)'}
-                // style={{textAlign: 'right', marginBottom: -15, marginRight: 10}}
                 onPress={() => {
                   dispatch(
                     removeFavAsync({

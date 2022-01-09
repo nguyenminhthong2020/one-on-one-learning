@@ -1,6 +1,5 @@
 /* eslint-disable */
-
-import React, { Suspense, useState } from 'react';
+import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, Pressable, Modal, FlatList, TouchableOpacity } from 'react-native';
 import { arrLanguage } from '../../../globals/arr-language';
 
@@ -16,13 +15,12 @@ const LanguageModal = () => {
                     transparent={true}
                     visible={modalVisible}
                     onRequestClose={() => {
-                        //alert("Modal has been closed.");
                         setModalVisible(!modalVisible);
                     }}
                 >
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
-                            <Text /*style={styles.modalText}*/>Hello World!</Text>
+                            <Text>Hello World!</Text>
                             <FlatList
                             style={{ marginBottom: 20, marginTop: 10, borderWidth:2, }}
                             showsVerticalScrollIndicator={true}
@@ -30,7 +28,7 @@ const LanguageModal = () => {
                             data={arrLanguage}
                             renderItem={i => (
                                 <View>
-                                <TouchableOpacity onPress={() => setLanguage(i.item.English)/*alert(i.index)*/}>
+                                <TouchableOpacity onPress={() => setLanguage(i.item.English)}>
                                 <Text style={{fontSize: 20}}>
                                 {`       ${i.item.English}`}
                                 </Text>
@@ -77,14 +75,10 @@ const styles = StyleSheet.create({
     centeredView: {
         flex: 1,
         backgroundColor: 'yellow',
-        // justifyContent: "center",
-        // alignItems: "center",
-        // width: '90%',
-        // height: '90%'
         marginTop: 22
     },
     modalView: {
-        margin: 10,  // 20
+        margin: 10,  
         backgroundColor: "white",
         borderRadius: 20,
         height: '100%',

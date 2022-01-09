@@ -118,12 +118,6 @@ const Booking = props => {
     //props: student, tutor, arrayDateTime, id, isVisible
     const [isModalVisibleTime, setModalVisibleTime] = useState(props.isVisible);
 
-    // const [dataModalChild, setDataModalChild] = useState(
-    //   {
-    //     isVisible: false,
-    //   }
-    // )
-
     const toggleModalTime = () => {
       setModalVisibleTime(!isModalVisibleTime);
     };

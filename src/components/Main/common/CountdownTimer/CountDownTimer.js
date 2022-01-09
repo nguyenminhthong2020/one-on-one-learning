@@ -1,13 +1,12 @@
 /* eslint-disable */
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, Text} from 'react-native';
 import {useSelector} from 'react-redux';
 
 const CountdownTimer = props => {
-  let countDownDate = new Date(props.timeStart).getTime(); // thay string = props.timeStart;
+  let countDownDate = new Date(props.timeStart).getTime(); 
   let now = new Date().getTime();
   let distance = countDownDate - now;
-  // Time calculations for hours, minutes and seconds
   let days = Math.floor((distance % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24)); 
   let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
   let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -28,13 +27,12 @@ const CountdownTimer = props => {
         let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         let seconds = Math.floor((distance % (1000 * 60)) / 1000);
         if (distance < 0) {
-          //clearInterval(x);
           return setIsShow(false);
         }
         setTime({hours, minutes, seconds, days});
       }, 1000);
 
-    return () => clearInterval(startTimer);//setIsShow(false);
+    return () => clearInterval(startTimer);
   }, []);
 
   return isShow ? (
@@ -50,5 +48,4 @@ const CountdownTimer = props => {
   );
 };
 
-const styles = StyleSheet.create({});
 export default CountdownTimer;

@@ -1,12 +1,8 @@
 /* eslint-disable */
-import React, {useState} from 'react';
+import React from 'react';
 import {
   Text,
   View,
-  //TextInput,
-  //StyleSheet,
-  //TouchableOpacity,
-  //FlatList,
   ScrollView,
   Pressable,
 } from 'react-native';
@@ -149,24 +145,10 @@ const CourseDetail = props => {
           props.route.params.item.topics.map((topic, index) => <View key={index} style={{marginBottom: 2,}}><Text style={{fontSize: 16, color: isDarkTheme?'white':null}}>{index + 1}. {topic.name}</Text></View>)
          }
       </View>
-      {/* <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10, marginTop: 16}}>
-      Suggested Tutors
-      </Text>
-      <Text style={{fontSize: 16}}>Michelle Barredo</Text> */}
     </View>
   </View>
   </ScrollView>
   )
 };
-
-// const CourseDetail = () => {
-//   return (
-//     <View>
-//       <Item />
-//     </View>
-//   );
-// };
-
-//const styles = StyleSheet.create({});
 
 export default CourseDetail;

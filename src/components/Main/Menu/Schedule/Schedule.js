@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, {useState, Suspense, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {MAIN_COLOR} from '../../../../globals/constant';
 import {
   Text,
@@ -15,7 +15,6 @@ import {
   cancelBookingSchedule,
 } from '../../../../api/schedule/scheduleApi';
 
-
 const Schedule = () => {
   const current = useSelector(state => state.auth.current);
   const [arrSchedulePagination, setArrSchedulePagination] = useState({
@@ -26,10 +25,8 @@ const Schedule = () => {
 
   useEffect(() => {
     let isMounted = true;
-
     const dateTimeLte = new Date().getTime();
     const str = `booking/list/student?page=1&perPage=10&dateTimeGte=${dateTimeLte}&orderBy=meeting&sortBy=asc`;
-
     getSchedule({str: str, accessToken: current.tokens.access.token}).then(data => {
       if (data.count > 0) {
         const _countPage = ~~(data.count / 10) + 1;
@@ -37,8 +34,6 @@ const Schedule = () => {
         for (let i = 0; i < _countPage; i++) {
           arrCount.push(i);
         }
-        // setArrPagination(arrCount);
-        // setArrHistory(data.rows);
         if(isMounted ){
         setArrSchedulePagination({
           currentPage: 1,
@@ -171,21 +166,6 @@ const Schedule = () => {
                   </Text>
                 </View>
               </Pressable>
-              {/* <Pressable style={{width: 130}}>
-                <View
-                  style={{
-                    width: '100%',
-                    backgroundColor: MAIN_COLOR,
-                    paddingVertical: 4,
-                    borderWidth: 1,
-                    borderRadius: 5,
-                  }}>
-                  <Text
-                    style={{color: 'white', textAlign: 'center', fontSize: 16}}>
-                    {langState[langState.currentLang].Go_to_meeting}
-                  </Text>
-                </View>
-              </Pressable> */}
             </View>
           </View>
         ))

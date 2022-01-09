@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react';
-import {MAIN_COLOR, THIRD_COLOR} from '../../../globals/constant';
+import {MAIN_COLOR} from '../../../globals/constant';
 import {
   Text,
   View,
@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useSelector } from 'react-redux';
-//const Icon = React.lazy(() => import('react-native-vector-icons/Ionicons'));
 
 const Header = (props) => {
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
@@ -31,10 +30,7 @@ const Header = (props) => {
             borderColor: 'red',
           }}>
           <Pressable onPress={() => props.navigation.push("Menu")}>
-            {/* <Suspense
-              fallback={<ActivityIndicator size="small" color="#0000ff" />}> */}
               <Icon name="menu" size={30} color="white" />
-            {/* </Suspense> */}
           </Pressable>
         </View>
       </View>
@@ -45,7 +41,6 @@ const Header = (props) => {
 const styles = StyleSheet.create({
   container: {
     overflow: 'hidden',
-    //paddingBottom: 5,
   },
   shadow: {
     paddingHorizontal: '3%',
@@ -54,7 +49,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
 
     backgroundColor: '#fff',
-    // width: 300,
     height: 51,
     shadowColor: '#000',
     shadowOffset: {width: 1, height: 1},

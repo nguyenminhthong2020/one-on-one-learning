@@ -21,8 +21,6 @@ import {useForm, Controller} from 'react-hook-form';
 import Button from '../../../_common/Button/Button';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-//import DatePicker from 'react-native-datepicker';
-// thay vì dùng DateTimePicker, có thể dùng RNDatetimePicker
 import SelectBox from 'react-native-multi-selectbox';
 import {xorBy} from 'lodash';
 import {Picker} from '@react-native-picker/picker';
@@ -33,12 +31,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import {logout, initNew} from '../../../../redux/slices/auth/loginSlice';
 import {convertSubject, convertTestPre} from '../../../../utils/utils';
 
-// Phần Image Picker cho Avatar
 import * as ImagePicker from 'react-native-image-picker';
 import {ImagePickerAvatar} from '../../../_common/ImagePicker/image-picker-avatar';
 import {ImagePickerModal} from '../../../_common/ImagePicker/image-picker-modal';
 
-const Profile = props => {
+const BecomeTutor = props => {
   useEffect(() => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
   }, []);
@@ -177,7 +174,6 @@ const Profile = props => {
     fileName: '',
   });
 
-  //const [pickerResponse, setPickerResponse] = useState(null);
   const [visible, setVisible] = useState(false);
   const onImageLibraryPress = useCallback(() => {
     const options = {
@@ -186,25 +182,6 @@ const Profile = props => {
       includeBase64: false,
     };
     ImagePicker.launchImageLibrary(options, response => {
-      // const datas = new FormData();
-      // datas.append('avatar',
-      // {
-      //   uri: response.assets[0].uri,
-      //   type: response.assets[0].type,
-      //   name: response.assets[0].fileName,
-      // });
-      // datas.append('avatar', JSON.stringify({size:response.assets[0].fileSize}));
-      // axios.post(`${BASE_URL}user/uploadAvatar`,datas, {
-      //   headers: {
-      //     Authorization: 'Bearer ' + current.tokens.access.token,
-      //     'Content-Type': 'multipart/form-data'
-      //   }
-      // }).then(res => {
-      //   dispatch(initNewAvatar({
-      //      newAvatar: res.data.avatar
-      //   }))
-      // })
-      // .catch(err => console.log(err))
 
       // setState
       if (response.hasOwnProperty('assets')) {
@@ -233,7 +210,6 @@ const Profile = props => {
           },
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          //console.log("Camera permission given");
           const options = {
             selectionLimit: 1,
             mediaType: 'photo',
@@ -241,27 +217,6 @@ const Profile = props => {
           };
 
           ImagePicker.launchCamera(options, response => {
-            // upload avatar
-            // const datas = new FormData();
-            // datas.append('avatar',
-            // {
-            //   uri: response.assets[0].uri,
-            //   type: response.assets[0].type,
-            //   name: response.assets[0].fileName,
-            // });
-            // datas.append('avatar', JSON.stringify({size:response.assets[0].fileSize}));
-            // axios.post(`${BASE_URL}user/uploadAvatar`,datas, {
-            //   headers: {
-            //     Authorization: 'Bearer ' + current.tokens.access.token,
-            //     'Content-Type': 'multipart/form-data'
-            //   }
-            // }).then(res => {
-            //   dispatch(initNewAvatar({
-            //      newAvatar: res.data.avatar
-            //   }))
-            // })
-            // .catch(err => console.log(err))
-
             // setState
             if (response.hasOwnProperty('assets')) {
               setFile({
@@ -315,26 +270,6 @@ const Profile = props => {
     if (targetStudent1 != '' && targetStudent2 != '') {
       languages = targetStudent1 + ',' + targetStudent2;
     }
-
-    // console.log(
-    //   {
-    //       accessToken: current.tokens.access.token,
-    //       name: name,
-    //       country: country.cca2,
-    //       birthday: birthday,
-    //       interests: interests,
-    //       education: education,
-    //       experience: experience,
-    //       profession: profession,
-    //       languages: languages,
-    //       bio: bio,
-    //       targetStudent: targetStudent,
-    //       specialties: specialties,
-    //       // avatar: (binary),
-    //       // video: (binary),
-    //       price: 50000,
-    //       }
-    // )
     props.navigation.navigate('VideoIntroduction', {
       avatar: {
         uri: file.uri,
@@ -355,20 +290,6 @@ const Profile = props => {
       specialties: specialties,
       price: 50000,
     });
-    // dispatch(
-    //   changeInfoAsync({
-    //     ...data,
-    //   accessToken: current.tokens.access.token,
-    //   birthday: birthday,
-    //   name: name,
-    //   phone: phone,
-    //   country: country.cca2,
-    //   level: levelValue,
-    //   language: pickerValue,
-    //   whatToLearn: whatToLearn,
-    //   whatToLearn1: whatToLearn1,
-    //   }),
-    // );
   };
 
   function onMultiChange() {
@@ -422,16 +343,13 @@ const Profile = props => {
               style={{borderWidth: 1, width: 220, height: 40, fontSize: 15}}
               value={name}
               defaultValue={current.user.name}
-              //keyboardType={'numeric'}
               placeholder={'Name'}
-              // onBlur={onBlur}
               onChangeText={value => setName(value)}
             />
           </View>
         </View>
         <Controller
           control={control}
-          //rules={{required: true}}
           name="country"
           render={({field: {onChange, onBlur, value}}) => (
             <View style={styles.container1}>
@@ -444,20 +362,12 @@ const Profile = props => {
                 />
               </View>
               <View style={{marginLeft: 35}}>
-                {/* <CountryPicker translation="eng" withFlag={true} countryCode={true} onSelect={(country) => setCountry(country)}/>
-              <CountryPicker
-                withCallingCode
-                withModal={true}
-                withFlagButton={true}
-                withFilter={true}
-              /> */}
                 <CountryPicker
                   withFlag
                   withFilter
                   withCountryNameButton
                   countryCode={country.cca2}
                   onSelect={country =>
-                    //console.log("\nĐây nữa nè: " + JSON.stringify(country))
                     setCountry({cca2: country.cca2, name: country.name})
                   }
                 />
@@ -510,15 +420,6 @@ const Profile = props => {
                 is24Hour={true}
               />
             )}
-            {/* <DateTimePicker
-                styles={{width: '37%', backgroundColor: "white", color:'#009387'}}
-                testID="dateTimePicker"
-                value={date.date}
-                mode="date"
-                is24Hour={true}
-                display="default"
-                onChange={date => setDate({date: date})}
-              /> */}
           </View>
         </View>
         <Text
@@ -633,19 +534,6 @@ const Profile = props => {
             marginBottom: 25,
             backgroundColor: isDarkTheme ? 'white' : SECOND_COLOR,
           }}>
-          {/* <SelectBox
-            containerStyle={{marginTop: -15}}
-            label={false}
-            hideInputFilter
-            inputPlaceholder={'language'}
-            options={arrWhatToLearn1}
-            selectedValues={whatToLearn1}
-            onMultiSelect={onMultiChange1()}
-            onTapClose={onMultiChange1()}
-            isMulti
-            width={'90%'}
-            listOptionProps={{nestedScrollEnabled: true}}
-          /> */}
         </View>
         <Text
           style={{
@@ -934,4 +822,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Profile;
+export default BecomeTutor;

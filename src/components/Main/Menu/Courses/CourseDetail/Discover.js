@@ -1,12 +1,8 @@
 /* eslint-disable */
-import React, {useState} from 'react';
+import React from 'react';
 import {
   Text,
   View,
-  //TextInput,
-  //StyleSheet,
-  //TouchableOpacity,
-  //FlatList,
   ScrollView,
   Pressable,
 } from 'react-native';
@@ -21,13 +17,9 @@ const Discover = props => {
   return (
   <ScrollView>
   <View style={{margin: 5, borderRadius: 15}}>
-    {/* <Text style={{fontSize: 20}}>{props.title}</Text> */}
     <View
       style={{
         backgroundColor: 'white',
-        //   marginHorizontal: 5,
-        //   marginVertical: 5,
-        //padding: 5,
         marginHorizontal: 10,
         marginBottom: 10,
         borderRadius: 8,
@@ -82,15 +74,5 @@ const Discover = props => {
   </ScrollView>
 );
 }
-
-// const CourseDetail = () => {
-//   return (
-//     <View>
-//       <Item />
-//     </View>
-//   );
-// };
-
-//const styles = StyleSheet.create({});
 
 export default Discover;

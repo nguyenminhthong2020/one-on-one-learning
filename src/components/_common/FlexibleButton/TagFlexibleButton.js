@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React /*{useState, useEffect, useCallback}*/ from 'react';
+import React from 'react';
 import { THIRD_COLOR } from '../../../globals/constant';
 import {Text, View, StyleSheet, Pressable} from 'react-native';
 

@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FastImage from 'react-native-fast-image';
 
 export function ImagePickerModal({
   isVisible,
@@ -43,14 +42,6 @@ export function ImagePickerModal({
           <View style={{height: 30}} />
         </Pressable>
         <Pressable style={styles.button} onPress={onCameraPress}>
-          {/* <Image style={styles.buttonIcon} source={require('./assets/camera.png')} /> */}
-          {/* <FastImage
-            style={styles.buttonIcon}
-            resizeMode={FastImage.resizeMode.cover}
-            source={require('./assets/camera.png')}
-            height={40}
-            width={40}
-          /> */}
           <MaterialIcons
               style={{marginTop: 10}}
               name={'camera-alt'}

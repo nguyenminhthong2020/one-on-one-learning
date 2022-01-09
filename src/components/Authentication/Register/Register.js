@@ -24,7 +24,6 @@ const Register = (props) => {
         source: BASE_URL
       })
       .then(res => {
-        // console.log(res.data);
         alert("Your registration successfully.\n\nCheck email:\n"+data.email);
       }).catch(err => {
         if (JSON.stringify(err).includes('message')) {
@@ -147,7 +146,6 @@ const Register = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    // marginTop: 3,
     flex: 1,
     flexDirection: 'column',
     backgroundColor: 'white'

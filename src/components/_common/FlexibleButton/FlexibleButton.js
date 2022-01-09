@@ -1,15 +1,6 @@
 /* eslint-disable */
-import React /*{useState, useEffect, useCallback}*/ from 'react';
-import {MAIN_COLOR} from '../../../globals/constant';
+import React from 'react';
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
-// import {useForm, Controller} from 'react-hook-form';
-// import FontAwesome from 'react-native-vector-icons/FontAwesome';
-// import AntDesign from 'react-native-vector-icons/AntDesign';
-// import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-
-
-//import Ionicons from 'react-native-vector-icons/Ionicons';
-//import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const Tag = props => {
   return (

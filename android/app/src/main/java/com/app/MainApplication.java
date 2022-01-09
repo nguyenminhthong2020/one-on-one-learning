@@ -17,8 +17,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import androidx.annotation.Nullable;
 import com.reactnativejitsimeet.RNJitsiMeetPackage; 
-import com.zaguiini.RNPureJwt.RNPureJwtPackage;
-
 import java.util.Arrays;
 // import org.unimodules.adapters.react.ModuleRegistryAdapter;
 // import org.unimodules.adapters.react.ReactModuleRegistryProvider;

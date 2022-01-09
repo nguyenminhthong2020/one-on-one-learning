@@ -1,17 +1,14 @@
 /* eslint-disable */
-import React, {useState, Suspense, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {MAIN_COLOR, THIRD_COLOR} from '../../../globals/constant';
 import {
   Text,
   View,
-  //TextInput,
   StyleSheet,
   Pressable,
-  //FlatList,
   ScrollView,
 } from 'react-native';
 
-// import {useForm, Controller} from 'react-hook-form';
 import FastImage from 'react-native-fast-image';
 import {useSelector} from 'react-redux';
 import {
@@ -20,7 +17,6 @@ import {
 } from '../../../api/schedule/scheduleApi';
 import moment from 'moment';
 // import { sign, decode } from "react-native-pure-jwt";
-
 const UpcomingNew = props => {
   const current = useSelector(state => state.auth.current);
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
@@ -33,84 +29,6 @@ const UpcomingNew = props => {
 
   useEffect(() => {
     let isMounted = true;
-    // sign(
-    //   {
-    //     "context": {
-    //       "user": {
-    //         "email": "phhai.fit@gmail.com",
-    //         "name": "Hari Pham"
-    //       }
-    //     },
-    //     "room": "37264873-797b-473d-bf4c-fb017fec076f-e9e3eeaa-a588-47c4-b4d1-ecfa190f63fa",
-    //     "roomName": "37264873-797b-473d-bf4c-fb017fec076f-e9e3eeaa-a588-47c4-b4d1-ecfa190f63fa",
-    //     "userCall": {
-    //       "id": "37264873-797b-473d-bf4c-fb017fec076f",
-    //       "email": "phhai.fit@gmail.com",
-    //       "name": "Hari Pham",
-    //       "avatar": "https://lh3.googleusercontent.com/a-/AOh14GgpC__js1DhI9ynsBcK2KN6PbM47D5Z0eivMu_VKQ=s96-c",
-    //       "country": "VN",
-    //       "phone": "84933210786",
-    //       "language": null,
-    //       "birthday": "1986-06-01T00:00:00.000Z",
-    //       "isActivated": true,
-    //       "requireNote": null,
-    //       "level": "INTERMEDIATE",
-    //       "isPhoneActivated": true,
-    //       "timezone": 7
-    //     },
-    //     "userBeCalled": {
-    //       "id": "e9e3eeaa-a588-47c4-b4d1-ecfa190f63fa",
-    //       "email": "leanojill04@gmail.com",
-    //       "name": "Jill Leano",
-    //       "avatar": "https://api.app.lettutor.com/avatar/e9e3eeaa-a588-47c4-b4d1-ecfa190f63faavatar1632109929661.jpg",
-    //       "country": "PH",
-    //       "phone": null,
-    //       "language": null,
-    //       "birthday": "1981-07-04",
-    //       "isActivated": false,
-    //       "tutorInfo": {
-    //         "id": "e91a13d0-9c2f-4a7a-b11e-ef3cbbc2b6d5",
-    //         "userId": "e9e3eeaa-a588-47c4-b4d1-ecfa190f63fa",
-    //         "video": "https://api.app.lettutor.com/video/e9e3eeaa-a588-47c4-b4d1-ecfa190f63favideo1632109929663.mp4",
-    //         "bio": "Hi, My name is Jill I am an experienced English Teacher from Philippine. I would like share my enthusiasm with the learners in this platform. I've been working with diverse learners of all levels for many years. I am greatly passionate about about profession. I love teaching because I can help others improve their skills and it gives me joy and excitement meeting different learners around the world. In my class I worked with wonderful enthusiasm and positivity, and I'm happy t focus on my learner's goal.",
-    //         "education": "I am graduate of Bachelor of Science in Commerce major in management accounting in Canossa College San Pablo City and I took  38 units in education it is Certificate of Teaching Proficiency in Laguna Polytechnic  University in San Pablo City.",
-    //         "experience": "I am a license teacher I worked as an ESL Teacher for a year now, I am tutor for elementary to Senior High School student. I also teach Business English for some Professional Students .",
-    //         "profession": "I'm an Assistant Instructor in ACLC College were I teach Senior high school student and I handle subjects like English for Academic and Professional purposes, entrepreneurship,  Principles of Accounting, Organization and management, and Biology",
-    //         "accent": null,
-    //         "targetStudent": "Intermediate",
-    //         "interests": "Listening to music , Watching English movies, Gardening, Baking, Cooking ,craft making , Adult coloring, Go hiking with my family ,swimming and fishing.",
-    //         "languages": "English",
-    //         "specialties": "english-for-kids,business-english,conversational-english,starters",
-    //         "resume": null,
-    //         "isActivated": true,
-    //         "isNative": false,
-    //         "createdAt": "2021-09-20T00:00:00.000Z",
-    //         "updatedAt": "2021-09-20T00:00:00.000Z"
-    //       },
-    //       "requireNote": null,
-    //       "level": null,
-    //       "isPhoneActivated": false,
-    //       "timezone": 8
-    //     },
-    //     "isTutor": false,
-    //     "startTime": 1640619000000,
-    //     "endSession": 1640620500000,
-    //     "timeInRoom": 1800,
-    //     "bookingId": "dcb36931-b277-43a9-9811-4432b9ad417c",
-    //     "iat": 1640588598,
-    //     "exp": 1640634899,
-    //     "aud": "livetutor",
-    //     "iss": "livetutor",
-    //     "sub": "https://meet.tutoring.letstudy.io"
-    //   }, // body
-    //   "lettutor", // secret
-    //   {
-    //     alg: "HS256"
-    //   }
-    // )
-    //   .then(res => console.log(res)) // token as the only argument
-    //   .catch(error => console.log(error)); // possible errors
-
     const dateTimeLte = new Date().getTime()- 30 * 60 * 1000;;
     const str = `booking/list/student?page=1&perPage=10&dateTimeGte=${dateTimeLte}&orderBy=meeting&sortBy=asc`;
     getSchedule({str: str, accessToken: current.tokens.access.token}).then(
@@ -121,8 +39,6 @@ const UpcomingNew = props => {
           for (let i = 0; i < _countPage; i++) {
             arrCount.push(i);
           }
-          // setArrPagination(arrCount);
-          // setArrHistory(data.rows);
           if (isMounted) {
             setArrSchedulePagination({
               arrDate: [
@@ -169,8 +85,6 @@ const UpcomingNew = props => {
             for (let i = 0; i < _countPage; i++) {
               arrCount.push(i);
             }
-            // setArrPagination(arrCount);
-            // setArrHistory(data.rows);
             if (isMounted) {
               setArrSchedulePagination({
                 arrDate: [
@@ -214,7 +128,6 @@ const UpcomingNew = props => {
       .then(res => {
         if (res.data.message == 'Cancel booking successful') {
           alert('Deleted successfully');
-          // const dateTimeLte = new Date().getTime();
           const dateTimeLte = new Date().getTime() - 30 * 60 * 1000;
           const str = `booking/list/student?page=1&perPage=10&dateTimeGte=${dateTimeLte}&orderBy=meeting&sortBy=asc`;
 
@@ -373,14 +286,12 @@ const UpcomingNew = props => {
                         justifyContent: 'center',
                       }}>
                       <Pressable
-                        // style={{width: 75}}
                         style={{width: '50%'}}
                         onPress={() =>
                           handleCancel(arrScheduleClass.scheduleDetailId)
                         }>
                         <View
                           style={{
-                            // width: '100%',
                             backgroundColor: 'orange',
                             paddingVertical: 4,
                           }}>
@@ -396,11 +307,9 @@ const UpcomingNew = props => {
                       </Pressable>
                       <Pressable
                         style={{width: '50%'}}
-                        //style={{width: 130, marginLeft: 15}}
                         onPress={() => handleGotoMeeting(arrScheduleClass)}>
                         <View
                           style={{
-                            // width: '100%',
                             backgroundColor:
                               new Date().toDateString() ==
                               new Date(
@@ -464,7 +373,6 @@ const UpcomingNew = props => {
               <Pressable
                 key={index}
                 onPress={() => {
-                  //const dateTimeLte = new Date().getTime();
                   const dateTimeLte = new Date().getTime() - 30 * 60 * 1000;
                   const str = `booking/list/student?page=${
                     index + 1
@@ -525,12 +433,9 @@ const UpcomingNew = props => {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: '12%',
-    // borderRadius: ,
     backgroundColor: 'white',
     paddingHorizontal: 5,
     paddingBottom: 0,
-    // borderColor: 'grey',
-    // borderWidth: 0.5,
     marginBottom: 5,
 
     shadowColor: '#000',

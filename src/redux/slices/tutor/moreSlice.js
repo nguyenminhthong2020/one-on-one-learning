@@ -1,9 +1,7 @@
 /* eslint-disable */
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-// import { moreApi } from '../../../api/tutor/moreApi';
 import { BASE_URL } from '../../../globals/constant';
-
 /* 
    Lấy list favorite tutor
 https://api.app.lettutor.com/tutor/more?perPage=9&page=1

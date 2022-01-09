@@ -12,7 +12,6 @@ import { searchSpecAsync } from '../../../../redux/slices/tutor/searchSlice';
 
 export default function Favorites(props) {
   const dispatch = useDispatch();
-
   const [array, setArray] = useState([]);
   const listFavorite = useSelector(state => state.moretutor.rows);
   const current = useSelector(state => state.auth.current);
@@ -52,7 +51,7 @@ export default function Favorites(props) {
             () =>
               props.navigation.navigate('TutorDetailNew', {
                 tutor: tutor,
-              }) /*onPressTutor(index)*/
+              }) 
           }
           key={index}
           tutor={tutor}

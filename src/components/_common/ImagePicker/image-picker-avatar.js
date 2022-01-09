@@ -6,7 +6,6 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FastImage from 'react-native-fast-image';
 
 export function ImagePickerAvatar({uri, onPress}) {
-  // console.log(uri);
   return (
     <View style={styles.imageBackground}>
       <View style={styles.avatar}>

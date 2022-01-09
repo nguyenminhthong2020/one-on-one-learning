@@ -1,8 +1,6 @@
 /* eslint-disable */
 import React from 'react';
 import {MAIN_COLOR} from '../../../../globals/constant';
-
-
 import {
   Text,
   View,

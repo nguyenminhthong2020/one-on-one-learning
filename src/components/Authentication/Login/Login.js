@@ -9,12 +9,10 @@ import {SocialIcon} from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginAsync } from '../../../redux/slices/auth/loginSlice';
 import { initNew } from '../../../redux/slices/auth/loginSlice';
-
 // import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { LoginManager, AccessToken, Profile} from "react-native-fbsdk-next";
 import { axiosInstance } from '../../../utils/utils';
-
 
 const Login = (props) => {
   const dispatch = useDispatch();
@@ -44,7 +42,7 @@ const Login = (props) => {
         try{
           GoogleSignin.configure({
             // scopes: ['https://www.googleapis.com/auth/drive.readonly'],
-            hostedDomain: '', // specifies a hosted domain restriction
+            hostedDomain: '', 
             webClientId: "248659140633-ckjjk3t298j48vknacktgm9kr1gm52ld.apps.googleusercontent.com",
             offlineAccess: true,
           });
@@ -90,7 +88,6 @@ const Login = (props) => {
           }else{
           const currentProfile = await Profile.getCurrentProfile();
           console.log(currentProfile);
-              // Once signed in, get the users AccesToken
           const data = await AccessToken.getCurrentAccessToken();
           if (!data) {
             alert('Something went wrong obtaining access token');
@@ -100,7 +97,6 @@ const Login = (props) => {
               access_token: data.accessToken
             })
             .then(res => {
-              // console.log(res.data);
               dispatch(initNew({current: res.data}))
             }).catch(err => {
               if (JSON.stringify(err).includes('message')) {

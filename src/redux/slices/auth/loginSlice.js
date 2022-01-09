@@ -1,6 +1,5 @@
 /* eslint-disable */
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-// import { userApi } from '../../../api/auth/userApi';
 import axios from 'axios';
 import { axiosInstance } from '../../../utils/utils';
 import { BASE_URL } from '../../../globals/constant';
@@ -17,7 +16,6 @@ export const loginAsync = createAsyncThunk(
   'auth/loginAsync',
    async(payload, thunkAPI) => {
        try{
-        // const currentUser = await userApi.login(payload);
         const res = await axiosInstance.post("auth/login", {
           email: payload.email,
           password: payload.password,
@@ -45,8 +43,6 @@ export const loginAsync = createAsyncThunk(
 export const changeInfoAsync = createAsyncThunk(
     'auth/changeInfoAsync',
      async(payload, thunkAPI) => {
-        //  const currentUser = await userApi.changeInfo(payload)
-        //  return currentUser.current;
         try{
             const arr = [...payload.whatToLearn].map(i => i.id);
             const arr1 = [...payload.whatToLearn1].map(i => i.id);
@@ -147,7 +143,6 @@ const loginSlice = createSlice({
                     ...state.current,
                     user: action.payload.user
                 }
-                // console.log(state.current)
                 state.isLoggin = true;
             }
         }

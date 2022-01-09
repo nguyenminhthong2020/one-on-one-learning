@@ -41,7 +41,6 @@ const backAction = () => {
 };
 
 const Home = props => {
-  // console.log("render Home");
   const dispatch = useDispatch();
 
   const current = useSelector(state => state.auth.current);
@@ -291,42 +290,6 @@ const Home = props => {
       <Suspense fallback={<View></View>}>
         <Header navigation={props.navigation} />
       </Suspense>
-      {/* <View style={{marginHorizontal: 18, marginTop: 20, marginBottom: 3}}>
-          {renderFilterTag()}
-      </View> */}
-      {/* <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginHorizontal: 18,
-          marginTop: 30,
-          marginBottom: 3,
-        }}>
-        <Text style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
-          Recommend Tutors
-        </Text>
-        <TouchableOpacity onPress={() => alert('Search Tutor')}>
-          <Text style={{color: MAIN_COLOR, fontSize: 15}}>{`See All >`}</Text>
-        </TouchableOpacity>
-      </View> */}
-      {/* <FlatList
-        showsVerticalScrollIndicator={false}
-        initialNumToRender={3}
-        data={array}
-        renderItem={i => (
-          <Suspense
-            fallback={
-              <View></View>
-              // <View style={{alignItems: 'center'}}>
-              //   <ActivityIndicator size="large" color="#00ff00" />
-              // </View>
-            }
-            key={i.index}>
-            <TutorItem onPress={() => onPressTutor(i.index)} tutor={i.item} />
-          </Suspense>
-        )}
-      /> */}
       <ScrollView showsVerticalScrollIndicator={false}>
         <Suspense fallback={<View></View>}>
           <HeadContent
@@ -386,7 +349,7 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5, // 5: càng lớn càng nhạt
+    elevation: 5, 
   },
 });
 

@@ -14,12 +14,9 @@ import {MAIN_COLOR, BASE_URL, SECOND_COLOR} from '../../../../globals/constant';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FastImage from 'react-native-fast-image';
-
 const SectionVideo = React.lazy(() => import('./SectionVideo'));
 import {useDispatch, useSelector} from 'react-redux';
 import CountryPicker from 'react-native-country-picker-modal';
-//import {handleAverage} from '../../../../utils/utils';
-// import { detailApi } from '../../../../api/tutor/detailApi';
 
 import axios from 'axios';
 import {

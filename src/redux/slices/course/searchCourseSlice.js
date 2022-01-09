@@ -153,13 +153,9 @@ const searchCourseSlice = createSlice({
     // init: (state, action) =>{
     //     state.isLoggin = false;
     // },
-    // searchName: (state, action) =>{
-    //       return state.rows.filter(item => item.name.includes(action.payload.query));
-    // }
   },
   extraReducers: {
     [searchCourseAsync.fulfilled]: (state, action) => {
-      //state.current = action.payload;
       state.data = action.payload;
     },
   },

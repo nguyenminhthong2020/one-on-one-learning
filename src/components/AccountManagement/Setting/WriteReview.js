@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, {useState, useEffect} from 'react';
-import {MAIN_COLOR, THIRD_COLOR} from '../../../globals/constant';
+import {MAIN_COLOR} from '../../../globals/constant';
 import {BASE_URL} from '../../../globals/constant';
 import {Text, View, Pressable, StyleSheet, TextInput} from 'react-native';
 import {useSelector} from 'react-redux';
@@ -218,19 +218,8 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    // marginHorizontal: '12%',
-    //marginTop: 5,
-    // borderTopLeftRadius:5,
-    // borderTopRightRadius:5,
-    // backgroundColor: 'white',
     paddingHorizontal: 5,
     paddingBottom: 1,
-
-    // shadowColor: '#000',
-    // shadowOffset: {width: 0, height: 2},
-    // shadowOpacity: 0.25,
-    // shadowRadius: 3.84,
-    // elevation: 5,
   },
 });
 

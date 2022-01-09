@@ -2,19 +2,10 @@
 import React from 'react';
 import {SECOND_COLOR} from '../../../globals/constant';
 import {
-  //Text,
   View,
   ScrollView,
   StyleSheet,
-  //TouchableOpacity,
 } from 'react-native';
-// import {useForm, Controller} from 'react-hook-form';
-// import Input from '../../../components/_common/Input/Input';
-// import Button from '../../../components/_common/Button/Button';
-// import {SocialIcon} from 'react-native-elements';
-//import Icon from 'react-native-vector-icons/Ionicons';
-
-//import Header from '../../_common/Header/Header';
 import ButtonIcon from '../../_common/Button/ButtonIcon';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../../redux/slices/auth/loginSlice';
@@ -98,7 +89,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   content: {
-    // backgroundColor: SECOND_COLOR,
     marginTop: 20,
     height: '100%',
     backgroundColor: SECOND_COLOR,

@@ -170,14 +170,6 @@ const VideoIntroduction = props => {
       });
       datas.append('video', JSON.stringify({size: file.size}));
       datas.append('price', props.route.params.price);
-      // console.log(datas);
-      // const axiosInstance = axios.create({
-      //   baseURL: BASE_URL,
-      //   headers: {
-      //     Authorization: 'Bearer ' + current.tokens.access.token,
-      //     'Content-Type': 'multipart/form-data'
-      //   },
-      // });
       axios
           .post(`${BASE_URL}tutor/register`, datas, {
             headers: {
@@ -186,7 +178,6 @@ const VideoIntroduction = props => {
             },
           })
         .then(res => {
-          //console.log("post nè:" + res.data)
           const axiosInstance1 = axios.create({
             baseURL: BASE_URL,
             headers: {
@@ -196,7 +187,6 @@ const VideoIntroduction = props => {
           axiosInstance1
             .get(`user/info`)
             .then(res1 => {
-              //console.log("info : "+res1.data.user)
               const newCurrent = {
                 tokens: current.tokens,
                 user: res1.data.user

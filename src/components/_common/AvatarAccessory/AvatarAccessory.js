@@ -1,7 +1,6 @@
 /* eslint-disable */
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {Avatar} from 'react-native-elements';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const AvatarAccessory = props => {
   return props.inColor ? (

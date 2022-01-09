@@ -9,12 +9,6 @@ const themeSlice = createSlice({
     name: 'changeTheme',
     initialState,
     reducers:{
-        // init: (state, action) =>{
-        //     state.isLoggin = false;
-        // },
-        // logout: (state, action) =>{
-        //       state.isLoggin = false;
-        // }
         changeTheme: (state, action) => {
             state.isDarkTheme = !state.isDarkTheme;
         }
@@ -29,6 +23,5 @@ const themeSlice = createSlice({
     // }
 })
 
-//export const {init, logout} = themeSlice.actions;
 export const {changeTheme} = themeSlice.actions;
 export default themeSlice.reducer;

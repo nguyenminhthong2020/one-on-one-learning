@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, {useEffect} from 'react';
+import React from 'react';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -31,16 +31,14 @@ import NotifyForgetPassword from '../components/Authentication/ForgetPassword/No
 import Register from '../components/Authentication/Register/Register';
 import FeedbackList from '../components/AccountManagement/Setting/FeedbackList'; // History & Feedback
 import WriteReview from '../components/AccountManagement/Setting/WriteReview';
-import {useSelector, useDispatch} from 'react-redux';
+import {useSelector } from 'react-redux';
 // import { useNetInfo } from '@react-native-community/netinfo';
-// import { logout } from '../redux/slices/auth/loginSlice';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function MainTabs(props) {
   const langState = useSelector(state => state.lang);
-  const dispatch = useDispatch();
   //const netInfo = useNetInfo();
   // useEffect(
   //   ()=>{

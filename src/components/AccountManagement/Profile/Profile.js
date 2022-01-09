@@ -1,16 +1,13 @@
 /* eslint-disable */
-// undefined is not an object (evaluating 'iter[Symbol.iterator]')
 import React, {useState, useEffect, useCallback} from 'react';
-import {MAIN_COLOR, SECOND_COLOR, BASE_URL} from '../../../globals/constant';
+import {MAIN_COLOR, BASE_URL} from '../../../globals/constant';
 import {
   Text,
   View,
   TextInput,
   StyleSheet,
-  //TouchableOpacity,
   Pressable,
   ScrollView,
-  //SafeAreaView,
   PermissionsAndroid,
   LogBox,
 } from 'react-native';
@@ -35,8 +32,6 @@ import {
   initNew,
   initNewAvatar,
 } from '../../../redux/slices/auth/loginSlice';
-
-// Phần Image Picker cho Avatar
 import * as ImagePicker from 'react-native-image-picker';
 import {ImagePickerAvatar} from '../../_common/ImagePicker/image-picker-avatar';
 import {ImagePickerModal} from '../../_common/ImagePicker/image-picker-modal';
@@ -48,7 +43,6 @@ const Profile = props => {
   const dispatch = useDispatch();
 
   const current = useSelector(state => state.auth.current);
-  /*{"user":{"id":"94966909-73e4-4d3b-8b4f-cfd2469f8d07","email":"songoku.minhthong4@gmail.com","name":"Minh Nguyễn","avatar":"https://lh3.googleusercontent.com/a/AATXAJzeqKSwcNY2NHGvadnWCcXHGNujggeUBSVsVWaY=s96-c","country":null,"phone":null,"language":null,"birthday":null,"isActivated":true,"requireNote":null,"level":null,"isPhoneActivated":false,"timezone":null},"tokens":{"access":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5NDk2NjkwOS03M2U0LTRkM2ItOGI0Zi1jZmQyNDY5ZjhkMDciLCJpYXQiOjE2NDA3Nzg0NTMsImV4cCI6MTY0MDg2NDg1MywidHlwZSI6ImFjY2VzcyJ9.OsPLog2MkI6nwXNjlwmrtZmy3O8Ziw7Op6LNhH9JqVg","expires":"2021-12-30T11:47:33.130Z"},"refresh":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5NDk2NjkwOS03M2U0LTRkM2ItOGI0Zi1jZmQyNDY5ZjhkMDciLCJpYXQiOjE2NDA3Nzg0NTMsImV4cCI6MTY0MzM3MDQ1MywidHlwZSI6InJlZnJlc2gifQ.6XELLf5LyHgIJ000f3oKOyYjKi4dlkABl6-rj7mEMn8","expires":"2022-01-28T11:47:33.130Z"}}}*/
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
   const langState = useSelector(state => state.lang);
 
@@ -164,7 +158,6 @@ const Profile = props => {
   const _phone = current.user.phone != null ? current.user.phone : '';
   const [phone, setPhone] = useState(_phone);
  
-  // image Picker:
   const [file, setFile] = useState({
     uri: current.user.avatar,
     name: ``,
@@ -235,7 +228,6 @@ const Profile = props => {
           },
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          //console.log("Camera permission given");
           const options = {
             selectionLimit: 1,
             mediaType: 'photo',
@@ -244,7 +236,6 @@ const Profile = props => {
 
           ImagePicker.launchCamera(options, response => {
             if (response.hasOwnProperty('assets')) {
-              // upload avatar
               const datas = new FormData();
               datas.append('avatar', {
                 uri: response.assets[0].uri,
@@ -270,8 +261,6 @@ const Profile = props => {
                   );
                 })
                 .catch(err => console.log(err));
-
-              // setState
               setFile({
                 uri: response.assets[0].uri,
                 name: response.assets[0].fileName,
@@ -290,7 +279,6 @@ const Profile = props => {
     })();
   }, []);
   //const uri = pickerResponse?.assets && pickerResponse.assets[0].uri;
-
   const onChangeBirthday = e => {
     setShowDatePicker(false);
     if (e.nativeEvent.timestamp === undefined) {
@@ -303,7 +291,6 @@ const Profile = props => {
 
   const onSubmit = data => {
     alert('Update successfull');
-
     dispatch(
       changeInfoAsync({
         ...data,
@@ -326,7 +313,6 @@ const Profile = props => {
   function onMultiChange1() {
     return item => setWhatToLearn1(xorBy(whatToLearn1, [item], 'id'));
   }
-
   return (
     <ScrollView style={[styles.container, {backgroundColor: isDarkTheme? 'black':'white'}]} nestedScrollEnabled={true}>
       <View>
@@ -344,7 +330,6 @@ const Profile = props => {
             }}>
             <View style={{alignSelf: 'center'}}>
               <TextInput
-                //value={'thong123@gmail.com'}
                 value={current.user.email}
                 editable={false}
                 style={{fontSize: 14, color: 'orange'}}
@@ -409,7 +394,6 @@ const Profile = props => {
 
         <Controller
           control={control}
-          //rules={{required: true}}
           name="language"
           render={({field: {onChange, onBlur, value}}) => (
             <View style={styles.container1}>
@@ -485,7 +469,6 @@ const Profile = props => {
 
         <Controller
           control={control}
-          //rules={{required: true}}
           name="country"
           render={({field: {onChange, onBlur, value}}) => (
             <View style={styles.container1}>
@@ -513,7 +496,6 @@ const Profile = props => {
                   countryCode={country.cca2}
                   // name={country.cca2}
                   onSelect={country =>
-                    //console.log("\nĐây nữa nè: " + JSON.stringify(country))
                     setCountry({cca2: country.cca2, name: country.name})
                   }
                 />
@@ -579,7 +561,6 @@ const Profile = props => {
               /> */}
           </View>
         </View>
-
         <View
           style={{
             paddingLeft: '10%',
@@ -595,7 +576,6 @@ const Profile = props => {
           <SelectBox 
             containerStyle={{marginTop: -15, backgroundColor: 'white'}}
           optionContainerStyle={{backgroundColor:'white'}}
-
             // containerStyle={{marginTop: -15}}
             // optionContainerStyle={{backgroundColor:isDarkTheme?'white':null}}
             hideInputFilter
@@ -637,7 +617,6 @@ const Profile = props => {
             listOptionProps={{nestedScrollEnabled: true}}
           />
         </View>
-        {/* {errors.email && <Text style={styles.error}>{'please type gmail'}</Text>} */}
         <Button
           title={langState[langState.currentLang].Save}
           handleSubmit={handleSubmit}
@@ -679,7 +658,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingVertical: 3,
     paddingHorizontal: 3,
-    // width: 50,
     borderWidth: 2,
   },
   containerPicker: {
