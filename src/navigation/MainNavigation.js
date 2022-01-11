@@ -4,7 +4,6 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import TutorMessage from '../components/Main/Message/TutorMessage';
 import TutorDetailNew from '../components/Main/Tutor/TutorDetail/TutorDetailNew';
 import Booking from '../components/Main/Tutor/TutorDetail/Booking/Booking';
 import TutorDetailComment from '../components/Main/Tutor/TutorDetail/TutorDetailComment';
@@ -239,11 +238,6 @@ function MainNavigation(props) {
           headerShown: true,
           title: langState.currentLang=='en'?'Feedback Tutor':'Phản hồi giáo viên'//langState[langState.currentLang].FeedbackList,
         }}
-      />
-      <Stack.Screen
-        name="TutorMessage"
-        component={TutorMessage}
-        options={{headerShown: false}}
       />
     </Stack.Navigator>
   );
