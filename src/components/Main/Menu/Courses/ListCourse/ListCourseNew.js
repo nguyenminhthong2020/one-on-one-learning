@@ -214,7 +214,7 @@ const ListCourseNew = props => {
         }}
         inputStyle={{backgroundColor: 'white', height: 20, fontSize: 16}}
         placeholder={
-          langState.currentLang == 'en' ? 'search courses...' : 'tên giáo trình...'
+          langState.currentLang == 'en' ? 'search courses...' : 'từ khóa...'
         }
         onChangeText={value => setQuery(value)}
         value={query}

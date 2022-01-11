@@ -1,23 +1,31 @@
 /* eslint-disable */
 import React from 'react';
 import {MAIN_COLOR} from '../../../globals/constant';
-import {
-  Text,
-  View,
-  StyleSheet,
-  Pressable,
-  Image,
-} from 'react-native';
+import {Text, View, StyleSheet, Pressable, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 
-const Header = (props) => {
+const Header = props => {
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
   return (
     <View style={styles.container}>
-      <View style={[styles.shadow, {backgroundColor: isDarkTheme?'black': 'white'}]}>
+      <View
+        style={[
+          styles.shadow,
+          {backgroundColor: isDarkTheme ? 'black' : 'white'},
+        ]}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image source={require('../../../../assets/logo.png')} style={{width: 30, height: 30}}/>
+          {isDarkTheme ? (
+            <Image
+              source={require('../../Main/VideoCall/logoblack.png')}
+              style={{width: 30, height: 30}}
+            />
+          ) : (
+            <Image
+              source={require('../../../../assets/logo.png')}
+              style={{width: 30, height: 30}}
+            />
+          )}
           <Text style={styles.leftHeader}>LetTutor</Text>
         </View>
         <View
@@ -29,8 +37,8 @@ const Header = (props) => {
             backgroundColor: 'red',
             borderColor: 'red',
           }}>
-          <Pressable onPress={() => props.navigation.push("Menu")}>
-              <Icon name="menu" size={30} color="white" />
+          <Pressable onPress={() => props.navigation.push('Menu')}>
+            <Icon name="menu" size={30} color="white" />
           </Pressable>
         </View>
       </View>

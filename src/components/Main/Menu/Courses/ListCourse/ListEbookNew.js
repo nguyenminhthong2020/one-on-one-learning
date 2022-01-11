@@ -220,7 +220,7 @@ const ListEbookNew = props => {
         }}
         inputStyle={{backgroundColor: 'white', height: 20, fontSize: 16}}
         placeholder={
-          langState.currentLang == 'en' ? 'search ebooks...' : 'tên ebooks...'
+          langState.currentLang == 'en' ? 'search ebooks...' : 'từ khóa...'
         }
         onChangeText={value => setQuery(value)}
         value={query}
