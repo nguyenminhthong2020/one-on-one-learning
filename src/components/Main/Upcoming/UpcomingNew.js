@@ -176,19 +176,19 @@ const UpcomingNew = props => {
   };
 
   const handleGotoMeeting = arrScheduleClass => {
-    if (
-      new Date().toDateString() ==
-      new Date(
-        arrScheduleClass.scheduleDetailInfo.scheduleInfo.startTimestamp,
-      ).toDateString()
-    ) {
+    // if (
+    //   new Date().toDateString() ==
+    //   new Date(
+    //     arrScheduleClass.scheduleDetailInfo.scheduleInfo.startTimestamp,
+    //   ).toDateString()
+    // ) {
         props.navigation.navigate('VideoCallNew', {
         arrScheduleClass: arrScheduleClass,
       });
     
-    } else {
-      //alert("grey")
-    }
+    // } else {
+    //   //alert("grey")
+    // }
   };
 
   const langState = useSelector(state => state.lang);
@@ -310,14 +310,14 @@ const UpcomingNew = props => {
                         onPress={() => handleGotoMeeting(arrScheduleClass)}>
                         <View
                           style={{
-                            backgroundColor:
-                              new Date().toDateString() ==
-                              new Date(
-                                arrScheduleClass.scheduleDetailInfo.scheduleInfo.startTimestamp
-                              ).toDateString()
-                              && new Date() <= arrScheduleClass.scheduleDetailInfo.scheduleInfo.endTimestamp
-                                ? MAIN_COLOR
-                                : 'grey',
+                            backgroundColor: MAIN_COLOR,
+                            //   new Date().toDateString() ==
+                            //   new Date(
+                            //     arrScheduleClass.scheduleDetailInfo.scheduleInfo.startTimestamp
+                            //   ).toDateString()
+                            //   && new Date() <= arrScheduleClass.scheduleDetailInfo.scheduleInfo.endTimestamp
+                            //     ? MAIN_COLOR
+                            //     : 'grey',
                             paddingVertical: 4,
                           }}>
                           <Text
