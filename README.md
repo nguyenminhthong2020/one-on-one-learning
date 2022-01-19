@@ -13,5 +13,6 @@ Mã số: 1612674
   1. Giai đoạn 1 (mockup-ui) : deadline 24/10/2021
   2. milestone 2 (offline-app) :
   https://youtu.be/vWsNPRH2YAU 
-  3. milestone 3 (online-app) : deadline 20/1/2022
+  3. milestone 3 (online-app) : 
+  https://www.youtube.com/watch?v=6t46a6VLahc
   
