@@ -22,6 +22,20 @@ export const handleAverage = arrayFeedbacks => {
   return rate;
 };
 
+export const handleAverage1 = arrayFeedbacks => {
+  let rate;
+  if (arrayFeedbacks.length == 0) {
+    rate = 0;
+  } else {
+    let sum = 0;
+    for (let i = 0; i < arrayFeedbacks.length; i++) {
+      sum += arrayFeedbacks[i].rating;
+    }
+    rate = (Math.round((sum / arrayFeedbacks.length)*2)/2);
+  }
+  return rate;
+};
+
 export const convertSubject = (id) => {
   switch (id) {
     case 3:

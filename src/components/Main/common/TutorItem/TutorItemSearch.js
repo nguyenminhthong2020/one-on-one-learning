@@ -1,20 +1,16 @@
 /* eslint-disable */
-import React, {useState} from 'react';
+import React from 'react';
 import {
-  MAIN_COLOR,
-  SECOND_COLOR,
   NUM_OF_LINES,
 } from '../../../../globals/constant';
 import {
   Text,
   View,
-  Image,
   StyleSheet,
   Pressable,
 } from 'react-native';
 import ListTags from '../../../_common/ListTags/ListTags';
-
-//import {Rating} from 'react-native-ratings';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FastImage from 'react-native-fast-image';
 import { handleAverage } from '../../../../utils/utils';
 
@@ -24,30 +20,7 @@ const TutorItemSearch = props => {
   return (
     <Pressable onPress={props.onPress} style={{marginBottom: 10}}>
       <View style={styles.shadowProp}>
-        <View>
-          {/* {like === false ? (
-            <AntDesign
-              name={'heart'}
-              size={22}
-              color={'gray'}
-              style={{textAlign: 'right', marginBottom: -15, marginRight: 10}}
-              onPress={() => {
-                setLike(!like);
-              }}
-            />
-          ) : (
-            <AntDesign
-              name={'heart'}
-              size={22}
-              color={'rgb(240, 72, 72)'}
-              style={{textAlign: 'right', marginBottom: -15, marginRight: 10}}
-              onPress={() => {
-                setLike(!like);
-              }}
-            />
-          )} */}
-        </View>
-        <View style={{flexDirection: 'row', marginBottom: 5, marginTop: 0}}>
+        <View style={{flexDirection: 'row', marginBottom: 5}}>
           <View>
             <FastImage
               style={{width: 50, height: 50, borderRadius: 25}}
@@ -68,25 +41,11 @@ const TutorItemSearch = props => {
               }}>
               {props.tutor.name}
             </Text>
-            {/* <Rating 
-                style={{marginLeft: 6}}
-                ratingCount={5}
-                imageSize={15}
-                readonly={true}
-                jumpValue={0.5}
-                showRating={false}
-                fractions={10}
-                startingValue={props.tutor.startingValue}
-                isDisabled={true}
-              /> */}
-            <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 1, marginLeft: 20}}>
+            <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 1, marginLeft: 10}}>
             <Text style={{color: 'orange'}}>{_rating} </Text>
             {
-              _rating != 'No reviews yet' && <Image 
-              //style={{marginLeft: 30}}
-              //resizeMode={FastImage.resizeMode.cover}
-              source={require('../../../../../assets/rating.png')}
-            />
+              _rating != 'No reviews yet' && 
+              <MaterialIcons name={'star'} size={16} color="orange" />
             }
             </View>
           </View>
@@ -117,7 +76,7 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5, // 5: càng lớn càng nhạt
+    elevation: 5, 
   },
 });
 

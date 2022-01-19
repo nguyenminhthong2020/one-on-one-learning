@@ -1,32 +1,25 @@
 /* eslint-disable */
-import React, {useState} from 'react';
+import React from 'react';
 import {
   Text,
   View,
-  //TextInput,
-  //StyleSheet,
-  //TouchableOpacity,
-  //FlatList,
   ScrollView,
   Pressable,
 } from 'react-native';
 
 import FastImage from 'react-native-fast-image';
 import {MAIN_COLOR} from '../../../../../globals/constant';
-// import AntDesign from 'react-native-vector-icons/AntDesign';
-// import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useSelector } from 'react-redux';
 
-
-const Discover = props => (
+const Discover = props => {
+  const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
+  const langState = useSelector(state => state.lang);
+  return (
   <ScrollView>
   <View style={{margin: 5, borderRadius: 15}}>
-    {/* <Text style={{fontSize: 20}}>{props.title}</Text> */}
     <View
       style={{
         backgroundColor: 'white',
-        //   marginHorizontal: 5,
-        //   marginVertical: 5,
-        //padding: 5,
         marginHorizontal: 10,
         marginBottom: 10,
         borderRadius: 8,
@@ -67,11 +60,11 @@ const Discover = props => (
          {
           props.route.params.item.topics.map((topic, index) => 
           <View key={index} style={{marginBottom: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-          <Text style={{fontSize: 16}}>{index + 1}. {topic.name}</Text>
+          <Text style={{fontSize: 16, color: isDarkTheme?'white':'black'}}>{index + 1}. {topic.name}</Text>
           <Pressable 
           onPress={()=>props.navigation.navigate('DiscoverDetail', {topic: topic})}
           style={{marginRight: 10, backgroundColor: MAIN_COLOR, borderRadius: 5, paddingHorizontal:10, paddingVertical:1}}>
-              <Text style={{textAlign: 'center', color: 'white'}}>See</Text>
+              <Text style={{textAlign: 'center', color: 'white'}}>{langState.currentLang=='en'?'See':'Xem'}</Text>
           </Pressable>
           </View>)
          }
@@ -80,15 +73,6 @@ const Discover = props => (
   </View>
   </ScrollView>
 );
-
-// const CourseDetail = () => {
-//   return (
-//     <View>
-//       <Item />
-//     </View>
-//   );
-// };
-
-//const styles = StyleSheet.create({});
+}
 
 export default Discover;

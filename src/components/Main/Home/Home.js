@@ -1,8 +1,6 @@
 /* eslint-disable */
 import React, {Suspense, useState, useEffect} from 'react';
-import {
-  MAIN_COLOR,BASE_URL
-} from '../../../globals/constant';
+import {MAIN_COLOR, BASE_URL} from '../../../globals/constant';
 import {
   Text,
   View,
@@ -10,7 +8,10 @@ import {
   StyleSheet,
   Pressable,
   ScrollView,
+  BackHandler,
+  Alert,
 } from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 
 const Header = React.lazy(() => import('../../_common/Header/Header'));
 const HeadContent = React.lazy(() => import('./HeadContent/HeadContent'));
@@ -20,16 +21,27 @@ const TutorItem = React.lazy(() => import('../common/TutorItem/TutorItem'));
 import {useSelector, useDispatch} from 'react-redux';
 import {searchSpecAsync} from '../../../redux/slices/tutor/searchSlice';
 import {moreAsync} from '../../../redux/slices/tutor/moreSlice';
-
+import {handleAverage1} from '../../../utils/utils';
 import axios from 'axios';
-import { logout, initNew } from '../../../redux/slices/auth/loginSlice';
+import {logout, initNew} from '../../../redux/slices/auth/loginSlice';
 
 //import {Rating} from 'react-native-ratings';
 //import { Rating } from 'react-native-elements';  // = cái ở dưới
 
+const backAction = () => {
+  Alert.alert('Hold on!', 'Do you want to exit app?', [
+    {
+      text: 'Cancel',
+      onPress: () => null,
+      style: 'cancel',
+    },
+    {text: 'YES', onPress: () => BackHandler.exitApp()},
+  ]);
+  return true;
+};
+
 const Home = props => {
-  // console.log("render Home");
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
 
   const current = useSelector(state => state.auth.current);
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
@@ -38,7 +50,9 @@ const Home = props => {
   const [spec, setSpec] = useState(['']);
   const [array, setArray] = useState([]);
   const [listFav, setListFav] = useState([]);
-  
+
+  let backHandler = null;
+
   const axiosInstance1 = axios.create({
     baseURL: BASE_URL,
     timeout: 5000,
@@ -46,12 +60,14 @@ const Home = props => {
       Authorization: 'Bearer ' + current.tokens.access.token,
     },
   });
+
   useEffect(() => {
     if (
       new Date(current.tokens.access.expires).getTime() <= new Date().getTime()
     ) {
       if (
-        new Date(current.tokens.refresh.expires).getTime() <= new Date().getTime()
+        new Date(current.tokens.refresh.expires).getTime() <=
+        new Date().getTime()
       ) {
         dispatch(logout());
         props.navigation.navigate('Login');
@@ -68,7 +84,7 @@ const Home = props => {
           );
         })();
       }
-    }else{
+    } else {
       dispatch(
         moreAsync({
           page: 1,
@@ -79,11 +95,20 @@ const Home = props => {
     }
   }, []);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      if (backHandler) backHandler.remove();
+      backHandler = BackHandler.addEventListener('backPress', backAction);
+      return () => {
+        if (backHandler) backHandler.remove();
+      };
+    }, []),
+  );
+
   const listFavorite = useSelector(state => state.moretutor.rows);
   useEffect(() => {
     setListFav(listFavorite);
   }, [listFavorite]);
-  
 
   useEffect(() => {
     dispatch(
@@ -104,115 +129,131 @@ const Home = props => {
   const [state, setstate] = useState(true);
 
   const renderTestScrollView = () => {
+    let _array = [...array];
+    let t;
+    for (let i = 0; i < _array.length - 1; i++)
+      for (let j = i + 1; j < _array.length; j++) {
+        let mi = handleAverage1(_array[i].feedbacks);
+        let mj = handleAverage1(_array[j].feedbacks);
+        if (mi < mj) {
+          t = _array[i];
+          _array[i] = _array[j];
+          _array[j] = t;
+        }
+      }
+
     let arrayFav = [];
     let arrayNoFav = [];
 
-    array.forEach(item => 
-      listFav.includes(item.userId) ? 
-      arrayFav.push({...item}) : 
-      arrayNoFav.push({...item}));
-    
+    _array.forEach(item =>
+      listFav.includes(item.userId)
+        ? arrayFav.push({...item})
+        : arrayNoFav.push({...item}),
+    );
+
     const array1 = [...arrayFav, ...arrayNoFav];
 
-    return array1.length == 0 ? 
-    (<View style={{marginTop: 20}}>
-       <Text style={{fontSize: 20, color: isDarkTheme ? "yellow": "blue", textAlign: 'center'}}>
-           No Tutor !
-       </Text>
-    </View>) : 
-    array1.map((tutor, index) => (
-      <Suspense
-        fallback={
-          <View style={{alignItems: 'center'}}>
-            <ActivityIndicator size="large" color="#00ff00" />
-          </View>
-        }
-        key={index}>
-        <TutorItem
-          onPress={
-            () =>
-              props.navigation.navigate('TutorDetailNew', {
-                tutor: tutor
-              }) 
+    return array1.length == 0 ? (
+      <View style={{marginTop: 20}}>
+        <Text
+          style={{
+            fontSize: 20,
+            color: isDarkTheme ? 'yellow' : 'blue',
+            textAlign: 'center',
+          }}>
+          No Tutor !
+        </Text>
+      </View>
+    ) : (
+      array1.map((tutor, index) => (
+        <Suspense
+          fallback={
+            <View style={{alignItems: 'center'}}>
+              <ActivityIndicator size="large" color="#00ff00" />
+            </View>
           }
-          tutor={tutor}
-        />
-      </Suspense>
-    ));
+          key={index}>
+          <TutorItem
+            onPress={() =>
+              props.navigation.navigate('TutorDetailNew', {
+                tutor: tutor,
+              })
+            }
+            tutor={tutor}
+          />
+        </Suspense>
+      ))
+    );
   };
 
   const renderFilterTag = () => {
     return (
       <View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View
+          style={{flexDirection: 'row', alignItems: 'center', marginBottom: 3}}>
           <Text
             style={{
               fontSize: 18,
               fontWeight: 'bold',
               color: isDarkTheme ? 'white' : 'black',
             }}>
-            {langState[langState.currentLang].Filter_Tutors}: 
+            {langState[langState.currentLang].Filter_Tutors}:{' '}
           </Text>
-          <Text style={{color: isDarkTheme ? 'yellow' : 'red'}}>{spec}</Text>
+          <MyTag
+            isActive
+            title={spec != '' ? spec : 'All'}
+            onPress={() => {}}
+          />
         </View>
-        <View style={{flexDirection: 'row', marginTop: 5}}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{marginBottom: 5}}>
           <MyTag
             title={'All'}
             onPress={() => {
-              // alert('all');
               setSpec(['']);
             }}
           />
           <MyTag
-            title={'ConversationalEnglish'}
+            title={'Conversational English'}
             onPress={() => {
-              // alert('conversational-english');
               setSpec(['conversational-english']);
             }}
           />
           <MyTag
-            title={'BusinessEnglish'}
+            title={'Business English'}
             onPress={() => {
-              // alert('business-english');
               setSpec(['business-english']);
             }}
           />
-        </View>
-        <View style={{flexDirection: 'row', marginTop: 3}}>
           <MyTag
-            title={'EnglishforKids'}
+            title={'English for Kids'}
             onPress={() => {
-              // alert('english-for-kids');
               setSpec(['english-for-kids']);
             }}
           />
           <MyTag
             title={'STARTERS'}
             onPress={() => {
-              // alert('starters');
-              setSpec('starters');
+              setSpec(['starters']);
             }}
           />
           <MyTag
             title={'FLYERS'}
             onPress={() => {
-              // alert('flyers');
               setSpec(['flyers']);
             }}
           />
           <MyTag
             title={'KET'}
             onPress={() => {
-              // alert('ket');
               setSpec(['ket']);
             }}
           />
-        </View>
-        <View style={{flexDirection: 'row', marginTop: 3}}>
           <MyTag
             title={'MOVERS'}
             onPress={() => {
-              // alert('movers');
               setSpec(['movers']);
             }}
           />
@@ -220,73 +261,36 @@ const Home = props => {
           <MyTag
             title={'IELTS'}
             onPress={() => {
-              // alert('ielts');
               setSpec(['ielts']);
             }}
           />
           <MyTag
             title={'TOEFL'}
             onPress={() => {
-              // alert('toefl');
               setSpec(['toefl']);
             }}
           />
           <MyTag
             title={'TOEIC'}
             onPress={() => {
-              // alert('toeic');
               setSpec(['toeic']);
             }}
           />
-        </View>
+        </ScrollView>
       </View>
     );
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {backgroundColor: isDarkTheme ? 'black' : 'white'},
+      ]}>
       <Suspense fallback={<View></View>}>
         <Header navigation={props.navigation} />
       </Suspense>
-      {/* <View style={{marginHorizontal: 18, marginTop: 20, marginBottom: 3}}>
-          {renderFilterTag()}
-      </View> */}
-      {/* <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginHorizontal: 18,
-          marginTop: 30,
-          marginBottom: 3,
-        }}>
-        <Text style={{fontSize: 18, fontWeight: 'bold', color: 'black'}}>
-          Recommend Tutors
-        </Text>
-        <TouchableOpacity onPress={() => alert('Search Tutor')}>
-          <Text style={{color: MAIN_COLOR, fontSize: 15}}>{`See All >`}</Text>
-        </TouchableOpacity>
-      </View> */}
-      {/* <FlatList
-        showsVerticalScrollIndicator={false}
-        initialNumToRender={3}
-        data={array}
-        renderItem={i => (
-          <Suspense
-            fallback={
-              <View></View>
-              // <View style={{alignItems: 'center'}}>
-              //   <ActivityIndicator size="large" color="#00ff00" />
-              // </View>
-            }
-            key={i.index}>
-            <TutorItem onPress={() => onPressTutor(i.index)} tutor={i.item} />
-          </Suspense>
-        )}
-      /> */}
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView showsVerticalScrollIndicator={false}>
         <Suspense fallback={<View></View>}>
           <HeadContent
             state={state}
@@ -294,7 +298,7 @@ const Home = props => {
             navigation={props.navigation}></HeadContent>
         </Suspense>
 
-        <View style={{marginHorizontal: 18, marginTop: 10, marginBottom: 3}}>
+        <View style={{marginHorizontal: 18, marginTop: 15, marginBottom: 3}}>
           {renderFilterTag()}
         </View>
         <View
@@ -345,7 +349,7 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5, // 5: càng lớn càng nhạt
+    elevation: 5, 
   },
 });
 

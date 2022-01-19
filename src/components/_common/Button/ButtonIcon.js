@@ -34,9 +34,6 @@ export default function ButtonIcon(props) {
 
 const styles = StyleSheet.create({
   button: {
-    // borderRadius: 10,
-    // borderWidth: 2,
-    // paddingVertical: 5,
     width: '100%',
     justifyContent: 'center'
   },
@@ -54,7 +51,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
-    // paddingLeft: 15,
     position: 'absolute',
     left: '20%',
     color: MAIN_COLOR,

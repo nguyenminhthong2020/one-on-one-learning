@@ -24,10 +24,13 @@ const Register = (props) => {
         source: BASE_URL
       })
       .then(res => {
-        // console.log(res.data);
         alert("Your registration successfully.\n\nCheck email:\n"+data.email);
       }).catch(err => {
-         alert("Error: \n" + err.response.data.message);
+        if (JSON.stringify(err).includes('message')) {
+          alert('FAIL:\n' + err.response.data.message);
+        } else {
+          alert('FAIL:\n' + err);
+        }
       });
   }
 
@@ -143,9 +146,9 @@ const Register = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 3,
     flex: 1,
     flexDirection: 'column',
+    backgroundColor: 'white'
   },
   text: {
     color: MAIN_COLOR,

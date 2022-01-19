@@ -1,4 +1,53 @@
 /* eslint-disable */
+// // request: 
+
+// https://sandbox.api.lettutor.com/tutor/register
+// (POST)
+
+// Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmNTY5YzIwMi03YmJmLTQ2MjAtYWY3Ny1lY2MxNDE5YTZiMjgiLCJpYXQiOjE2NDA3MDA1NjAsImV4cCI6MTY0MDc4Njk2MCwidHlwZSI6ImFjY2VzcyJ9.ekR8pcriOlJ9X6DUGnB2JUr6SSaC4STRLi2Tlg-9U78
+// Content-Length: 59417479
+// Content-Type: multipart/form-data; boundary=----WebKitFormBoundary3R4lbsrgrtfDUBRb
+
+// payload: 
+// name: John Xina
+// country: VN
+// birthday: 1997-04-30
+// interests: I like reading book in my spare time
+// education: University of Science
+// experience: 3 years
+// profession: WWE, Online English teacher
+// languages: en,vi
+// bio: You can't Xi me ! Bing chilling !
+// targetStudent: Beginner
+// specialties: english-for-kids,business-english,conversational-english,starters,movers,flyers,ket,pet,ielts,toefl,toeic
+// avatar: (binary)
+// video: (binary)
+// price: 50000
+
+
+// res: 
+// {"id":"db37f185-399f-470d-995b-bf6143cb1a5f","isActivated":false,"isNative":false,"interests":"I like reading book in my spare time","education":"University of Science","experience":"3 years","profession":"WWE, Online English teacher","languages":"en,vi","bio":"You can't Xi me ! Bing chilling !","targetStudent":"Beginner","specialties":"english-for-kids,business-english,conversational-english,starters,movers,flyers,ket,pet,ielts,toefl,toeic","video":"https://sandbox.api.lettutor.com/video/f569c202-7bbf-4620-af77-ecc1419a6b28video1640700713385.mp4","userId":"f569c202-7bbf-4620-af77-ecc1419a6b28","updatedAt":"2021-12-28T14:11:54.006Z","createdAt":"2021-12-28T14:11:54.006Z","accent":null,"resume":null,"price":50000}
+
+// {
+//     id: "db37f185-399f-470d-995b-bf6143cb1a5f",
+//     isActivated: false,
+//     isNative: false,
+//     interests: "I like reading book in my spare time",
+//     education: "University of Science",
+//     experience: "3 years",
+//     profession: "WWE, Online English teacher",
+//     languages: "en,vi",
+//     bio: "You can't Xi me ! Bing chilling !",
+//     targetStudent: "Beginner",
+//     specialties: "english-for-kids,business-english,conversational-english,starters,movers,flyers,ket,pet,ielts,toefl,toeic",
+//     video: "https://sandbox.api.lettutor.com/video/f569c202-7bbf-4620-af77-ecc1419a6b28video1640700713385.mp4",
+//     userId: "f569c202-7bbf-4620-af77-ecc1419a6b28",
+//     updatedAt: "2021-12-28T14:11:54.006Z",
+//     createdAt: "2021-12-28T14:11:54.006Z",
+//     accent: null,
+//     resume: null,
+//     price: 50000
+//   }
 import React, {useState, useCallback} from 'react';
 import {
   Pressable,
@@ -10,11 +59,17 @@ import {
 } from 'react-native';
 import {MAIN_COLOR} from '../../../../globals/constant';
 import * as ImagePicker from 'react-native-image-picker';
-// import { ImagePickerAvatar } from '../../../_common/ImagePicker/image-picker-avatar';
 import {ImagePickerModal} from '../../../_common/ImagePicker/image-picker-modal';
 import SectionVideo from '../../Tutor/TutorDetail/SectionVideo';
+import axios from 'axios';
+import {BASE_URL} from '../../../../globals/constant';
+import {useDispatch, useSelector} from 'react-redux';
+import { initNew } from '../../../../redux/slices/auth/loginSlice';
 
 const VideoIntroduction = props => {
+  const dispatch = useDispatch();
+  const current = useSelector(state => state.auth.current);
+  const langState = useSelector(state => state.lang);
   const [file, setFile] = useState({
     uri: ``,
     name: ``,
@@ -31,16 +86,15 @@ const VideoIntroduction = props => {
       includeBase64: false,
     };
     ImagePicker.launchImageLibrary(options, response => {
-        if(response.hasOwnProperty('assets'))
-        {
-            setFile({
-                uri: response.assets[0].uri,
-                name: response.assets[0].fileName,
-                type: response.assets[0].type,
-                size: response.assets[0].fileSize,
-                fileName: response.assets[0].fileName,
-              });
-        }
+      if (response.hasOwnProperty('assets')) {
+        setFile({
+          uri: response.assets[0].uri,
+          name: response.assets[0].fileName,
+          type: response.assets[0].type,
+          size: response.assets[0].fileSize,
+          fileName: response.assets[0].fileName,
+        });
+      }
     });
   }, []);
 
@@ -65,15 +119,14 @@ const VideoIntroduction = props => {
           };
 
           ImagePicker.launchCamera(options, response => {
-            if(response.hasOwnProperty('assets'))
-            {
-                setFile({
-                    uri: response.assets[0].uri,
-                    name: response.assets[0].fileName,
-                    type: response.assets[0].type,
-                    size: response.assets[0].fileSize,
-                    fileName: response.assets[0].fileName,
-                  });
+            if (response.hasOwnProperty('assets')) {
+              setFile({
+                uri: response.assets[0].uri,
+                name: response.assets[0].fileName,
+                type: response.assets[0].type,
+                size: response.assets[0].fileSize,
+                fileName: response.assets[0].fileName,
+              });
             }
           });
         } else {
@@ -84,6 +137,79 @@ const VideoIntroduction = props => {
       }
     })();
   }, []);
+
+  const onDone = async () => {
+    if (file.uri == '') {
+      alert('Please upload video !');
+    } else {
+      const datas = new FormData();
+      datas.append('name', props.route.params.name);
+      datas.append('country', props.route.params.country);
+      datas.append('birthday', props.route.params.birthday);
+      datas.append('interests', props.route.params.interests);
+      datas.append('education', props.route.params.education);
+      datas.append('experience', props.route.params.experience);
+      datas.append('profession', props.route.params.profession);
+      datas.append('languages', props.route.params.languages);
+      datas.append('bio', props.route.params.bio);
+      datas.append('targetStudent', props.route.params.targetStudent);
+      datas.append('specialties', props.route.params.specialties);
+      datas.append('avatar', {
+        uri: props.route.params.avatar.uri,
+        type: props.route.params.avatar.type,
+        name: props.route.params.avatar.name,
+      });
+      datas.append(
+        'avatar',
+        JSON.stringify({size: props.route.params.avatar.size}),
+      );
+      datas.append('video', {
+        uri: file.uri,
+        type: file.type,
+        name: file.name,
+      });
+      datas.append('video', JSON.stringify({size: file.size}));
+      datas.append('price', props.route.params.price);
+      axios
+          .post(`${BASE_URL}tutor/register`, datas, {
+            headers: {
+              Authorization: 'Bearer ' + current.tokens.access.token,
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+        .then(res => {
+          const axiosInstance1 = axios.create({
+            baseURL: BASE_URL,
+            headers: {
+              Authorization: 'Bearer ' + current.tokens.access.token,
+            },
+          });
+          axiosInstance1
+            .get(`user/info`)
+            .then(res1 => {
+              const newCurrent = {
+                tokens: current.tokens,
+                user: res1.data.user
+              }
+              dispatch(
+                initNew({
+                  current: newCurrent,
+                }),
+              );
+              props.navigation.navigate('Approval');
+            })
+            .catch(err1 => console.log(err1));
+        })
+        .catch(err => {
+          if (JSON.stringify(err).includes('message')) {
+            alert('FAIL:\n' + err.response.data.message);
+          } else {
+            alert('FAIL:\n' + err);
+          }
+        });
+    }
+  };
+
   return (
     <ScrollView>
       <View>
@@ -110,7 +236,7 @@ const VideoIntroduction = props => {
           }}
           onPress={() => setVisible(true)}>
           <Text style={{textAlign: 'center', fontSize: 16, color: MAIN_COLOR}}>
-            Choose video
+            {langState.currentLang=='en'?'Choose video':'Chọn video'}
           </Text>
         </TouchableOpacity>
         <View
@@ -133,7 +259,7 @@ const VideoIntroduction = props => {
             onPress={() => props.navigation.navigate('BecomeTutor')}>
             <Text
               style={{textAlign: 'center', fontSize: 16, color: MAIN_COLOR}}>
-              Previous
+              {langState.currentLang=='en'?'Previous':'Quay lại'}
             </Text>
           </Pressable>
           <Pressable
@@ -148,8 +274,8 @@ const VideoIntroduction = props => {
             }}>
             <Text
               style={{textAlign: 'center', fontSize: 16, color: 'white'}}
-              onPress={() => props.navigation.navigate('Approval')}>
-              Done
+              onPress={onDone}>
+              {langState.currentLang=='en'?'Done':'Hoàn tất'}
             </Text>
           </Pressable>
         </View>

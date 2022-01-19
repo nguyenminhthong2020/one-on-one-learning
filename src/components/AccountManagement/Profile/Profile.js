@@ -1,15 +1,13 @@
 /* eslint-disable */
 import React, {useState, useEffect, useCallback} from 'react';
-import {MAIN_COLOR, SECOND_COLOR, BASE_URL} from '../../../globals/constant';
+import {MAIN_COLOR, BASE_URL} from '../../../globals/constant';
 import {
   Text,
   View,
   TextInput,
   StyleSheet,
-  //TouchableOpacity,
   Pressable,
   ScrollView,
-  //SafeAreaView,
   PermissionsAndroid,
   LogBox,
 } from 'react-native';
@@ -32,10 +30,8 @@ import {
   changeInfoAsync,
   logout,
   initNew,
-  initNewAvatar
+  initNewAvatar,
 } from '../../../redux/slices/auth/loginSlice';
-
-// Phần Image Picker cho Avatar
 import * as ImagePicker from 'react-native-image-picker';
 import {ImagePickerAvatar} from '../../_common/ImagePicker/image-picker-avatar';
 import {ImagePickerModal} from '../../_common/ImagePicker/image-picker-modal';
@@ -49,7 +45,7 @@ const Profile = props => {
   const current = useSelector(state => state.auth.current);
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
   const langState = useSelector(state => state.lang);
-  
+
   const axiosInstance1 = axios.create({
     baseURL: BASE_URL,
     timeout: 5000,
@@ -62,7 +58,8 @@ const Profile = props => {
       new Date(current.tokens.access.expires).getTime() <= new Date().getTime()
     ) {
       if (
-        new Date(current.tokens.refresh.expires).getTime() <= new Date().getTime()
+        new Date(current.tokens.refresh.expires).getTime() <=
+        new Date().getTime()
       ) {
         dispatch(logout());
         props.navigation.navigate('Login');
@@ -80,7 +77,7 @@ const Profile = props => {
         })();
       }
     }
-  }, [])
+  }, []);
 
   const {
     control,
@@ -103,27 +100,52 @@ const Profile = props => {
     {item: 'TOEFL', id: 7},
     {item: 'TOEIC', id: 8},
   ];
+  
 
-  const newwhatToLearn = [...current.user.learnTopics].map(function (item) {
-    return {
-      item: item.name,
-      id: item.id,
-    };
-  });
-  const newwhatToLearn1 = [...current.user.testPreparations].map(function (
-    item,
-  ) {
-    return {
-      item: item.name,
-      id: item.id,
-    };
-  });
-  const _level = current.user.level != null ? current.user.level: "BEGINNER";
-  const _birthday = (current.user.birthday != null ? current.user.birthday: "1998-10-27").substring(0, 10);
-  const _country = current.user.country != null ? current.user.country : "VN";
+  let newwhatToLearn;
+  if(current.user.hasOwnProperty('learnTopics'))
+  {
+    newwhatToLearn = [...current.user.learnTopics].map(function (item) {
+      return {
+        item: item.name,
+        id: item.id,
+      };
+    });
+  }else{
+    newwhatToLearn = [];
+  }
+  
+  let newwhatToLearn1;
+  if(current.user.hasOwnProperty('learnTopics'))
+  {
+    newwhatToLearn1 = [...current.user.testPreparations].map(function (item) {
+      return {
+        item: item.name,
+        id: item.id,
+      };
+    });
+  }else{
+    newwhatToLearn1 = [];
+  }
+  const _level = current.user.level != null ? current.user.level : 'BEGINNER';
+  const _birthday = (
+    current.user.birthday != null ? current.user.birthday : '1998-10-27'
+  ).substring(0, 10);
+  
+  let _country;
+  if(current.user.hasOwnProperty('country'))
+  {
+    _country =  current.user.country != null ? current.user.country : 'VN';
+    if(_country.length != 2 || _country[0] == '+' || _country[0] == '0')
+    {
+      _country = 'VN';
+    }
+  }else{
+    _country = 'VN';
+  }
   const _language =
     current.user.language == null ? 'English' : current.user.language;
-
+  
   const [whatToLearn, setWhatToLearn] = useState(newwhatToLearn);
   const [whatToLearn1, setWhatToLearn1] = useState(newwhatToLearn1);
   const [levelValue, setLevelValue] = useState(_level);
@@ -133,10 +155,9 @@ const Profile = props => {
   //const [country, setCountry] = useState({name: 'Vietnam', cca2: 'VN'});
   const [country, setCountry] = useState({name: '', cca2: _country});
   const [name, setName] = useState(current.user.name);
-  const _phone  = current.user.phone != null ? current.user.phone : ""
+  const _phone = current.user.phone != null ? current.user.phone : '';
   const [phone, setPhone] = useState(_phone);
-
-  // image Picker:
+ 
   const [file, setFile] = useState({
     uri: current.user.avatar,
     name: ``,
@@ -144,7 +165,7 @@ const Profile = props => {
     size: 0,
     fileName: '',
   });
-
+  
   //const [pickerResponse, setPickerResponse] = useState(null);
   const [visible, setVisible] = useState(false);
   const onImageLibraryPress = useCallback(() => {
@@ -154,28 +175,33 @@ const Profile = props => {
       includeBase64: false,
     };
     ImagePicker.launchImageLibrary(options, response => {
-      if(response.hasOwnProperty('assets'))
-      {
+      if (response.hasOwnProperty('assets')) {
         const datas = new FormData();
-        datas.append('avatar', 
-        { 
-          uri: response.assets[0].uri, 
-          type: response.assets[0].type, 
+        datas.append('avatar', {
+          uri: response.assets[0].uri,
+          type: response.assets[0].type,
           name: response.assets[0].fileName,
         });
-        datas.append('avatar', JSON.stringify({size:response.assets[0].fileSize}));
-        axios.post(`${BASE_URL}user/uploadAvatar`,datas, {
-          headers: {
-            Authorization: 'Bearer ' + current.tokens.access.token,
-            'Content-Type': 'multipart/form-data'
-          }
-        }).then(res => {
-          dispatch(initNewAvatar({
-             newAvatar: res.data.avatar
-          }))
-        })
-        .catch(err => console.log(err))
-        
+        datas.append(
+          'avatar',
+          JSON.stringify({size: response.assets[0].fileSize}),
+        );
+        axios
+          .post(`${BASE_URL}user/uploadAvatar`, datas, {
+            headers: {
+              Authorization: 'Bearer ' + current.tokens.access.token,
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+          .then(res => {
+            dispatch(
+              initNewAvatar({
+                newAvatar: res.data.avatar,
+              }),
+            );
+          })
+          .catch(err => console.log(err));
+
         // setState
         setFile({
           uri: response.assets[0].uri,
@@ -185,56 +211,56 @@ const Profile = props => {
           fileName: response.assets[0].fileName,
         });
       }
-      
-    })
+    });
   }, []);
 
   const onCameraPress = React.useCallback(() => {
-    (
-      async () => {
-        try {
-          const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.CAMERA,
-            {
-              title: "App Camera Permission",
-              message:"App needs access to your camera ",
-              buttonNeutral: "Ask Me Later",
-              buttonNegative: "Cancel",
-              buttonPositive: "OK"
-            }
-          );
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            //console.log("Camera permission given");
-            const options = {
-              selectionLimit: 1,
-              mediaType: 'photo',
-              includeBase64: false,
-            };
-            
-            ImagePicker.launchCamera(options, response => {
-              if(response.hasOwnProperty('assets')){
-                  // upload avatar
+    (async () => {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          {
+            title: 'App Camera Permission',
+            message: 'App needs access to your camera ',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          const options = {
+            selectionLimit: 1,
+            mediaType: 'photo',
+            includeBase64: false,
+          };
+
+          ImagePicker.launchCamera(options, response => {
+            if (response.hasOwnProperty('assets')) {
               const datas = new FormData();
-              datas.append('avatar', 
-              { 
-                uri: response.assets[0].uri, 
-                type: response.assets[0].type, 
+              datas.append('avatar', {
+                uri: response.assets[0].uri,
+                type: response.assets[0].type,
                 name: response.assets[0].fileName,
               });
-              datas.append('avatar', JSON.stringify({size:response.assets[0].fileSize}));
-              axios.post(`${BASE_URL}user/uploadAvatar`,datas, {
-                headers: {
-                  Authorization: 'Bearer ' + current.tokens.access.token,
-                  'Content-Type': 'multipart/form-data'
-                }
-              }).then(res => {
-                dispatch(initNewAvatar({
-                   newAvatar: res.data.avatar
-                }))
-              })
-              .catch(err => console.log(err))
-              
-              // setState
+              datas.append(
+                'avatar',
+                JSON.stringify({size: response.assets[0].fileSize}),
+              );
+              axios
+                .post(`${BASE_URL}user/uploadAvatar`, datas, {
+                  headers: {
+                    Authorization: 'Bearer ' + current.tokens.access.token,
+                    'Content-Type': 'multipart/form-data',
+                  },
+                })
+                .then(res => {
+                  dispatch(
+                    initNewAvatar({
+                      newAvatar: res.data.avatar,
+                    }),
+                  );
+                })
+                .catch(err => console.log(err));
               setFile({
                 uri: response.assets[0].uri,
                 name: response.assets[0].fileName,
@@ -242,19 +268,17 @@ const Profile = props => {
                 size: response.assets[0].fileSize,
                 fileName: response.assets[0].fileName,
               });
-              }
-            });
-          } else {
-            console.log("Camera permission denied");
-          }
-        } catch (err) {
-          console.warn(err);
+            }
+          });
+        } else {
+          console.log('Camera permission denied');
         }
+      } catch (err) {
+        console.warn(err);
       }
-    )()
+    })();
   }, []);
   //const uri = pickerResponse?.assets && pickerResponse.assets[0].uri;
-
   const onChangeBirthday = e => {
     setShowDatePicker(false);
     if (e.nativeEvent.timestamp === undefined) {
@@ -267,19 +291,18 @@ const Profile = props => {
 
   const onSubmit = data => {
     alert('Update successfull');
-    
     dispatch(
       changeInfoAsync({
         ...data,
-      accessToken: current.tokens.access.token,
-      birthday: birthday,
-      name: name,
-      phone: phone,
-      country: country.cca2,
-      level: levelValue,
-      language: pickerValue,
-      whatToLearn: whatToLearn,
-      whatToLearn1: whatToLearn1,
+        accessToken: current.tokens.access.token,
+        birthday: birthday,
+        name: name,
+        phone: phone,
+        country: country.cca2,
+        level: levelValue,
+        language: pickerValue,
+        whatToLearn: whatToLearn,
+        whatToLearn1: whatToLearn1,
       }),
     );
   };
@@ -290,9 +313,8 @@ const Profile = props => {
   function onMultiChange1() {
     return item => setWhatToLearn1(xorBy(whatToLearn1, [item], 'id'));
   }
-
   return (
-    <ScrollView style={styles.container} nestedScrollEnabled={true}>
+    <ScrollView style={[styles.container, {backgroundColor: isDarkTheme? 'black':'white'}]} nestedScrollEnabled={true}>
       <View>
         <View
           style={{
@@ -308,7 +330,6 @@ const Profile = props => {
             }}>
             <View style={{alignSelf: 'center'}}>
               <TextInput
-                //value={'thong123@gmail.com'}
                 value={current.user.email}
                 editable={false}
                 style={{fontSize: 14, color: 'orange'}}
@@ -329,9 +350,9 @@ const Profile = props => {
               {langState[langState.currentLang].Name}:
             </Text>
           </View>
-          <View style={{marginLeft: 18, backgroundColor: 'white'}}>
+          <View style={{marginLeft: 18, backgroundColor: 'white', borderRadius: 5}}>
             <TextInput
-              style={{borderWidth: 1, width: 220, height: 40, fontSize: 15}}
+              style={{borderWidth: 1, width: 220, height: 40, fontSize: 15, borderRadius: 5}}
               value={name}
               defaultValue={current.user.name}
               //keyboardType={'numeric'}
@@ -355,10 +376,10 @@ const Profile = props => {
                   style={{paddingLeft: 12}}
                 />
               </View>
-              <View style={{marginLeft: 40, backgroundColor: 'white'}}>
+              <View style={{marginLeft: 40, backgroundColor: 'white', borderRadius: 5}}>
                 <TextInput
                   // editable = {false}
-                  style={{borderWidth: 1, width: 220, height: 40, fontSize: 15}}
+                  style={{borderWidth: 1, width: 220, height: 40, fontSize: 15, borderRadius: 5}}
                   value={phone}
                   defaultValue={phone}
                   keyboardType={'numeric'}
@@ -373,19 +394,34 @@ const Profile = props => {
 
         <Controller
           control={control}
-          //rules={{required: true}}
           name="language"
           render={({field: {onChange, onBlur, value}}) => (
             <View style={styles.container1}>
               <View>
                 <MaterialIcons name={'language'} size={25} color={MAIN_COLOR} />
               </View>
-              <View style={[styles.containerPicker, {marginLeft: 35}]}>
+              <View style={[styles.containerPicker, {marginLeft: 35, borderRadius: 5}]}>
                 <Picker
                   style={styles.picker}
                   selectedValue={pickerValue}
                   onValueChange={itemValue => setPickerValue(itemValue)}>
+                  <Picker.Item label='(None)' value="" />
+                  <Picker.Item label="Arabic" value="Arabic" />
+                  <Picker.Item label="Bengali" value="Bengali" />
                   <Picker.Item label="English" value="English" />
+                  <Picker.Item label="Filipino" value="Filipino" />
+                  <Picker.Item label="French" value="French" />
+                  <Picker.Item label="German" value="German" />
+                  <Picker.Item label="Hindi" value="Hindi" />
+                  <Picker.Item label="Indonesian" value="Indonesian" />
+                  <Picker.Item label="Italian" value="Italian" />
+                  <Picker.Item label="Japanese" value="Japanese" />
+                  <Picker.Item label="Korean" value="Korean" />
+                  <Picker.Item label="Mandarin" value="Mandarin" />
+                  <Picker.Item label="Portuguese" value="Portuguese" />
+                  <Picker.Item label="Russian" value="Russian" />
+                  <Picker.Item label="Spanish" value="Spanish" />
+                  <Picker.Item label="Tagalog" value="Tagalog" />
                   <Picker.Item label="Vietnamese" value="Vietnamese" />
                 </Picker>
               </View>
@@ -413,14 +449,18 @@ const Profile = props => {
                   Level:
                 </Text>
               </View>
-              <View style={[styles.containerPicker, {marginLeft: 12}]}>
+              <View style={[styles.containerPicker, {marginLeft: 12, borderRadius: 5}]}>
                 <Picker
                   style={styles.picker}
                   selectedValue={levelValue}
                   onValueChange={levelValue => setLevelValue(levelValue)}>
                   <Picker.Item label="BEGINNER" value="BEGINNER" />
-                  <Picker.Item label="INTERMEDIATE" value="INTERMEDIATE" />
-                  <Picker.Item label="ADVANCED" value="ADVANCED" />
+                  <Picker.Item label="HIGHER_BEGINNER" value="HIGHER_BEGINNER" /> 
+                  <Picker.Item label="PRE_INTERMEDIATE" value="PRE_INTERMEDIATE" />
+                  <Picker.Item label="INTERMEDIATE" value="INTERMEDIATE" /> 
+                  <Picker.Item label="UPPER_INTERMEDIATE" value="UPPER_INTERMEDIATE" />
+                  <Picker.Item label="ADVANCED" value="ADVANCED" /> 
+                  <Picker.Item label="PROFICIENCY" value="PROFICIENCY" />
                 </Picker>
               </View>
             </View>
@@ -429,7 +469,6 @@ const Profile = props => {
 
         <Controller
           control={control}
-          //rules={{required: true}}
           name="country"
           render={({field: {onChange, onBlur, value}}) => (
             <View style={styles.container1}>
@@ -453,9 +492,10 @@ const Profile = props => {
                   withFlag
                   withFilter
                   withCountryNameButton
+                  withCallingCode
                   countryCode={country.cca2}
+                  // name={country.cca2}
                   onSelect={country =>
-                    //console.log("\nĐây nữa nè: " + JSON.stringify(country))
                     setCountry({cca2: country.cca2, name: country.name})
                   }
                 />
@@ -479,6 +519,8 @@ const Profile = props => {
                 flexDirection: 'row',
                 borderWidth: 1,
                 alignItems: 'center',
+                backgroundColor: 'white',
+                borderRadius: 5
               }}>
               <TextInput
                 style={{
@@ -493,7 +535,7 @@ const Profile = props => {
                 onChangeText={str => setBirthday(str)}
               />
               <Pressable
-                style={{marginRight: 5}}
+                style={{marginRight: 5, }}
                 onPress={() => setShowDatePicker(true)}>
                 <FontAwesome name="calendar" color="black" size={20} />
               </Pressable>
@@ -519,12 +561,11 @@ const Profile = props => {
               /> */}
           </View>
         </View>
-
         <View
           style={{
             paddingLeft: '10%',
             marginBottom: 15,
-            backgroundColor: isDarkTheme ? 'white' : SECOND_COLOR,
+            backgroundColor: isDarkTheme ? 'black' : 'white',
           }}>
           <View>
             <Text
@@ -532,11 +573,14 @@ const Profile = props => {
               {langState[langState.currentLang].Subject}:
             </Text>
           </View>
-          <SelectBox
-            containerStyle={{marginTop: -15}}
+          <SelectBox 
+            containerStyle={{marginTop: -15, backgroundColor: 'white'}}
+          optionContainerStyle={{backgroundColor:'white'}}
+            // containerStyle={{marginTop: -15}}
+            // optionContainerStyle={{backgroundColor:isDarkTheme?'white':null}}
             hideInputFilter
             label={false}
-            inputPlaceholder={langState[langState.currentLang].Subject}
+            inputPlaceholder={`  ${langState[langState.currentLang].Subject}`}
             options={arrWhatToLearn}
             selectedValues={whatToLearn}
             onMultiSelect={onMultiChange()}
@@ -556,13 +600,14 @@ const Profile = props => {
           style={{
             paddingLeft: '10%',
             marginBottom: 25,
-            backgroundColor: isDarkTheme ? 'white' : SECOND_COLOR,
+            backgroundColor: isDarkTheme ? 'black' : 'white',
           }}>
           <SelectBox
-            containerStyle={{marginTop: -15}}
+            containerStyle={{marginTop: -15, backgroundColor:'white'}}
+            optionContainerStyle={{backgroundColor:isDarkTheme?'white':null}}
             label={false}
             hideInputFilter
-            inputPlaceholder={langState[langState.currentLang].TestPreparation}
+            inputPlaceholder={`  ${langState[langState.currentLang].TestPreparation}`}
             options={arrWhatToLearn1}
             selectedValues={whatToLearn1}
             onMultiSelect={onMultiChange1()}
@@ -572,7 +617,6 @@ const Profile = props => {
             listOptionProps={{nestedScrollEnabled: true}}
           />
         </View>
-        {/* {errors.email && <Text style={styles.error}>{'please type gmail'}</Text>} */}
         <Button
           title={langState[langState.currentLang].Save}
           handleSubmit={handleSubmit}
@@ -614,7 +658,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingVertical: 3,
     paddingHorizontal: 3,
-    // width: 50,
     borderWidth: 2,
   },
   containerPicker: {

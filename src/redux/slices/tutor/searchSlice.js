@@ -66,9 +66,6 @@ const searchSlice = createSlice({
     name: 'searchtutor',
     initialState,
     reducers:{
-        // init: (state, action) =>{
-        //     state.isLoggin = false;
-        // },
         // searchName: (state, action) =>{
         //       return state.rows.filter(item => item.name.includes(action.payload.query));
         // }
@@ -81,7 +78,6 @@ const searchSlice = createSlice({
           }
         },
         [isPageTwoExistAsync.fulfilled]: (state, action) => {  
-            //state.current = action.payload;
             state.isPageTwoExist = action.payload;
         }
     }

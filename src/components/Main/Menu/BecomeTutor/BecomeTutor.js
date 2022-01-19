@@ -1,6 +1,11 @@
 /* eslint-disable */
 import React, {useState, useEffect, useCallback} from 'react';
-import {MAIN_COLOR, SECOND_COLOR, BASE_URL} from '../../../../globals/constant';
+import {
+  MAIN_COLOR,
+  SECOND_COLOR,
+  THIRD_COLOR,
+  BASE_URL,
+} from '../../../../globals/constant';
 import {
   Text,
   View,
@@ -12,13 +17,10 @@ import {
   LogBox,
 } from 'react-native';
 
-import {useForm, Controller, set} from 'react-hook-form';
+import {useForm, Controller} from 'react-hook-form';
 import Button from '../../../_common/Button/Button';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-//import DatePicker from 'react-native-datepicker';
-// thay vì dùng DateTimePicker, có thể dùng RNDatetimePicker
 import SelectBox from 'react-native-multi-selectbox';
 import {xorBy} from 'lodash';
 import {Picker} from '@react-native-picker/picker';
@@ -26,18 +28,14 @@ import RNDateTimePicker from '@react-native-community/datetimepicker';
 import CountryPicker from 'react-native-country-picker-modal';
 import axios from 'axios';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  logout,
-  initNew,
-} from '../../../../redux/slices/auth/loginSlice';
-import { convertSubject, convertTestPre } from '../../../../utils/utils';
+import {logout, initNew} from '../../../../redux/slices/auth/loginSlice';
+import {convertSubject, convertTestPre} from '../../../../utils/utils';
 
-// Phần Image Picker cho Avatar
 import * as ImagePicker from 'react-native-image-picker';
 import {ImagePickerAvatar} from '../../../_common/ImagePicker/image-picker-avatar';
 import {ImagePickerModal} from '../../../_common/ImagePicker/image-picker-modal';
 
-const Profile = props => {
+const BecomeTutor = props => {
   useEffect(() => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
   }, []);
@@ -77,6 +75,17 @@ const Profile = props => {
           );
         })();
       }
+    } else {
+      axiosInstance1
+        .get('user/info')
+        .then(res => {
+          if (JSON.stringify(res.data.user).includes('tutorInfo')) {
+            if(res.data.user.tutorInfo != null){
+              props.navigation.navigate("Approval")
+            }
+          }
+        })
+        .catch(err => console.log(err));
     }
   }, []);
 
@@ -102,35 +111,56 @@ const Profile = props => {
     {item: 'TOEIC', id: 8},
   ];
 
-  const newwhatToLearn = [...current.user.learnTopics].map(function (item) {
-    return {
-      item: item.name,
-      id: item.id,
-    };
-  });
-  const newwhatToLearn1 = [...current.user.testPreparations].map(function (
-    item,
-  ) {
-    return {
-      item: item.name,
-      id: item.id,
-    };
-  });
+  let newwhatToLearn;
+  if (current.user.hasOwnProperty('learnTopics')) {
+    newwhatToLearn = [...current.user.learnTopics].map(function (item) {
+      return {
+        item: item.name,
+        id: item.id,
+      };
+    });
+  } else {
+    newwhatToLearn = [];
+  }
+  let newwhatToLearn1;
+  if (current.user.hasOwnProperty('learnTopics')) {
+    newwhatToLearn1 = [...current.user.testPreparations].map(function (item) {
+      return {
+        item: item.name,
+        id: item.id,
+      };
+    });
+  } else {
+    newwhatToLearn1 = [];
+  }
+
   const _birthday = (
     current.user.birthday != null ? current.user.birthday : '1998-10-27'
   ).substring(0, 10);
-  const _country = current.user.country != null ? current.user.country : 'VN';
+  let _country;
+  if(current.user.hasOwnProperty('country'))
+  {
+    _country =  current.user.country != null ? current.user.country : 'VN';
+    if(_country.length != 2 || _country[0] == '+' || _country[0] == '0')
+    {
+      _country = 'VN';
+    }
+  }else{
+    _country = 'VN';
+  }
 
   const [whatToLearn, setWhatToLearn] = useState(newwhatToLearn);
   const [whatToLearn1, setWhatToLearn1] = useState(newwhatToLearn1);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [birthday, setBirthday] = useState(_birthday);
   const [interests, setInterests] = useState('');
-  const [education, setEducation] =useState('');
+  const [education, setEducation] = useState('');
   const [experience, setExperience] = useState('');
   const [profession, setProfession] = useState('');
   const [bio, setBio] = useState('');
-  const [targetStudent, setTargetStudent] = useState("");
+  const [targetStudent, setTargetStudent] = useState('');
+  const [targetStudent1, setTargetStudent1] = useState('');
+  const [targetStudent2, setTargetStudent2] = useState('');
   //const [country, setCountry] = useState({name: 'Vietnam', cca2: 'VN'});
   const [country, setCountry] = useState({name: '', cca2: _country});
   const [name, setName] = useState(current.user.name);
@@ -144,7 +174,6 @@ const Profile = props => {
     fileName: '',
   });
 
-  //const [pickerResponse, setPickerResponse] = useState(null);
   const [visible, setVisible] = useState(false);
   const onImageLibraryPress = useCallback(() => {
     const options = {
@@ -153,30 +182,9 @@ const Profile = props => {
       includeBase64: false,
     };
     ImagePicker.launchImageLibrary(options, response => {
-      // const datas = new FormData();
-      // datas.append('avatar',
-      // {
-      //   uri: response.assets[0].uri,
-      //   type: response.assets[0].type,
-      //   name: response.assets[0].fileName,
-      // });
-      // datas.append('avatar', JSON.stringify({size:response.assets[0].fileSize}));
-      // axios.post(`${BASE_URL}user/uploadAvatar`,datas, {
-      //   headers: {
-      //     Authorization: 'Bearer ' + current.tokens.access.token,
-      //     'Content-Type': 'multipart/form-data'
-      //   }
-      // }).then(res => {
-      //   dispatch(initNewAvatar({
-      //      newAvatar: res.data.avatar
-      //   }))
-      // })
-      // .catch(err => console.log(err))
-       
+
       // setState
-      if (
-        response.hasOwnProperty('assets')
-      ) {
+      if (response.hasOwnProperty('assets')) {
         setFile({
           uri: response.assets[0].uri,
           name: response.assets[0].fileName,
@@ -202,7 +210,6 @@ const Profile = props => {
           },
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          //console.log("Camera permission given");
           const options = {
             selectionLimit: 1,
             mediaType: 'photo',
@@ -210,31 +217,8 @@ const Profile = props => {
           };
 
           ImagePicker.launchCamera(options, response => {
-            // upload avatar
-            // const datas = new FormData();
-            // datas.append('avatar',
-            // {
-            //   uri: response.assets[0].uri,
-            //   type: response.assets[0].type,
-            //   name: response.assets[0].fileName,
-            // });
-            // datas.append('avatar', JSON.stringify({size:response.assets[0].fileSize}));
-            // axios.post(`${BASE_URL}user/uploadAvatar`,datas, {
-            //   headers: {
-            //     Authorization: 'Bearer ' + current.tokens.access.token,
-            //     'Content-Type': 'multipart/form-data'
-            //   }
-            // }).then(res => {
-            //   dispatch(initNewAvatar({
-            //      newAvatar: res.data.avatar
-            //   }))
-            // })
-            // .catch(err => console.log(err))
-
             // setState
-            if (
-              response.hasOwnProperty('assets')
-            ) {
+            if (response.hasOwnProperty('assets')) {
               setFile({
                 uri: response.assets[0].uri,
                 name: response.assets[0].fileName,
@@ -265,54 +249,47 @@ const Profile = props => {
   };
 
   const onSubmit = data => {
-    props.navigation.navigate('VideoIntroduction');
-    let specialties;
-    for(let i = 0; i < whatToLearn.length; i++){
-       specialties = specialties + convertSubject(whatToLearn[i].id) + ",";
+    let specialties = '';
+    for (let i = 0; i < whatToLearn.length; i++) {
+      specialties = specialties + convertSubject(whatToLearn[i].id) + ',';
     }
-    for(let j = 0; j < whatToLearn1.length; j++){
-      specialties = specialties + convertTestPre(whatToLearn1[j].id) + ",";
-   }
-   if(specialties.length > 0){
-     specialties = specialties.substring(0, specialties.length - 1);
-   }
+    for (let j = 0; j < whatToLearn1.length; j++) {
+      specialties = specialties + convertTestPre(whatToLearn1[j].id) + ',';
+    }
+    if (specialties.length > 0) {
+      specialties = specialties.substring(0, specialties.length - 1);
+    }
 
-    // console.log(
-    //   {
-    //         ...data,
-    //       accessToken: current.tokens.access.token,
-    //       whatToLearn: whatToLearn,
-    //       whatToLearn1: whatToLearn1,
-    //       name: name,
-    //       country: country.cca2,
-    //       birthday: birthday,
-    //       interests: interests,
-    //       education: education,
-    //       experience: experience,
-    //       profession: profession,
-    //       //languages: en,vi,
-    //       bio: bio,
-    //       targetStudent: targetStudent,
-    //       specialties: specialties,
-    //       // avatar: (binary),
-    //       // video: (binary),
-    //       price: 50000,
-    //       }
-    // )
-    // dispatch(
-    //   changeInfoAsync({
-    //     ...data,
-    //   accessToken: current.tokens.access.token,
-    //   birthday: birthday,
-    //   name: name,
-    //   phone: phone,
-    //   country: country.cca2,
-    //   level: levelValue,
-    //   language: pickerValue,
-    //   whatToLearn: whatToLearn,
-    //   whatToLearn1: whatToLearn1,
-    //   }),
-    // );
+    let languages = '';
+    if (targetStudent1 == '' && targetStudent2 != '') {
+      languages = targetStudent2;
+    }
+    if (targetStudent1 != '' && targetStudent2 == '') {
+      languages = targetStudent1;
+    }
+    if (targetStudent1 != '' && targetStudent2 != '') {
+      languages = targetStudent1 + ',' + targetStudent2;
+    }
+    props.navigation.navigate('VideoIntroduction', {
+      avatar: {
+        uri: file.uri,
+        type: file.type,
+        name: file.name,
+        size: file.size,
+      },
+      name: name,
+      country: country.cca2,
+      birthday: birthday,
+      interests: interests,
+      education: education,
+      experience: experience,
+      profession: profession,
+      languages: languages,
+      bio: bio,
+      targetStudent: targetStudent,
+      specialties: specialties,
+      price: 50000,
+    });
   };
 
   function onMultiChange() {
@@ -329,11 +306,11 @@ const Profile = props => {
           style={{
             marginLeft: 15,
             fontSize: 20,
-            color: MAIN_COLOR,
+            color: THIRD_COLOR,
             fontWeight: 'bold',
             marginBottom: 12,
           }}>
-          Basic Info
+          {langState.currentLang=='en'?'Basic Info':'Thông tin cơ bản'}
         </Text>
         <View
           style={{
@@ -366,16 +343,13 @@ const Profile = props => {
               style={{borderWidth: 1, width: 220, height: 40, fontSize: 15}}
               value={name}
               defaultValue={current.user.name}
-              //keyboardType={'numeric'}
               placeholder={'Name'}
-              // onBlur={onBlur}
               onChangeText={value => setName(value)}
             />
           </View>
         </View>
         <Controller
           control={control}
-          //rules={{required: true}}
           name="country"
           render={({field: {onChange, onBlur, value}}) => (
             <View style={styles.container1}>
@@ -388,20 +362,12 @@ const Profile = props => {
                 />
               </View>
               <View style={{marginLeft: 35}}>
-                {/* <CountryPicker translation="eng" withFlag={true} countryCode={true} onSelect={(country) => setCountry(country)}/>
-              <CountryPicker
-                withCallingCode
-                withModal={true}
-                withFlagButton={true}
-                withFilter={true}
-              /> */}
                 <CountryPicker
                   withFlag
                   withFilter
                   withCountryNameButton
                   countryCode={country.cca2}
                   onSelect={country =>
-                    //console.log("\nĐây nữa nè: " + JSON.stringify(country))
                     setCountry({cca2: country.cca2, name: country.name})
                   }
                 />
@@ -419,7 +385,7 @@ const Profile = props => {
               style={{paddingLeft: 12}}
             />
           </View>
-          <View style={{marginLeft: 35}}>
+          <View style={{marginLeft: 35, backgroundColor: 'white'}}>
             <View
               style={{
                 flexDirection: 'row',
@@ -454,31 +420,27 @@ const Profile = props => {
                 is24Hour={true}
               />
             )}
-            {/* <DateTimePicker
-                styles={{width: '37%', backgroundColor: "white", color:'#009387'}}
-                testID="dateTimePicker"
-                value={date.date}
-                mode="date"
-                is24Hour={true}
-                display="default"
-                onChange={date => setDate({date: date})}
-              /> */}
           </View>
         </View>
         <Text
           style={{
             marginLeft: 15,
             fontSize: 20,
-            color: MAIN_COLOR,
+            color: THIRD_COLOR,
             fontWeight: 'bold',
             marginBottom: 12,
+            marginTop: 3,
           }}>
           CV
         </Text>
-        <Text style={{marginHorizontal: 12, fontSize: 15, marginBottom: 10}}>
-          In order to protect your privacy, please do not share your personal
-          information (email, phone number, social email, skype, etc) in your
-          profile.
+        <Text
+          style={{
+            marginHorizontal: 12,
+            fontSize: 15,
+            marginBottom: 10,
+            color: isDarkTheme ? 'white' : 'black',
+          }}>
+          {langState.currentLang=='en'?'In order to protect your privacy, please do not share your personal information (email, phone number, social email, skype, etc) in your profile.':`Để bảo vệ quyền riêng tự, xin đừng chia sẻ thông tin cá nhân của bạn (email, điện thoại,...) trong profile`}
         </Text>
         <Text
           style={{
@@ -486,8 +448,9 @@ const Profile = props => {
             fontSize: 16,
             marginBottom: 5,
             fontWeight: 'bold',
+            color: isDarkTheme ? 'yellow' : MAIN_COLOR,
           }}>
-          Interests
+          {langState.currentLang=='en'?'Interests':'Điều quan tâm'}
         </Text>
         <TextInput
           style={{
@@ -507,8 +470,9 @@ const Profile = props => {
             fontSize: 16,
             marginBottom: 5,
             fontWeight: 'bold',
+            color: isDarkTheme ? 'yellow' : MAIN_COLOR,
           }}>
-          Education
+          {langState.currentLang=='en'?'Education':'Học vấn'}
         </Text>
         <TextInput
           style={{
@@ -528,8 +492,9 @@ const Profile = props => {
             fontSize: 16,
             marginBottom: 5,
             fontWeight: 'bold',
+            color: isDarkTheme ? 'yellow' : MAIN_COLOR,
           }}>
-          Experience
+          {langState.currentLang=='en'?'Experience':'Kinh nghiệm'}
         </Text>
         <TextInput
           style={{
@@ -548,8 +513,9 @@ const Profile = props => {
             fontSize: 16,
             marginBottom: 5,
             fontWeight: 'bold',
+            color: isDarkTheme ? 'yellow' : MAIN_COLOR,
           }}>
-          Current or Previous Profession
+          {langState.currentLang=='en'?'Current or Previous Profession':'Nghề nghiệp gần nhất'}
         </Text>
         <TextInput
           style={{
@@ -562,49 +528,23 @@ const Profile = props => {
           multiline
           onChangeText={value => setProfession(value)}
         />
-        <Text
-          style={{
-            marginLeft: 15,
-            fontSize: 20,
-            color: MAIN_COLOR,
-            fontWeight: 'bold',
-            marginBottom: 12,
-            marginTop: 15,
-          }}>
-          Languages I speak
-        </Text>
         <View
           style={{
             paddingLeft: '10%',
             marginBottom: 25,
             backgroundColor: isDarkTheme ? 'white' : SECOND_COLOR,
           }}>
-          {/* <SelectBox
-            containerStyle={{marginTop: -15}}
-            label={false}
-            hideInputFilter
-            inputPlaceholder={'language'}
-            options={arrWhatToLearn1}
-            selectedValues={whatToLearn1}
-            onMultiSelect={onMultiChange1()}
-            onTapClose={onMultiChange1()}
-            isMulti
-            width={'90%'}
-            listOptionProps={{nestedScrollEnabled: true}}
-          /> */}
         </View>
         <Text
           style={{
             marginLeft: 15,
             fontSize: 20,
-            color: MAIN_COLOR,
+            color: THIRD_COLOR,
             fontWeight: 'bold',
             marginBottom: 12,
+            marginTop: 10,
           }}>
-          Who I teach
-        </Text>
-        <Text style={{marginHorizontal: 12, fontSize: 15, marginBottom: 10}}>
-          This is the first thing students will see when looking for tutors.
+          {langState.currentLang=='en'?'Languages I speak':'Ngôn ngữ sử dụng'}
         </Text>
         <Text
           style={{
@@ -612,8 +552,112 @@ const Profile = props => {
             fontSize: 16,
             marginBottom: 5,
             fontWeight: 'bold',
+            color: isDarkTheme ? 'yellow' : MAIN_COLOR,
           }}>
-          Introduction
+          {langState.currentLang=='en'?'Language 1:':'Ngôn ngữ 1'}
+        </Text>
+        <Picker
+          style={{
+            width: 170,
+            height: 35,
+            borderColor: '#ddd',
+            borderWidth: 1,
+            color: 'black',
+            marginLeft: 90,
+            backgroundColor: 'white',
+          }}
+          selectedValue={targetStudent1}
+          onValueChange={itemValue => setTargetStudent1(itemValue)}>
+          <Picker.Item label="(None)" value="" />
+          <Picker.Item label="Arabic" value="Arabic" />
+          <Picker.Item label="Bengali" value="Bengali" />
+          <Picker.Item label="English" value="English" />
+          <Picker.Item label="Filipino" value="Filipino" />
+          <Picker.Item label="French" value="French" />
+          <Picker.Item label="German" value="German" />
+          <Picker.Item label="Hindi" value="Hindi" />
+          <Picker.Item label="Indonesian" value="Indonesian" />
+          <Picker.Item label="Italian" value="Italian" />
+          <Picker.Item label="Japanese" value="Japanese" />
+          <Picker.Item label="Korean" value="Korean" />
+          <Picker.Item label="Mandarin" value="Mandarin" />
+          <Picker.Item label="Portuguese" value="Portuguese" />
+          <Picker.Item label="Russian" value="Russian" />
+          <Picker.Item label="Spanish" value="Spanish" />
+          <Picker.Item label="Tagalog" value="Tagalog" />
+          <Picker.Item label="Vietnamese" value="Vietnamese" />
+        </Picker>
+        <Text
+          style={{
+            marginLeft: 15,
+            fontSize: 16,
+            marginBottom: 5,
+            fontWeight: 'bold',
+            marginTop: 8,
+            color: isDarkTheme ? 'yellow' : MAIN_COLOR,
+          }}>
+          {langState.currentLang=='en'?'Language 2:':'Ngôn ngữ 2'}
+        </Text>
+        <Picker
+          style={{
+            width: 170,
+            height: 35,
+            borderColor: '#ddd',
+            borderWidth: 1,
+            color: 'black',
+            marginLeft: 90,
+            backgroundColor: 'white',
+          }}
+          selectedValue={targetStudent2}
+          onValueChange={itemValue => setTargetStudent2(itemValue)}>
+          <Picker.Item label="(None)" value="" />
+          <Picker.Item label="Arabic" value="Arabic" />
+          <Picker.Item label="Bengali" value="Bengali" />
+          <Picker.Item label="English" value="English" />
+          <Picker.Item label="Filipino" value="Filipino" />
+          <Picker.Item label="French" value="French" />
+          <Picker.Item label="German" value="German" />
+          <Picker.Item label="Hindi" value="Hindi" />
+          <Picker.Item label="Indonesian" value="Indonesian" />
+          <Picker.Item label="Italian" value="Italian" />
+          <Picker.Item label="Japanese" value="Japanese" />
+          <Picker.Item label="Korean" value="Korean" />
+          <Picker.Item label="Mandarin" value="Mandarin" />
+          <Picker.Item label="Portuguese" value="Portuguese" />
+          <Picker.Item label="Russian" value="Russian" />
+          <Picker.Item label="Spanish" value="Spanish" />
+          <Picker.Item label="Tagalog" value="Tagalog" />
+          <Picker.Item label="Vietnamese" value="Vietnamese" />
+        </Picker>
+        <Text
+          style={{
+            marginLeft: 15,
+            fontSize: 20,
+            color: THIRD_COLOR,
+            fontWeight: 'bold',
+            marginBottom: 12,
+            marginTop: 20,
+          }}>
+          {langState.currentLang=='en'?'Who I teach':'Người tôi học'}
+        </Text>
+        <Text
+          style={{
+            marginHorizontal: 12,
+            fontSize: 15,
+            marginBottom: 10,
+            color: isDarkTheme ? 'white' : 'black',
+          }}>
+          {langState.currentLang=='en'?`This is the first thing students will see when looking for tutors.`:`Đây là thông tin học viên sẽ thấy đầu tiên khi vào xem` }
+        </Text>
+        <Text
+          style={{
+            marginLeft: 15,
+            fontSize: 16,
+            marginBottom: 5,
+            fontWeight: 'bold',
+            color: isDarkTheme?'yellow':MAIN_COLOR
+          }}>
+          {langState.currentLang=='en'?'Introduction':'Giới thiệu'}
         </Text>
         <TextInput
           style={{
@@ -632,9 +676,10 @@ const Profile = props => {
             fontSize: 16,
             marginBottom: 5,
             fontWeight: 'bold',
-            marginTop: 5,
+            marginTop: 5,            
+            color: isDarkTheme?'yellow':MAIN_COLOR
           }}>
-          I am best at teaching students who are
+          {langState.currentLang=='en'?`I am best at teaching students who are`:'Tôi giỏi nhất là dạy cho học viên'}
         </Text>
         <Picker
           style={{
@@ -644,12 +689,12 @@ const Profile = props => {
             borderWidth: 1,
             color: 'black',
             marginLeft: 90,
-            backgroundColor: 'white'
+            backgroundColor: 'white',
           }}
           selectedValue={targetStudent}
           onValueChange={itemValue => setTargetStudent(itemValue)}>
           <Picker.Item label="Beginner" value="Beginner" />
-          <Picker.Item label="Inermediate" value="Inermediate" />
+          <Picker.Item label="Intermediate" value="Intermediate" />
           <Picker.Item label="Advanced" value="Advanced" />
         </Picker>
         <Text
@@ -658,14 +703,16 @@ const Profile = props => {
             fontSize: 16,
             marginBottom: 5,
             fontWeight: 'bold',
+            marginTop: 5,
+            color: isDarkTheme?'yellow':MAIN_COLOR
           }}>
-          My specialties are:{' '}
+          {langState.currentLang=='en'?'My specialties are':'Các kỹ năng của tôi'}:{' '}
         </Text>
         <View
           style={{
             paddingLeft: '10%',
             marginBottom: 15,
-            backgroundColor: isDarkTheme ? 'white' : SECOND_COLOR,
+            backgroundColor: isDarkTheme ? 'black' : SECOND_COLOR,
           }}>
           <View>
             <Text
@@ -675,6 +722,7 @@ const Profile = props => {
           </View>
           <SelectBox
             containerStyle={{marginTop: -15}}
+            optionContainerStyle={{backgroundColor:isDarkTheme?'white':null}}
             hideInputFilter
             label={false}
             inputPlaceholder={langState[langState.currentLang].Subject}
@@ -697,10 +745,11 @@ const Profile = props => {
           style={{
             paddingLeft: '10%',
             marginBottom: 25,
-            backgroundColor: isDarkTheme ? 'white' : SECOND_COLOR,
+            backgroundColor: isDarkTheme ? 'black' : SECOND_COLOR,
           }}>
           <SelectBox
             containerStyle={{marginTop: -15}}
+            optionContainerStyle={{backgroundColor:isDarkTheme?'white':null}}
             label={false}
             hideInputFilter
             inputPlaceholder={langState[langState.currentLang].TestPreparation}
@@ -713,7 +762,6 @@ const Profile = props => {
             listOptionProps={{nestedScrollEnabled: true}}
           />
         </View>
-        {/* {errors.email && <Text style={styles.error}>{'please type gmail'}</Text>} */}
         <View style={{marginBottom: 70, marginTop: 5}}>
           <Button
             title={langState.currentLang == 'en' ? 'Next' : 'Tiếp theo'}
@@ -757,7 +805,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingVertical: 3,
     paddingHorizontal: 3,
-    // width: 50,
     borderWidth: 2,
   },
   containerPicker: {
@@ -775,4 +822,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Profile;
+export default BecomeTutor;

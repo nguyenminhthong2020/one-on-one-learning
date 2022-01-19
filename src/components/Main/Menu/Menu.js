@@ -2,19 +2,10 @@
 import React from 'react';
 import {SECOND_COLOR} from '../../../globals/constant';
 import {
-  //Text,
   View,
   ScrollView,
   StyleSheet,
-  //TouchableOpacity,
 } from 'react-native';
-// import {useForm, Controller} from 'react-hook-form';
-// import Input from '../../../components/_common/Input/Input';
-// import Button from '../../../components/_common/Button/Button';
-// import {SocialIcon} from 'react-native-elements';
-//import Icon from 'react-native-vector-icons/Ionicons';
-
-//import Header from '../../_common/Header/Header';
 import ButtonIcon from '../../_common/Button/ButtonIcon';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../../redux/slices/auth/loginSlice';
@@ -22,17 +13,24 @@ import { logout } from '../../../redux/slices/auth/loginSlice';
 const Menu = props => {
   const dispatch = useDispatch();
   const langState = useSelector(state => state.lang);
+  const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
 
   return (
     <ScrollView>
       <View style={styles.container}>
-        <View style={styles.content}>
+        <View style={[styles.content, {backgroundColor: isDarkTheme?'black':null}]}>
           {/* <ButtonIcon type={'FontAwesome5'} name={'home'} title={'Home'} handleOnPress={() => alert('home')}/> */}
           <ButtonIcon
             type={'AntDesign'}
             name={'user'}
             title={langState[langState.currentLang].Profile}
             handleOnPress={() => props.navigation.navigate('Profile')}
+          />
+          <ButtonIcon
+            type={'FontAwesome5'}
+            name={'heart'}
+            title={langState[langState.currentLang].Favorite}
+            handleOnPress={() => props.navigation.navigate('Favorites')}
           />
           {/* <ButtonIcon
             type={'FontAwesome5'}
@@ -49,8 +47,8 @@ const Menu = props => {
           <ButtonIcon
             type={'FontAwesome5'}
             name={'history'}
-            title={langState[langState.currentLang].History}
-            handleOnPress={() => props.navigation.navigate("History")}
+            title={langState.currentLang=='en'?'History & Feedbacks':'Lịch sử & Phản hồi'}
+            handleOnPress={() => props.navigation.navigate("FeedbackList")}
           />
           <ButtonIcon
             type={'FontAwesome5'}
@@ -63,12 +61,6 @@ const Menu = props => {
             name={'book'}
             title={'Ebooks'}
             handleOnPress={() => props.navigation.navigate('ListEbookNew')}
-          />
-           <ButtonIcon
-            type={'FontAwesome5'}
-            name={'heart'}
-            title={langState[langState.currentLang].Favorite}
-            handleOnPress={() => props.navigation.navigate('Favorites')}
           />
           <ButtonIcon
             type={'FontAwesome5'}
@@ -97,7 +89,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   content: {
-    // backgroundColor: SECOND_COLOR,
     marginTop: 20,
     height: '100%',
     backgroundColor: SECOND_COLOR,

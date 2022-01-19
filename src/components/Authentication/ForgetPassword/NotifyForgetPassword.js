@@ -20,7 +20,11 @@ const NotifyForgetPassword = (props) => {
     .then(res => {
       alert("An email has send successfully");
     }).catch(err => {
-       alert("Error: \n" + err.response.data.message);
+      if (JSON.stringify(err).includes('message')) {
+        alert('FAIL:\n' + err.response.data.message);
+      } else {
+        alert('FAIL:\n' + err);
+      }
     });
   }
 
@@ -56,9 +60,9 @@ const NotifyForgetPassword = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 15,
     flex: 1,
     flexDirection: 'column',
+    backgroundColor:'white'
   },
   text: {
     color: MAIN_COLOR,

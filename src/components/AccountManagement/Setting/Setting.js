@@ -1,24 +1,16 @@
 /* eslint-disable */
 import React from 'react';
 import {MAIN_COLOR, SECOND_COLOR} from '../../../globals/constant';
-import {Text, View, Alert, StyleSheet, ScrollView, Linking} from 'react-native';
-// import {useForm, Controller} from 'react-hook-form';
-// import Input from '../../../components/_common/Input/Input';
-// import Button from '../../../components/_common/Button/Button';
+import {View, StyleSheet, ScrollView, Linking} from 'react-native';
 // import {SocialIcon} from 'react-native-elements';
-// import Icon from 'react-native-vector-icons/Ionicons';
-
-
 import ButtonIcon from '../../_common/Button/ButtonIcon';
 import ChangeSetting from '../../_common/ChangeSetting/ChangeSetting';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../../redux/slices/auth/loginSlice';
 
-
 const Setting = (props) => {
   const dispatch = useDispatch();
   const langState = useSelector(state => state.lang);
-
   const openHanlde = () => {
     Linking.openURL(
       'https://www.facebook.com/lettutorvn',
@@ -39,9 +31,8 @@ const Setting = (props) => {
   return (
     <ScrollView>
     <View style={styles.container}>
-       {/* <Header></Header> */}
        <View style={styles.content}>
-           <ButtonIcon type={'AntDesign'} name={'user'} title={langState[langState.currentLang].viewFeedbacks} handleOnPress={() => props.navigation.navigate("FeedbackList")}/>
+           {/* <ButtonIcon type={'AntDesign'} name={'user'} title={langState.currentLang=='en'?'Feedback Tutor':'Phản hồi Giáo viên'} handleOnPress={() => props.navigation.navigate("FeedbackList")}/> */}
            {/* <ButtonIcon type={'FontAwesome5'} name={'list'} title={'Booking History'} handleOnPress={() => alert('booking history')}/>
            <ButtonIcon type={'FontAwesome5'} name={'history'} title={'Session History'} handleOnPress={() => alert('session history')}/>           */}
            {/* <ButtonIcon type={'FontAwesome5'} name={'calendar-check'} title={'Schedule'} handleOnPress={() => alert('schedule')}/>
@@ -71,9 +62,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   content: {
-      // backgroundColor: SECOND_COLOR,
       marginTop: 30,
-      //height: '100%',
   },
 });
 

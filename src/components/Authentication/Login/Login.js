@@ -9,19 +9,17 @@ import {SocialIcon} from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginAsync } from '../../../redux/slices/auth/loginSlice';
 import { initNew } from '../../../redux/slices/auth/loginSlice';
-
 // import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { LoginManager, AccessToken } from "react-native-fbsdk-next";
+import { LoginManager, AccessToken, Profile} from "react-native-fbsdk-next";
 import { axiosInstance } from '../../../utils/utils';
-
 
 const Login = (props) => {
   const dispatch = useDispatch();
   const check = useSelector(state => state.auth.isLoggin);
   useEffect(()=>{
     if(check == true){
-          props.navigation.navigate("MainTabs");
+          props.navigation.push("MainTabs");
         }
   }, [check])
 
@@ -44,7 +42,7 @@ const Login = (props) => {
         try{
           GoogleSignin.configure({
             // scopes: ['https://www.googleapis.com/auth/drive.readonly'],
-            hostedDomain: '', // specifies a hosted domain restriction
+            hostedDomain: '', 
             webClientId: "248659140633-ckjjk3t298j48vknacktgm9kr1gm52ld.apps.googleusercontent.com",
             offlineAccess: true,
           });
@@ -61,7 +59,11 @@ const Login = (props) => {
       .then(res => {
         dispatch(initNew({current: res.data}))
       }).catch(err => {
-         alert("Error: \n" + err.response.data.message);
+        if (JSON.stringify(err).includes('message')) {
+          alert('FAIL:\n' + err.response.data.message);
+        } else {
+          alert('FAIL:\n' + err);
+        }
       });
  
         }catch(err){
@@ -84,7 +86,8 @@ const Login = (props) => {
           if (result.isCancelled) {
             console.log('User cancelled the login process');
           }else{
-              // Once signed in, get the users AccesToken
+          const currentProfile = await Profile.getCurrentProfile();
+          console.log(currentProfile);
           const data = await AccessToken.getCurrentAccessToken();
           if (!data) {
             alert('Something went wrong obtaining access token');
@@ -96,7 +99,11 @@ const Login = (props) => {
             .then(res => {
               dispatch(initNew({current: res.data}))
             }).catch(err => {
-               alert("Error: \n" + err.response.data.message);
+              if (JSON.stringify(err).includes('message')) {
+                alert('FAIL:\n' + err.response.data.message);
+              } else {
+                alert('FAIL:\n' + err);
+              }
             });
           }
           }
@@ -213,6 +220,7 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     flex: 1,
     flexDirection: 'column',
+    backgroundColor: 'white'
   },
   text: {
     color: MAIN_COLOR,

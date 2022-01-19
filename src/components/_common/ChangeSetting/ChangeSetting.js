@@ -14,7 +14,6 @@ export default function ChangeSetting(props) {
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme)
   const [state, setstate] = useState(true);
 
-
   return (
     <View style={styles.container}>
       <View style={styles.button}>
@@ -34,7 +33,7 @@ export default function ChangeSetting(props) {
               style={{paddingLeft: 15}}
             />
           )}
-          <Text style={[styles.text,{color: isDarkTheme?'white':'gray'}]}>{props.title}</Text>
+          <Text style={[styles.text,{color: isDarkTheme?'white':MAIN_COLOR}]}>{props.title}</Text>
           <View style={styles.switch}>
             <Switch 
   //             style={{transform: [{ scaleX:  moderateScale(1.5, 0.2) }, { scaleY:  
@@ -59,8 +58,6 @@ export default function ChangeSetting(props) {
 
 const styles = StyleSheet.create({
   button: {
-    // borderRadius: 10,
-    // borderWidth: 2,
     paddingVertical: 5,
   },
   rowbtn: {
@@ -74,14 +71,11 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 18,
-    // paddingLeft: 15,
     position: 'absolute',
     left: '20%',
   },
   menuItemSwitch: {
     // width: '20%',
-    // left: '80%',
-    //marginLeft: 20,
   },
   switch: {
     marginLeft: '50%',

@@ -1,13 +1,7 @@
 /* eslint-disable */
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-// import { searchApi } from '../../../api/course/searchApi';
 import axios from 'axios';
 import { BASE_URL } from '../../../globals/constant';
-
-/* 
-   Lấy list favorite tutor
-https://api.app.lettutor.com/tutor/more?perPage=9&page=1
-*/
 const initialState = {
   data: {},
 };
@@ -109,6 +103,7 @@ export const listCate = [
   ]
 
 export const _listCate = {
+  "For studying abroad": "968e7e18-10c0-4742-9ec6-6f5c71c517f5",
   "English for Kids": "255c96b6-fd6f-4f43-8dbd-fec766e361e0",
   "English for Beginners": "488cc5f8-a5b1-45cd-8d3a-47e690f9298e",
   "Business English": "f01cf003-25d1-432f-aaab-bf0e8390e14f",
@@ -122,11 +117,11 @@ export const _listCate = {
   "TOEIC":"1e662753-b305-47ad-a319-fa52340f5532",
   "TOEFL": "d87de7ba-bd4c-442c-8d58-957acb298f57",
   "STARTERS": "975f83f6-30c5-465d-8d98-65e4182369ba",
-  "IELTS": "fb92cf24-1736-4cd7-a042-fa3c37921cf8"
+  "IELTS": "fb92cf24-1736-4cd7-a042-fa3c37921cf8",
 }
 
 export const searchEbookAsync = createAsyncThunk(
-  'course/searchCourseAsync',
+  'course/searchEbookAsync',
   async (payload, {rejectWithValue}) => {
     try {
   
@@ -154,16 +149,9 @@ const searchEbookSlice = createSlice({
   name: 'searchebook',
   initialState,
   reducers: {
-    // init: (state, action) =>{
-    //     state.isLoggin = false;
-    // },
-    // searchName: (state, action) =>{
-    //       return state.rows.filter(item => item.name.includes(action.payload.query));
-    // }
   },
   extraReducers: {
     [searchEbookAsync.fulfilled]: (state, action) => {
-      //state.current = action.payload;
       state.data = action.payload;
     },
   },

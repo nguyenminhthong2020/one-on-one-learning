@@ -1,19 +1,16 @@
 /* eslint-disable */
 import React from 'react';
 import {MAIN_COLOR} from '../../../../globals/constant';
-
-
 import {
   Text,
   View,
   StyleSheet,
   TouchableOpacity,
-  Pressable
 } from 'react-native';
-
+import { useSelector } from 'react-redux';
 
 const Approval = (props) => {
-
+  const langState = useSelector(state => state.lang);
   return (
     <View style={styles.container}>
         <Text
@@ -24,7 +21,7 @@ const Approval = (props) => {
             color: MAIN_COLOR,
             marginTop: 35,
           }}>
-          Done, please wait for the Admin's approval
+          {langState.currentLang=='en'?`Done, please wait for\nthe Admin's approval`:`Hoàn tất, xin chờ\nquản trị viên duyệt`}
         </Text>
       <View
         style={{
@@ -38,11 +35,10 @@ const Approval = (props) => {
         }}>
         <TouchableOpacity onPress={()=>props.navigation.navigate("MainTabs")}>
           <Text style={{color: 'white', paddingVertical: 8, fontSize: 20}}>
-            Back to Home
+            {langState.currentLang=='en'?'Back to Home':'Về trang chủ'}
           </Text>
         </TouchableOpacity>
       </View>
-      {/* {errors.email && <Text style={styles.error}>{'please type gmail'}</Text>} */}
     </View>
   );
 };

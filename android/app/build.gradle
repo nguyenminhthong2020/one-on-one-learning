@@ -216,12 +216,21 @@ dependencies {
     implementation project(':react-native-vector-icons')
     //implementation project(':react-native-webview')
     
-    compile project(':react-native-pure-jwt')
     compile project(':react-native-video')
     implementation "androidx.appcompat:appcompat:1.3.1"
 
     implementation(project(':react-native-jitsi-meet')){
       //exclude group: 'com.facebook.react',module:'react-native-vector-icons'
+      //exclude group: 'com.facebook.react',module:'react-native-locale-detector'
+      exclude group: 'com.facebook.react',module:'react-native-vector-icons'
+      // Un-comment any packages below that you have added to your project to prevent `duplicate_classes` errors
+      //exclude group: 'com.facebook.react',module:'react-native-community-async-storage'
+      //exclude group: 'com.facebook.react',module:'react-native-community_netinfo'
+      exclude group: 'com.facebook.react',module:'react-native-svg'
+      //exclude group: 'com.facebook.react',module:'react-native-fetch-blob'
+      //exclude group: 'com.facebook.react',module:'react-native-webview'
+      //exclude group: 'com.facebook.react',module:'react-native-linear-gradient'
+      //exclude group: 'com.facebook.react',module:'react-native-sound'
     }
 
     implementation platform('com.google.firebase:firebase-bom:29.0.3')

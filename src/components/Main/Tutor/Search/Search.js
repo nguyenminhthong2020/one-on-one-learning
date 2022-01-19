@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, {useState, Suspense, useEffect} from 'react';
-import {MAIN_COLOR, BASE_URL} from '../../../../globals/constant';
+import {MAIN_COLOR, BASE_URL, THIRD_COLOR} from '../../../../globals/constant';
 import {
   Text,
   View,
@@ -8,25 +8,30 @@ import {
   ActivityIndicator,
   Pressable,
   ScrollView,
+  TouchableOpacity,
 } from 'react-native';
 import {SearchBar} from 'react-native-elements';
 // import CountryPicker from 'react-native-country-picker-modal';
-
 // import {useForm, Controller} from 'react-hook-form';
-const TutorItemSearch = React.lazy(()=> import('../../common/TutorItem/TutorItemSearch.js'));
-import {useSelector, useDispatch} from 'react-redux';
+import {handleAverage1} from '../../../../utils/utils';
+const TutorItemSearch = React.lazy(() =>
+  import('../../common/TutorItem/TutorItemSearch.js'),
+);
+import {useSelector} from 'react-redux';
 import MyTag from '../../../_common/FlexibleButton/TagFlexibleButton';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 
+const MAXIMUM = 100;
+const PER_PAGE_VALUE = 5;
+const MAX_NUMBER_PAGE = 7;
 const Search = props => {
-
   const langState = useSelector(state => state.lang);
   const current = useSelector(state => state.auth.current);
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
 
   const [nameQuery, setNameQuery] = useState('');
   const [spec, setSpec] = useState(['']);
-
 
   const [arrTutorPagination, setArrTutorPagination] = useState({
     arrTutor: [],
@@ -42,31 +47,78 @@ const Search = props => {
     },
   });
 
-  useEffect(() => {
-    let isMounted = true;
-
+  const handleSearchAndPaginate = (_index, _isMounted) => {
     axiosInstance1
       .post(`tutor/search`, {
-        filters: {specialties: spec, date: new Date().toISOString()},
+        filters: {
+          specialties: spec,
+          date: new Date().toISOString(),
+        },
         page: 1,
-        perPage: 12,
+        perPage: MAXIMUM,
       })
       .then(res => {
         if (res.data.count > 0) {
-          const _countPage = ~~(res.data.count / 12) + 1;
+          // res.data.count = res.data.rows.length = result.length
+          let newArrTutor;
+          if (nameQuery != '') {
+            newArrTutor = res.data.rows.filter(item =>
+              item.name.toLowerCase().includes(nameQuery.toLowerCase()),
+            );
+          } else {
+            newArrTutor = res.data.rows;
+          }
+
           let arrCount = [];
-          for (let i = 0; i < _countPage; i++) {
+          for (
+            let i = 0;
+            i < Math.ceil(newArrTutor.length / PER_PAGE_VALUE);
+            i++
+          ) {
             arrCount.push(i);
           }
-          if (isMounted) {
+
+          let _array = [...newArrTutor];
+          let t;
+          for (let i = 0; i < _array.length - 1; i++)
+            for (let j = i + 1; j < _array.length; j++) {
+              let mi = handleAverage1(_array[i].feedbacks);
+              let mj = handleAverage1(_array[j].feedbacks);
+              if (mi < mj) {
+                t = _array[i];
+                _array[i] = _array[j];
+                _array[j] = t;
+              }
+            }
+
+          if (_isMounted) {
             setArrTutorPagination({
-              currentPage: 1,
-              arrTutor: res.data.rows,
-              arrPagination: arrCount.slice(0, 5),
+              currentPage: _index + 1,
+              // arrTutor: newArrTutor.slice(
+              //   _index * PER_PAGE_VALUE,
+              //   _index * PER_PAGE_VALUE + PER_PAGE_VALUE,
+              // ),
+              arrTutor: _array.slice(
+                _index * PER_PAGE_VALUE,
+                _index * PER_PAGE_VALUE + PER_PAGE_VALUE,
+              ),
+              arrPagination: arrCount.slice(0, MAX_NUMBER_PAGE),
             });
           }
         }
+      })
+      .catch(err => {
+        if (JSON.stringify(err).includes('message')) {
+          alert('FAIL:\n' + err.response.data.message);
+        } else {
+          alert('FAIL:\n' + err);
+        }
       });
+  };
+
+  useEffect(() => {
+    let isMounted = true;
+    handleSearchAndPaginate(0, isMounted);
     return () => {
       isMounted = false;
     };
@@ -83,21 +135,20 @@ const Search = props => {
       <View style={{marginTop: 5}}>
         {arrTutorPagination.arrTutor.map((item, index) => (
           <Suspense
-        fallback={
-          <View style={{alignItems: 'center'}}>
-            <ActivityIndicator size="large" color="#00ff00" />
-          </View>
-        }
-        key={index}>
-          <TutorItemSearch
-            onPress={
-              () =>
+            fallback={
+              <View style={{alignItems: 'center'}}>
+                <ActivityIndicator size="large" color="#00ff00" />
+              </View>
+            }
+            key={index}>
+            <TutorItemSearch
+              onPress={() =>
                 props.navigation.navigate('TutorDetailNew', {
                   tutor: item,
-                }) 
-            }
-            tutor={item}
-          />
+                })
+              }
+              tutor={item}
+            />
           </Suspense>
         ))}
         {arrTutorPagination.arrTutor.length > 0 ? (
@@ -112,79 +163,41 @@ const Search = props => {
                 <View
                   key={index}
                   style={{
-                    marginHorizontal: 8,
+                    marginHorizontal: 1,
                     width: 40,
                     borderColor: MAIN_COLOR,
                     backgroundColor: MAIN_COLOR,
                     borderWidth: 1,
                     borderColor: MAIN_COLOR,
-                    paddingVertical: 5,
+                    paddingVertical: 6,
                     borderRadius: 5,
-                    marginBottom: 20
+                    marginBottom: 20,
                   }}>
                   <Text style={{color: 'white', textAlign: 'center'}}>
                     {index + 1}
                   </Text>
                 </View>
               ) : (
-                <Pressable
+                <TouchableOpacity
                   key={index}
                   onPress={() => {
-                    axiosInstance1
-                      .post(`tutor/search`, {
-                        filters: {
-                          specialties: spec,
-                          date: new Date().toISOString(),
-                        },
-                        page: index + 1,
-                        perPage: 12,
-                      })
-                      .then(res => {
-                        if (res.data.count > 0) {
-                          const newArrTutor = res.data.rows.filter(item =>
-                        item.name
-                          .toLowerCase()
-                          .includes(nameQuery.toLowerCase()),
-                      );
-                    // if(newArrTutor.length > 0)
-                    //       {
-                          let arrCount = [];
-
-                          if(index == 0)
-                          {
-                          const _countPage = ~~(newArrTutor.length / 12) + 1;
-                          for (let i = 0; i < _countPage; i++) {
-                            arrCount.push(i);
-                          }
-                          }else{
-                            for (let i = 0; i < index + 1; i++) {
-                            arrCount.push(i);
-                          }
-                          }
-          
-
-                          setArrTutorPagination({
-                            currentPage: index + 1,
-                            arrTutor: newArrTutor,
-                            arrPagination: arrCount.slice(0, 5),
-                          });
-                        //}
-                        }
-                      });
+                    handleSearchAndPaginate(index, true);
                   }}
                   style={{
-                    marginHorizontal: 8,
+                    marginHorizontal: 1,
                     borderColor: 'black',
-                    backgroundColor: 'white',
+                    backgroundColor: 'yellow',
                     borderWidth: 1,
                     borderColor: 'black',
-                    paddingVertical: 5,
+                    paddingVertical: 6,
                     width: 40,
                     borderRadius: 5,
-                    marginBottom: 20
+                    marginBottom: 20,
                   }}>
-                  <Text style={{textAlign: 'center'}}>{index + 1}</Text>
-                </Pressable>
+                  <Text style={{textAlign: 'center', color: 'black'}}>
+                    {index + 1}
+                  </Text>
+                </TouchableOpacity>
               ),
             )}
           </View>
@@ -194,103 +207,70 @@ const Search = props => {
       </View>
     );
   };
-
   return (
     <>
-      <SearchBar
-        round={true}
-        containerStyle={{backgroundColor: 'black'}}
-        inputContainerStyle={{
-          backgroundColor: 'white',
-          height: 37,
-          borderRadius: 5,
-        }}
-        inputStyle={{backgroundColor: 'white', height: 20, fontSize: 16}}
-        placeholder={
-          langState.currentLang == 'en' ? 'search tutors...' : 'tìm theo tên...'
-        }
-        onChangeText={value => setNameQuery(value)}
-        value={nameQuery}
-      />
-      <View style={styles.container1}>
-        <Pressable
-          style={styles.button1}
-          onPress={() => {
-            // if (nameQuery.length > 0 && country.name.length == 0) {
-            //   setArrayShow(array.filter(item => item.name.toLowerCase().includes(nameQuery.toLowerCase())));
-            // } else if (nameQuery.length == 0 && country.name.length > 0) {
-            //   setArrayShow(array.filter(item => item.country == country.cca2));
-            // } else if (nameQuery.length > 0 && country.name.length > 0) {
-            //   setArrayShow(
-            //     array.filter(
-            //       item =>
-            //         //item.country == country.cca2 &&
-            //         item.name.toLowerCase().includes(nameQuery.toLowerCase()),
-            //     ),
-            //   );
-            // } else {
-            //   setSpec(['']);
-            // }
-            if (nameQuery.length > 0) {
-              axiosInstance1
-                .post(`tutor/search`, {
-                  filters: {specialties: spec, date: new Date().toISOString()},
-                  page: 1,
-                  perPage: 12,
-                })
-                .then(res => {
-                  if (res.data.count > 0) {
-                    const newArrTutor = res.data.rows.filter(item =>
-                        item.name
-                          .toLowerCase()
-                          .includes(nameQuery.toLowerCase()),
-                      );
-                    // if(newArrTutor.length > 0)
-                    // {
-                      const _countPage = ~~(newArrTutor.length / 12) + 1;
-                      let arrCount = [];
-                      for (let i = 0; i < _countPage; i++) {
-                        arrCount.push(i);
-                      }
-                      
-                      setArrTutorPagination({
-                        currentPage: 1,
-                        arrTutor: newArrTutor,
-                        arrPagination: arrCount.slice(0, 5),
-                      });
-                    //}
-                  }
-                });
-
-              // setArrTutorPagination({
-              //   arrTutor: array.filter(item =>
-              //     item.name.toLowerCase().includes(nameQuery.toLowerCase()),
-              //   ),
-              // }
-              // );
-            } else {
-              setSpec(['']);
-            }
-          }}>
-          <Text style={styles.text1}>
-            {langState[langState.currentLang].Search}
-          </Text>
-        </Pressable>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <SearchBar
+          round={true}
+          containerStyle={{backgroundColor: 'black', width: '78%'}}
+          inputContainerStyle={{
+            backgroundColor: 'white',
+            height: 40,
+            borderRadius: 5,
+          }}
+          inputStyle={{
+            backgroundColor: 'white',
+            height: 26,
+            fontSize: 16,
+            color: 'black',
+          }}
+          placeholder={
+            langState.currentLang == 'en'
+              ? 'search tutors...'
+              : 'tìm theo tên...'
+          }
+          onChangeText={value => setNameQuery(value)}
+          value={nameQuery}
+        />
+        <View
+          style={{width: '22%', backgroundColor: 'black', paddingVertical: 8}}>
+          <Pressable
+            style={[styles.button1, {paddingVertical: 9, borderRadius: 20}]}
+            onPress={() => {
+              if (nameQuery.length > 0) {
+                handleSearchAndPaginate(0, true);
+              }
+            }}>
+            <Text style={[styles.text1, {textAlign: 'center'}]}>
+              {langState[langState.currentLang].Search}
+            </Text>
+          </Pressable>
+        </View>
       </View>
       <View
-        style={{flexDirection: 'row', alignItems: 'center', marginLeft: 10, marginBottom: 1}}>
+        style={{
+          height: 5,
+          backgroundColor: isDarkTheme ? 'black' : 'white',
+        }}></View>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: isDarkTheme ? 'black' : 'white',
+        }}>
         <Text
           style={{
             fontSize: 16,
+            marginLeft: 10,
             fontWeight: 'bold',
             color: isDarkTheme ? 'white' : 'black',
+            marginBottom: 3,
           }}>
-          {langState[langState.currentLang].Filter_Tutors}: 
+          {langState[langState.currentLang].Filter_Tutors}:{' '}
         </Text>
-        <Text style={{color: isDarkTheme ? 'yellow' : 'red'}}>{spec}</Text>
+        <MyTag isActive title={spec != '' ? spec : 'All'} onPress={() => {}} />
       </View>
-
-      <View>
+      <View style={{backgroundColor: isDarkTheme ? 'black' : 'white'}}>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -322,7 +302,7 @@ const Search = props => {
           <MyTag
             title={'STARTERS'}
             onPress={() => {
-              setSpec(['starters']);    
+              setSpec(['starters']);
             }}
           />
           <MyTag
@@ -364,97 +344,43 @@ const Search = props => {
           />
         </ScrollView>
       </View>
-      {/* <View style={{flexDirection: 'row', marginTop: 5, marginLeft: 10}}>
-          <MyTag
-            title={'All'}
-            onPress={() => {
-              setSpec(['']);
-            }}
-          />
-        </View>
-        <View style={{flexDirection: 'row', marginTop: 3, marginLeft: 10}}>
-          <MyTag
-            title={'EnglishforKids'}
-            onPress={() => {
-              setSpec(['english-for-kids']);
-            }}
-          />
-        </View>
-        <View style={{flexDirection: 'row', marginTop: 3, marginLeft: 10, marginBottom: 3}}>
-          <MyTag
-            title={'MOVERS'}
-            onPress={() => {
-              setSpec(['movers']);
-            }}
-          />
-        </View> */}
-      <ScrollView style={styles.container}>
-        {/* <View
+      <View
+        style={{
+          height: 5,
+          backgroundColor: isDarkTheme ? 'black' : 'white',
+        }}></View>
+      <View
         style={{
           flexDirection: 'row',
-          alignItems: 'center',
-          marginLeft: 15,
-          marginRight: 0,
-          marginTop: 10,
+          justifyContent: 'space-between',
+          alignItems: 'flex-end',
+          backgroundColor: isDarkTheme ? 'black' : 'white',
         }}>
-        <Text style={{fontSize: 17, color: MAIN_COLOR, fontWeight: 'bold'}}>
-          *{langState[langState.currentLang].Name}:{'   '}
-        </Text>
-        <TextInput
+        <Text
           style={{
-            borderWidth: 1,
-            borderRadius: 5,
-            height: 40,
-            fontSize: 14,
-            width: '55%',
-            backgroundColor: 'white',
-          }}
-          value={nameQuery}
-          onChangeText={value => setNameQuery(value)}
-          placeholder={langState == 'en' ? 'search name...' : 'tìm theo tên...'}
-        />
-        {nameQuery != '' && <AntDesign
-          name={'close'}
-          size={22}
-          color={'red'}
-          style={{marginLeft: 10}}
+            fontSize: 16,
+            fontWeight: 'bold',
+            color: isDarkTheme ? 'white' : 'black',
+            marginLeft: 10,
+          }}>
+          {langState.currentLang == 'en' ? 'Results' : 'Kết quả'}:{' '}
+        </Text>
+        <FontAwesome
+          name="refresh"
+          size={30}
+          color={THIRD_COLOR}
+          style={{marginRight: 15}}
           onPress={() => {
+            setSpec(['']);
             setNameQuery('');
           }}
-        />}
-      </View> */}
-        {/* <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          marginLeft: 15,
-          marginTop: 8,
-          marginBottom: 15,
-        }}>
-        <Text style={{fontSize: 17, color: MAIN_COLOR, fontWeight: 'bold'}}>
-          *{langState[langState.currentLang].Country}:{'  '}
-        </Text>
-        <CountryPicker
-          withFlag
-          withFilter
-          withCountryNameButton
-          countryCode={country.cca2}
-          onSelect={country =>
-            //console.log("\nĐây nữa nè: " + JSON.stringify(country))
-            setCountry({cca2: country.cca2, name: country.name})
-          }
         />
-        {country.cca2 != '' && <AntDesign
-          name={'close'}
-          size={22}
-          color={'red'}
-          style={{marginLeft: 10}}
-          onPress={() => {
-            setCountry({cca2: '', name: ''});
-          }}
-        />}
-      </View> */}
-
+      </View>
+      <ScrollView
+        style={[
+          styles.container,
+          {backgroundColor: isDarkTheme ? 'black' : 'white'},
+        ]}>
         {renderTest(arrTutorPagination)}
       </ScrollView>
     </>

@@ -44,6 +44,7 @@ const arrLevel = [
     {item: 'IELTS', id: 10},
     {item: 'TOEFL', id: 11},
     {item: 'TOEIC', id: 12},
+    {item: "For studying abroad", id: 13},
   ];
 
 function ConvertLevel(str) {
@@ -62,8 +63,10 @@ function ConvertLevel(str) {
       return 'Pre-advanced';
     case '7':
       return 'Advanced';
-    default:
+    case '8': 
       return 'Very advanced';
+    default :
+      return 'Any Level';
   }
 }
 const Item = props => (
@@ -147,6 +150,7 @@ const ListEbookNew = props => {
   const dispatch = useDispatch();
   const current = useSelector(state => state.auth.current);
   const langState = useSelector(state => state.lang);
+  const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
 
   const [query, setQuery] = useState('');
   const [arrLevelSelected, setArrayLevelSelected] = useState([]);
@@ -216,17 +220,18 @@ const ListEbookNew = props => {
         }}
         inputStyle={{backgroundColor: 'white', height: 20, fontSize: 16}}
         placeholder={
-          langState.currentLang == 'en' ? 'search ebooks...' : 'tên ebooks...'
+          langState.currentLang == 'en' ? 'search ebooks...' : 'từ khóa...'
         }
         onChangeText={value => setQuery(value)}
         value={query}
       />
       <View style={{marginHorizontal: 20}}>
         <SelectBox
-          containerStyle={{marginTop: -10}}
+          containerStyle={{marginTop: -16, backgroundColor: isDarkTheme?'white':null}}
+          optionContainerStyle={{backgroundColor:isDarkTheme?'white':null}}
           hideInputFilter
           label={false}
-          inputPlaceholder="Level"
+          inputPlaceholder={langState.currentLang=='en'?"  Level":"  Cấp độ"}
           options={arrLevel}
           selectedValues={arrLevelSelected}
           onMultiSelect={onMultiChange()}
@@ -238,10 +243,11 @@ const ListEbookNew = props => {
       
       <View style={{marginHorizontal: 20}}>
         <SelectBox
-          containerStyle={{marginTop: -10}}
+          containerStyle={{marginTop: -16, backgroundColor: isDarkTheme?'white':null}}
+          optionContainerStyle={{backgroundColor:isDarkTheme?'white':null}}
           hideInputFilter
           label={false}
-          inputPlaceholder="Category"
+          inputPlaceholder={langState.currentLang=='en'?"  Category":"  Thể loại"}
           options={arrCategory}
           selectedValues={arrCategorySelected}
           onMultiSelect={onMultiChange1()}
@@ -259,7 +265,7 @@ const ListEbookNew = props => {
             left: '30%',
             borderWidth: 1,
             marginBottom: 1,
-            marginTop: 2
+            marginTop: 6
           }}>
           <Pressable onPress={onSearch} style={{width: '100%'}}>
             <Text
@@ -269,7 +275,7 @@ const ListEbookNew = props => {
                 fontWeight: 'bold',
                 textAlign: 'center',
               }}>
-              Search
+              {langState.currentLang=='en'?'Search':'Tìm kiếm'}
             </Text>
           </Pressable>
         </View>
@@ -338,13 +344,13 @@ const ListEbookNew = props => {
                       setCurrentPage(index + 1);
                     }}
                     style={{
-                      marginHorizontal: 3,
+                      marginHorizontal: 1,
                       borderColor: 'black',
-                      backgroundColor: 'white',
+                      backgroundColor: 'yellow',
                       borderWidth: 1,
                       borderColor: 'black',
                       width: 30,
-                      paddingVertical: 5,
+                      paddingVertical: 6,
                       borderRadius: 5,
                     }}>
                     <Text style={{textAlign: 'center'}}>{index + 1}</Text>

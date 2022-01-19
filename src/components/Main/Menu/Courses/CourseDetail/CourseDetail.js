@@ -1,12 +1,8 @@
 /* eslint-disable */
-import React, {useState} from 'react';
+import React from 'react';
 import {
   Text,
   View,
-  //TextInput,
-  //StyleSheet,
-  //TouchableOpacity,
-  //FlatList,
   ScrollView,
   Pressable,
 } from 'react-native';
@@ -15,18 +11,39 @@ import FastImage from 'react-native-fast-image';
 import {MAIN_COLOR} from '../../../../../globals/constant';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useSelector } from 'react-redux';
 
-
-const CourseDetail = props => (
+function ConvertLevel(str) {
+  switch (str) {
+    case '1':
+      return 'Beginner';
+    case '2':
+      return 'Upper-Beginner';
+    case '3':
+      return 'Pre-Intermediate';
+    case '4':
+      return 'Intermediate';
+    case '5':
+      return 'Upper-Intermediate';
+    case '6':
+      return 'Pre-advanced';
+    case '7':
+      return 'Advanced';
+    case '8': 
+      return 'Very advanced';
+    default :
+      return 'Any Level';
+  }
+}
+const CourseDetail = props => {
+  const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
+  const langState = useSelector(state => state.lang);
+  return(
   <ScrollView>
   <View style={{margin: 5, borderRadius: 15}}>
-    {/* <Text style={{fontSize: 20}}>{props.title}</Text> */}
     <View
       style={{
         backgroundColor: 'white',
-        //   marginHorizontal: 5,
-        //   marginVertical: 5,
-        //padding: 5,
         margin: 10,
         borderRadius: 8,
         shadowColor: '#000',
@@ -57,7 +74,7 @@ const CourseDetail = props => (
            onPress={()=>props.navigation.navigate('Discover', {item: props.route.params.item})}
            style={{backgroundColor: MAIN_COLOR, paddingVertical: 8, marginTop: 12, borderRadius: 12}}>
           <Text style={{color: 'white', textAlign: 'center', fontSize: 18}}>
-            Discover
+            {langState.currentLang=='en'?'Discover':'Khám phá'}
           </Text>
         </Pressable>
       </View>
@@ -65,25 +82,20 @@ const CourseDetail = props => (
 
 
     <View style={{marginHorizontal: 10, marginBottom: 15, marginTop: 15}}>
-      <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10}}>
-        Overview
+      <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10, color: isDarkTheme?'yellow':null}}>
+      {langState.currentLang=='en'?'Overview':'Tổng quan'}
       </Text>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <AntDesign
           name={'questioncircleo'}
           size={18}
           color={'rgb(199, 83, 64)'}
-          // style={{
-          //   textAlign: 'right',
-          //   marginBottom: -50,
-          //   marginRight: 10,
-          // }}
         />
         <View style={{ marginBottom: 5}}>
-          <Text style={{fontWeight: 'bold', fontSize: 16}}> Why take this course</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 16, color: isDarkTheme?'blue':null}}> {langState.currentLang=='en'?'Why take this course':'Vì sao chọn khóa học'}</Text>
         </View>
       </View>
-      <Text style={{marginBottom: 12, fontSize: 16}}>
+      <Text style={{marginBottom: 12, fontSize: 16, color: isDarkTheme?'white':null}}>
         {props.route.params.item.reason}
       </Text>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -91,84 +103,52 @@ const CourseDetail = props => (
           name={'questioncircleo'}
           size={18}
           color={'rgb(199, 83, 64)'}
-          // style={{
-          //   textAlign: 'right',
-          //   marginBottom: -50,
-          //   marginRight: 10,
-          // }}
         />
         <View>
-          <Text style={{fontWeight: 'bold', fontSize: 16, marginBottom: 5}}> What will you be able to do</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 16, marginBottom: 5, color: isDarkTheme?'blue':null}}> {langState.currentLang=='en'?'What will you be able to do':'Bạn sẽ học được gì'}</Text>
         </View> 
       </View>
-      <Text style={{marginBottom: 16, fontSize: 16}}>
+      <Text style={{marginBottom: 16, fontSize: 16, color: isDarkTheme?'white':null}}>
         {props.route.params.item.purpose}
       </Text>
-      <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10}}>
-        Experience Level
+      <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10, color: isDarkTheme?'yellow':null}}>
+      {langState.currentLang=='en'?'Experience Level':'Cấp độ'}
       </Text>
       <View style={{flexDirection: 'row', marginBottom: 16}}>
           <Ionicons
             name={'people'}
             size={15}
             color={MAIN_COLOR}
-            // style={{
-            //   textAlign: 'right',
-            //   marginBottom: -50,
-            //   marginRight: 10,
-            // }}
           />
-        
         <View>
-          <Text style={{fontSize: 16}}> {props.route.params.item.level1}</Text>
+          <Text style={{fontSize: 16, color: isDarkTheme?'white':null}}> {ConvertLevel(props.route.params.item.level)}</Text>
         </View>
       </View>
-      <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10}}>
-      Course Length
+      <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10, color: isDarkTheme?'yellow':null}}>
+      {langState.currentLang=='en'?'Course Length':'Độ dài khóa học'}
       </Text>
-      <View style={{flexDirection: 'row', marginBottom: 16}}>
-        
+      <View style={{flexDirection: 'row', marginBottom: 16}}>   
           <AntDesign
             name={'book'}
             size={15}
             color={MAIN_COLOR}
-            // style={{
-            //   textAlign: 'right',
-            //   marginBottom: -50,
-            //   marginRight: 10,
-            // }}
-          />
-        
-        
+          />    
         <View>
-          <Text style={{fontSize: 16}}> {props.route.params.item.topics.length} Topics</Text>
+          <Text style={{fontSize: 16, color: isDarkTheme?'white':null}}> {props.route.params.item.topics.length} Topics</Text>
         </View>
       </View>
-      <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10}}>
-      List Topics
+      <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10, color: isDarkTheme?'yellow':null}}>
+      {langState.currentLang=='en'?'List Topics':'Danh sách chủ đề'}
       </Text>
       <View style={{marginBottom: 10}}>
          {
-          props.route.params.item.topics.map((topic, index) => <View key={index} style={{marginBottom: 2,}}><Text style={{fontSize: 16}}>{index + 1}. {topic.name}</Text></View>)
+          props.route.params.item.topics.map((topic, index) => <View key={index} style={{marginBottom: 2,}}><Text style={{fontSize: 16, color: isDarkTheme?'white':null}}>{index + 1}. {topic.name}</Text></View>)
          }
       </View>
-      {/* <Text style={{fontSize: 20, fontWeight: 'bold', marginBottom: 10, marginTop: 16}}>
-      Suggested Tutors
-      </Text>
-      <Text style={{fontSize: 16}}>Michelle Barredo</Text> */}
     </View>
   </View>
   </ScrollView>
-);
-
-// const CourseDetail = () => {
-//   return (
-//     <View>
-//       <Item />
-//     </View>
-//   );
-// };
-
-//const styles = StyleSheet.create({});
+  )
+};
 
 export default CourseDetail;

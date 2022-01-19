@@ -3,21 +3,15 @@ import React, {useState, useEffect} from 'react';
 import {
   Text,
   View,
-  TextInput,
-  StyleSheet,
-  //TouchableOpacity,
-  Pressable,
   ScrollView,
-  FlatList,
-  //SafeAreaView,
 } from 'react-native';
+import { MAIN_COLOR } from '../../../../globals/constant';
 import {useSelector, useDispatch} from 'react-redux';
 import TutorItem from '../../common/TutorItem/TutorItem';
 import { searchSpecAsync } from '../../../../redux/slices/tutor/searchSlice';
 
 export default function Favorites(props) {
   const dispatch = useDispatch();
-
   const [array, setArray] = useState([]);
   const listFavorite = useSelector(state => state.moretutor.rows);
   const current = useSelector(state => state.auth.current);
@@ -46,8 +40,8 @@ export default function Favorites(props) {
   });
 
   return listFavorite.length == 0 ? (
-    <View>
-      <Text>No Favorite !</Text>
+    <View style={{marginTop: 40}}>
+      <Text style={{color: MAIN_COLOR, textAlign: 'center', fontSize: 25}}>No Favorite</Text>
     </View>
   ) : (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -57,7 +51,7 @@ export default function Favorites(props) {
             () =>
               props.navigation.navigate('TutorDetailNew', {
                 tutor: tutor,
-              }) /*onPressTutor(index)*/
+              }) 
           }
           key={index}
           tutor={tutor}

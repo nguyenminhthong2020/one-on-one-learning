@@ -6,19 +6,18 @@ import {
   Text,
   View,
   Pressable,
-  Image,
-  Alert,
+  TextInput,
+  Modal,
 } from 'react-native';
 
-import {MAIN_COLOR, BASE_URL} from '../../../../globals/constant';
+import {MAIN_COLOR, BASE_URL, SECOND_COLOR} from '../../../../globals/constant';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FastImage from 'react-native-fast-image';
-
 const SectionVideo = React.lazy(() => import('./SectionVideo'));
 import {useDispatch, useSelector} from 'react-redux';
 import CountryPicker from 'react-native-country-picker-modal';
-// import { detailApi } from '../../../../api/tutor/detailApi';
+
 import axios from 'axios';
 import {
   addFavAsync,
@@ -79,24 +78,6 @@ const FavoriteComponent = props => {
   );
 };
 
-const ReportAlert = tutorName =>
-  Alert.alert(
-    `Report ${tutorName} for some reasons:`,
-    `1) This tutor is annoying me. \n2) This profile is pretending be someone or is fake \n3) Inappropriate profile photo \n\n Please check he/she...`,
-    [
-      {
-        text: 'OK',
-        onPress: () => alert('Complete'),
-        style: 'default',
-      },
-      {
-        text: 'Cancel', //onPress: () => {alert("Cancel");console.log(123);},
-        style: 'destructive',
-      },
-    ],
-    {cancelable: true},
-  );
-
 const TutorDetailNew = props => {
   const isDarkTheme = useSelector(state => state.theme.isDarkTheme);
   const current = useSelector(state => state.auth.current);
@@ -108,31 +89,35 @@ const TutorDetailNew = props => {
     },
   });
 
+  const [isVisible, setIsVisible] = useState(false);
+  const [report, setReport] = useState('');
   const [detailTutor, setDetailTutor] = useState({
     price: 0,
     avgRating: 0,
   });
-  const [priceBalance, setPriceBalance] = useState({price: 0, balance : 0});
 
   useEffect(() => {
     let isMounted = true;
     axiosInstance1
       .get(`tutor/${props.route.params.tutor.userId}`)
       .then(res => {
-        axiosInstance1.get('user/info').then(res1 => 
-          {
-            if(isMounted){
+        axiosInstance1
+          .get('user/info')
+          .then(res1 => {
+            if (isMounted) {
               setDetailTutor({
                 price: res.data.price,
                 avgRating: res.data.avgRating,
               });
-              setPriceBalance({
-                price: res1.data.user.priceOfEachSession.price / 100000,
-                balance: res1.data.user.walletInfo.amount / 100000
-              })
             }
-            
-          }).catch(err1 => alert(err1.response.data.message))
+          })
+          .catch(err1 => {
+            if (JSON.stringify(err1).includes('message')) {
+              alert('FAIL:\n' + err1.response.data.message);
+            } else {
+              alert('FAIL:\n' + err1);
+            }
+          });
         // if (isMounted) {
         //   setDetailTutor({
         //     price: res.data.price,
@@ -153,7 +138,7 @@ const TutorDetailNew = props => {
   return (
     <View style={{marginTop: 0}}>
       <ScrollView>
-        <View>
+        <View style={{backgroundColor: isDarkTheme ? 'black' : 'white'}}>
           <View
             style={{
               backgroundColor: 'gray',
@@ -162,7 +147,10 @@ const TutorDetailNew = props => {
             }}>
             <Suspense
               fallback={<ActivityIndicator size="large" color="#00ff00" />}>
-              <SectionVideo uri={props.route.params.tutor.video} navigation={props.navigation}/>
+              <SectionVideo
+                uri={props.route.params.tutor.video}
+                navigation={props.navigation}
+              />
             </Suspense>
           </View>
 
@@ -190,17 +178,6 @@ const TutorDetailNew = props => {
                   }}>
                   {props.route.params.tutor.name}
                 </Text>
-                {/* <Rating 
-                style={{marginLeft: 6}}
-                ratingCount={5}
-                imageSize={15}
-                readonly={true}
-                jumpValue={0.5}
-                showRating={false}
-                fractions={10}
-                startingValue={props.tutor.startingValue}
-                isDisabled={true}
-              /> */}
                 <View
                   style={{
                     flexDirection: 'row',
@@ -213,11 +190,9 @@ const TutorDetailNew = props => {
                   ) : (
                     <>
                       <Text style={{color: 'orange'}}>
-                        {detailTutor.avgRating}/5{' '}
+                        {(Math.round((detailTutor.avgRating)*2)/2)}/5{' '}
                       </Text>
-                      <Image
-                        source={require('../../../../../assets/rating.png')}
-                      />
+                      <MaterialIcons name={'star'} size={16} color="orange" />
                     </>
                   )}
                 </View>
@@ -257,7 +232,6 @@ const TutorDetailNew = props => {
                 props.navigation.navigate('Booking', {
                   tutorId: props.route.params.tutor.userId,
                   name: props.route.params.tutor.name,
-                  priceBalance: priceBalance
                 })
               }>
               <Text
@@ -278,12 +252,12 @@ const TutorDetailNew = props => {
             }}>
             <View>
               <Pressable
-                // onPress={() =>
-                //   props.navigation.navigate('TutorMessage', {
-                //     uri: props.route.params.tutor.avatar,
-                //     name: props.route.params.tutor.name,
-                //   })
-                // }>
+              // onPress={() =>
+              //   props.navigation.navigate('TutorMessage', {
+              //     uri: props.route.params.tutor.avatar,
+              //     name: props.route.params.tutor.name,
+              //   })
+              // }>
               >
                 <View style={{alignItems: 'center'}}>
                   <View style={{marginBottom: 3}}>
@@ -307,7 +281,7 @@ const TutorDetailNew = props => {
               </Pressable>
             </View>
             <View>
-              <Pressable onPress={() => ReportAlert('April Corpuz')}>
+              <Pressable onPress={() => setIsVisible(!isVisible)}>
                 <View style={{alignItems: 'center'}}>
                   <View style={{marginBottom: 3}}>
                     <MaterialIcons
@@ -385,7 +359,7 @@ const TutorDetailNew = props => {
           <View style={{marginTop: 25, marginHorizontal: 15}}>
             <Text
               style={{
-                color: 'black',
+                color: isDarkTheme? 'white': 'black',
                 fontSize: 16,
                 fontWeight: 'bold',
                 marginBottom: 2,
@@ -449,8 +423,8 @@ const TutorDetailNew = props => {
                 fontWeight: 'bold',
                 marginBottom: 2,
               }}>
-              {langState[langState.currentLang].Rating_and_Comments} (
-              {props.route.params.tutor.feedbacks.length})
+              {langState[langState.currentLang].Rating_and_Comments} 
+              {/* ({props.route.params.tutor.feedbacks.length}) */}
             </Text>
           </View>
           <View
@@ -464,7 +438,8 @@ const TutorDetailNew = props => {
               }}
               onPress={() =>
                 props.navigation.navigate('TutorDetailComment', {
-                  feedbacks: props.route.params.tutor.feedbacks,
+                  // feedbacks: props.route.params.tutor.feedbacks,
+                  userId: props.route.params.tutor.userId
                 })
               }>
               <Text
@@ -479,6 +454,99 @@ const TutorDetailNew = props => {
           </View>
         </View>
       </ScrollView>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isVisible}
+        onRequestClose={() => {
+          setIsVisible(!isVisible);
+        }}>
+        <View
+          style={{
+            backgroundColor: 'white',
+            width: '70%',
+            marginTop: 220,
+            marginHorizontal: '15%',
+            borderRadius: 5,
+            borderWidth: 1,
+            borderColor: 'black',
+            //opacity: 1,
+          }}>
+          <Text
+            style={{
+              textAlign: 'center',
+              fontSize: 16,
+              fontWeight: 'bold',
+              color: MAIN_COLOR,
+              marginBottom: 20,
+            }}>
+            {langState.currentLang=='en'? `Help us understand\nwhat's happening`:`Giúp chúng tôi hiểu\nxảy ra chuyện gì`}
+          </Text>
+          <TextInput
+            style={{
+              borderWidth: 1,
+              borderColor: SECOND_COLOR,
+              fontSize: 15,
+              marginHorizontal: 12,
+              backgroundColor: 'white',
+              marginBottom: 12,
+            }}
+            numberOfLines={4}
+            multiline
+            onChangeText={value => setReport(value)}
+          />
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginHorizontal: 5,
+            }}>
+            <Pressable
+              style={{
+                backgroundColor: MAIN_COLOR,
+                width: '48%',
+                paddingVertical: 7,
+                borderRadius: 5,
+                marginBottom: 5,
+              }}
+              onPress={() => {
+                axiosInstance1
+                  .post(`report`, {
+                    content: report,
+                    tutorId: props.route.params.tutor.userId
+                  })
+                  .then(res => {
+                    alert("Report successfully");
+                    setIsVisible(!isVisible)
+                  })
+                  .catch(err => {
+                        if (JSON.stringify(err).includes('message')) {
+                          alert('FAIL:\n' + err.response.data.message);
+                        } else {
+                          alert('FAIL:\n' + err);
+                        }
+                  });
+              }}>
+              <Text style={{textAlign: 'center', fontSize: 18, color: 'white'}}>
+                {langState.currentLang=='en'?'Submit':'Gửi'}
+              </Text>
+            </Pressable>
+            <Pressable
+              style={{
+                backgroundColor: 'orange',
+                width: '48%',
+                paddingVertical: 7,
+                borderRadius: 5,
+                marginBottom: 5,
+              }}
+              onPress={() => setIsVisible(!isVisible)}>
+              <Text style={{textAlign: 'center', fontSize: 18, color: 'white'}}>
+              {langState.currentLang=='en'?'Cancel':'Hủy'}
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
