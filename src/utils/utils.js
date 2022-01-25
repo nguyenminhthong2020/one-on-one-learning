@@ -5,7 +5,6 @@ import { BASE_URL } from '../globals/constant';
 export const axiosInstance = axios.create({
     baseURL: BASE_URL,
     timeout: 5000,
-    //'Content-Type': 'application/json'
   });
 
 export const handleAverage = arrayFeedbacks => {
