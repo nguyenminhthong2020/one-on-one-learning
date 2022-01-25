@@ -550,15 +550,6 @@ const Profile = props => {
                 is24Hour={true}
               />
             )}
-            {/* <DateTimePicker
-                styles={{width: '37%', backgroundColor: "white", color:'#009387'}}
-                testID="dateTimePicker"
-                value={date.date}
-                mode="date"
-                is24Hour={true}
-                display="default"
-                onChange={date => setDate({date: date})}
-              /> */}
           </View>
         </View>
         <View

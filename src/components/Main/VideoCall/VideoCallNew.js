@@ -101,14 +101,17 @@ const VideoCallNew = props => {
       <View
         style={{
           height: 40,
-          width: 60,
+          width: '100%',//60,
           position: 'absolute',
-          marginTop: 30,
-          marginLeft: 5,
+          marginTop: 0,//30,
+          marginLeft: 0, //5,
           alignSelf: 'flex-start',
           elevation: 100,
+          backgroundColor: 'black'
         }}>
-        <Image source={require('./logoblack.png')} style={{height: 40,
+        {/* <Image source={require('./logoblack.png')} style={{height: 40,
+          width: 40,}}/> */}
+          <Image source={{uri: 'https://pbs.twimg.com/media/FJ0y8PPVcAAxfZK?format=webp&name=tiny'}} style={{height: 40,
           width: 40,}}/>
           <Text style={{color: MAIN_COLOR, fontWeight: 'bold'}}>LetTutor</Text>
       </View>
