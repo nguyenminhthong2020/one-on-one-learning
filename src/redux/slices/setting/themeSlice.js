@@ -13,14 +13,6 @@ const themeSlice = createSlice({
             state.isDarkTheme = !state.isDarkTheme;
         }
     },
-    // extraReducers:{
-    //     [loginAsync.fulfilled]: (state, action) => {
-    //         //state.current = action.payload;
-    //         state.current = action.payload; // = currentUser
-    //         console.log("Action nè: " + JSON.stringify(action));
-    //         state.isLoggin = true;
-    //     }
-    // }
 })
 
 export const {changeTheme} = themeSlice.actions;
