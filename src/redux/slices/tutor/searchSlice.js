@@ -1,6 +1,5 @@
 /* eslint-disable */
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import { searchApi } from '../../../api/tutor/searchApi';
 import axios from 'axios';
 import { BASE_URL } from '../../../globals/constant';
 
